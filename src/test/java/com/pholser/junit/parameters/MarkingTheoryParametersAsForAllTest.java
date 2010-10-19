@@ -10,12 +10,13 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
 
-public class WhenMarkingTheoryParametersAsForAll {
+public class MarkingTheoryParametersAsForAllTest {
     @Test
     public void shouldFeedDefaultNumberOfRandomIntsToAMarkedIntParameter() throws Exception {
         JUnitCore.runClasses(ForDefaultNumberOfInts.class);
 
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(), ForDefaultNumberOfInts.iterations);
+        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
+            ForDefaultNumberOfInts.iterations);
     }
 
     @RunWith(Theories.class)
@@ -32,7 +33,8 @@ public class WhenMarkingTheoryParametersAsForAll {
     public void shouldFeedDefaultNumberOfRandomDoublesToAMarkedDoubleParameter() throws Exception {
         JUnitCore.runClasses(ForDefaultNumberOfDoubles.class);
 
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(), ForDefaultNumberOfDoubles.iterations);
+        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
+            ForDefaultNumberOfDoubles.iterations);
     }
 
     @RunWith(Theories.class)
@@ -41,6 +43,57 @@ public class WhenMarkingTheoryParametersAsForAll {
 
         @Theory
         public void shouldHold(@ForAll double d) {
+            ++iterations;
+        }
+    }
+
+    @Test
+    public void shouldFeedDefaultNumberOfRandomFloatsToAMarkedStringParameter() throws Exception {
+        JUnitCore.runClasses(ForDefaultNumberOfFloats.class);
+
+        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(), ForDefaultNumberOfFloats.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ForDefaultNumberOfFloats {
+        static int iterations;
+
+        @Theory
+        public void shouldHold(@ForAll float f) {
+            ++iterations;
+        }
+    }
+
+    @Test
+    public void shouldFeedExactlyTwoBooleansToAMarkedBooleanParameter() throws Exception {
+        JUnitCore.runClasses(ForDefaultNumberOfBooleans.class);
+
+        assertEquals(2, ForDefaultNumberOfBooleans.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ForDefaultNumberOfBooleans {
+        static int iterations;
+
+        @Theory
+        public void shouldHold(@ForAll boolean b) {
+            ++iterations;
+        }
+    }
+
+    @Test
+    public void shouldFeedExactlyTwoBooleansWrappersToAMarkedBooleanWrapperParameter() throws Exception {
+        JUnitCore.runClasses(ForDefaultNumberOfBooleanWrappers.class);
+
+        assertEquals(2, ForDefaultNumberOfBooleans.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ForDefaultNumberOfBooleanWrappers {
+        static int iterations;
+
+        @Theory
+        public void shouldHold(@ForAll Boolean b) {
             ++iterations;
         }
     }

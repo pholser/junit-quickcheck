@@ -29,6 +29,20 @@ public class GeneratingParameterSupplier extends ParameterSupplier {
             }
         });
         extractors.put(Double.class, extractors.get(double.class));
+        extractors.put(float.class, new RandomValueExtractor() {
+            @Override
+            public Object randomValue(SourceOfRandomness random) {
+                return random.nextFloat();
+            }
+        });
+        extractors.put(Float.class, extractors.get(float.class));
+        extractors.put(boolean.class, new RandomValueExtractor() {
+            @Override
+            public Object randomValue(SourceOfRandomness random) {
+                return random.nextBoolean();
+            }
+        });
+        extractors.put(Boolean.class, extractors.get(boolean.class));
         extractors.put(String.class, new RandomValueExtractor() {
             @Override
             public Object randomValue(SourceOfRandomness random) {
@@ -53,15 +67,22 @@ public class GeneratingParameterSupplier extends ParameterSupplier {
 
     @Override
     public List<PotentialAssignment> getValueSources(ParameterSignature sig) {
-        List<PotentialAssignment> potentials = new ArrayList<PotentialAssignment>();
-        ForAll generationParms = sig.getAnnotation(ForAll.class);
         RandomValueExtractor extractor = extractor(sig);
+        int sampleSize = sampleSizeFor(sig);
 
-        for (int i = 0; i < generationParms.sampleSize(); ++i) {
+        List<PotentialAssignment> potentials = new ArrayList<PotentialAssignment>();
+        for (int i = 0; i < sampleSize; ++i) {
             Object generated = extractor.randomValue(random);
             potentials.add(PotentialAssignment.forValue(String.valueOf(generated), generated));
         }
         return potentials;
+    }
+
+    private static int sampleSizeFor(ParameterSignature sig) {
+        Class<?> type = sig.getType();
+        if (boolean.class.equals(type) || Boolean.class.equals(type))
+            return 2;
+        return sig.getAnnotation(ForAll.class).sampleSize();
     }
 
     private RandomValueExtractor extractor(ParameterSignature sig) {
