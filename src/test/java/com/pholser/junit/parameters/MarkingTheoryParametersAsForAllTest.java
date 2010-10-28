@@ -65,10 +65,11 @@ public class MarkingTheoryParametersAsForAllTest {
     }
 
     @Test
-    public void shouldFeedExactlyTwoBooleansToAMarkedBooleanParameter() throws Exception {
+    public void shouldFeedDefaultNumberOfBooleansToAMarkedBooleanParameter() throws Exception {
         JUnitCore.runClasses(ForDefaultNumberOfBooleans.class);
 
-        assertEquals(2, ForDefaultNumberOfBooleans.iterations);
+        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
+            ForDefaultNumberOfBooleans.iterations);
     }
 
     @RunWith(Theories.class)
@@ -82,10 +83,11 @@ public class MarkingTheoryParametersAsForAllTest {
     }
 
     @Test
-    public void shouldFeedExactlyTwoBooleansWrappersToAMarkedBooleanWrapperParameter() throws Exception {
+    public void shouldFeedDefaultNumberOfBooleansWrappersToAMarkedBooleanWrapperParameter() throws Exception {
         JUnitCore.runClasses(ForDefaultNumberOfBooleanWrappers.class);
 
-        assertEquals(2, ForDefaultNumberOfBooleans.iterations);
+        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
+            ForDefaultNumberOfBooleans.iterations);
     }
 
     @RunWith(Theories.class)
@@ -150,27 +152,20 @@ public class MarkingTheoryParametersAsForAllTest {
     }
 
     @Test
-    public void shouldAllowNonPrimitiveTypesToBeRandomlyGenerated() {
-        JUnitCore.runClasses(NonPrimitiveParameter.class);
+    public void shouldFeedRandomDatesToAMarkedDateParameter() throws Exception {
+        JUnitCore.runClasses(ForDefaultNumberOfDates.class);
 
-        assertEquals(100, RandomDateExtractor.numberOfCalls);
+        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
+            ForDefaultNumberOfDates.iterations);
     }
 
     @RunWith(Theories.class)
-    public static class NonPrimitiveParameter {
+    public static class ForDefaultNumberOfDates {
+        static int iterations;
+
         @Theory
-        public void shouldHold(@ForAll @ExtractedBy(RandomDateExtractor.class) Date d) {
-            assertNotNull(d);
-        }
-    }
-
-    static class RandomDateExtractor implements RandomValueExtractor {
-        static int numberOfCalls;
-
-        @Override
-        public Object randomValue(SourceOfRandomness random) {
-            ++numberOfCalls;
-            return new Date(random.nextLong());
+        public void shouldHold(@ForAll Date d) {
+            ++iterations;
         }
     }
 }

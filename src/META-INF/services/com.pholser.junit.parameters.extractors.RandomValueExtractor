@@ -1,0 +1,10 @@
+com.pholser.junit.parameters.internal.extractors.BooleanExtractor
+com.pholser.junit.parameters.internal.extractors.ByteExtractor
+com.pholser.junit.parameters.internal.extractors.CharacterExtractor
+com.pholser.junit.parameters.internal.extractors.DateExtractor
+com.pholser.junit.parameters.internal.extractors.DoubleExtractor
+com.pholser.junit.parameters.internal.extractors.FloatExtractor
+com.pholser.junit.parameters.internal.extractors.IntegerExtractor
+com.pholser.junit.parameters.internal.extractors.LongExtractor
+com.pholser.junit.parameters.internal.extractors.ShortExtractor
+com.pholser.junit.parameters.internal.extractors.StringExtractor

@@ -1,4 +1,4 @@
-package com.pholser.junit.parameters;
+package com.pholser.junit.parameters.random;
 
 import java.security.SecureRandom;
 

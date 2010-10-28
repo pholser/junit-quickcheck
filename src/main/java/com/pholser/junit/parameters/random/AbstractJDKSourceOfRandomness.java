@@ -1,8 +1,8 @@
-package com.pholser.junit.parameters;
+package com.pholser.junit.parameters.random;
 
 import java.util.Random;
 
-public abstract class AbstractJDKSourceOfRandomness implements SourceOfRandomness {
+abstract class AbstractJDKSourceOfRandomness implements SourceOfRandomness {
     private final Random random;
 
     protected AbstractJDKSourceOfRandomness(Random random) {
