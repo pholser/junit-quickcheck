@@ -87,7 +87,7 @@ public class MarkingTheoryParametersAsForAllTest {
         JUnitCore.runClasses(ForDefaultNumberOfBooleanWrappers.class);
 
         assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
-            ForDefaultNumberOfBooleans.iterations);
+            ForDefaultNumberOfBooleanWrappers.iterations);
     }
 
     @RunWith(Theories.class)
@@ -119,9 +119,9 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldAllowDifferentNumberOfRandomValuesOnAMarkedParameter() {
-        JUnitCore.runClasses(ForDefaultNumberOfStrings.class);
+        JUnitCore.runClasses(ForSpecifiedNumberOfStrings.class);
 
-        assertEquals(200, ForDefaultNumberOfStrings.iterations);
+        assertEquals(200, ForSpecifiedNumberOfStrings.iterations);
     }
 
     @RunWith(Theories.class)
