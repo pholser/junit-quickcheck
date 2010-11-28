@@ -1,5 +1,6 @@
 package com.pholser.junit.parameters;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import static org.apache.commons.lang.ClassUtils.*;
 
 public class GeneratingParameterSupplier extends ParameterSupplier {
     private final SourceOfRandomness random;
-    private final Map<Class<?>, RandomValueExtractor<?>> extractors;
+    private final Map<Type, RandomValueExtractor<?>> extractors;
 
     public GeneratingParameterSupplier() {
         this(new SecureJDKSourceOfRandomness(), new ServiceLoaderExtractorSource());

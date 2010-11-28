@@ -1,22 +1,21 @@
 package com.pholser.junit.parameters;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
 
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
 public class MarkingTheoryParametersAsForAllTest {
     @Test
     public void shouldFeedDefaultNumberOfRandomIntsToAMarkedIntParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfInts.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
-            ForDefaultNumberOfInts.iterations);
+        assertThat(testResult(ForDefaultNumberOfInts.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfInts.iterations);
     }
 
     @RunWith(Theories.class)
@@ -31,10 +30,8 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldFeedDefaultNumberOfRandomDoublesToAMarkedDoubleParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfDoubles.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
-            ForDefaultNumberOfDoubles.iterations);
+        assertThat(testResult(ForDefaultNumberOfDoubles.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfDoubles.iterations);
     }
 
     @RunWith(Theories.class)
@@ -49,9 +46,8 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldFeedDefaultNumberOfRandomFloatsToAMarkedStringParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfFloats.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(), ForDefaultNumberOfFloats.iterations);
+        assertThat(testResult(ForDefaultNumberOfFloats.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfFloats.iterations);
     }
 
     @RunWith(Theories.class)
@@ -66,10 +62,8 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldFeedDefaultNumberOfBooleansToAMarkedBooleanParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfBooleans.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
-            ForDefaultNumberOfBooleans.iterations);
+        assertThat(testResult(ForDefaultNumberOfBooleans.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfBooleans.iterations);
     }
 
     @RunWith(Theories.class)
@@ -84,10 +78,8 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldFeedDefaultNumberOfBooleansWrappersToAMarkedBooleanWrapperParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfBooleanWrappers.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
-            ForDefaultNumberOfBooleanWrappers.iterations);
+        assertThat(testResult(ForDefaultNumberOfBooleanWrappers.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfBooleanWrappers.iterations);
     }
 
     @RunWith(Theories.class)
@@ -102,9 +94,8 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldFeedDefaultNumberOfRandomStringsToAMarkedStringParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfStrings.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(), ForDefaultNumberOfStrings.iterations);
+        assertThat(testResult(ForDefaultNumberOfStrings.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfStrings.iterations);
     }
 
     @RunWith(Theories.class)
@@ -119,8 +110,7 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldAllowDifferentNumberOfRandomValuesOnAMarkedParameter() {
-        JUnitCore.runClasses(ForSpecifiedNumberOfStrings.class);
-
+        assertThat(testResult(ForSpecifiedNumberOfStrings.class), isSuccessful());
         assertEquals(200, ForSpecifiedNumberOfStrings.iterations);
     }
 
@@ -136,8 +126,7 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldAllowMultipleForAllParmsOnATheoryMethod() {
-        JUnitCore.runClasses(MultipleForAlls.class);
-
+        assertThat(testResult(MultipleForAlls.class), isSuccessful());
         assertEquals(15, MultipleForAlls.iterations);
     }
 
@@ -153,10 +142,8 @@ public class MarkingTheoryParametersAsForAllTest {
 
     @Test
     public void shouldFeedRandomDatesToAMarkedDateParameter() throws Exception {
-        JUnitCore.runClasses(ForDefaultNumberOfDates.class);
-
-        assertEquals(ForAll.class.getMethod("sampleSize").getDefaultValue(),
-            ForDefaultNumberOfDates.iterations);
+        assertThat(testResult(ForDefaultNumberOfDates.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfDates.iterations);
     }
 
     @RunWith(Theories.class)
@@ -167,5 +154,23 @@ public class MarkingTheoryParametersAsForAllTest {
         public void shouldHold(@ForAll Date d) {
             ++iterations;
         }
+    }
+
+    @Test
+    public void shouldRejectMarkedParametersOfUnsupportedType() {
+        assertThat(testResult(ForUnsupportedType.class),
+            hasSingleFailureContaining("Don't know how to generate values of " + Void.class));
+    }
+
+    @RunWith(Theories.class)
+    public static class ForUnsupportedType {
+        @Theory
+        public void shouldHold(@ForAll Void v) {
+            // empty on purpose
+        }
+    }
+
+    private static int defaultSampleSize() throws NoSuchMethodException {
+        return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
     }
 }

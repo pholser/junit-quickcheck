@@ -8,25 +8,21 @@ import java.util.ServiceLoader;
 
 public class ServiceLoaderExtractorSource implements RandomValueExtractorSource {
     @Override
-    public Map<Class<?>, RandomValueExtractor<?>> extractors() {
-        Map<Class<?>, RandomValueExtractor<?>> extractors = new HashMap<Class<?>, RandomValueExtractor<?>>();
+    public Map<Type, RandomValueExtractor<?>> extractors() {
+        Map<Type, RandomValueExtractor<?>> extractors = new HashMap<Type, RandomValueExtractor<?>>();
         for (RandomValueExtractor<?> each : ServiceLoader.load(RandomValueExtractor.class))
-            addExtractor(extractors, each);
+            extractors.put(targetType(each), each);
         return extractors;
     }
 
-    private void addExtractor(Map<Class<?>, RandomValueExtractor<?>> extractors,
-        RandomValueExtractor<?> newExtractor) {
-
-        for (Type each : newExtractor.getClass().getGenericInterfaces()) {
+    Type targetType(RandomValueExtractor<?> extractor) {
+        for (Type each : extractor.getClass().getGenericInterfaces()) {
             if (each instanceof ParameterizedType) {
                 ParameterizedType parameterized = (ParameterizedType) each;
-                if (RandomValueExtractor.class.equals(parameterized.getRawType())) {
-                    Type typeArgument = parameterized.getActualTypeArguments()[0];
-                    if (typeArgument instanceof Class<?>)
-                        extractors.put((Class<?>) typeArgument, newExtractor);
-                }
+                if (RandomValueExtractor.class.equals(parameterized.getRawType()))
+                    return parameterized.getActualTypeArguments()[0];
             }
         }
+        return null;
     }
 }
