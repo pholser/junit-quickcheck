@@ -8,7 +8,7 @@ import static java.lang.annotation.RetentionPolicy.*;
 
 @Target(PARAMETER)
 @Retention(RUNTIME)
-public @interface InRange {
+public @interface Between {
     String min();
 
     String max();

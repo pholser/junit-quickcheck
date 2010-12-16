@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.pholser.junit.parameters.internal.extractors.RangeConstrainedExtractor;
-
 import com.pholser.junit.parameters.extractors.RandomValueExtractorSource;
 
 import com.pholser.junit.parameters.extractors.ServiceLoaderExtractorSource;
@@ -55,9 +53,9 @@ public class GeneratingParameterSupplier extends ParameterSupplier {
         if (!extractors.containsKey(key))
             throw new IllegalStateException("Don't know how to generate values of " + sig.getType());
         RandomValueExtractor<?> extractor = extractors.get(key);
-        InRange range = sig.getAnnotation(InRange.class);
-        if (range != null)
-            return new RangeConstrainedExtractor(key, extractor, range);
+        Between range = sig.getAnnotation(Between.class);
+        if (range != null && extractor.supportsRange())
+            extractor.applyRange(range);
         return extractor;
     }
 }

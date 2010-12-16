@@ -3,6 +3,8 @@ package com.pholser.junit.parameters.extractors;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
+import com.pholser.junit.parameters.Between;
+
 import org.junit.Before;
 
 import static org.junit.Assert.*;
@@ -35,6 +37,16 @@ public class AnalyzingTypesToDetermineExtractedTypeTest {
         public Integer randomValue(SourceOfRandomness random) {
             return null;
         }
+
+        @Override
+        public boolean supportsRange() {
+            return false;
+        }
+
+        @Override
+        public void applyRange(Between range) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     @Test
@@ -53,6 +65,16 @@ public class AnalyzingTypesToDetermineExtractedTypeTest {
         @Override
         public Integer call() {
             return null;
+        }
+
+        @Override
+        public boolean supportsRange() {
+            return false;
+        }
+
+        @Override
+        public void applyRange(Between range) {
+            throw new UnsupportedOperationException();
         }
     }
 }

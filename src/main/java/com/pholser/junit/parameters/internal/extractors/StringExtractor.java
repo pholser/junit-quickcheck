@@ -2,6 +2,8 @@ package com.pholser.junit.parameters.internal.extractors;
 
 import java.io.UnsupportedEncodingException;
 
+import com.pholser.junit.parameters.Between;
+
 import com.pholser.junit.parameters.extractors.RandomValueExtractor;
 import com.pholser.junit.parameters.random.SourceOfRandomness;
 
@@ -23,5 +25,15 @@ public class StringExtractor implements RandomValueExtractor<String> {
         } catch (UnsupportedEncodingException ex) {
             throw new AssertionError(ex);
         }
+    }
+
+    @Override
+    public boolean supportsRange() {
+        return false;
+    }
+
+    @Override
+    public void applyRange(Between range) {
+        throw new UnsupportedOperationException();
     }
 }

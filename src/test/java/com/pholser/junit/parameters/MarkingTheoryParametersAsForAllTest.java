@@ -184,9 +184,23 @@ public class MarkingTheoryParametersAsForAllTest {
     @RunWith(Theories.class)
     public static class ForIntegersInRange {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "4", max = "10") int i) {
+        public void shouldHold(@ForAll @Between(min = "4", max = "10") int i) {
             assertThat(i, greaterThanOrEqualTo(4));
             assertThat(i, lessThanOrEqualTo(10));
+        }
+    }
+
+    @Test
+    public void shouldGenerateLongsInRangeWhenRangeIsSpecified() {
+        assertThat(testResult(ForLongsInRange.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ForLongsInRange {
+        @Theory
+        public void shouldHold(@ForAll @Between(min = "-1", max = "1") long ell) {
+            assertThat(ell, greaterThanOrEqualTo(-1L));
+            assertThat(ell, lessThanOrEqualTo(1L));
         }
     }
 }
