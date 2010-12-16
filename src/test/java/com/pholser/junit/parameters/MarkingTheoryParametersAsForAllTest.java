@@ -2,6 +2,8 @@ package com.pholser.junit.parameters;
 
 import java.util.Date;
 
+import static org.hamcrest.number.OrderingComparisons.*;
+
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -172,5 +174,19 @@ public class MarkingTheoryParametersAsForAllTest {
 
     private static int defaultSampleSize() throws NoSuchMethodException {
         return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
+    }
+
+    @Test
+    public void shouldGenerateIntegersInRangeWhenRangeIsSpecified() {
+        assertThat(testResult(ForIntegersInRange.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ForIntegersInRange {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "4", max = "10") int i) {
+            assertThat(i, greaterThanOrEqualTo(4));
+            assertThat(i, lessThanOrEqualTo(10));
+        }
     }
 }
