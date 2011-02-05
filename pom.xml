@@ -85,9 +85,9 @@
         <configuration>
           <check>
             <haltOnFailure>true</haltOnFailure>
-            <branchRate>75</branchRate>
-            <totalBranchRate>83</totalBranchRate>
-            <totalLineRate>95</totalLineRate>
+            <branchRate>100</branchRate>
+            <totalBranchRate>100</totalBranchRate>
+            <totalLineRate>100</totalLineRate>
           </check>
         </configuration>
         <executions>
