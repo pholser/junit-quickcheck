@@ -27,4 +27,20 @@ public class MarkingTheoryParametersAsForAllTest {
             ++iterations;
         }
     }
+
+    @Test
+    public void shouldRespectSampleSizeIfSpecified() throws Exception {
+        assertThat(testResult(ForSpecifiedNumberOfValues.class), isSuccessful());
+        assertEquals(5, ForSpecifiedNumberOfValues.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ForSpecifiedNumberOfValues {
+        static int iterations;
+
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 5) int i) {
+            ++iterations;
+        }
+    }
 }
