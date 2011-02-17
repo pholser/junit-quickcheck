@@ -29,7 +29,7 @@ public class MarkingTheoryParametersAsForAllTest {
     }
 
     @Test
-    public void shouldRespectSampleSizeIfSpecified() throws Exception {
+    public void shouldRespectSampleSizeIfSpecified() {
         assertThat(testResult(ForSpecifiedNumberOfValues.class), isSuccessful());
         assertEquals(5, ForSpecifiedNumberOfValues.iterations);
     }
@@ -40,6 +40,22 @@ public class MarkingTheoryParametersAsForAllTest {
 
         @Theory
         public void shouldHold(@ForAll(sampleSize = 5) int i) {
+            ++iterations;
+        }
+    }
+
+    @Test
+    public void shouldBeAbleToMarkMultipleParametersForReceivingValues() {
+        assertThat(testResult(ForValuesOfMultipleParameters.class), isSuccessful());
+        assertEquals(21, ForValuesOfMultipleParameters.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ForValuesOfMultipleParameters {
+        static int iterations;
+
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 3) int i, @ForAll(sampleSize = 7) int j) {
             ++iterations;
         }
     }
