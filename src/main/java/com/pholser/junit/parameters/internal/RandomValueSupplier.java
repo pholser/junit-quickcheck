@@ -11,7 +11,7 @@ public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;
 
     public RandomValueSupplier() {
-        this(new RandomTheoryParameterGenerator(new JavaUtilSourceOfRandomness()));
+        this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness()));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {
