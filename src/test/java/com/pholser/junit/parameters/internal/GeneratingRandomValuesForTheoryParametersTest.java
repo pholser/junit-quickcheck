@@ -6,7 +6,7 @@ import com.pholser.junit.parameters.ForAll;
 import org.junit.Test;
 import org.junit.experimental.theories.PotentialAssignment;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class GeneratingRandomValuesForTheoryParametersTest {
