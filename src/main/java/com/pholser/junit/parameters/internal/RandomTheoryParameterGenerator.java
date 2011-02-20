@@ -1,25 +1,35 @@
 package com.pholser.junit.parameters.internal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.pholser.junit.parameters.ForAll;
 import org.junit.experimental.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
+    private final Map<Class<?>, RandomValueExtractor<?>> extractors =
+        new HashMap<Class<?>, RandomValueExtractor<?>>();
 
     public RandomTheoryParameterGenerator(SourceOfRandomness random) {
         this.random = random;
+        extractors.put(int.class, new IntegerExtractor());
+        extractors.put(Integer.class, new IntegerExtractor());
+        extractors.put(short.class, new ShortExtractor());
     }
 
     @Override
     public List<PotentialAssignment> generate(ForAll quantifier, Class<?> type) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
-        for (int i = 0; i < quantifier.sampleSize(); ++i) {
-            int nextValue = random.nextInt();
-            assignments.add(PotentialAssignment.forValue(Integer.toString(nextValue), nextValue));
+        RandomValueExtractor<?> extractor = extractors.get(type);
+
+        for (int i = 0, sampleSize = quantifier.sampleSize(); i < sampleSize; ++i) {
+            Object nextValue = extractor.extract(random);
+            assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
         }
+
         return assignments;
     }
 }

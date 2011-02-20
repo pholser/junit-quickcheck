@@ -2,13 +2,11 @@ package com.pholser.junit.parameters.internal;
 
 import java.util.Random;
 
-import static org.hamcrest.Matchers.*;
-
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class GeneratingRandomValuesFromJDKTest {
