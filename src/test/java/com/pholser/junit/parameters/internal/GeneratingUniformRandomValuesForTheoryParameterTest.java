@@ -48,7 +48,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         List<?> values = randomValues();
         assertEquals(sampleSize(), values.size());
         for (int i = 0; i < values.size(); ++i)
-            assertEquals(values.get(i), theoryParms.get(i).getValue());
+            assertEquals(i + "'th value", values.get(i), theoryParms.get(i).getValue());
     }
 
     @Test

@@ -18,6 +18,11 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         extractors.put(int.class, new IntegerExtractor());
         extractors.put(Integer.class, new IntegerExtractor());
         extractors.put(short.class, new ShortExtractor());
+        extractors.put(Short.class, new ShortExtractor());
+        extractors.put(char.class, new CharExtractor());
+        extractors.put(Character.class, new CharExtractor());
+        extractors.put(byte.class, new ByteExtractor());
+        extractors.put(Byte.class, new ByteExtractor());
     }
 
     @Override
