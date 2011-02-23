@@ -10,4 +10,6 @@ public interface SourceOfRandomness {
     long nextLong();
 
     float nextFloat();
+
+    double nextDouble();
 }

@@ -3,6 +3,7 @@ package com.pholser.junit.parameters.internal;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import static java.lang.Double.*;
 import static java.lang.Float.*;
 import static java.lang.String.*;
 
@@ -41,6 +42,24 @@ public class JDKSourceOfRandomness implements SourceOfRandomness {
 
     @Override
     public float nextFloat() {
-        return intBitsToFloat(nextInt());
+        float result;
+
+        do {
+            result = intBitsToFloat(nextInt());
+        } while (Float.isNaN(result) || Float.isInfinite(result));
+
+        return result;
+    }
+
+    @Override
+    public double nextDouble() {
+        double result;
+
+        do {
+            long ell = nextLong();
+            result = longBitsToDouble(ell);
+        } while (Double.isNaN(result) || Double.isInfinite(result));
+
+        return result;
     }
 }

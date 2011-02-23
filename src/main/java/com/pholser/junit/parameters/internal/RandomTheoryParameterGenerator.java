@@ -28,6 +28,9 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         extractors.put(long.class, new LongExtractor());
         extractors.put(Long.class, new LongExtractor());
         extractors.put(float.class, new FloatExtractor());
+        extractors.put(Float.class, new FloatExtractor());
+        extractors.put(double.class, new DoubleExtractor());
+        extractors.put(Double.class, new DoubleExtractor());
     }
 
     @Override

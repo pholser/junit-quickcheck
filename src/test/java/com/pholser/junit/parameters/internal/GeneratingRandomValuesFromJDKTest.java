@@ -2,6 +2,7 @@ package com.pholser.junit.parameters.internal;
 
 import java.util.Random;
 
+import static java.lang.Double.*;
 import static java.lang.Float.*;
 
 import org.junit.Before;
@@ -63,10 +64,25 @@ public class GeneratingRandomValuesFromJDKTest {
 
     @Test
     public void nextFloat() {
-        when(random.nextInt()).thenReturn(2);
+        when(random.nextInt()).thenReturn(floatToIntBits(Float.NaN))
+            .thenReturn(floatToIntBits(Float.POSITIVE_INFINITY))
+            .thenReturn(floatToIntBits(Float.NEGATIVE_INFINITY))
+            .thenReturn(2);
 
         assertEquals(intBitsToFloat(2), source.nextFloat(), 0F);
 
-        verify(random).nextInt();
+        verify(random, times(4)).nextInt();
+    }
+
+    @Test
+    public void nextDouble() {
+        when(random.nextLong()).thenReturn(doubleToLongBits(Double.NaN))
+            .thenReturn(doubleToLongBits(Double.POSITIVE_INFINITY))
+            .thenReturn(doubleToLongBits(Double.NEGATIVE_INFINITY))
+            .thenReturn(8L);
+
+        assertEquals(longBitsToDouble(8L), source.nextDouble(), 0D);
+
+        verify(random, times(4)).nextLong();
     }
 }
