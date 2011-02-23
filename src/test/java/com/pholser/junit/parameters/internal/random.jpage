@@ -1,0 +1,3 @@
+java.util.Random r = new java.util.Random();
+float  min = Float.MIN_VALUE;
+float max = Float.MAX_VALUE;

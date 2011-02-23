@@ -3,6 +3,7 @@ package com.pholser.junit.parameters.internal;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import static java.lang.Float.*;
 import static java.lang.String.*;
 
 public class JDKSourceOfRandomness implements SourceOfRandomness {
@@ -36,5 +37,10 @@ public class JDKSourceOfRandomness implements SourceOfRandomness {
     @Override
     public long nextLong() {
         return random.nextLong();
+    }
+
+    @Override
+    public float nextFloat() {
+        return intBitsToFloat(nextInt());
     }
 }

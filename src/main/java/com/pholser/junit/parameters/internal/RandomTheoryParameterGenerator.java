@@ -27,6 +27,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         extractors.put(Boolean.class, new BooleanExtractor());
         extractors.put(long.class, new LongExtractor());
         extractors.put(Long.class, new LongExtractor());
+        extractors.put(float.class, new FloatExtractor());
     }
 
     @Override

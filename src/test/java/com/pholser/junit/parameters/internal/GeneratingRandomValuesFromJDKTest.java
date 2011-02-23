@@ -2,6 +2,8 @@ package com.pholser.junit.parameters.internal;
 
 import java.util.Random;
 
+import static java.lang.Float.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,5 +59,14 @@ public class GeneratingRandomValuesFromJDKTest {
         source.nextLong();
 
         verify(random).nextLong();
+    }
+
+    @Test
+    public void nextFloat() {
+        when(random.nextInt()).thenReturn(2);
+
+        assertEquals(intBitsToFloat(2), source.nextFloat(), 0F);
+
+        verify(random).nextInt();
     }
 }

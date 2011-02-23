@@ -8,4 +8,6 @@ public interface SourceOfRandomness {
     boolean nextBoolean();
 
     long nextLong();
+
+    float nextFloat();
 }
