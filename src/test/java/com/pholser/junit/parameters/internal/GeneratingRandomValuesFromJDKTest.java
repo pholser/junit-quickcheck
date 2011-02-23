@@ -51,4 +51,11 @@ public class GeneratingRandomValuesFromJDKTest {
 
         verify(random).nextBoolean();
     }
+
+    @Test
+    public void nextLong() {
+        source.nextLong();
+
+        verify(random).nextLong();
+    }
 }

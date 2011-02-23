@@ -6,4 +6,6 @@ public interface SourceOfRandomness {
     int nextInt(int min, int max);
 
     boolean nextBoolean();
+
+    long nextLong();
 }

@@ -32,4 +32,9 @@ public class JDKSourceOfRandomness implements SourceOfRandomness {
     public boolean nextBoolean() {
         return random.nextBoolean();
     }
+
+    @Override
+    public long nextLong() {
+        return random.nextLong();
+    }
 }
