@@ -44,4 +44,11 @@ public class GeneratingRandomValuesFromJDKTest {
         assertThat(value, lessThanOrEqualTo(5));
         assertThat(value, greaterThanOrEqualTo(3));
     }
+
+    @Test
+    public void nextBoolean() {
+        source.nextBoolean();
+
+        verify(random).nextBoolean();
+    }
 }
