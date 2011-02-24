@@ -62,4 +62,11 @@ public class JDKSourceOfRandomness implements SourceOfRandomness {
 
         return result;
     }
+
+    @Override
+    public byte[] nextBytes(int count) {
+        byte[] buffer = new byte[count];
+        random.nextBytes(buffer);
+        return buffer;
+    }
 }

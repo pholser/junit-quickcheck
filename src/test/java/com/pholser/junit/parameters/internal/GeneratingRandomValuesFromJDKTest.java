@@ -85,4 +85,11 @@ public class GeneratingRandomValuesFromJDKTest {
 
         verify(random, times(4)).nextLong();
     }
+
+    @Test
+    public void nextBytes() {
+        source.nextBytes(1);
+
+        verify(random).nextBytes(new byte[1]);
+    }
 }

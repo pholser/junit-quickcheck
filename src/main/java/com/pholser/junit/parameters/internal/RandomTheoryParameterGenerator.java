@@ -1,5 +1,6 @@
 package com.pholser.junit.parameters.internal;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         extractors.put(Float.class, new FloatExtractor());
         extractors.put(double.class, new DoubleExtractor());
         extractors.put(Double.class, new DoubleExtractor());
+        extractors.put(BigInteger.class, new BigIntegerExtractor());
     }
 
     @Override

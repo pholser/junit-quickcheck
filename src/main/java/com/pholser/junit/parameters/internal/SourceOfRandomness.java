@@ -12,4 +12,6 @@ public interface SourceOfRandomness {
     float nextFloat();
 
     double nextDouble();
+
+    byte[] nextBytes(int count);
 }
