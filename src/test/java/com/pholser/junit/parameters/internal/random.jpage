@@ -1,0 +1,3 @@
+java.lang.reflect.Method m = com.pholser.junit.parameters.Foo.class.getMethod("bar", java.util.List.class);
+java.util.List<org.junit.experimental.theories.ParameterSignature> sigs = org.junit.experimental.theories.ParameterSignature.signatures(m);
+sigs.get(0).getType().getTypeParameters()
