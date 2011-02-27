@@ -40,7 +40,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
     @Override
     public List<PotentialAssignment> generate(ForAll quantifier, Class<?> type) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
-        RandomValueExtractor<?> extractor = extractors.get(type);
+        RandomValueExtractor<?> extractor = extractorFor(type);
 
         for (int i = 0, sampleSize = quantifier.sampleSize(); i < sampleSize; ++i) {
             Object nextValue = extractor.extract(random);
@@ -48,5 +48,14 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         }
 
         return assignments;
+    }
+
+    private RandomValueExtractor<?> extractorFor(Class<?> type) {
+        if (type.isArray()) {
+            Class<?> componentType = type.getComponentType();
+            return new ArrayExtractor(componentType, extractors.get(componentType));
+        }
+
+        return extractors.get(type);
     }
 }

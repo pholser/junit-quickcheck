@@ -2,6 +2,8 @@ package com.pholser.junit.parameters.internal;
 
 import java.util.List;
 
+import com.pholser.junit.parameters.Arrays;
+
 import com.pholser.junit.parameters.ForAll;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,8 +49,16 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     public final void insertsTheRandomValuesIntoAssignments() throws Exception {
         List<?> values = randomValues();
         assertEquals(sampleSize(), values.size());
-        for (int i = 0; i < values.size(); ++i)
-            assertEquals(i + "'th value", values.get(i), theoryParms.get(i).getValue());
+        for (int i = 0; i < values.size(); ++i) {
+            Object expected = values.get(i);
+            if (expected.getClass().isArray()) {
+                assertEquals(i + "'th value, ",
+                    Arrays.toList(expected),
+                    Arrays.toList(theoryParms.get(i).getValue()));
+            }
+            else
+                assertEquals(i + "'th value", values.get(i), theoryParms.get(i).getValue());
+        }
     }
 
     @Test
