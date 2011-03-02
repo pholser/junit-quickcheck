@@ -1,5 +1,6 @@
 package com.pholser.junit.parameters.internal;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static java.util.Arrays.*;
@@ -15,7 +16,7 @@ public class GeneratingUniformRandomValuesForPrimitiveBooleanTheoryParametersTes
     }
 
     @Override
-    protected Class<?> parameterType() {
+    protected Type parameterType() {
         return boolean.class;
     }
 

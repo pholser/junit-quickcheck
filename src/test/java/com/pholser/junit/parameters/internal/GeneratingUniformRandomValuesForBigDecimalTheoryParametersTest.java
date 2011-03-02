@@ -1,6 +1,7 @@
 package com.pholser.junit.parameters.internal;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -20,7 +21,7 @@ public class GeneratingUniformRandomValuesForBigDecimalTheoryParametersTest
     }
 
     @Override
-    protected Class<?> parameterType() {
+    protected Type parameterType() {
         return BigDecimal.class;
     }
 

@@ -1,5 +1,6 @@
 package com.pholser.junit.parameters.internal;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static java.lang.Short.*;
@@ -17,7 +18,7 @@ public class GeneratingUniformRandomValuesForWrapperShortTheoryParametersTest
     }
 
     @Override
-    protected Class<?> parameterType() {
+    protected Type parameterType() {
         return Short.class;
     }
 

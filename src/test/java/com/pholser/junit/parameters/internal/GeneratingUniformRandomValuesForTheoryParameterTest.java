@@ -1,9 +1,9 @@
 package com.pholser.junit.parameters.internal;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import com.pholser.junit.parameters.Arrays;
-
 import com.pholser.junit.parameters.ForAll;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
 
     protected abstract void primeSourceOfRandomness();
 
-    protected abstract Class<?> parameterType();
+    protected abstract Type parameterType();
 
     protected abstract int sampleSize();
 

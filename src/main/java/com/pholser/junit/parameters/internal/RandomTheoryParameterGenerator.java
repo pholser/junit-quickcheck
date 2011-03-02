@@ -1,11 +1,14 @@
 package com.pholser.junit.parameters.internal;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.javaruntype.type.Types;
 
 import com.pholser.junit.parameters.ForAll;
 import org.junit.experimental.theories.PotentialAssignment;
@@ -38,7 +41,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
     }
 
     @Override
-    public List<PotentialAssignment> generate(ForAll quantifier, Class<?> type) {
+    public List<PotentialAssignment> generate(ForAll quantifier, Type type) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
         RandomValueExtractor<?> extractor = extractorFor(type);
 
@@ -50,10 +53,15 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         return assignments;
     }
 
-    private RandomValueExtractor<?> extractorFor(Class<?> type) {
-        if (type.isArray()) {
-            Class<?> componentType = type.getComponentType();
+    private RandomValueExtractor<?> extractorFor(Type type) {
+        org.javaruntype.type.Type<?> typeToken = Types.forJavaLangReflectType(type);
+
+        if (typeToken.isArray()) {
+            Class<?> componentType = typeToken.getComponentClass();
             return new ArrayExtractor(componentType, extractors.get(componentType));
+        } else if (List.class.equals(typeToken.getRawClass())) {
+            Class<?> componentType = typeToken.getTypeParameters().get(0).getType().getRawClass();
+            return new ListExtractor(extractors.get(componentType));
         }
 
         return extractors.get(type);
