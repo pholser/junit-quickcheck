@@ -22,12 +22,3 @@
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-package com.pholser.junit.parameters.internal;
-
-public class IntegerExtractor implements RandomValueExtractor<Integer> {
-    @Override
-    public Integer extract(SourceOfRandomness random) {
-        return random.nextInt();
-    }
-}
