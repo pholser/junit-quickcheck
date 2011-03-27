@@ -6,6 +6,8 @@ junit-quickcheck is a library that supplies [JUnit](http://junit.org) [theories]
 
 The [Haskell](http://haskell.org) library [QuickCheck](http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html) allows programmers to specify properties of a function that should hold true for some large set of possible arguments to the function, then runs the function using lots of random arguments to see whether the property holds up.
 
+#### Theories
+
 JUnit's answer to function properties is the notion of theories. Programmers write parameterized tests marked as theories, run using a special test runner:
 
     @RunWith(Theories.class)
@@ -20,8 +22,51 @@ JUnit's answer to function properties is the notion of theories. Programmers wri
         }
     }
 
-TDD/BDD builds up designs example by example. The resulting test suites give developers
-confidence that their code works for the examples they thought of. Theories...
+#### So?
+TDD/BDD builds up designs example by example. The resulting test suites give programmers confidence that their code works for the examples they thought of. Theories offer a means to express statements about code that should hold for an entire domain of inputs, not just a handful of examples.
+
+### Using junit-quickcheck
+
+Create theories just as you normally would with JUnit. If you want JUnit to exercise the theory with lots of randomly generated values for a theory parameter, annotate the theory parameter with `@ForAll`:
+
+    @RunWith(Theories.class)
+    public class SymmetricKeyCryptography {
+        @Theory
+        public void decryptReversesEncrypt(@ForAll String plaintext,
+            @ForAll Key key) throws Exception {
+
+            Crypto crypto = new Crypto();
+            byte[] ciphertext = crypto.encrypt(plaintext.getBytes(
+                "US-ASCII", key));
+            assertEquals(plaintext, new String(crypto.decrypt(
+                ciphertext, key)));
+        }
+    }
+
+By default, 100 random values will be generated for a parameter marked `@ForAll`. Use the `sampleSize` attribute of `@ForAll` to change the number of generated values.
+
+Out of the box, junit-quickcheck can generate random values for theory parameters of the following types:
+
+* all Java primitives and primitive wrappers
+* `java.math.Big(Decimal|Integer)`
+* `java.util.List`
+
+### How it works
+
+junit-quickcheck leverages the little-known [`ParameterSupplier`](http://kentbeck.github.com/junit/javadoc/latest/org/junit/experimental/theories/ParameterSupplier.html) feature of JUnit.
+
+By default, when the `Theories` runner executes a theory, it attempts to scrape _data points_ off the theory class to feed to the theories. Data points come from static fields or methods annotated with `@DataPoint` (single value) or `@DataPoints` (array of values). The `Theories` runner arranges for all combinations of data points of types matching a theory parameters to be fed to the theory for execution.
+
+Marking a theory parameter with an annotation that it itself annotated with [`@ParametersSuppliedBy`](http://kentbeck.github.com/junit/javadoc/latest/org/junit/experimental/theories/ParametersSuppliedBy.html) tells the `Theories` runner to ask a `ParameterSupplier` for values for the theory parameter instead. This is how junit-quickcheck interacts with the `Theories` runner -- `@ForAll` tells the runner to use junit-quickcheck's `ParameterSupplier` rather than the `DataPoint`-oriented one.
+
+In order for junit-quickcheck (or any `ParameterSupplier`, for that matter) to be able to leverage generics info on a theory parameter (e.g. to distinguish between a parameter of type `List<String>` and a parameter of type `List<Integer>`), [this issue](https://github.com/KentBeck/junit/issues#issue/64) will need to be resolved.
+
+### Similar projects
+
+* [JCheck](http://www.jcheck.org/). This uses its own test runner, whereas junit-quickcheck leverages the existing `Theories` runner and `ParameterSupplier`s.
+* [QuickCheck](http://java.net/projects/quickcheck/pages/Home). This appears to be test framework-agnostic, focusing instead on generators of random values.
+* [fj.test package of FunctionalJava (formerly Reductio)](http://functionaljava.org/)
+* [ScalaCheck](http://code.google.com/p/scalacheck/), if you wish to test Java or Scala code using Scala.
 
 ### About junit-quickcheck
 
