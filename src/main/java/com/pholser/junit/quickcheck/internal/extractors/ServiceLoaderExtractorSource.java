@@ -13,12 +13,7 @@ public class ServiceLoaderExtractorSource implements Iterable<RegisterableRandom
 	private final ServiceLoader<RegisterableRandomValueExtractor> loader;
 
 	public ServiceLoaderExtractorSource() {
-		this(ServiceLoader.load(RegisterableRandomValueExtractor.class));
-	}
-
-	@SuppressWarnings("rawtypes")
-	protected ServiceLoaderExtractorSource(ServiceLoader<RegisterableRandomValueExtractor> loader) {
-    	this.loader = loader;
+		loader = ServiceLoader.load(RegisterableRandomValueExtractor.class);
 	}
 
 	@Override
