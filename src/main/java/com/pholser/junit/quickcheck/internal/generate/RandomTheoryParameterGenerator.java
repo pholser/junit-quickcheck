@@ -26,57 +26,41 @@
 package com.pholser.junit.quickcheck.internal.generate;
 
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.extractors.ArrayExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.BigDecimalExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.BigIntegerExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.BooleanExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.ByteExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.CharExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.DoubleExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.FloatExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.IntegerExtractor;
 import com.pholser.junit.quickcheck.internal.extractors.ListExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.LongExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.RandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.ShortExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.javaruntype.type.Types;
-
-import com.pholser.junit.quickcheck.ForAll;
 import org.junit.experimental.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
-    private final Map<Class<?>, RandomValueExtractor<?>> extractors =
-        new HashMap<Class<?>, RandomValueExtractor<?>>();
+    private final Map<Type, RandomValueExtractor<?>> extractors =
+        new HashMap<Type, RandomValueExtractor<?>>();
 
-    public RandomTheoryParameterGenerator(SourceOfRandomness random) {
+    public RandomTheoryParameterGenerator(SourceOfRandomness random,
+        Iterable<RegisterableRandomValueExtractor>... extractorSources) {
+
         this.random = random;
-        extractors.put(int.class, new IntegerExtractor());
-        extractors.put(Integer.class, new IntegerExtractor());
-        extractors.put(short.class, new ShortExtractor());
-        extractors.put(Short.class, new ShortExtractor());
-        extractors.put(char.class, new CharExtractor());
-        extractors.put(Character.class, new CharExtractor());
-        extractors.put(byte.class, new ByteExtractor());
-        extractors.put(Byte.class, new ByteExtractor());
-        extractors.put(boolean.class, new BooleanExtractor());
-        extractors.put(Boolean.class, new BooleanExtractor());
-        extractors.put(long.class, new LongExtractor());
-        extractors.put(Long.class, new LongExtractor());
-        extractors.put(float.class, new FloatExtractor());
-        extractors.put(Float.class, new FloatExtractor());
-        extractors.put(double.class, new DoubleExtractor());
-        extractors.put(Double.class, new DoubleExtractor());
-        extractors.put(BigInteger.class, new BigIntegerExtractor());
-        extractors.put(BigDecimal.class, new BigDecimalExtractor());
+        for (Iterable<RegisterableRandomValueExtractor> each : extractorSources)
+            register(each);
+    }
+
+    private void register(Iterable<RegisterableRandomValueExtractor> source) {
+        for (RegisterableRandomValueExtractor<?> each : source)
+            registerTypes(each);
+    }
+
+    private void registerTypes(RegisterableRandomValueExtractor<?> extractor) {
+        for (Class<?> each : extractor.types())
+            extractors.put(each, extractor);
     }
 
     @Override

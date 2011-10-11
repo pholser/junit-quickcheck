@@ -25,11 +25,18 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.lang.Character.*;
+import static java.util.Arrays.*;
 
-public class CharExtractor implements RandomValueExtractor<Character> {
+public class CharacterExtractor extends RegisterableRandomValueExtractor<Character> {
+    @SuppressWarnings("unchecked")
+    public CharacterExtractor() {
+        super(asList(char.class, Character.class));
+    }
+
     @Override
     public Character extract(SourceOfRandomness random) {
         return (char) random.nextInt(MIN_VALUE, MAX_VALUE);

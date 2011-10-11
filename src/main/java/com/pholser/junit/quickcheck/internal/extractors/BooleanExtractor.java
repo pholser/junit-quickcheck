@@ -25,9 +25,17 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class BooleanExtractor implements RandomValueExtractor<Boolean> {
+import static java.util.Arrays.*;
+
+public class BooleanExtractor extends RegisterableRandomValueExtractor<Boolean> {
+    @SuppressWarnings("unchecked")
+    public BooleanExtractor() {
+        super(asList(boolean.class, Boolean.class));
+    }
+
     @Override
     public Boolean extract(SourceOfRandomness random) {
         return random.nextBoolean();

@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.lang.reflect.Array;
 
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 public class ArrayExtractor implements RandomValueExtractor<Object> {

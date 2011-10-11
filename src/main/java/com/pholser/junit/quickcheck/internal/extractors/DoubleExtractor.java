@@ -25,9 +25,17 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class DoubleExtractor implements RandomValueExtractor<Double> {
+import static java.util.Arrays.*;
+
+public class DoubleExtractor extends RegisterableRandomValueExtractor<Double> {
+    @SuppressWarnings("unchecked")
+    public DoubleExtractor() {
+        super(asList(double.class, Double.class));
+    }
+
     @Override
     public Double extract(SourceOfRandomness random) {
         return random.nextDouble();

@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal.extractors;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 public class ListExtractor implements RandomValueExtractor<List<?>> {

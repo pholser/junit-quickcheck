@@ -23,7 +23,7 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.extractors;
+package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 

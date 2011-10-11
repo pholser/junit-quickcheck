@@ -27,9 +27,11 @@ package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.math.BigDecimal;
 
+import com.pholser.junit.quickcheck.RandomValueExtractor;
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class BigDecimalExtractor implements RandomValueExtractor<BigDecimal> {
+public class BigDecimalExtractor extends RegisterableRandomValueExtractor<BigDecimal> {
     private final BigIntegerExtractor bigIntegerExtractor;
 
     public BigDecimalExtractor() {
@@ -37,6 +39,8 @@ public class BigDecimalExtractor implements RandomValueExtractor<BigDecimal> {
     }
 
     protected BigDecimalExtractor(BigIntegerExtractor bigIntegerExtractor) {
+        super(BigDecimal.class);
+
         this.bigIntegerExtractor = bigIntegerExtractor;
     }
 

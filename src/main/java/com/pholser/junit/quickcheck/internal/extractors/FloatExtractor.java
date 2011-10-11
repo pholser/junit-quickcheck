@@ -25,9 +25,16 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class FloatExtractor implements RandomValueExtractor<Float> {
+import static java.util.Arrays.*;
+
+public class FloatExtractor extends RegisterableRandomValueExtractor<Float> {
+    public FloatExtractor() {
+        super(asList(float.class, Float.class));
+    }
+
     @Override
     public Float extract(SourceOfRandomness random) {
         return random.nextFloat();

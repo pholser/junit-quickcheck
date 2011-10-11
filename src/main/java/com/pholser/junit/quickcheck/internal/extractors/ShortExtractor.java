@@ -25,11 +25,17 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.lang.Short.*;
+import static java.util.Arrays.*;
 
-public class ShortExtractor implements RandomValueExtractor<Short> {
+public class ShortExtractor extends RegisterableRandomValueExtractor<Short> {
+    public ShortExtractor() {
+        super(asList(short.class, Short.class));
+    }
+
     @Override
     public Short extract(SourceOfRandomness random) {
         return (short) random.nextInt(MIN_VALUE, MAX_VALUE);

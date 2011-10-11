@@ -25,9 +25,17 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class IntegerExtractor implements RandomValueExtractor<Integer> {
+import static java.util.Arrays.*;
+
+public class IntegerExtractor extends RegisterableRandomValueExtractor<Integer> {
+    @SuppressWarnings("unchecked")
+    public IntegerExtractor() {
+        super(asList(int.class, Integer.class));
+    }
+
     @Override
     public Integer extract(SourceOfRandomness random) {
         return random.nextInt();
