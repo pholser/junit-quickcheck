@@ -30,10 +30,10 @@ public class ExtractorRepository {
 
         if (typeToken.isArray()) {
             Class<?> componentType = typeToken.getComponentClass();
-            return new ArrayExtractor(componentType, extractors.get(componentType));
+            return new ArrayExtractor(componentType, extractorFor(componentType));
         } else if (List.class.equals(typeToken.getRawClass())) {
             Class<?> componentType = typeToken.getTypeParameters().get(0).getType().getRawClass();
-            return new ListExtractor(extractors.get(componentType));
+            return new ListExtractor(extractorFor(componentType));
         }
 
         return extractors.get(type);
