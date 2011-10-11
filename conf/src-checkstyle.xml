@@ -10,6 +10,7 @@
     <module name="FileLength"/>
     <module name="FileTabCharacter"/>
     <module name="TreeWalker">
+        <property name="cacheFile" value="target/cachefile"/>
         <property name="tabWidth" value="4"/>
         <module name="JavadocType">
             <property name="scope" value="public"/>
