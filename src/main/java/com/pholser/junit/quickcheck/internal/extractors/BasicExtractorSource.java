@@ -1,16 +1,15 @@
 package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 
-public class BasicExtractors {
-    private BasicExtractors() {
-        throw new UnsupportedOperationException();
-    }
-
-    public static Iterable<RegisterableRandomValueExtractor> extractors() {
-        return Arrays.<RegisterableRandomValueExtractor> asList(
+public class BasicExtractorSource implements Iterable<RegisterableRandomValueExtractor<?>> {
+	@Override
+	public Iterator<RegisterableRandomValueExtractor<?>> iterator() {
+		List<RegisterableRandomValueExtractor<?>> extractors = Arrays.<RegisterableRandomValueExtractor<?>> asList(
             new BigDecimalExtractor(),
             new BigIntegerExtractor(),
             new BooleanExtractor(),
@@ -21,5 +20,6 @@ public class BasicExtractors {
             new IntegerExtractor(),
             new LongExtractor(),
             new ShortExtractor());
-    }
+		return extractors.iterator();
+	}
 }

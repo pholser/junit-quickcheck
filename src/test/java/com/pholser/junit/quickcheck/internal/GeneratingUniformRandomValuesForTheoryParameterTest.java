@@ -30,7 +30,8 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.Arrays;
 import com.pholser.junit.quickcheck.ForAll;
-import com.pholser.junit.quickcheck.internal.extractors.BasicExtractors;
+import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
+import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
 import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
@@ -52,9 +53,8 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         quantifier = mock(ForAll.class);
         primeSampleSize();
 
-        @SuppressWarnings("unchecked")
         RandomTheoryParameterGenerator generator =
-            new RandomTheoryParameterGenerator(random, BasicExtractors.extractors());
+            new RandomTheoryParameterGenerator(random, new ExtractorRepository().add(new BasicExtractorSource()));
 
         theoryParms = generator.generate(quantifier, parameterType());
     }

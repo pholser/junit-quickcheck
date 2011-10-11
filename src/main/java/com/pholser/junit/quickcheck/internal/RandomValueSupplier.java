@@ -26,25 +26,25 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.util.List;
-import java.util.ServiceLoader;
 
-import com.pholser.junit.quickcheck.ForAll;
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.BasicExtractors;
-import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGenerator;
-import com.pholser.junit.quickcheck.internal.generate.TheoryParameterGenerator;
-import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.junit.experimental.theories.ParameterSignature;
 import org.junit.experimental.theories.ParameterSupplier;
 import org.junit.experimental.theories.PotentialAssignment;
+
+import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
+import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
+import com.pholser.junit.quickcheck.internal.extractors.ServiceLoaderExtractorSource;
+import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGenerator;
+import com.pholser.junit.quickcheck.internal.generate.TheoryParameterGenerator;
+import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 
 public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;
 
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
-            ServiceLoader.load(RegisterableRandomValueExtractor.class),
-            BasicExtractors.extractors()));
+            new ExtractorRepository().add(new ServiceLoaderExtractorSource()).add(new BasicExtractorSource())));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {
