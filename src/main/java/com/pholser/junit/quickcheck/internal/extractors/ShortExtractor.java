@@ -32,7 +32,8 @@ import static java.lang.Short.*;
 import static java.util.Arrays.*;
 
 public class ShortExtractor extends RegisterableRandomValueExtractor<Short> {
-    public ShortExtractor() {
+    @SuppressWarnings("unchecked")
+	public ShortExtractor() {
         super(asList(short.class, Short.class));
     }
 

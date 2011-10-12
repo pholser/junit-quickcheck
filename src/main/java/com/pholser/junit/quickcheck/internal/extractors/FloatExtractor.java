@@ -31,6 +31,7 @@ import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class FloatExtractor extends RegisterableRandomValueExtractor<Float> {
+    @SuppressWarnings("unchecked")
     public FloatExtractor() {
         super(asList(float.class, Float.class));
     }
