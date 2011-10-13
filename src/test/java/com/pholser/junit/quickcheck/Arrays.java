@@ -30,12 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Arrays {
-    static {
-        new Arrays();
-    }
-
     private Arrays() {
-        // empty on purpose
+        throw new UnsupportedOperationException();
     }
 
     public static List<?> toList(Object array) {

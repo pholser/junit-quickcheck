@@ -23,16 +23,43 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.internal;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.List;
 
-public class Annotations {
-    private Annotations() {
-        throw new UnsupportedOperationException();
+import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
+
+import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
+
+public class GeneratingUniformRandomValuesForListOfIntArrayTheoryParametersTest
+    extends GeneratingUniformRandomValuesForTheoryParameterTest {
+
+    @Override
+    protected void primeSourceOfRandomness() {
+        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1).thenReturn(3);
+        when(random.nextInt()).thenReturn(-2).thenReturn(-3).thenReturn(-4).thenReturn(-5);
     }
 
-    public static Object defaultValueFor(Class<? extends Annotation> clazz, String methodName) throws Exception {
-        return clazz.getMethod(methodName).getDefaultValue();
+    @Override
+    protected Type parameterType() {
+        return new ParameterizedTypeImpl(List.class, int[].class);
+    }
+
+    @Override
+    protected int sampleSize() {
+        return 1;
+    }
+
+    @Override
+    protected List<?> randomValues() {
+        return asList(asList(new int[] { -2 }, new int[] { -3, -4, -5 }));
+    }
+
+    @Override
+    public void verifyInteractionWithRandomness() {
+        verify(random, times(3)).nextInt(0, 100);
+        verify(random, times(4)).nextInt();
     }
 }
