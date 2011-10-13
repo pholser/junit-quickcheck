@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import static java.util.Arrays.*;
-
 import static org.mockito.Mockito.*;
 
 public class GeneratingUniformRandomValuesForWrapperDoubleTheoryParametersTest

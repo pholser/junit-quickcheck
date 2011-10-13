@@ -30,7 +30,6 @@ import java.util.List;
 
 import static java.lang.Long.*;
 import static java.util.Arrays.*;
-
 import static org.mockito.Mockito.*;
 
 public class GeneratingUniformRandomValuesForPrimitiveLongTheoryParametersTest

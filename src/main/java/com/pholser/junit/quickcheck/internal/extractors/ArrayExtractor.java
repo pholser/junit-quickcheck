@@ -43,8 +43,9 @@ public class ArrayExtractor implements RandomValueExtractor<Object> {
     public Object extract(SourceOfRandomness random) {
         int length = random.nextInt(0, 100);
         Object array = Array.newInstance(componentType, length);
-        for (int i = 0; i < length; ++i)
+        for (int i = 0; i < length; ++i) {
             Array.set(array, i, componentExtractor.extract(random));
+        }
         return array;
     }
 }

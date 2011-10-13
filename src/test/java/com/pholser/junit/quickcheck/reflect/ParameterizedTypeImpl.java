@@ -29,6 +29,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
+
 import static java.lang.System.*;
 
 public final class ParameterizedTypeImpl implements ParameterizedType {
@@ -58,24 +61,26 @@ public final class ParameterizedTypeImpl implements ParameterizedType {
 
     @Override
     public boolean equals(Object that) {
-        if (this == that)
+        if (this == that) {
             return true;
-        if (!(that instanceof ParameterizedType))
+        }
+        if (!(that instanceof ParameterizedType)) {
             return false;
+        }
 
         ParameterizedType other = (ParameterizedType) that;
-        Type otherOwner = other.getOwnerType();
-        Type otherRaw = other.getRawType();
-
-        return (getOwnerType() == null ? otherOwner == null : getOwnerType().equals(otherOwner))
-            && (raw == null ? otherRaw == null : raw.equals(otherRaw))
-            && Arrays.equals(actualTypeArguments, other.getActualTypeArguments());
+        return Objects.equal(getOwnerType(), other.getOwnerType())
+            && Objects.equal(getRawType(), other.getRawType())
+            && Arrays.equals(getActualTypeArguments(), other.getActualTypeArguments());
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(actualTypeArguments)
-            ^ (getOwnerType() == null ? 0 : getOwnerType().hashCode())
-            ^ (raw == null ? 0 : raw.hashCode());
+        return Objects.hashCode(getOwnerType(), getRawType(), Arrays.hashCode(getActualTypeArguments()));
+    }
+
+    @Override
+    public String toString() {
+        return raw.toString() + '<' + Joiner.on(", ").join(actualTypeArguments) + '>';
     }
 }

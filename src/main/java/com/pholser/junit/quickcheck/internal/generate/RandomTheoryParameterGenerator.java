@@ -29,16 +29,15 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.experimental.theories.PotentialAssignment;
-
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import org.junit.experimental.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
-	private final ExtractorRepository repository;
+    private final ExtractorRepository repository;
 
     public RandomTheoryParameterGenerator(SourceOfRandomness random, ExtractorRepository repository) {
         this.random = random;

@@ -86,9 +86,9 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
                 assertEquals(i + "'th value, ",
                     Arrays.toList(expected),
                     Arrays.toList(theoryParms.get(i).getValue()));
-            }
-            else
+            } else {
                 assertEquals(i + "'th value", values.get(i), theoryParms.get(i).getValue());
+            }
         }
     }
 

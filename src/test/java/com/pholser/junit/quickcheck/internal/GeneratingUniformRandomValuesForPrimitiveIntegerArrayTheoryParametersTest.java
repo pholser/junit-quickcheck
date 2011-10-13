@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import static java.util.Arrays.*;
-
 import static org.mockito.Mockito.*;
 
 public class GeneratingUniformRandomValuesForPrimitiveIntegerArrayTheoryParametersTest
@@ -53,7 +52,7 @@ public class GeneratingUniformRandomValuesForPrimitiveIntegerArrayTheoryParamete
 
     @Override
     protected List<?> randomValues() {
-        return asList(new int[] {-1}, new int[] {-2, -3, -4, -5});
+        return asList(new int[]{-1}, new int[]{-2, -3, -4, -5});
     }
 
     @Override

@@ -28,12 +28,11 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.pholser.junit.quickcheck.internal.RandomValueSupplier;
+import org.junit.experimental.theories.ParametersSuppliedBy;
+
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
-
-import com.pholser.junit.quickcheck.internal.RandomValueSupplier;
-
-import org.junit.experimental.theories.ParametersSuppliedBy;
 
 @Target(PARAMETER)
 @Retention(RUNTIME)

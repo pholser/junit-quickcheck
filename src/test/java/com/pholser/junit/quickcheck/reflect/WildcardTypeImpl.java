@@ -23,42 +23,47 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck.reflect;
 
 import java.lang.reflect.Type;
-import java.util.List;
+import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 
-import static java.lang.Short.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+public class WildcardTypeImpl implements WildcardType {
+    private final Type[] upperBounds;
+    private final Type[] lowerBounds;
 
-public class GeneratingUniformRandomValuesForWrapperShortTheoryParametersTest
-    extends GeneratingUniformRandomValuesForTheoryParameterTest {
-
-    @Override
-    protected void primeSourceOfRandomness() {
-        when(random.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(-9).thenReturn(-8).thenReturn(-7)
-            .thenReturn(-6).thenReturn(-5);
+    public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
+        this.upperBounds = upperBounds.clone();
+        this.lowerBounds = lowerBounds.clone();
     }
 
     @Override
-    protected Type parameterType() {
-        return Short.class;
+    public Type[] getUpperBounds() {
+        return upperBounds.clone();
     }
 
     @Override
-    protected int sampleSize() {
-        return 5;
+    public Type[] getLowerBounds() {
+        return lowerBounds.clone();
     }
 
     @Override
-    protected List<?> randomValues() {
-        short sh = -9;
-        return asList(sh++, sh++, sh++, sh++, sh);
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (!(that instanceof WildcardType)) {
+            return false;
+        }
+
+        WildcardType other = (WildcardType) that;
+        return Arrays.equals(getUpperBounds(), other.getUpperBounds())
+            && Arrays.equals(getLowerBounds(), other.getLowerBounds());
     }
 
     @Override
-    public void verifyInteractionWithRandomness() {
-        verify(random, times(5)).nextInt(MIN_VALUE, MAX_VALUE);
+    public int hashCode() {
+        return Arrays.hashCode(getUpperBounds()) ^ Arrays.hashCode(getLowerBounds());
     }
 }

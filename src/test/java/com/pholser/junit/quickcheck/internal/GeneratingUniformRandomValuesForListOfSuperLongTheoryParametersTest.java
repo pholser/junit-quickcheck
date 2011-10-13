@@ -28,37 +28,39 @@ package com.pholser.junit.quickcheck.internal;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Short.*;
+import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
+import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class GeneratingUniformRandomValuesForWrapperShortTheoryParametersTest
+public class GeneratingUniformRandomValuesForListOfSuperLongTheoryParametersTest
     extends GeneratingUniformRandomValuesForTheoryParameterTest {
 
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(-9).thenReturn(-8).thenReturn(-7)
-            .thenReturn(-6).thenReturn(-5);
+        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1);
+        when(random.nextLong()).thenReturn(3L).thenReturn(4L).thenReturn(5L);
     }
 
     @Override
     protected Type parameterType() {
-        return Short.class;
+        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[]{Long.class}));
     }
 
     @Override
     protected int sampleSize() {
-        return 5;
+        return 2;
     }
 
     @Override
     protected List<?> randomValues() {
-        short sh = -9;
-        return asList(sh++, sh++, sh++, sh++, sh);
+        return asList(asList(3L, 4L), asList(5L));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(5)).nextInt(MIN_VALUE, MAX_VALUE);
+        verify(random, times(2)).nextInt(0, 100);
+        verify(random, times(3)).nextLong();
     }
 }

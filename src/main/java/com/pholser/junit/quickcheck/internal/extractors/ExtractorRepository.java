@@ -55,25 +55,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.javaruntype.type.Types;
-
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
+import org.javaruntype.type.Types;
 
 public class ExtractorRepository {
     private final Map<Class<?>, RandomValueExtractor<?>> extractors =
         new HashMap<Class<?>, RandomValueExtractor<?>>();
 
     public ExtractorRepository add(Iterable<RegisterableRandomValueExtractor<?>> source) {
-        for (RegisterableRandomValueExtractor<?> each : source)
+        for (RegisterableRandomValueExtractor<?> each : source) {
             registerTypes(each);
+        }
 
         return this;
     }
 
     private void registerTypes(RegisterableRandomValueExtractor<?> extractor) {
-        for (Class<?> each : extractor.types())
+        for (Class<?> each : extractor.types()) {
             extractors.put(each, extractor);
+        }
     }
 
     public RandomValueExtractor<?> extractorFor(Type type) {

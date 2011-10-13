@@ -27,13 +27,12 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.util.Random;
 
-import static java.lang.Double.*;
-import static java.lang.Float.*;
-
 import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
 
+import static java.lang.Double.*;
+import static java.lang.Float.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
