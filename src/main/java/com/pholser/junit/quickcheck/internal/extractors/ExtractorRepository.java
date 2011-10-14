@@ -64,30 +64,34 @@ public class ExtractorRepository {
         new HashMap<Class<?>, RandomValueExtractor<?>>();
 
     public ExtractorRepository add(Iterable<RegisterableRandomValueExtractor<?>> source) {
-        for (RegisterableRandomValueExtractor<?> each : source) {
+        for (RegisterableRandomValueExtractor<?> each : source)
             registerTypes(each);
-        }
 
         return this;
     }
 
     private void registerTypes(RegisterableRandomValueExtractor<?> extractor) {
-        for (Class<?> each : extractor.types()) {
+        for (Class<?> each : extractor.types())
             extractors.put(each, extractor);
-        }
     }
 
     public RandomValueExtractor<?> extractorFor(Type type) {
-        org.javaruntype.type.Type<?> typeToken = Types.forJavaLangReflectType(type);
+    	if (type instanceof Class<?>) {
+    		Class<?> asClass = (Class<?>) type;
+    		if (asClass.isArray()) {
+    			Class<?> componentType = asClass.getComponentType();
+    			return new ArrayExtractor(componentType, extractorFor(componentType));
+    		}
+    	}
+        return extractorForTypeToken(Types.forJavaLangReflectType(type));
+    }
 
-        if (typeToken.isArray()) {
-            Class<?> componentType = typeToken.getComponentClass();
-            return new ArrayExtractor(componentType, extractorFor(componentType));
-        } else if (List.class.equals(typeToken.getRawClass())) {
+    private RandomValueExtractor<?> extractorForTypeToken(org.javaruntype.type.Type<?> typeToken) {
+        if (List.class.equals(typeToken.getRawClass())) {
             Class<?> componentType = typeToken.getTypeParameters().get(0).getType().getRawClass();
             return new ListExtractor(extractorFor(componentType));
         }
 
-        return extractors.get(type);
+        return extractors.get(typeToken.getRawClass());
     }
 }

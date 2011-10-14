@@ -23,28 +23,41 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.extractors;
+package com.pholser.junit.quickcheck.internal;
 
-import java.lang.reflect.Array;
+import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
-import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import java.lang.reflect.Type;
+import java.util.List;
 
-public class ArrayExtractor implements RandomValueExtractor<Object> {
-    private final Class<?> componentType;
-    private final RandomValueExtractor<?> componentExtractor;
+public class GeneratingUniformRandomValuesForIntArrayTheoryParametersTest
+    extends GeneratingUniformRandomValuesForTheoryParameterTest {
 
-    public ArrayExtractor(Class<?> componentType, RandomValueExtractor<?> componentExtractor) {
-        this.componentType = componentType;
-        this.componentExtractor = componentExtractor;
+    @Override
+    protected void primeSourceOfRandomness() {
+        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1);
+        when(random.nextInt()).thenReturn(-2).thenReturn(-3).thenReturn(-4);
     }
 
     @Override
-    public Object extract(SourceOfRandomness random) {
-        int length = random.nextInt(0, 100);
-        Object array = Array.newInstance(componentType, length);
-        for (int i = 0; i < length; ++i)
-            Array.set(array, i, componentExtractor.extract(random));
-        return array;
+    protected Type parameterType() {
+        return int[].class;
+    }
+
+    @Override
+    protected int sampleSize() {
+        return 2;
+    }
+
+    @Override
+    protected List<?> randomValues() {
+        return asList(new int[] { -2, -3 }, new int[] { -4 });
+    }
+
+    @Override
+    public void verifyInteractionWithRandomness() {
+        verify(random, times(2)).nextInt(0, 100);
+        verify(random, times(3)).nextInt();
     }
 }

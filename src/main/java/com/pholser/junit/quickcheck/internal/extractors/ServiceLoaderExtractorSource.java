@@ -44,9 +44,10 @@ public class ServiceLoaderExtractorSource implements Iterable<RegisterableRandom
     @Override
     public Iterator<RegisterableRandomValueExtractor<?>> iterator() {
         List<RegisterableRandomValueExtractor<?>> extractors = new ArrayList<RegisterableRandomValueExtractor<?>>();
-        for (RegisterableRandomValueExtractor<?> each : loader) {
+
+        for (RegisterableRandomValueExtractor<?> each : loader)
             extractors.add(each);
-        }
+
         return Collections.unmodifiableList(extractors).iterator();
     }
 }

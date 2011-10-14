@@ -41,10 +41,11 @@ public class ListExtractor implements RandomValueExtractor<List<?>> {
     @Override
     public List<?> extract(SourceOfRandomness random) {
         int size = random.nextInt(0, 100);
+
         List<Object> items = new ArrayList<Object>();
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; ++i)
             items.add(componentExtractor.extract(random));
-        }
+
         return items;
     }
 }
