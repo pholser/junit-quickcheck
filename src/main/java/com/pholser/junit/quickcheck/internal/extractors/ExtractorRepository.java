@@ -59,6 +59,8 @@ import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import org.javaruntype.type.Types;
 
+import static org.javaruntype.type.Types.*;
+
 public class ExtractorRepository {
     private final Map<Class<?>, RandomValueExtractor<?>> extractors =
         new HashMap<Class<?>, RandomValueExtractor<?>>();
@@ -76,17 +78,14 @@ public class ExtractorRepository {
     }
 
     public RandomValueExtractor<?> extractorFor(Type type) {
-    	if (type instanceof Class<?>) {
-    		Class<?> asClass = (Class<?>) type;
-    		if (asClass.isArray()) {
-    			Class<?> componentType = asClass.getComponentType();
-    			return new ArrayExtractor(componentType, extractorFor(componentType));
-    		}
-    	}
         return extractorForTypeToken(Types.forJavaLangReflectType(type));
     }
 
     private RandomValueExtractor<?> extractorForTypeToken(org.javaruntype.type.Type<?> typeToken) {
+        if (typeToken.isArray()) {
+            org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) typeToken);
+            return new ArrayExtractor(component.getRawClass(), extractorForTypeToken(component));
+        }
         if (List.class.equals(typeToken.getRawClass())) {
             Class<?> componentType = typeToken.getTypeParameters().get(0).getType().getRawClass();
             return new ListExtractor(extractorFor(componentType));
