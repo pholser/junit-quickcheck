@@ -7,9 +7,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-/**
- * Inspired by <a href="http://aberrantcode.blogspot.com/2007/07/collections-deepequals.html">this blog entry</a>.
- */
+/** Inspired by <a href="http://aberrantcode.blogspot.com/2007/07/collections-deepequals.html">this blog entry</a>. */
 public class Objects {
     private Objects() {
         throw new UnsupportedOperationException();

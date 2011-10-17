@@ -29,6 +29,8 @@ import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 
+import com.google.common.base.Joiner;
+
 public class WildcardTypeImpl implements WildcardType {
     private final Type[] upperBounds;
     private final Type[] lowerBounds;
@@ -65,5 +67,20 @@ public class WildcardTypeImpl implements WildcardType {
     @Override
     public int hashCode() {
         return Arrays.hashCode(getUpperBounds()) ^ Arrays.hashCode(getLowerBounds());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buffer = new StringBuilder("?");
+
+        String upperBoundDisplay = Joiner.on(" & ").join(getUpperBounds());
+        if (!upperBoundDisplay.isEmpty())
+            buffer.append(" extends ").append(upperBoundDisplay);
+
+        String lowerBoundDisplay = Joiner.on(" & ").join(getLowerBounds());
+        if (!lowerBoundDisplay.isEmpty())
+            buffer.append(" super ").append(lowerBoundDisplay);
+
+        return buffer.toString();
     }
 }

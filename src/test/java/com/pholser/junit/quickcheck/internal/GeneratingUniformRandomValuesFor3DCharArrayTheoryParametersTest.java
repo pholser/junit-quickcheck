@@ -55,7 +55,7 @@ public class GeneratingUniformRandomValuesFor3DCharArrayTheoryParametersTest
 
     @Override
     protected List<?> randomValues() {
-    	return Collections.singletonList(
+        return Collections.singletonList(
             new char[][][] {
                 new char[][] {
                     new char[] { 'a', 'b', 'c' }

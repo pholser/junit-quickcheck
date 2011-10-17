@@ -26,41 +26,45 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.lang.reflect.Type;
-import java.util.List;
+import java.util.*;
 
+import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class GeneratingUniformRandomValuesForListOfExtendsShortTheoryParametersTest
+public class GeneratingUniformRandomValuesForArrayOfListOfHuhTheoryParametersTest
     extends GeneratingUniformRandomValuesForTheoryParameterTest {
 
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(1).thenReturn(2);
-        when(random.nextInt(Short.MIN_VALUE, Short.MAX_VALUE)).thenReturn(-1).thenReturn(-2).thenReturn(-3);
+        when(random.nextInt(0, 100)).thenReturn(3);
+        when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3);
     }
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Short.class }, new Type[0]));
+        return new GenericArrayTypeImpl(
+            new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0])));
     }
 
     @Override
     protected int sampleSize() {
-        return 2;
+        return 1;
     }
 
     @Override
     protected List<?> randomValues() {
-        return asList(asList(Short.valueOf("-1")), asList(Short.valueOf("-2"), Short.valueOf("-3")));
+        List<List<?>[]> values = new ArrayList<List<?>[]>();
+        values.add(new List<?>[] { asList(1, 2, 3), asList(4, 5) });
+        return values;
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(0, 100);
-        verify(random, times(3)).nextInt(Short.MIN_VALUE, Short.MAX_VALUE);
+        verify(random).nextInt(0, 100);
+        verify(random, times(3)).nextInt();
     }
 }

@@ -45,7 +45,7 @@ public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[]{Object.class}, new Type[0]));
+        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0]));
     }
 
     @Override

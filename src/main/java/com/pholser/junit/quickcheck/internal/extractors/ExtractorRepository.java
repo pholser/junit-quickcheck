@@ -86,6 +86,7 @@ public class ExtractorRepository {
             org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) typeToken);
             return new ArrayExtractor(component.getRawClass(), extractorForTypeToken(component));
         }
+
         if (List.class.equals(typeToken.getRawClass())) {
             Class<?> componentType = typeToken.getTypeParameters().get(0).getType().getRawClass();
             return new ListExtractor(extractorFor(componentType));

@@ -45,7 +45,7 @@ public class GeneratingUniformRandomValuesForListOfSuperLongTheoryParametersTest
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[]{Long.class}));
+        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[] { Long.class }));
     }
 
     @Override
