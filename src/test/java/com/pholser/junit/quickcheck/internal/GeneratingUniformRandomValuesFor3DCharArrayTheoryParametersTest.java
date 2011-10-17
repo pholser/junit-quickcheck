@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import static org.mockito.Mockito.*;
-
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 public class GeneratingUniformRandomValuesFor3DCharArrayTheoryParametersTest
     extends GeneratingUniformRandomValuesForTheoryParameterTest {
