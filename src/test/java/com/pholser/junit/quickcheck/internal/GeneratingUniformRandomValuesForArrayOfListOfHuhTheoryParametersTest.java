@@ -40,8 +40,8 @@ public class GeneratingUniformRandomValuesForArrayOfListOfHuhTheoryParametersTes
 
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(3);
-        when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3);
+        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(3).thenReturn(2);
+        when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3).thenReturn(4).thenReturn(5);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GeneratingUniformRandomValuesForArrayOfListOfHuhTheoryParametersTes
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(0, 100);
-        verify(random, times(3)).nextInt();
+        verify(random, times(3)).nextInt(0, 100);
+        verify(random, times(5)).nextInt();
     }
 }
