@@ -34,7 +34,7 @@ import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 public class BasicExtractorSource implements Iterable<RegisterableRandomValueExtractor<?>> {
     @Override
     public Iterator<RegisterableRandomValueExtractor<?>> iterator() {
-        List<RegisterableRandomValueExtractor<?>> extractors = Arrays.<RegisterableRandomValueExtractor<?>> asList(
+        List<RegisterableRandomValueExtractor<?>> extractors = Arrays.asList(
             new ObjectExtractor(),
             new BigDecimalExtractor(),
             new BigIntegerExtractor(),
