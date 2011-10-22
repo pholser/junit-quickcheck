@@ -52,6 +52,7 @@ public class GeneratingUniformRandomValuesForListOfIntArrayTheoryParametersTest
         return 1;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
         return asList(asList(new int[] { -2 }, new int[] { -3, -4, -5 }));

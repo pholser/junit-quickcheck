@@ -53,6 +53,7 @@ public class GeneratingUniformRandomValuesForListOfExtendsShortTheoryParametersT
         return 2;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
         return asList(asList(Short.valueOf("-1")), asList(Short.valueOf("-2"), Short.valueOf("-3")));

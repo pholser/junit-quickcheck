@@ -53,6 +53,7 @@ public class GeneratingUniformRandomValuesForListOfSuperLongTheoryParametersTest
         return 2;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
         return asList(asList(3L, 4L), asList(5L));

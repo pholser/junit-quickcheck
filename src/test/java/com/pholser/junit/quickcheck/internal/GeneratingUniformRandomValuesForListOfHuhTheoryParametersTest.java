@@ -53,6 +53,7 @@ public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest
         return 1;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
         return asList(asList(1, 2, 3));

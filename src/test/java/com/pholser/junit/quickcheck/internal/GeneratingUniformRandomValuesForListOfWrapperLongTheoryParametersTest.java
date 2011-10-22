@@ -52,6 +52,7 @@ public class GeneratingUniformRandomValuesForListOfWrapperLongTheoryParametersTe
         return 1;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
         return asList(asList(-3L, -2L));

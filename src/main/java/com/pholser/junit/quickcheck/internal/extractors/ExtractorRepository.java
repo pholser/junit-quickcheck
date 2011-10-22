@@ -83,7 +83,10 @@ public class ExtractorRepository {
 
     private RandomValueExtractor<?> extractorForTypeToken(org.javaruntype.type.Type<?> typeToken) {
         if (typeToken.isArray()) {
-            org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) typeToken);
+            @SuppressWarnings("unchecked")
+            org.javaruntype.type.Type<Object[]> arrayTypeToken = (org.javaruntype.type.Type<Object[]>) typeToken;
+
+            org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
             return new ArrayExtractor(component.getRawClass(), extractorForTypeToken(component));
         }
 
