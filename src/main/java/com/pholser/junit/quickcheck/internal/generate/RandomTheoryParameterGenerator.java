@@ -49,7 +49,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
         RandomValueExtractor<?> extractor = repository.extractorFor(type);
 
-        for (int i = 0, sampleSize = quantifier.sampleSize(); i < sampleSize; ++i) {
+        for (int i = 0; i < quantifier.sampleSize(); ++i) {
             Object nextValue = extractor.extract(random);
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
         }

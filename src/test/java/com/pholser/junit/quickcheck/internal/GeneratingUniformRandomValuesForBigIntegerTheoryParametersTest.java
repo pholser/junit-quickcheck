@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.List;
 
+import static com.pholser.junit.quickcheck.Strings.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
@@ -63,13 +63,5 @@ public class GeneratingUniformRandomValuesForBigIntegerTheoryParametersTest
         verify(random, times(2)).nextInt(0, 100);
         verify(random).nextBytes(2);
         verify(random).nextBytes(1);
-    }
-
-    private static byte[] bytesOf(String s) {
-        try {
-            return s.getBytes("US-ASCII");
-        } catch (UnsupportedEncodingException shouldNotHappen) {
-            throw new IllegalStateException(shouldNotHappen);
-        }
     }
 }

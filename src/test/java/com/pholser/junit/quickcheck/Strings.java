@@ -23,30 +23,20 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.extractors;
+package com.pholser.junit.quickcheck;
 
-import java.lang.reflect.Array;
+import java.io.UnsupportedEncodingException;
 
-import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
-public class ArrayExtractor implements RandomValueExtractor<Object> {
-    private final Class<?> componentType;
-    private final RandomValueExtractor<?> componentExtractor;
-
-    public ArrayExtractor(Class<?> componentType, RandomValueExtractor<?> componentExtractor) {
-        this.componentType = componentType;
-        this.componentExtractor = componentExtractor;
+public class Strings {
+    private Strings() {
+        throw new UnsupportedOperationException();
     }
 
-    @Override
-    public Object extract(SourceOfRandomness random) {
-        int length = random.nextInt(0, 100);
-
-        Object array = Array.newInstance(componentType, length);
-        for (int i = 0; i < length; ++i)
-            Array.set(array, i, componentExtractor.extract(random));
-
-        return array;
+    public static byte[] bytesOf(String s) {
+        try {
+            return s.getBytes("US-ASCII");
+        } catch (UnsupportedEncodingException shouldNotHappen) {
+            throw new IllegalStateException(shouldNotHappen);
+        }
     }
 }
