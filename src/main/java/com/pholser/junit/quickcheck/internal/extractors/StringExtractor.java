@@ -1,35 +1,22 @@
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CodingErrorAction;
-
 import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 public class StringExtractor extends RegisterableRandomValueExtractor<String> {
-    private final CharsetDecoder decoder;
+    private final CharacterExtractor charExtractor = new CharacterExtractor();
 
     public StringExtractor() {
         super(String.class);
-
-        decoder = Charset.forName("UTF-8").newDecoder()
-            .onMalformedInput(CodingErrorAction.REPLACE)
-            .onUnmappableCharacter(CodingErrorAction.REPLACE)
-            .replaceWith(" ");
     }
 
     @Override
     public String extract(SourceOfRandomness random) {
         int size = random.nextInt(0, 100);
-        byte[] raw = random.nextBytes(size);
+        StringBuilder buffer = new StringBuilder(size);
+        for (int i = 0; i < size; ++i)
+            buffer.append(charExtractor.extract(random));
 
-        try {
-            return decoder.decode(ByteBuffer.wrap(raw)).toString();
-        } catch (CharacterCodingException e) {
-            throw new IllegalStateException(e);
-        }
+        return buffer.toString();
     }
 }
