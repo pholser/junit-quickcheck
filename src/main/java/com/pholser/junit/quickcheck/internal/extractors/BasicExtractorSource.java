@@ -45,7 +45,8 @@ public class BasicExtractorSource implements Iterable<RegisterableRandomValueExt
             new FloatExtractor(),
             new IntegerExtractor(),
             new LongExtractor(),
-            new ShortExtractor());
+            new ShortExtractor(),
+            new StringExtractor());
         return extractors.iterator();
     }
 }
