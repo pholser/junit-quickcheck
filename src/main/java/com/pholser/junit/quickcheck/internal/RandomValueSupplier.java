@@ -34,9 +34,9 @@ import com.pholser.junit.quickcheck.internal.extractors.ServiceLoaderExtractorSo
 import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.generate.TheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
-import org.junit.experimental.theories.ParameterSignature;
-import org.junit.experimental.theories.ParameterSupplier;
-import org.junit.experimental.theories.PotentialAssignment;
+import org.junit.contrib.theories.ParameterSignature;
+import org.junit.contrib.theories.ParameterSupplier;
+import org.junit.contrib.theories.PotentialAssignment;
 
 public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;

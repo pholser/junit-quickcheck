@@ -29,7 +29,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.pholser.junit.quickcheck.internal.RandomValueSupplier;
-import org.junit.experimental.theories.ParametersSuppliedBy;
+import org.junit.contrib.theories.ParametersSuppliedBy;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;

@@ -35,7 +35,7 @@ import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGener
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.theories.PotentialAssignment;
+import org.junit.contrib.theories.PotentialAssignment;
 
 import static com.pholser.junit.quickcheck.Objects.*;
 import static org.junit.Assert.*;

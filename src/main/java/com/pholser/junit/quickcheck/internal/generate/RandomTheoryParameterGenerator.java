@@ -33,7 +33,7 @@ import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-import org.junit.experimental.theories.PotentialAssignment;
+import org.junit.contrib.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
