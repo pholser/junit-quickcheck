@@ -39,7 +39,7 @@ public class ForAllSampleSizeTest {
     @Test
     public void shouldFeedADefaultNumberOfValuesToAMarkedParameter() throws Exception {
         assertThat(testResult(ForDefaultNumberOfValues.class), isSuccessful());
-        assertEquals(defaultValueFor(ForAll.class, "sampleSize"), ForDefaultNumberOfValues.iterations);
+        assertEquals(defaultSampleSize(), ForDefaultNumberOfValues.iterations);
     }
 
     @RunWith(Theories.class)

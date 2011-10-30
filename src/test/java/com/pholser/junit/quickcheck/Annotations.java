@@ -25,14 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Annotation;
-
 public class Annotations {
     private Annotations() {
         throw new UnsupportedOperationException();
     }
 
-    public static Object defaultValueFor(Class<? extends Annotation> clazz, String methodName) throws Exception {
-        return clazz.getMethod(methodName).getDefaultValue();
+    public static int defaultSampleSize() throws Exception {
+        return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
     }
 }
