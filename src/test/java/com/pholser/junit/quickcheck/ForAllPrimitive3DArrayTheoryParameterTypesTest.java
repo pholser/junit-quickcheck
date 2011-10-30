@@ -25,8 +25,6 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.*;
-
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -36,16 +34,16 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
+public class ForAllPrimitive3DArrayTheoryParameterTypesTest {
     @Test
-    public void primitive2DBooleanArray() {
-        assertThat(testResult(Primitive2DBooleanArray.class), isSuccessful());
+    public void primitive3DBooleanArray() {
+        assertThat(testResult(Primitive3DBooleanArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DBooleanArray {
+    public static class Primitive3DBooleanArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) boolean[][] b) {
+        public void shouldHold(@ForAll(sampleSize = 2) boolean[][][] b) {
         }
     }
 
@@ -57,19 +55,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperBooleanArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Boolean[][] b) {
+        public void shouldHold(@ForAll(sampleSize = 2) Boolean[][][] b) {
         }
     }
 
     @Test
-    public void primitive2DByteArray() {
-        assertThat(testResult(Primitive2DByteArray.class), isSuccessful());
+    public void primitive3DByteArray() {
+        assertThat(testResult(Primitive3DByteArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DByteArray {
+    public static class Primitive3DByteArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) byte[][] b) {
+        public void shouldHold(@ForAll(sampleSize = 2) byte[][][] b) {
         }
     }
 
@@ -81,19 +79,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperByteArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Byte[][] b) {
+        public void shouldHold(@ForAll(sampleSize = 2) Byte[][][] b) {
         }
     }
 
     @Test
-    public void primitive2DCharacterArray() {
-        assertThat(testResult(Primitive2DCharacterArray.class), isSuccessful());
+    public void primitive3DCharacterArray() {
+        assertThat(testResult(Primitive3DCharacterArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DCharacterArray {
+    public static class Primitive3DCharacterArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) char[][] ch) {
+        public void shouldHold(@ForAll(sampleSize = 2) char[][][] ch) {
         }
     }
 
@@ -105,19 +103,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperCharacterArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Character[][] ch) {
+        public void shouldHold(@ForAll(sampleSize = 2) Character[][][] ch) {
         }
     }
 
     @Test
-    public void primitive2DDoubleArray() {
-        assertThat(testResult(Primitive2DDoubleArray.class), isSuccessful());
+    public void primitive3DDoubleArray() {
+        assertThat(testResult(Primitive3DDoubleArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DDoubleArray {
+    public static class Primitive3DDoubleArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) double[][] d) {
+        public void shouldHold(@ForAll(sampleSize = 2) double[][][] d) {
         }
     }
 
@@ -129,19 +127,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperDoubleArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Double[][] d) {
+        public void shouldHold(@ForAll(sampleSize = 2) Double[][][] d) {
         }
     }
 
     @Test
-    public void primitive2DFloatArray() {
-        assertThat(testResult(Primitive2DFloatArray.class), isSuccessful());
+    public void primitive3DFloatArray() {
+        assertThat(testResult(Primitive3DFloatArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DFloatArray {
+    public static class Primitive3DFloatArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) float[][] f) {
+        public void shouldHold(@ForAll(sampleSize = 2) float[][][] f) {
         }
     }
 
@@ -153,19 +151,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperFloatArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Float[][] f) {
+        public void shouldHold(@ForAll(sampleSize = 2) Float[][][] f) {
         }
     }
 
     @Test
-    public void primitive2DIntegerArray() {
-        assertThat(testResult(Primitive2DIntegerArray.class), isSuccessful());
+    public void primitive3DIntegerArray() {
+        assertThat(testResult(Primitive3DIntegerArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DIntegerArray {
+    public static class Primitive3DIntegerArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) int[][] i) {
+        public void shouldHold(@ForAll(sampleSize = 2) int[][][] i) {
         }
     }
 
@@ -177,19 +175,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperIntegerArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Integer[][] i) {
+        public void shouldHold(@ForAll(sampleSize = 2) Integer[][][] i) {
         }
     }
 
     @Test
-    public void primitive2DLongArray() {
-        assertThat(testResult(Primitive2DLongArray.class), isSuccessful());
+    public void primitive3DLongArray() {
+        assertThat(testResult(Primitive3DLongArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DLongArray {
+    public static class Primitive3DLongArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) long[][] ell) {
+        public void shouldHold(@ForAll(sampleSize = 2) long[][][] ell) {
         }
     }
 
@@ -201,19 +199,19 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperLongArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Long[][] ell) {
+        public void shouldHold(@ForAll(sampleSize = 2) Long[][][] ell) {
         }
     }
 
     @Test
-    public void primitive2DShortArray() {
-        assertThat(testResult(Primitive2DShortArray.class), isSuccessful());
+    public void primitive3DShortArray() {
+        assertThat(testResult(Primitive3DShortArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class Primitive2DShortArray {
+    public static class Primitive3DShortArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) short[][] s) {
+        public void shouldHold(@ForAll(sampleSize = 2) short[][][] s) {
         }
     }
 
@@ -225,7 +223,7 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperShortArray {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Short[][] s) {
+        public void shouldHold(@ForAll(sampleSize = 2) Short[][][] s) {
         }
     }
 }
