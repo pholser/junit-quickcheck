@@ -26,11 +26,10 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.lang.reflect.Type;
-import java.math.BigInteger;
 import java.util.List;
 
-import static com.pholser.junit.quickcheck.Strings.*;
 import static java.util.Arrays.*;
+
 import static org.mockito.Mockito.*;
 
 public class GeneratingUniformRandomValuesForStringTheoryParametersTest

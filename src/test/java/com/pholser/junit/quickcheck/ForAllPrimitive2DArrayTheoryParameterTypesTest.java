@@ -25,8 +25,6 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.*;
-
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
