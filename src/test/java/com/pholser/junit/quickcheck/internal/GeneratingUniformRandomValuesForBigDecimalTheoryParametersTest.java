@@ -39,7 +39,7 @@ public class GeneratingUniformRandomValuesForBigDecimalTheoryParametersTest
 
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(1);
+        when(random.nextInt(1, 100)).thenReturn(1);
         when(random.nextBytes(1)).thenReturn(bytesOf("a")).thenReturn(bytesOf("b")).thenReturn(bytesOf("c"));
         when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3);
     }
@@ -63,7 +63,7 @@ public class GeneratingUniformRandomValuesForBigDecimalTheoryParametersTest
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(0, 100);
+        verify(random, times(3)).nextInt(1, 100);
         verify(random, times(3)).nextBytes(1);
     }
 }

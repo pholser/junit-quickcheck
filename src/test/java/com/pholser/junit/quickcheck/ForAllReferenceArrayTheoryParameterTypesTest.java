@@ -23,45 +23,41 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck;
 
-import java.lang.reflect.Type;
-import java.math.BigInteger;
 import java.util.List;
 
-import static com.pholser.junit.quickcheck.Strings.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
 
-public class GeneratingUniformRandomValuesForBigIntegerTheoryParametersTest
-    extends GeneratingUniformRandomValuesForTheoryParameterTest {
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-    @Override
-    protected void primeSourceOfRandomness() {
-        when(random.nextInt(1, 100)).thenReturn(2).thenReturn(1);
-        when(random.nextBytes(2)).thenReturn(bytesOf("ab"));
-        when(random.nextBytes(1)).thenReturn(bytesOf("c"));
+public class ForAllReferenceArrayTheoryParameterTypesTest {
+    @Test
+    public void stringArray() {
+        assertThat(testResult(StringArray.class), isSuccessful());
     }
 
-    @Override
-    protected Type parameterType() {
-        return BigInteger.class;
+    @RunWith(Theories.class)
+    public static class StringArray {
+        @Theory
+        public void shouldHold(@ForAll String[] s) {
+        }
     }
 
-    @Override
-    protected int sampleSize() {
-        return 2;
+    @Test
+    public void twoDObjectArray() {
+        assertThat(testResult(TwoDObjectArray.class), isSuccessful());
     }
 
-    @Override
-    protected List<?> randomValues() {
-        return asList(new BigInteger(bytesOf("ab")), new BigInteger(bytesOf("c")));
-    }
-
-    @Override
-    public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(1, 100);
-        verify(random).nextBytes(2);
-        verify(random).nextBytes(1);
+    @RunWith(Theories.class)
+    public static class TwoDObjectArray {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 5) Object[][] o) {
+        }
     }
 }
