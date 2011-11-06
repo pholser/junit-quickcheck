@@ -51,6 +51,7 @@
 package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +63,8 @@ import org.javaruntype.type.Types;
 import static org.javaruntype.type.Types.*;
 
 public class ExtractorRepository {
-    private final Map<Class<?>, RandomValueExtractor<?>> extractors =
-        new HashMap<Class<?>, RandomValueExtractor<?>>();
+    private final Map<Class<?>, List<RandomValueExtractor<?>>> extractors =
+        new HashMap<Class<?>, List<RandomValueExtractor<?>>>();
 
     public ExtractorRepository add(Iterable<RegisterableRandomValueExtractor<?>> source) {
         for (RegisterableRandomValueExtractor<?> each : source)
@@ -74,7 +75,25 @@ public class ExtractorRepository {
 
     private void registerTypes(RegisterableRandomValueExtractor<?> extractor) {
         for (Class<?> each : extractor.types())
-            extractors.put(each, extractor);
+            registerHierarchy(each, extractor);
+    }
+
+    private void registerHierarchy(Class<?> type, RegisterableRandomValueExtractor<?> extractor) {
+        addExtractor(type, extractor);
+        if (type.getSuperclass() != null)
+            registerHierarchy(type.getSuperclass(), extractor);
+        for (Class<?> each : type.getInterfaces())
+            registerHierarchy(each, extractor);
+    }
+
+    private void addExtractor(Class<?> type, RegisterableRandomValueExtractor<?> extractor) {
+        List<RandomValueExtractor<?>> typeExtractors = extractors.get(type);
+        if (typeExtractors == null) {
+            typeExtractors = new ArrayList<RandomValueExtractor<?>>();
+            extractors.put(type, typeExtractors);
+        }
+
+        typeExtractors.add(extractor);
     }
 
     public RandomValueExtractor<?> extractorFor(Type type) {
@@ -95,6 +114,10 @@ public class ExtractorRepository {
             return new ListExtractor(extractorFor(componentType));
         }
 
-        return extractors.get(typeToken.getRawClass());
+        List<RandomValueExtractor<?>> matches = extractors.get(typeToken.getRawClass());
+        if (matches == null)
+            throw new IllegalArgumentException("Cannot find extractor for " + typeToken.getRawClass());
+
+        return new CompositeRandomValueExtractor(matches);
     }
 }
