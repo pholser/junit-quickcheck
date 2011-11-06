@@ -9,6 +9,9 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
+/**
+ * Swiped from <a href="http://stackoverflow.com/questions/837484/junit-theory-for-hashcode-equals-contract">here</a>.
+ */
 @Ignore("turn on when testing lots of permutations")
 @RunWith(Theories.class)
 public class EqualsHashCodeTest {
