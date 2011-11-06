@@ -25,15 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.List;
-
-import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.TypeVariableImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
-import org.javaruntype.exceptions.TypeValidationException;
 import org.junit.Before;
 import org.junit.Test;
 

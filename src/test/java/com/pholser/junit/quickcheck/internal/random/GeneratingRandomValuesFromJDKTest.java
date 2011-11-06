@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.internal.random;
 
 import java.util.Random;
 
-import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
 

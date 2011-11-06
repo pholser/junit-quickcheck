@@ -31,7 +31,6 @@ import java.util.List;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
 import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
-import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
