@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +22,7 @@ public class RegisteringExtractorsForTypesWithSupertypesTest {
         repo = new ExtractorRepository();
 
         extractor = new BigDecimalExtractor();
-        List<RegisterableRandomValueExtractor<?>> extractors = newArrayList();
+        List<RandomValueExtractor<?>> extractors = newArrayList();
         extractors.add(extractor);
 
         repo.add(extractors);

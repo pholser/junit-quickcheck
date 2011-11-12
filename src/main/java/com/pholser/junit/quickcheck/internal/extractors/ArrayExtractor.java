@@ -30,11 +30,13 @@ import java.lang.reflect.Array;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class ArrayExtractor implements RandomValueExtractor<Object> {
+public class ArrayExtractor extends RandomValueExtractor<Object> {
     private final Class<?> componentType;
     private final RandomValueExtractor<?> componentExtractor;
 
     public ArrayExtractor(Class<?> componentType, RandomValueExtractor<?> componentExtractor) {
+        super(Object.class);
+
         this.componentType = componentType;
         this.componentExtractor = componentExtractor;
     }

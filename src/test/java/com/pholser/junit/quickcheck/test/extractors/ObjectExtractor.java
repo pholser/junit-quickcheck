@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.test.extractors;
 
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class ObjectExtractor extends RegisterableRandomValueExtractor<Object> {
+public class ObjectExtractor extends RandomValueExtractor<Object> {
     public ObjectExtractor() {
         super(Object.class);
     }

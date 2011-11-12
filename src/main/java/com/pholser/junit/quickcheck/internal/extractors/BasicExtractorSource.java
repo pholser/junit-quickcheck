@@ -29,12 +29,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 
-public class BasicExtractorSource implements Iterable<RegisterableRandomValueExtractor<?>> {
+public class BasicExtractorSource implements Iterable<RandomValueExtractor<?>> {
     @Override
-    public Iterator<RegisterableRandomValueExtractor<?>> iterator() {
-        List<RegisterableRandomValueExtractor<?>> extractors = Arrays.asList(
+    public Iterator<RandomValueExtractor<?>> iterator() {
+        List<RandomValueExtractor<?>> extractors = Arrays.asList(
             new ObjectExtractor(),
             new BigDecimalExtractor(),
             new BigIntegerExtractor(),

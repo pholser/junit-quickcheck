@@ -25,8 +25,28 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.List;
+
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public interface RandomValueExtractor<T> {
-    T extract(SourceOfRandomness random);
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+
+public abstract class RandomValueExtractor<T> {
+    private final List<Class<T>> types;
+
+    @SuppressWarnings("unchecked")
+    protected RandomValueExtractor(Class<T> type) {
+        this(asList(type));
+    }
+
+    protected RandomValueExtractor(List<Class<T>> types) {
+        this.types = types;
+    }
+
+    public List<Class<T>> types() {
+        return unmodifiableList(types);
+    }
+
+    public abstract T extract(SourceOfRandomness random);
 }

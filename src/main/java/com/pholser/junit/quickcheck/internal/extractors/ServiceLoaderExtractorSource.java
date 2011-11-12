@@ -31,21 +31,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 
-public class ServiceLoaderExtractorSource implements Iterable<RegisterableRandomValueExtractor<?>> {
+public class ServiceLoaderExtractorSource implements Iterable<RandomValueExtractor<?>> {
     @SuppressWarnings("rawtypes")
-    private final ServiceLoader<RegisterableRandomValueExtractor> loader;
+    private final ServiceLoader<RandomValueExtractor> loader;
 
     public ServiceLoaderExtractorSource() {
-        loader = ServiceLoader.load(RegisterableRandomValueExtractor.class);
+        loader = ServiceLoader.load(RandomValueExtractor.class);
     }
 
     @Override
-    public Iterator<RegisterableRandomValueExtractor<?>> iterator() {
-        List<RegisterableRandomValueExtractor<?>> extractors = new ArrayList<RegisterableRandomValueExtractor<?>>();
+    public Iterator<RandomValueExtractor<?>> iterator() {
+        List<RandomValueExtractor<?>> extractors = new ArrayList<RandomValueExtractor<?>>();
 
-        for (RegisterableRandomValueExtractor<?> each : loader)
+        for (RandomValueExtractor<?> each : loader)
             extractors.add(each);
 
         return Collections.unmodifiableList(extractors).iterator();

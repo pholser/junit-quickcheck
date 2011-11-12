@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 
-public class DoubleExtractor extends RegisterableRandomValueExtractor<Double> {
+public class DoubleExtractor extends RandomValueExtractor<Double> {
     @SuppressWarnings("unchecked")
     public DoubleExtractor() {
         super(asList(double.class, Double.class));

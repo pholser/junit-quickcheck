@@ -31,10 +31,12 @@ import java.util.List;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class ListExtractor implements RandomValueExtractor<List<?>> {
+public class ListExtractor extends RandomValueExtractor<List> {
     private final RandomValueExtractor<?> componentExtractor;
 
     public ListExtractor(RandomValueExtractor<?> componentExtractor) {
+        super(List.class);
+
         this.componentExtractor = componentExtractor;
     }
 

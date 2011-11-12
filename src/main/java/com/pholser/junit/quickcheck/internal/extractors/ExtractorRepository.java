@@ -57,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
 import org.javaruntype.type.Types;
 
 import static org.javaruntype.type.Types.*;
@@ -66,19 +65,19 @@ public class ExtractorRepository {
     private final Map<Class<?>, List<RandomValueExtractor<?>>> extractors =
         new HashMap<Class<?>, List<RandomValueExtractor<?>>>();
 
-    public ExtractorRepository add(Iterable<RegisterableRandomValueExtractor<?>> source) {
-        for (RegisterableRandomValueExtractor<?> each : source)
+    public ExtractorRepository add(Iterable<RandomValueExtractor<?>> source) {
+        for (RandomValueExtractor<?> each : source)
             registerTypes(each);
 
         return this;
     }
 
-    private void registerTypes(RegisterableRandomValueExtractor<?> extractor) {
+    private void registerTypes(RandomValueExtractor<?> extractor) {
         for (Class<?> each : extractor.types())
             registerHierarchy(each, extractor);
     }
 
-    private void registerHierarchy(Class<?> type, RegisterableRandomValueExtractor<?> extractor) {
+    private void registerHierarchy(Class<?> type, RandomValueExtractor<?> extractor) {
         addExtractor(type, extractor);
         if (type.getSuperclass() != null)
             registerHierarchy(type.getSuperclass(), extractor);
@@ -86,7 +85,7 @@ public class ExtractorRepository {
             registerHierarchy(each, extractor);
     }
 
-    private void addExtractor(Class<?> type, RegisterableRandomValueExtractor<?> extractor) {
+    private void addExtractor(Class<?> type, RandomValueExtractor<?> extractor) {
         List<RandomValueExtractor<?>> typeExtractors = extractors.get(type);
         if (typeExtractors == null) {
             typeExtractors = new ArrayList<RandomValueExtractor<?>>();

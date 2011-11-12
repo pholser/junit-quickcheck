@@ -27,10 +27,10 @@ package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.math.BigInteger;
 
-import com.pholser.junit.quickcheck.RegisterableRandomValueExtractor;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class BigIntegerExtractor extends RegisterableRandomValueExtractor<BigInteger> {
+public class BigIntegerExtractor extends RandomValueExtractor<BigInteger> {
     public BigIntegerExtractor() {
         super(BigInteger.class);
     }

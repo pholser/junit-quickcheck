@@ -6,10 +6,12 @@ import java.util.List;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class CompositeRandomValueExtractor implements RandomValueExtractor<Object> {
+public class CompositeRandomValueExtractor extends RandomValueExtractor<Object> {
     final List<RandomValueExtractor<?>> components;
 
     public CompositeRandomValueExtractor(List<RandomValueExtractor<?>> components) {
+        super(Object.class);
+
         this.components = new ArrayList<RandomValueExtractor<?>>(components);
     }
 
