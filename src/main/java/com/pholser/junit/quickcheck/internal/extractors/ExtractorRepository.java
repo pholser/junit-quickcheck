@@ -52,12 +52,15 @@ package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.pholser.junit.quickcheck.RandomValueExtractor;
+import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
 
 import static org.javaruntype.type.Types.*;
 
@@ -86,13 +89,17 @@ public class ExtractorRepository {
     }
 
     private void addExtractor(Class<?> type, RandomValueExtractor<?> extractor) {
-        List<RandomValueExtractor<?>> typeExtractors = extractors.get(type);
-        if (typeExtractors == null) {
-            typeExtractors = new ArrayList<RandomValueExtractor<?>>();
-            extractors.put(type, typeExtractors);
+        // Do not feed Collections to things of type Object, including type parameters.
+        if (Object.class.equals(type) && Collection.class.isAssignableFrom(extractor.types().get(0)))
+            return;
+
+        List<RandomValueExtractor<?>> forType = extractors.get(type);
+        if (forType == null) {
+            forType = new ArrayList<RandomValueExtractor<?>>();
+            extractors.put(type, forType);
         }
 
-        typeExtractors.add(extractor);
+        forType.add(extractor);
     }
 
     public RandomValueExtractor<?> extractorFor(Type type) {
@@ -108,15 +115,25 @@ public class ExtractorRepository {
             return new ArrayExtractor(component.getRawClass(), extractorForTypeToken(component));
         }
 
-        if (List.class.equals(typeToken.getRawClass())) {
-            Class<?> componentType = typeToken.getTypeParameters().get(0).getType().getRawClass();
-            return new ListExtractor(extractorFor(componentType));
-        }
-
         List<RandomValueExtractor<?>> matches = extractors.get(typeToken.getRawClass());
         if (matches == null)
             throw new IllegalArgumentException("Cannot find extractor for " + typeToken.getRawClass());
 
+        List<RandomValueExtractor<?>> forComponents = new ArrayList<RandomValueExtractor<?>>();
+        for (TypeParameter<?> each : typeToken.getTypeParameters())
+            forComponents.add(extractorForTypeParameter(each));
+
+        for (RandomValueExtractor<?> each : matches) {
+            if (each.hasComponents())
+                each.addComponentExtractors(forComponents);
+        }
+
         return new CompositeRandomValueExtractor(matches);
+    }
+
+    private RandomValueExtractor<?> extractorForTypeParameter(TypeParameter<?> parameter) {
+        return extractorFor(parameter instanceof WildcardTypeParameter
+            ? Object.class
+            : parameter.getType().getRawClass());
     }
 }

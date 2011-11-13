@@ -45,7 +45,7 @@ public class ForAllGenericArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ArrayOfListOfHuh {
         @Theory
-        public void shouldHold(@ForAll List<?>[] items) {
+        public void shouldHold(@ForAll(sampleSize = 5) List<?>[] items) {
         }
     }
 }

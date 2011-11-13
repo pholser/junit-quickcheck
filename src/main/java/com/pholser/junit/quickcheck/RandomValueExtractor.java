@@ -49,4 +49,12 @@ public abstract class RandomValueExtractor<T> {
     }
 
     public abstract T extract(SourceOfRandomness random);
+
+    public boolean hasComponents() {
+        return false;
+    }
+
+    public void addComponentExtractors(List<RandomValueExtractor<?>> componentExtractors) {
+        // do nothing by default
+    }
 }

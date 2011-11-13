@@ -28,25 +28,22 @@ package com.pholser.junit.quickcheck.internal.extractors;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.ComponentizedRandomValueExtractor;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class ListExtractor extends RandomValueExtractor<List> {
-    private final RandomValueExtractor<?> componentExtractor;
-
-    public ListExtractor(RandomValueExtractor<?> componentExtractor) {
-        super(List.class);
-
-        this.componentExtractor = componentExtractor;
+public class ArrayListExtractor extends ComponentizedRandomValueExtractor<ArrayList> {
+    public ArrayListExtractor() {
+        super(ArrayList.class);
     }
 
     @Override
-    public List<?> extract(SourceOfRandomness random) {
+    public ArrayList<?> extract(SourceOfRandomness random) {
         int size = random.nextInt(0, 100);
 
-        List<Object> items = new ArrayList<Object>();
+        ArrayList<Object> items = new ArrayList<Object>();
         for (int i = 0; i < size; ++i)
-            items.add(componentExtractor.extract(random));
+            items.add(componentExtractors.get(0).extract(random));
 
         return items;
     }
