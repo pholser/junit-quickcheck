@@ -27,11 +27,17 @@ package com.pholser.junit.quickcheck;
 
 import java.util.List;
 
+import javax.management.StringValueExp;
+
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
+import org.junit.matchers.JUnitMatchers;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -58,6 +64,9 @@ public class ForAllListTheoryParameterTypesTest {
     public static class ListOfLowerBound {
         @Theory
         public void shouldHold(@ForAll List<? extends Integer> items) {
+            for (Integer each : items) {
+                // ensuring the cast works
+            }
         }
     }
 
@@ -70,6 +79,9 @@ public class ForAllListTheoryParameterTypesTest {
     public static class ListOfUpperBound {
         @Theory
         public void shouldHold(@ForAll List<? super String> items) {
+            for (Object each : items) {
+                assertThat(each.getClass(), anyOf(is(String.class), is(Object.class)));
+            }
         }
     }
 
@@ -82,6 +94,73 @@ public class ForAllListTheoryParameterTypesTest {
     public static class ListOfIntArray {
         @Theory
         public void shouldHold(@ForAll List<int[]> items) {
+            for (int[] each : items) {
+                // ensuring the cast works
+            }
+        }
+    }
+
+    @Test
+    public void listOfHuh() {
+        assertThat(testResult(ListOfListOfHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfListOfHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 10) List<List<?>> items) {
+            for (List<?> each : items) {
+                // ensuring the cast works
+            }
+        }
+    }
+
+    @Test
+    public void listOfInteger() {
+        assertThat(testResult(ListOfListOfInteger.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfListOfInteger {
+        @Theory
+        public void shouldHold(@ForAll List<List<Integer>> items) {
+            for (List<Integer> each : items) {
+                // ensuring the cast works
+            }
+        }
+    }
+
+    @Test
+    public void listOfUpperBounded() {
+        assertThat(testResult(ListOfListOfUpperBound.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfListOfUpperBound {
+        @Theory
+        public void shouldHold(@ForAll List<List<? extends Number>> items) {
+            for (List<? extends Number> each : items) {
+                for (Number n : each) {
+                    // ensuring the cast works
+                }
+            }
+        }
+    }
+
+    @Test
+    public void listOfLowerBounded() {
+        assertThat(testResult(ListOfListOfLowerBound.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfListOfLowerBound {
+        @Theory
+        public void shouldHold(@ForAll List<List<? super Float>> items) {
+            for (List<? super Float> each : items) {
+                for (Object o : each) {
+                    assertThat(o.getClass(), anyOf(is(Float.class), is(Object.class)));
+                }
+            }
         }
     }
 }

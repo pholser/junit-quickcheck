@@ -42,18 +42,20 @@ import static org.mockito.Mockito.*;
 
 public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     protected SourceOfRandomness random;
+    protected BasicExtractorSource source;
     private ForAll quantifier;
     private List<PotentialAssignment> theoryParms;
 
     @Before
     public final void setUp() {
         random = mock(SourceOfRandomness.class);
+        source = new BasicExtractorSource();
         primeSourceOfRandomness();
         quantifier = mock(ForAll.class);
         primeSampleSize();
 
         RandomTheoryParameterGenerator generator =
-            new RandomTheoryParameterGenerator(random, new ExtractorRepository().add(new BasicExtractorSource()));
+            new RandomTheoryParameterGenerator(random, new ExtractorRepository().add(source));
 
         theoryParms = generator.generate(quantifier, parameterType());
     }

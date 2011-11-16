@@ -50,12 +50,15 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import org.javaruntype.type.TypeParameter;
@@ -65,8 +68,8 @@ import org.javaruntype.type.WildcardTypeParameter;
 import static org.javaruntype.type.Types.*;
 
 public class ExtractorRepository {
-    private final Map<Class<?>, List<RandomValueExtractor<?>>> extractors =
-        new HashMap<Class<?>, List<RandomValueExtractor<?>>>();
+    private final Map<Class<?>, Set<RandomValueExtractor<?>>> extractors =
+        new HashMap<Class<?>, Set<RandomValueExtractor<?>>>();
 
     public ExtractorRepository add(Iterable<RandomValueExtractor<?>> source) {
         for (RandomValueExtractor<?> each : source)
@@ -93,9 +96,9 @@ public class ExtractorRepository {
         if (Object.class.equals(type) && Collection.class.isAssignableFrom(extractor.types().get(0)))
             return;
 
-        List<RandomValueExtractor<?>> forType = extractors.get(type);
+        Set<RandomValueExtractor<?>> forType = extractors.get(type);
         if (forType == null) {
-            forType = new ArrayList<RandomValueExtractor<?>>();
+            forType = new LinkedHashSet<RandomValueExtractor<?>>();
             extractors.put(type, forType);
         }
 
@@ -115,9 +118,7 @@ public class ExtractorRepository {
             return new ArrayExtractor(component.getRawClass(), extractorForTypeToken(component));
         }
 
-        List<RandomValueExtractor<?>> matches = extractors.get(typeToken.getRawClass());
-        if (matches == null)
-            throw new IllegalArgumentException("Cannot find extractor for " + typeToken.getRawClass());
+        List<RandomValueExtractor<?>> matches = extractorsForRawClass(typeToken.getRawClass());
 
         List<RandomValueExtractor<?>> forComponents = new ArrayList<RandomValueExtractor<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
@@ -132,8 +133,34 @@ public class ExtractorRepository {
     }
 
     private RandomValueExtractor<?> extractorForTypeParameter(TypeParameter<?> parameter) {
-        return extractorFor(parameter instanceof WildcardTypeParameter
-            ? Object.class
-            : parameter.getType().getRawClass());
+        if (parameter instanceof WildcardTypeParameter)
+            return extractorFor(Object.class);
+
+        return extractorForTypeToken(parameter.getType());
+    }
+
+    private List<RandomValueExtractor<?>> extractorsForRawClass(Class<?> clazz) {
+        Set<RandomValueExtractor<?>> matches = extractors.get(clazz);
+        if (matches == null)
+            throw new IllegalArgumentException("Cannot find extractor for " + clazz);
+
+        List<RandomValueExtractor<?>> copies = new ArrayList<RandomValueExtractor<?>>();
+        for (RandomValueExtractor<?> each : matches)
+            copies.add(copyOf(each));
+        return copies;
+    }
+
+    private RandomValueExtractor<?> copyOf(RandomValueExtractor<?> extractor) {
+        try {
+            return extractor.getClass().getConstructor().newInstance();
+        } catch (InstantiationException e) {
+            throw new IllegalStateException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        } catch (InvocationTargetException e) {
+            throw new IllegalStateException(e);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

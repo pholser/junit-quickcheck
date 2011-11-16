@@ -2,6 +2,7 @@ package com.pholser.junit.quickcheck.internal.extractors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.AbstractList;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.RandomValueExtractor;
@@ -13,52 +14,32 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
-public class RegisteringExtractorsForTypesWithSupertypesTest {
+public class RegisteringExtractorsForHierarchyOfArrayListTest {
     private ExtractorRepository repo;
-    private BigDecimalExtractor extractor;
+    private ArrayListExtractor extractor;
 
     @Before
     public void setUp() {
         repo = new ExtractorRepository();
 
-        extractor = new BigDecimalExtractor();
+        extractor = new ArrayListExtractor();
         List<RandomValueExtractor<?>> extractors = newArrayList();
         extractors.add(extractor);
+        extractors.add(new ObjectExtractor());
 
         repo.add(extractors);
     }
 
     @Test
-    public void bigDecimal() {
-        RandomValueExtractor<?> result = repo.extractorFor(BigDecimal.class);
+    public void abstractList() {
+        RandomValueExtractor<?> result = repo.extractorFor(AbstractList.class);
 
         assertSingleExtractor(result);
     }
 
     @Test
-    public void comparable() {
-        RandomValueExtractor<?> result = repo.extractorFor(Comparable.class);
-
-        assertSingleExtractor(result);
-    }
-
-    @Test
-    public void serializable() {
-        RandomValueExtractor<?> result = repo.extractorFor(Serializable.class);
-
-        assertSingleExtractor(result);
-    }
-
-    @Test
-    public void number() {
-        RandomValueExtractor<?> result = repo.extractorFor(Number.class);
-
-        assertSingleExtractor(result);
-    }
-
-    @Test
-    public void object() {
-        RandomValueExtractor<?> result = repo.extractorFor(Object.class);
+    public void list() {
+        RandomValueExtractor<?> result = repo.extractorFor(List.class);
 
         assertSingleExtractor(result);
     }
@@ -67,6 +48,7 @@ public class RegisteringExtractorsForTypesWithSupertypesTest {
         assumeThat(result, is(CompositeRandomValueExtractor.class));
 
         CompositeRandomValueExtractor composite = (CompositeRandomValueExtractor) result;
-        assertSame(extractor, composite.components.get(0));
+        assertEquals(1, composite.components.size());
+        assertThat(composite.components.get(0), is(extractor.getClass()));
     }
 }

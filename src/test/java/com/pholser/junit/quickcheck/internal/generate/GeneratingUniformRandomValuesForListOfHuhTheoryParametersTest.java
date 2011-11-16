@@ -28,8 +28,15 @@ package com.pholser.junit.quickcheck.internal.generate;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
+import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
+import com.pholser.junit.quickcheck.internal.extractors.IntegerExtractor;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+import org.junit.Before;
 
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
@@ -39,13 +46,16 @@ public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest
 
     @Override
     protected void primeSourceOfRandomness() {
+        int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerExtractor.class));
         when(random.nextInt(0, 100)).thenReturn(3);
+        when(random.nextInt(0, Iterables.size(source) - 2))
+            .thenReturn(integerIndex).thenReturn(integerIndex).thenReturn(integerIndex);
         when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3);
     }
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0]));
+        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[0]));
     }
 
     @Override
@@ -62,6 +72,7 @@ public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest
     @Override
     public void verifyInteractionWithRandomness() {
         verify(random).nextInt(0, 100);
+        verify(random, times(3)).nextInt(0, Iterables.size(source) - 2);
         verify(random, times(3)).nextInt();
     }
 }
