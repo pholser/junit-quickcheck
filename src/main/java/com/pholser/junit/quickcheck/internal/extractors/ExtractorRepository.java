@@ -60,6 +60,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.pholser.junit.quickcheck.internal.Reflection;
+
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
@@ -150,17 +152,7 @@ public class ExtractorRepository {
         return copies;
     }
 
-    private RandomValueExtractor<?> copyOf(RandomValueExtractor<?> extractor) {
-        try {
-            return extractor.getClass().getConstructor().newInstance();
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InvocationTargetException e) {
-            throw new IllegalStateException(e);
-        } catch (NoSuchMethodException e) {
-            throw new IllegalStateException(e);
-        }
+    private static RandomValueExtractor<?> copyOf(RandomValueExtractor<?> extractor) {
+        return Reflection.instantiate(extractor.getClass());
     }
 }

@@ -28,17 +28,14 @@ package com.pholser.junit.quickcheck.internal.generate;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.google.common.base.Predicate;
+import static java.util.Arrays.*;
+
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
 import com.pholser.junit.quickcheck.internal.extractors.IntegerExtractor;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
-import org.junit.Before;
 
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest

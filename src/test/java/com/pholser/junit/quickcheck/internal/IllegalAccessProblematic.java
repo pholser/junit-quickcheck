@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2004-2011 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,26 +23,10 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.extractors;
+package com.pholser.junit.quickcheck.internal;
 
-import java.util.ArrayList;
-
-import com.pholser.junit.quickcheck.ComponentizedRandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
-public class ArrayListExtractor extends ComponentizedRandomValueExtractor<ArrayList> {
-    public ArrayListExtractor() {
-        super(ArrayList.class);
-    }
-
-    @Override
-    public ArrayList<?> extract(SourceOfRandomness random) {
-        int size = random.nextInt(0, 100);
-
-        ArrayList<Object> items = new ArrayList<Object>();
-        for (int i = 0; i < size; ++i)
-            items.add(componentExtractors.get(0).extract(random));
-
-        return items;
+class IllegalAccessProblematic {
+    private IllegalAccessProblematic() {
+        // no-op
     }
 }

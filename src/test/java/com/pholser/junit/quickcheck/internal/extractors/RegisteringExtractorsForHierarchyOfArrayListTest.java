@@ -1,7 +1,5 @@
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.AbstractList;
 import java.util.List;
 

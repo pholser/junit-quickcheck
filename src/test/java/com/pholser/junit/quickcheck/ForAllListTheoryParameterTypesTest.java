@@ -27,15 +27,10 @@ package com.pholser.junit.quickcheck;
 
 import java.util.List;
 
-import javax.management.StringValueExp;
-
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
-import org.junit.matchers.JUnitMatchers;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
