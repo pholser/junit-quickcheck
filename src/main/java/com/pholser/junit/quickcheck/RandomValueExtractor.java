@@ -54,7 +54,7 @@ public abstract class RandomValueExtractor<T> {
         return false;
     }
 
-    public void addComponentExtractors(List<RandomValueExtractor<?>> componentExtractors) {
+    public void addComponentExtractors(List<RandomValueExtractor<?>> extractors) {
         // do nothing by default
     }
 }
