@@ -25,7 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-public class Reflection {
+public final class Reflection {
     private Reflection() {
         throw new UnsupportedOperationException();
     }
