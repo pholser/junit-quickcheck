@@ -2,4 +2,3 @@ TODO: Extractors for collections framework participants
 TODO: size parameter for @ForAll
 TODO: other annotations to influence extraction?
 TODO: OneOf... etc.?
-TODO: Be able to choose randomly from different generators that emit objects of subtypes of the theory parm
