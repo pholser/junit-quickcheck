@@ -27,32 +27,29 @@ package com.pholser.junit.quickcheck.internal.generate;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
-import static java.util.Arrays.*;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.internal.extractors.IntegerExtractor;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
+import static com.google.common.collect.Maps.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest
+public class GeneratingUniformRandomValuesForMapOfIntegerToStringTheoryParametersTest
     extends GeneratingUniformRandomValuesForTheoryParameterTest {
 
     @Override
     protected void primeSourceOfRandomness() {
-        int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerExtractor.class));
-        when(random.nextInt(0, 100)).thenReturn(3);
-        when(random.nextInt(0, Iterables.size(source) - 4))
-            .thenReturn(integerIndex).thenReturn(integerIndex).thenReturn(integerIndex);
-        when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3);
+        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1).thenReturn(1).thenReturn(3);
+        when(random.nextInt()).thenReturn(-3).thenReturn(-3).thenReturn(-4);
+        when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
+            .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
+            .thenReturn((int) 'e');
     }
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[0]));
+        return new ParameterizedTypeImpl(Map.class, Integer.class, String.class);
     }
 
     @Override
@@ -63,13 +60,16 @@ public class GeneratingUniformRandomValuesForListOfHuhTheoryParametersTest
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(asList(1, 2, 3));
+        Map<Integer, String> map = newHashMap();
+        map.put(-3, "a");
+        map.put(-4, "cde");
+        return asList(map);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(0, 100);
-        verify(random, times(3)).nextInt(0, Iterables.size(source) - 4);
+        verify(random, times(4)).nextInt(0, 100);
         verify(random, times(3)).nextInt();
+        verify(random, times(5)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

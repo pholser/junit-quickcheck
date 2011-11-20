@@ -93,8 +93,11 @@ public class ExtractorRepository {
 
     private void addExtractor(Class<?> type, RandomValueExtractor<?> extractor) {
         // Do not feed Collections or Maps to things of type Object, including type parameters.
-        if (Object.class.equals(type) && Collection.class.isAssignableFrom(extractor.types().get(0)))
-            return;
+        if (Object.class.equals(type)) {
+            Class<?> firstType = extractor.types().get(0);
+            if (Collection.class.isAssignableFrom(firstType) || Map.class.isAssignableFrom(firstType))
+                return;
+        }
 
         Set<RandomValueExtractor<?>> forType = extractors.get(type);
         if (forType == null) {

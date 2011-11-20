@@ -46,9 +46,9 @@ public class GeneratingUniformRandomValuesForSetOfHuhTheoryParametersTest
     protected void primeSourceOfRandomness() {
         int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerExtractor.class));
         when(random.nextInt(0, 100)).thenReturn(2);
-        when(random.nextInt(0, Iterables.size(source) - 3))
+        when(random.nextInt(0, Iterables.size(source) - 4))
             .thenReturn(integerIndex).thenReturn(integerIndex);
-        when(random.nextInt()).thenReturn(4).thenReturn(5);
+        when(random.nextInt()).thenReturn(4).thenReturn(4).thenReturn(5);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GeneratingUniformRandomValuesForSetOfHuhTheoryParametersTest
     @Override
     public void verifyInteractionWithRandomness() {
         verify(random).nextInt(0, 100);
-        verify(random, times(2)).nextInt(0, Iterables.size(source) - 3);
-        verify(random, times(2)).nextInt();
+        verify(random, times(3)).nextInt(0, Iterables.size(source) - 4);
+        verify(random, times(3)).nextInt();
     }
 }
