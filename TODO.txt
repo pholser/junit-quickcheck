@@ -1,4 +1,3 @@
-TODO: Extractors for collections framework participants
 TODO: size parameter for @ForAll
 TODO: other annotations to influence extraction?
 TODO: OneOf... etc.?
