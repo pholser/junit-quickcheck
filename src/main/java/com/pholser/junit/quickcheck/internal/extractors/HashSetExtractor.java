@@ -25,31 +25,30 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
-import com.pholser.junit.quickcheck.RandomValueExtractor;
+import com.pholser.junit.quickcheck.ComponentizedRandomValueExtractor;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-public class BasicExtractorSource implements Iterable<RandomValueExtractor<?>> {
+public class HashSetExtractor extends ComponentizedRandomValueExtractor<HashSet> {
+    public HashSetExtractor() {
+        super(HashSet.class);
+    }
+
     @Override
-    public Iterator<RandomValueExtractor<?>> iterator() {
-        List<RandomValueExtractor<?>> extractors = Arrays.asList(
-            new ObjectExtractor(),
-            new BigDecimalExtractor(),
-            new BigIntegerExtractor(),
-            new BooleanExtractor(),
-            new ByteExtractor(),
-            new CharacterExtractor(),
-            new DoubleExtractor(),
-            new FloatExtractor(),
-            new IntegerExtractor(),
-            new LongExtractor(),
-            new ShortExtractor(),
-            new StringExtractor(),
-            new ArrayListExtractor(),
-            new HashSetExtractor());
-        return extractors.iterator();
+    public HashSet<?> extract(SourceOfRandomness random) {
+        int size = random.nextInt(0, 100);
+
+        HashSet<Object> items = new HashSet<Object>();
+        for (int itemsAdded = 0; itemsAdded < size;) {
+            Object next = componentExtractors.get(0).extract(random);
+            if (!items.contains(next)) {
+                items.add(next);
+                ++itemsAdded;
+            }
+        }
+
+        return items;
     }
 }
