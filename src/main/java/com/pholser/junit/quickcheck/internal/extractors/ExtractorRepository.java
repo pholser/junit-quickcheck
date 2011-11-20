@@ -149,7 +149,7 @@ public class ExtractorRepository {
 
         List<RandomValueExtractor<?>> copies = new ArrayList<RandomValueExtractor<?>>();
         for (RandomValueExtractor<?> each : matches)
-            copies.add(copyOf(each));
+            copies.add(each.hasComponents() ? copyOf(each) : each);
         return copies;
     }
 
