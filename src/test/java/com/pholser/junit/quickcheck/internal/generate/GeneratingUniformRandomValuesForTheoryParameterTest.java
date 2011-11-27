@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
 import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
@@ -57,7 +58,9 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(random, new ExtractorRepository().add(source));
 
-        theoryParms = generator.generate(quantifier, parameterType());
+        ParameterContext context = new ParameterContext(parameterType());
+        context.addQuantifier(quantifier);
+        theoryParms = generator.generate(context);
     }
 
     private void primeSampleSize() {

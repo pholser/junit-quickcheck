@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
 import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
 import com.pholser.junit.quickcheck.internal.extractors.ServiceLoaderExtractorSource;
@@ -52,6 +53,12 @@ public class RandomValueSupplier extends ParameterSupplier {
 
     @Override
     public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
-        return generator.generate(signature.getAnnotation(ForAll.class), signature.getType());
+        ParameterContext context = new ParameterContext(signature.getType());
+        context.addQuantifier(signature.getAnnotation(ForAll.class));
+        From explicitExtractors = signature.getAnnotation(From.class);
+        if (explicitExtractors != null)
+            context.addExtractors(explicitExtractors.value());
+
+        return generator.generate(context);
     }
 }

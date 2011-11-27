@@ -23,36 +23,42 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.generate;
+package com.pholser.junit.quickcheck.internal;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-import org.junit.contrib.theories.PotentialAssignment;
 
-public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
-    private final SourceOfRandomness random;
-    private final ExtractorRepository repository;
+public class ParameterContext {
+    private final Type parameterType;
+    private final List<RandomValueExtractor<?>> extractors = new ArrayList<RandomValueExtractor<?>>();
+    private int sampleSize;
 
-    public RandomTheoryParameterGenerator(SourceOfRandomness random, ExtractorRepository repository) {
-        this.random = random;
-        this.repository = repository;
+    public ParameterContext(Type parameterType) {
+        this.parameterType = parameterType;
     }
 
-    @Override
-    public List<PotentialAssignment> generate(ParameterContext context) {
-        List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
-        RandomValueExtractor<?> extractor = repository.extractorFor(context.parameterType());
+    public ParameterContext addQuantifier(ForAll quantifier) {
+        this.sampleSize = quantifier.sampleSize();
+        return this;
+    }
 
-        for (int i = 0; i < context.sampleSize(); ++i) {
-            Object nextValue = extractor.extract(random);
-            assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
-        }
+    public ParameterContext addExtractors(Class<? extends RandomValueExtractor>... extractors) {
+        for (Class<? extends RandomValueExtractor> each : extractors)
+            this.extractors.add(Reflection.instantiate(each));
 
-        return assignments;
+        return this;
+    }
+
+    public Type parameterType() {
+        return parameterType;
+    }
+
+    public int sampleSize() {
+        return sampleSize;
     }
 }
