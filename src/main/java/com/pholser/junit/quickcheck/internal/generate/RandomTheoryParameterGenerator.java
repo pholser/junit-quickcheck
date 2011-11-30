@@ -45,7 +45,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
 
     @Override
     public List<PotentialAssignment> generate(ParameterContext context) {
-        RandomValueExtractor<?> extractor = context.extractor();
+        RandomValueExtractor<?> extractor = context.explicitExtractor();
         if (extractor == null) {
             extractor = repository.extractorFor(context.parameterType());
         }

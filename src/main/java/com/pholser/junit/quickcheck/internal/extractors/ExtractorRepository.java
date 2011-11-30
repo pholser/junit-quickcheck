@@ -94,6 +94,7 @@ public class ExtractorRepository {
 
     private void registerHierarchy(Class<?> type, RandomValueExtractor<?> extractor) {
         addExtractor(type, extractor);
+
         if (type.getSuperclass() != null)
             registerHierarchy(type.getSuperclass(), extractor);
         for (Class<?> each : type.getInterfaces())

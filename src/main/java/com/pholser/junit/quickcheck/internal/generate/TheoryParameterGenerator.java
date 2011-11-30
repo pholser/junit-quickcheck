@@ -25,10 +25,8 @@
 
 package com.pholser.junit.quickcheck.internal.generate;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import org.junit.contrib.theories.PotentialAssignment;
 

@@ -79,7 +79,7 @@ public class ParameterContext {
         return sampleSize;
     }
 
-    public RandomValueExtractor<?> extractor() {
+    public RandomValueExtractor<?> explicitExtractor() {
         return repo.isEmpty() ? null : repo.extractorFor(parameterType);
     }
 }

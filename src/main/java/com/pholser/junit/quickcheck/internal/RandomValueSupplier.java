@@ -42,6 +42,9 @@ import org.junit.contrib.theories.PotentialAssignment;
 public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;
 
+    /**
+     * Called by JUnit reflectively.
+     */
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
             new ExtractorRepository().add(new BasicExtractorSource()).add(new ServiceLoaderExtractorSource())));
