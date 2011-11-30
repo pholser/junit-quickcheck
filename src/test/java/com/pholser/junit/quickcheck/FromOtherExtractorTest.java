@@ -51,21 +51,45 @@ public class FromOtherExtractorTest {
         public static final List<Integer> values = new ArrayList<Integer>();
 
         @Theory
-        public void shouldHold(@ForAll @From(Sequence.class) int i) {
+        public void shouldHold(@ForAll(sampleSize = 5) @From(Sequence.class) int i) {
             values.add(i);
         }
     }
 
-    private static class Sequence extends RandomValueExtractor<Integer> {
+    public static class Sequence extends RandomValueExtractor<Integer> {
         private int next = 0;
 
-        Sequence() {
+        public Sequence() {
             super(int.class);
         }
 
         @Override
         public Integer extract(SourceOfRandomness random) {
             return next++;
+        }
+    }
+
+    @Test
+    public void typeMismatch() throws Exception {
+        assertThat(testResult(WithExtractorTypeThatDoesNotMatchTheoryParmType.class),
+            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class WithExtractorTypeThatDoesNotMatchTheoryParmType {
+        @Theory
+        public void shouldHold(@ForAll @From(StringSpitterOuter.class) Number n) {
+        }
+    }
+
+    public static class StringSpitterOuter extends RandomValueExtractor<String> {
+        public StringSpitterOuter() {
+            super(String.class);
+        }
+
+        @Override
+        public String extract(SourceOfRandomness random) {
+            return "foo";
         }
     }
 }

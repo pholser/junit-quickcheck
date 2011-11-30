@@ -29,6 +29,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
 import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
@@ -45,6 +47,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     protected SourceOfRandomness random;
     protected BasicExtractorSource source;
     private ForAll quantifier;
+    private From explicitExtractors;
     private List<PotentialAssignment> theoryParms;
 
     @Before
@@ -53,13 +56,17 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         source = new BasicExtractorSource();
         primeSourceOfRandomness();
         quantifier = mock(ForAll.class);
+        explicitExtractors = mock(From.class);
         primeSampleSize();
+        primeExplicitExtractors();
 
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(random, new ExtractorRepository().add(source));
 
         ParameterContext context = new ParameterContext(parameterType());
         context.addQuantifier(quantifier);
+        if (explicitExtractors.value() != null)
+            context.addExtractors(explicitExtractors);
         theoryParms = generator.generate(context);
     }
 
@@ -67,11 +74,19 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         when(quantifier.sampleSize()).thenReturn(sampleSize());
     }
 
+    private void primeExplicitExtractors() {
+        when(explicitExtractors.value()).thenReturn(explicitExtractors());
+    }
+
     protected abstract void primeSourceOfRandomness();
 
     protected abstract Type parameterType();
 
     protected abstract int sampleSize();
+
+    protected Class<? extends RandomValueExtractor>[] explicitExtractors() {
+        return null;
+    }
 
     protected abstract List<?> randomValues();
 

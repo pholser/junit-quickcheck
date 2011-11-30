@@ -26,16 +26,19 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.RandomValueExtractor;
+import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
+import org.javaruntype.type.Types;
 
 public class ParameterContext {
+    private static final String EXPLICIT_EXTRACTOR_TYPE_MISMATCH_MESSAGE =
+        "The extractor %s named in @%s on parameter of type %s does not produce a type-compatible object";
+
     private final Type parameterType;
-    private final List<RandomValueExtractor<?>> extractors = new ArrayList<RandomValueExtractor<?>>();
+    private final ExtractorRepository repo = new ExtractorRepository();
     private int sampleSize;
 
     public ParameterContext(Type parameterType) {
@@ -47,11 +50,25 @@ public class ParameterContext {
         return this;
     }
 
-    public ParameterContext addExtractors(Class<? extends RandomValueExtractor>... extractors) {
-        for (Class<? extends RandomValueExtractor> each : extractors)
-            this.extractors.add(Reflection.instantiate(each));
+    public ParameterContext addExtractors(From extractors) {
+        for (Class<? extends RandomValueExtractor> each : extractors.value()) {
+            RandomValueExtractor<?> extractor = Reflection.instantiate(each);
+            ensureCorrectType(extractor);
+            repo.add(extractor);
+        }
 
         return this;
+    }
+
+    private void ensureCorrectType(RandomValueExtractor<?> extractor) {
+        org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
+        for (Class<?> each : extractor.types()) {
+            org.javaruntype.type.Type<?> extractorType = Types.forJavaLangReflectType(each);
+            if (!parmType.isAssignableFrom(extractorType)) {
+                throw new IllegalArgumentException(String.format(EXPLICIT_EXTRACTOR_TYPE_MISMATCH_MESSAGE, each,
+                    From.class.getName(), parameterType));
+            }
+        }
     }
 
     public Type parameterType() {
@@ -60,5 +77,9 @@ public class ParameterContext {
 
     public int sampleSize() {
         return sampleSize;
+    }
+
+    public RandomValueExtractor<?> extractor() {
+        return repo.isEmpty() ? null : repo.extractorFor(parameterType);
     }
 }

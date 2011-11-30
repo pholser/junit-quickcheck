@@ -71,6 +71,15 @@ public class ExtractorRepository {
     private final Map<Class<?>, Set<RandomValueExtractor<?>>> extractors =
         new HashMap<Class<?>, Set<RandomValueExtractor<?>>>();
 
+    public boolean isEmpty() {
+        return extractors.isEmpty();
+    }
+
+    public ExtractorRepository add(RandomValueExtractor<?> source) {
+        registerTypes(source);
+        return this;
+    }
+
     public ExtractorRepository add(Iterable<RandomValueExtractor<?>> source) {
         for (RandomValueExtractor<?> each : source)
             registerTypes(each);

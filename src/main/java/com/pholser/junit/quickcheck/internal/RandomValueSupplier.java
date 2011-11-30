@@ -44,7 +44,7 @@ public class RandomValueSupplier extends ParameterSupplier {
 
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
-            new ExtractorRepository().add(new ServiceLoaderExtractorSource()).add(new BasicExtractorSource())));
+            new ExtractorRepository().add(new BasicExtractorSource()).add(new ServiceLoaderExtractorSource())));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {
@@ -57,7 +57,7 @@ public class RandomValueSupplier extends ParameterSupplier {
         context.addQuantifier(signature.getAnnotation(ForAll.class));
         From explicitExtractors = signature.getAnnotation(From.class);
         if (explicitExtractors != null)
-            context.addExtractors(explicitExtractors.value());
+            context.addExtractors(explicitExtractors);
 
         return generator.generate(context);
     }
