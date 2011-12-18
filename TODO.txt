@@ -1,2 +1,4 @@
-TODO: size parameter for @ForAll
-TODO: other annotations to influence extraction?
+TODO: generators take a size parm (increased on every TheoryParmGenerator invocation)
+TODO: number generators use size parm for (-size, size) random choice
+TODO: list/array generators use size parm for length/size() of collection
+TODO: annotations to influence size: @RangedSize(min = x, max = y), @FixedSize(n)
