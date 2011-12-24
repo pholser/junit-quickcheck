@@ -37,9 +37,9 @@ import static org.mockito.Mockito.*;
 public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(1, 100)).thenReturn(1);
-        when(random.nextBytes(1)).thenReturn(bytesOf("a")).thenReturn(bytesOf("b")).thenReturn(bytesOf("c"));
-        when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3);
+        when(random.nextBytes(0)).thenReturn(new byte[0]);
+        when(random.nextBytes(1)).thenReturn(bytesOf("a"));
+        when(random.nextBytes(2)).thenReturn(bytesOf("bc"));
     }
 
     @Override
@@ -54,14 +54,15 @@ public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParame
 
     @Override
     protected List<?> randomValues() {
-        return asList(new BigDecimal(BigInteger.valueOf('a'), 1),
-            new BigDecimal(BigInteger.valueOf('b'), 2),
-            new BigDecimal(BigInteger.valueOf('c'), 3));
+        return asList(new BigDecimal(BigInteger.ZERO, 0),
+            new BigDecimal(new BigInteger(bytesOf("a")), 1),
+            new BigDecimal(new BigInteger(bytesOf("bc")), 2));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(1, 100);
-        verify(random, times(3)).nextBytes(1);
+        verify(random, times(1)).nextBytes(0);
+        verify(random, times(1)).nextBytes(1);
+        verify(random, times(1)).nextBytes(2);
     }
 }

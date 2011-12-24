@@ -33,16 +33,17 @@ import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Maps.*;
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1).thenReturn(1).thenReturn(3);
-        when(random.nextInt()).thenReturn(-3).thenReturn(-3).thenReturn(-4);
+        when(random.nextInt(-1, 1)).thenReturn(1);
+        when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(-2).thenReturn(2);
         when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
-            .thenReturn((int) 'e');
+            .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g');
     }
 
     @Override
@@ -52,22 +53,21 @@ public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTh
 
     @Override
     protected int sampleSize() {
-        return 1;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        Map<Integer, String> map = newHashMap();
-        map.put(-3, "a");
-        map.put(-4, "cde");
-        return asList(map);
+        Map<Integer, String> doubleton = newHashMap();
+        doubleton.put(-2, "bc");
+        doubleton.put(2, "fg");
+        return asList(newHashMap(), singletonMap(1, "a"), doubleton);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(4)).nextInt(0, 100);
-        verify(random, times(3)).nextInt();
-        verify(random, times(5)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(random).nextInt(-1, 1);
+        verify(random, times(7)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

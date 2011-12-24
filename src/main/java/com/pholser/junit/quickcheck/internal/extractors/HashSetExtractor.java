@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.pholser.junit.quickcheck.ComponentizedRandomValueExtractor;
@@ -37,12 +36,10 @@ public class HashSetExtractor extends ComponentizedRandomValueExtractor<HashSet>
     }
 
     @Override
-    public HashSet<?> extract(SourceOfRandomness random) {
-        int size = random.nextInt(0, 100);
-
+    public HashSet<?> extract(SourceOfRandomness random, int size) {
         HashSet<Object> items = new HashSet<Object>();
         for (int itemsAdded = 0; itemsAdded < size;) {
-            Object next = componentExtractors.get(0).extract(random);
+            Object next = componentExtractors.get(0).extract(random, size);
             if (!items.contains(next)) {
                 items.add(next);
                 ++itemsAdded;

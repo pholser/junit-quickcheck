@@ -31,13 +31,13 @@ import java.util.List;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfWrapperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(2);
-        when(random.nextLong()).thenReturn(-3L).thenReturn(-2L);
+        when(random.nextLong()).thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
     }
 
     @Override
@@ -47,18 +47,17 @@ public class ListOfWrapperLongTest extends GeneratingUniformRandomValuesForTheor
 
     @Override
     protected int sampleSize() {
-        return 1;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(asList(-3L, -2L));
+        return asList(emptyList(), asList(-3L), asList(-2L, -1L));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(0, 100);
-        verify(random, times(2)).nextLong();
+        verify(random, times(3)).nextLong();
     }
 }

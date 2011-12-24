@@ -37,7 +37,7 @@ public class IntegerExtractor extends RandomValueExtractor<Integer> {
     }
 
     @Override
-    public Integer extract(SourceOfRandomness random) {
-        return random.nextInt();
+    public Integer extract(SourceOfRandomness random, int size) {
+        return random.nextInt(-size, size);
     }
 }

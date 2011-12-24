@@ -34,7 +34,9 @@ import static org.mockito.Mockito.*;
 public class WrapperIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt()).thenReturn(-3).thenReturn(-4).thenReturn(-5);
+        when(random.nextInt(-0, 0)).thenReturn(0);
+        when(random.nextInt(-1, 1)).thenReturn(1);
+        when(random.nextInt(-2, 2)).thenReturn(-1);
     }
 
     @Override
@@ -49,11 +51,13 @@ public class WrapperIntegerTest extends GeneratingUniformRandomValuesForTheoryPa
 
     @Override
     protected List<?> randomValues() {
-        return asList(-3, -4, -5);
+        return asList(0, 1, -1);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt();
+        verify(random).nextInt(-0, 0);
+        verify(random).nextInt(-1, 1);
+        verify(random).nextInt(-2, 2);
     }
 }

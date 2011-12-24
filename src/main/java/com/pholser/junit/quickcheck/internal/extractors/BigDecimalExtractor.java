@@ -44,7 +44,7 @@ public class BigDecimalExtractor extends RandomValueExtractor<BigDecimal> {
     }
 
     @Override
-    public BigDecimal extract(SourceOfRandomness random) {
-        return new BigDecimal(bigIntegerExtractor.extract(random), random.nextInt());
+    public BigDecimal extract(SourceOfRandomness random, int size) {
+        return new BigDecimal(bigIntegerExtractor.extract(random, size), size);
     }
 }

@@ -37,7 +37,7 @@ public class LongExtractor extends RandomValueExtractor<Long> {
     }
 
     @Override
-    public Long extract(SourceOfRandomness random) {
+    public Long extract(SourceOfRandomness random, int size) {
         return random.nextLong();
     }
 }

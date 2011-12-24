@@ -39,7 +39,6 @@ import static org.mockito.Mockito.*;
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(3).thenReturn(2);
         when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3).thenReturn(4).thenReturn(5);
     }
 
@@ -51,19 +50,20 @@ public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     protected int sampleSize() {
-        return 1;
+        return 3;
     }
 
     @Override
     protected List<?> randomValues() {
         List<List<?>[]> values = new ArrayList<List<?>[]>();
-        values.add(new List<?>[] { asList(1, 2, 3), asList(4, 5) });
+        values.add(new List<?>[0]);
+        values.add(new List<?>[] { asList(1) });
+        values.add(new List<?>[] { asList(2, 3), asList(4, 5) });
         return values;
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(0, 100);
         verify(random, times(5)).nextInt();
     }
 }

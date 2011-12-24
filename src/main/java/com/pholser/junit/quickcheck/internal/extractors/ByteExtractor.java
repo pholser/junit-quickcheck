@@ -38,7 +38,7 @@ public class ByteExtractor extends RandomValueExtractor<Byte> {
     }
 
     @Override
-    public Byte extract(SourceOfRandomness random) {
+    public Byte extract(SourceOfRandomness random, int size) {
         return (byte) random.nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

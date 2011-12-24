@@ -36,9 +36,8 @@ public class BigIntegerExtractor extends RandomValueExtractor<BigInteger> {
     }
 
     @Override
-    public BigInteger extract(SourceOfRandomness random) {
-        int size = random.nextInt(1, 100);
+    public BigInteger extract(SourceOfRandomness random, int size) {
         byte[] bytes = random.nextBytes(size);
-        return new BigInteger(bytes);
+        return bytes.length == 0 ? BigInteger.ZERO : new BigInteger(bytes);
     }
 }

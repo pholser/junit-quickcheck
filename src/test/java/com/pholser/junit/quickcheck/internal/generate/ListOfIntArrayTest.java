@@ -31,13 +31,14 @@ import java.util.List;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfIntArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1).thenReturn(3);
-        when(random.nextInt()).thenReturn(-2).thenReturn(-3).thenReturn(-4).thenReturn(-5);
+        when(random.nextInt(-1, 1)).thenReturn(-1);
+        when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(2).thenReturn(0).thenReturn(1);
     }
 
     @Override
@@ -47,18 +48,18 @@ public class ListOfIntArrayTest extends GeneratingUniformRandomValuesForTheoryPa
 
     @Override
     protected int sampleSize() {
-        return 1;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(asList(new int[] { -2 }, new int[] { -3, -4, -5 }));
+        return asList(emptyList(), singletonList(new int[]{-1}), asList(new int[] { -2, 2 }, new int[] { 0, 1 }));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(0, 100);
-        verify(random, times(4)).nextInt();
+        verify(random).nextInt(-1, 1);
+        verify(random, times(4)).nextInt(-2, 2);
     }
 }

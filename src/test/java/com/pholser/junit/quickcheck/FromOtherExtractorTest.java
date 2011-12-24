@@ -64,7 +64,7 @@ public class FromOtherExtractorTest {
         }
 
         @Override
-        public Integer extract(SourceOfRandomness random) {
+        public Integer extract(SourceOfRandomness random, int size) {
             return next++;
         }
     }
@@ -88,7 +88,7 @@ public class FromOtherExtractorTest {
         }
 
         @Override
-        public String extract(SourceOfRandomness random) {
+        public String extract(SourceOfRandomness random, int size) {
             return "foo";
         }
     }

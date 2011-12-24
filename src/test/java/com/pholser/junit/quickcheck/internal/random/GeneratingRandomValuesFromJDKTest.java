@@ -58,9 +58,9 @@ public class GeneratingRandomValuesFromJDKTest {
         source.nextInt(0, -1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nextIntWithIdenticalMinAndMax() {
-        source.nextInt(-2, -2);
+        assertEquals(-2, source.nextInt(-2, -2));
     }
 
     @Test

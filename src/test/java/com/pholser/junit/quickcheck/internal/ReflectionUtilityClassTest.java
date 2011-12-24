@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
-import com.pholser.junit.quickcheck.internal.Reflection;
 
 public class ReflectionUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
     public ReflectionUtilityClassTest() {

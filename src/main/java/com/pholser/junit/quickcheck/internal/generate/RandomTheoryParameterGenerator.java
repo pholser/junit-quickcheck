@@ -21,7 +21,7 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
 package com.pholser.junit.quickcheck.internal.generate;
 
@@ -37,6 +37,7 @@ import org.junit.contrib.theories.PotentialAssignment;
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final ExtractorRepository repository;
+    private int invocationCount;
 
     public RandomTheoryParameterGenerator(SourceOfRandomness random, ExtractorRepository repository) {
         this.random = random;
@@ -51,8 +52,8 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         }
 
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
-        for (int i = 0; i < context.sampleSize(); ++i) {
-            Object nextValue = extractor.extract(random);
+        for (int i = 0; i < context.sampleSize(); ++i, ++invocationCount) {
+            Object nextValue = extractor.extract(random, i);
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
         }
 

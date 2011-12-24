@@ -34,8 +34,8 @@ import static org.mockito.Mockito.*;
 public class PrimitiveIntegerArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(1).thenReturn(4);
-        when(random.nextInt()).thenReturn(-1).thenReturn(-2).thenReturn(-3).thenReturn(-4).thenReturn(-5);
+        when(random.nextInt(-1, 1)).thenReturn(-1);
+        when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
     }
 
     @Override
@@ -45,17 +45,17 @@ public class PrimitiveIntegerArrayTest extends GeneratingUniformRandomValuesForT
 
     @Override
     protected int sampleSize() {
-        return 2;
+        return 3;
     }
 
     @Override
     protected List<?> randomValues() {
-        return asList(new int[] { -1 }, new int[] { -2, -3, -4, -5 });
+        return asList(new int[0], new int[] { -1 }, new int[] { -2, 2 });
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(0, 100);
-        verify(random, times(5)).nextInt();
+        verify(random).nextInt(-1, 1);
+        verify(random, times(2)).nextInt(-2, 2);
     }
 }

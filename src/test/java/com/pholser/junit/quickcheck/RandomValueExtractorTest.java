@@ -40,7 +40,7 @@ public class RandomValueExtractorTest {
     public void setUp() {
         extractor = new RandomValueExtractor<Object>(Object.class) {
             @Override
-            public Object extract(SourceOfRandomness random) {
+            public Object extract(SourceOfRandomness random, int size) {
                 return this;
             }
         };

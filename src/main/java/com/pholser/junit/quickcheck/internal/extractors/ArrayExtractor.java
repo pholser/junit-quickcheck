@@ -42,12 +42,10 @@ public class ArrayExtractor extends RandomValueExtractor<Object> {
     }
 
     @Override
-    public Object extract(SourceOfRandomness random) {
-        int length = random.nextInt(0, 100);
-
-        Object array = Array.newInstance(componentType, length);
-        for (int i = 0; i < length; ++i)
-            Array.set(array, i, componentExtractor.extract(random));
+    public Object extract(SourceOfRandomness random, int size) {
+        Object array = Array.newInstance(componentType, size);
+        for (int i = 0; i < size; ++i)
+            Array.set(array, i, componentExtractor.extract(random, size));
 
         return array;
     }

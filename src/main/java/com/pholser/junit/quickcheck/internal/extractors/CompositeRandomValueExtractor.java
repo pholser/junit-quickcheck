@@ -41,11 +41,11 @@ public class CompositeRandomValueExtractor extends RandomValueExtractor<Object> 
     }
 
     @Override
-    public Object extract(SourceOfRandomness random) {
+    public Object extract(SourceOfRandomness random, int size) {
         RandomValueExtractor<?> extractor = components.size() == 1
             ? components.get(0)
             : components.get(random.nextInt(0, components.size() - 1));
 
-        return extractor.extract(random);
+        return extractor.extract(random, size);
     }
 }

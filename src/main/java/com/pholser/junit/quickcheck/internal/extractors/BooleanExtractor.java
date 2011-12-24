@@ -37,7 +37,7 @@ public class BooleanExtractor extends RandomValueExtractor<Boolean> {
     }
 
     @Override
-    public Boolean extract(SourceOfRandomness random) {
+    public Boolean extract(SourceOfRandomness random, int size) {
         return random.nextBoolean();
     }
 }

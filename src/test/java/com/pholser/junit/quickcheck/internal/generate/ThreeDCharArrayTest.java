@@ -29,16 +29,16 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ThreeDCharArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1).thenReturn(3)
-            .thenReturn(2).thenReturn(1).thenReturn(2);
         when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
-            .thenReturn((int) 'e').thenReturn((int) 'f');
+            .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g').thenReturn((int) 'h')
+            .thenReturn((int) 'i');
     }
 
     @Override
@@ -48,26 +48,22 @@ public class ThreeDCharArrayTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     protected int sampleSize() {
-        return 1;
+        return 3;
     }
 
     @Override
     protected List<?> randomValues() {
-        return Collections.singletonList(
+        return asList(
+            new char[0][][],
+            new char[][][] { new char[][] { new char[] { 'a' } } },
             new char[][][] {
-                new char[][] {
-                    new char[] { 'a', 'b', 'c' }
-                },
-                new char[][] {
-                    new char[] { 'd' },
-                    new char[] { 'e', 'f' }
-                }
+                new char[][] { new char[] { 'b', 'c' }, new char[] { 'd', 'e' } },
+                new char[][] { new char[] { 'f', 'g' }, new char[] { 'h', 'i' } }
             });
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(6)).nextInt(0, 100);
-        verify(random, times(6)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(random, times(9)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

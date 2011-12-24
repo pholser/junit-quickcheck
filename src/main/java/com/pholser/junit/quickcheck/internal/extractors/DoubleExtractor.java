@@ -37,7 +37,7 @@ public class DoubleExtractor extends RandomValueExtractor<Double> {
     }
 
     @Override
-    public Double extract(SourceOfRandomness random) {
+    public Double extract(SourceOfRandomness random, int size) {
         return random.nextDouble();
     }
 }

@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.extractors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.pholser.junit.quickcheck.ComponentizedRandomValueExtractor;
@@ -37,13 +36,11 @@ public class HashMapExtractor extends ComponentizedRandomValueExtractor<HashMap>
     }
 
     @Override
-    public HashMap<?, ?> extract(SourceOfRandomness random) {
-        int size = random.nextInt(0, 100);
-
+    public HashMap<?, ?> extract(SourceOfRandomness random, int size) {
         HashMap<Object, Object> items = new HashMap<Object, Object>();
         for (int itemsAdded = 0; itemsAdded < size;) {
-            Object key = componentExtractors.get(0).extract(random);
-            Object value = componentExtractors.get(1).extract(random);
+            Object key = componentExtractors.get(0).extract(random, size);
+            Object value = componentExtractors.get(1).extract(random, size);
             if (!items.containsKey(key)) {
                 items.put(key, value);
                 ++itemsAdded;

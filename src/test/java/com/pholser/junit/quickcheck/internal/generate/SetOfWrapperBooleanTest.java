@@ -30,38 +30,35 @@ import java.util.List;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static com.google.common.collect.Sets.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class ListOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(2).thenReturn(1);
-        when(random.nextFloat()).thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
+        when(random.nextBoolean()).thenReturn(false).thenReturn(true).thenReturn(false);
     }
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, new WildcardTypeImpl(new Type[0], new Type[] { Float.class }));
+        return new ParameterizedTypeImpl(Set.class, Boolean.class);
     }
 
     @Override
     protected int sampleSize() {
-        return 2;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(2.2F, 2.3F), newHashSet(2.4F));
+        return asList(newHashSet(), newHashSet(false), newHashSet(true, false));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(0, 100);
-        verify(random, times(3)).nextFloat();
+        verify(random, times(3)).nextBoolean();
     }
 }

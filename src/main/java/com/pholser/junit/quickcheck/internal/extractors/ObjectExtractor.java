@@ -34,7 +34,7 @@ public class ObjectExtractor extends RandomValueExtractor<Object> {
     }
 
     @Override
-    public Object extract(SourceOfRandomness random) {
+    public Object extract(SourceOfRandomness random, int size) {
         return random.nextInt();
     }
 }

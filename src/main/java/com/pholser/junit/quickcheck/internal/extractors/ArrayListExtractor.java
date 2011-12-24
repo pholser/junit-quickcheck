@@ -36,12 +36,10 @@ public class ArrayListExtractor extends ComponentizedRandomValueExtractor<ArrayL
     }
 
     @Override
-    public ArrayList<?> extract(SourceOfRandomness random) {
-        int size = random.nextInt(0, 100);
-
+    public ArrayList<?> extract(SourceOfRandomness random, int size) {
         ArrayList<Object> items = new ArrayList<Object>();
         for (int i = 0; i < size; ++i)
-            items.add(componentExtractors.get(0).extract(random));
+            items.add(componentExtractors.get(0).extract(random, size));
 
         return items;
     }

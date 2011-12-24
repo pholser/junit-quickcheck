@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
@@ -48,18 +49,17 @@ public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     protected int sampleSize() {
-        return 2;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(asList(3L, 4L), asList(5L));
+        return asList(emptyList(), asList(3L), asList(4L, 5L));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(0, 100);
         verify(random, times(3)).nextLong();
     }
 }

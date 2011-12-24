@@ -50,10 +50,10 @@ public class JDKSourceOfRandomness implements SourceOfRandomness {
 
     @Override
     public int nextInt(int min, int max) {
-        if (min >= max)
-            throw new IllegalArgumentException(format("bad range, %d >= %d", min, max));
+        if (min > max)
+            throw new IllegalArgumentException(format("bad range, %d > %d", min, max));
 
-        return random.nextInt(max - min + 1) + min;
+        return min == max ? min : random.nextInt(max - min + 1) + min;
     }
 
     @Override

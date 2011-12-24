@@ -48,7 +48,7 @@ public abstract class RandomValueExtractor<T> {
         return unmodifiableList(types);
     }
 
-    public abstract T extract(SourceOfRandomness random);
+    public abstract T extract(SourceOfRandomness random, int size);
 
     public boolean hasComponents() {
         return false;

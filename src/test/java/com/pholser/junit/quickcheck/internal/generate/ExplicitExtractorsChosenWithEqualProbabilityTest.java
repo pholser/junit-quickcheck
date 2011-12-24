@@ -28,11 +28,10 @@ package com.pholser.junit.quickcheck.internal.generate;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.RandomValueExtractor;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ExplicitExtractorsChosenWithEqualProbabilityTest extends GeneratingUniformRandomValuesForTheoryParameterTest{
@@ -73,7 +72,7 @@ public class ExplicitExtractorsChosenWithEqualProbabilityTest extends Generating
         }
 
         @Override
-        public String extract(SourceOfRandomness random) {
+        public String extract(SourceOfRandomness random, int size) {
             return "foo";
         }
     }
@@ -84,7 +83,7 @@ public class ExplicitExtractorsChosenWithEqualProbabilityTest extends Generating
         }
 
         @Override
-        public String extract(SourceOfRandomness random) {
+        public String extract(SourceOfRandomness random, int size) {
             return "bar";
         }
     }
@@ -95,7 +94,7 @@ public class ExplicitExtractorsChosenWithEqualProbabilityTest extends Generating
         }
 
         @Override
-        public String extract(SourceOfRandomness random) {
+        public String extract(SourceOfRandomness random, int size) {
             return "baz";
         }
     }

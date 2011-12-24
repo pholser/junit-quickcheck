@@ -39,7 +39,6 @@ import static org.mockito.Mockito.*;
 public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(1).thenReturn(2);
         when(random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE)).thenReturn(6).thenReturn(7).thenReturn(8);
     }
 
@@ -50,18 +49,17 @@ public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     protected int sampleSize() {
-        return 2;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(Byte.valueOf("6")), newHashSet(Byte.valueOf("7"), Byte.valueOf("8")));
+        return asList(newHashSet(), newHashSet(Byte.valueOf("6")), newHashSet(Byte.valueOf("7"), Byte.valueOf("8")));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(0, 100);
         verify(random, times(3)).nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
     }
 }

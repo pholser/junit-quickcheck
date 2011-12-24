@@ -37,7 +37,7 @@ public class FloatExtractor extends RandomValueExtractor<Float> {
     }
 
     @Override
-    public Float extract(SourceOfRandomness random) {
+    public Float extract(SourceOfRandomness random, int size) {
         return random.nextFloat();
     }
 }

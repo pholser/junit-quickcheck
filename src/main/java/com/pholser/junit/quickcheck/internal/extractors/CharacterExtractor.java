@@ -38,7 +38,7 @@ public class CharacterExtractor extends RandomValueExtractor<Character> {
     }
 
     @Override
-    public Character extract(SourceOfRandomness random) {
+    public Character extract(SourceOfRandomness random, int size) {
         return (char) random.nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

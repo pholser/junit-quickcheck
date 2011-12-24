@@ -31,6 +31,7 @@ import java.util.Set;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import com.pholser.junit.quickcheck.internal.extractors.IntegerExtractor;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
@@ -43,10 +44,10 @@ public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParamete
     @Override
     protected void primeSourceOfRandomness() {
         int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerExtractor.class));
-        when(random.nextInt(0, 100)).thenReturn(2);
         when(random.nextInt(0, Iterables.size(source) - 4))
             .thenReturn(integerIndex).thenReturn(integerIndex);
-        when(random.nextInt()).thenReturn(4).thenReturn(4).thenReturn(5);
+        when(random.nextInt(-1, 1)).thenReturn(1);
+        when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
     }
 
     @Override
@@ -56,19 +57,19 @@ public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParamete
 
     @Override
     protected int sampleSize() {
-        return 1;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(4, 5));
+        return asList(newHashSet(), newHashSet(1), newHashSet(-2, 2));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(0, 100);
         verify(random, times(3)).nextInt(0, Iterables.size(source) - 4);
-        verify(random, times(3)).nextInt();
+        verify(random).nextInt(-1, 1);
+        verify(random, times(2)).nextInt(-2, 2);
     }
 }

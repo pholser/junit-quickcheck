@@ -36,11 +36,10 @@ public class StringExtractor extends RandomValueExtractor<String> {
     }
 
     @Override
-    public String extract(SourceOfRandomness random) {
-        int size = random.nextInt(0, 100);
+    public String extract(SourceOfRandomness random, int size) {
         StringBuilder buffer = new StringBuilder(size);
         for (int i = 0; i < size; ++i)
-            buffer.append(charExtractor.extract(random));
+            buffer.append(charExtractor.extract(random, size));
 
         return buffer.toString();
     }

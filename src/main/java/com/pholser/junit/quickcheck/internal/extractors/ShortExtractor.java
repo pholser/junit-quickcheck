@@ -38,7 +38,7 @@ public class ShortExtractor extends RandomValueExtractor<Short> {
     }
 
     @Override
-    public Short extract(SourceOfRandomness random) {
+    public Short extract(SourceOfRandomness random, int size) {
         return (short) random.nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

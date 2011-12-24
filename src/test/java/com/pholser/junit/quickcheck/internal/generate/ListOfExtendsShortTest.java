@@ -32,12 +32,12 @@ import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 100)).thenReturn(1).thenReturn(2);
         when(random.nextInt(Short.MIN_VALUE, Short.MAX_VALUE)).thenReturn(-1).thenReturn(-2).thenReturn(-3);
     }
 
@@ -48,18 +48,17 @@ public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheo
 
     @Override
     protected int sampleSize() {
-        return 2;
+        return 3;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(asList(Short.valueOf("-1")), asList(Short.valueOf("-2"), Short.valueOf("-3")));
+        return asList(emptyList(), asList(Short.valueOf("-1")), asList(Short.valueOf("-2"), Short.valueOf("-3")));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextInt(0, 100);
         verify(random, times(3)).nextInt(Short.MIN_VALUE, Short.MAX_VALUE);
     }
 }
