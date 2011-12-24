@@ -29,6 +29,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+import com.pholser.junit.quickcheck.internal.extractors.IntegerExtractor;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
@@ -39,7 +42,11 @@ import static org.mockito.Mockito.*;
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt()).thenReturn(1).thenReturn(2).thenReturn(3).thenReturn(4).thenReturn(5);
+        int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerExtractor.class));
+        when(random.nextInt(0, Iterables.size(source) - 4))
+            .thenReturn(integerIndex).thenReturn(integerIndex).thenReturn(integerIndex);
+        when(random.nextInt(-1, 1)).thenReturn(1);
+        when(random.nextInt(-2, 2)).thenReturn(2).thenReturn(-2).thenReturn(0).thenReturn(-1);
     }
 
     @Override
@@ -58,12 +65,14 @@ public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheory
         List<List<?>[]> values = new ArrayList<List<?>[]>();
         values.add(new List<?>[0]);
         values.add(new List<?>[] { asList(1) });
-        values.add(new List<?>[] { asList(2, 3), asList(4, 5) });
+        values.add(new List<?>[] { asList(2, -2), asList(0, -1) });
         return values;
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(5)).nextInt();
+        verify(random, times(5)).nextInt(0, Iterables.size(source) - 4);
+        verify(random).nextInt(-1, 1);
+        verify(random, times(4)).nextInt(-2, 2);
     }
 }

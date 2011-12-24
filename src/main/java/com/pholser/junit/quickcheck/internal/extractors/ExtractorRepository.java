@@ -146,10 +146,9 @@ public class ExtractorRepository {
     }
 
     private RandomValueExtractor<?> extractorForTypeParameter(TypeParameter<?> parameter) {
-        if (parameter instanceof WildcardTypeParameter)
-            return extractorFor(Object.class);
-
-        return extractorForTypeToken(parameter.getType());
+        return parameter instanceof WildcardTypeParameter
+            ? extractorFor(int.class)
+            : extractorForTypeToken(parameter.getType());
     }
 
     private List<RandomValueExtractor<?>> extractorsForRawClass(Class<?> clazz) {

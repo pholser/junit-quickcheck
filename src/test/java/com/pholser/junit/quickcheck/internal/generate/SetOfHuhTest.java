@@ -43,9 +43,6 @@ import static org.mockito.Mockito.*;
 public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerExtractor.class));
-        when(random.nextInt(0, Iterables.size(source) - 4))
-            .thenReturn(integerIndex).thenReturn(integerIndex);
         when(random.nextInt(-1, 1)).thenReturn(1);
         when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
     }
@@ -68,7 +65,6 @@ public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParamete
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(0, Iterables.size(source) - 4);
         verify(random).nextInt(-1, 1);
         verify(random, times(2)).nextInt(-2, 2);
     }

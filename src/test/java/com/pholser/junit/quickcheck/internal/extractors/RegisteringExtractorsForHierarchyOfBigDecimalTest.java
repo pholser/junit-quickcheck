@@ -34,9 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static com.pholser.junit.quickcheck.internal.extractors.Extractors.*;
 
 public class RegisteringExtractorsForHierarchyOfBigDecimalTest {
     private ExtractorRepository repo;
@@ -49,6 +47,7 @@ public class RegisteringExtractorsForHierarchyOfBigDecimalTest {
         extractor = new BigDecimalExtractor();
         List<RandomValueExtractor<?>> extractors = newArrayList();
         extractors.add(extractor);
+        extractors.add(new IntegerExtractor());
 
         repo.add(extractors);
     }
@@ -57,42 +56,34 @@ public class RegisteringExtractorsForHierarchyOfBigDecimalTest {
     public void bigDecimal() {
         RandomValueExtractor<?> result = repo.extractorFor(BigDecimal.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void comparable() {
         RandomValueExtractor<?> result = repo.extractorFor(Comparable.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass(), IntegerExtractor.class);
     }
 
     @Test
     public void serializable() {
         RandomValueExtractor<?> result = repo.extractorFor(Serializable.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass(), IntegerExtractor.class);
     }
 
     @Test
     public void number() {
         RandomValueExtractor<?> result = repo.extractorFor(Number.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass(), IntegerExtractor.class);
     }
 
     @Test
     public void object() {
         RandomValueExtractor<?> result = repo.extractorFor(Object.class);
 
-        assertSingleExtractor(result);
-    }
-
-    private void assertSingleExtractor(RandomValueExtractor<?> result) {
-        assumeThat(result, is(CompositeRandomValueExtractor.class));
-
-        CompositeRandomValueExtractor composite = (CompositeRandomValueExtractor) result;
-        assertEquals(1, composite.components.size());
-        assertThat(composite.components.get(0), is(extractor.getClass()));
+        assertExtractors(result, extractor.getClass(), IntegerExtractor.class);
     }
 }

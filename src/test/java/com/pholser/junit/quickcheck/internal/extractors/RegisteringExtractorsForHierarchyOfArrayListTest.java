@@ -37,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.*;
+import static com.pholser.junit.quickcheck.internal.extractors.Extractors.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -52,7 +53,7 @@ public class RegisteringExtractorsForHierarchyOfArrayListTest {
         extractor = new ArrayListExtractor();
         List<RandomValueExtractor<?>> extractors = newArrayList();
         extractors.add(extractor);
-        extractors.add(new ObjectExtractor());
+        extractors.add(new IntegerExtractor());
 
         repo.add(extractors);
     }
@@ -61,63 +62,55 @@ public class RegisteringExtractorsForHierarchyOfArrayListTest {
     public void abstractList() {
         RandomValueExtractor<?> result = repo.extractorFor(AbstractList.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void list() {
         RandomValueExtractor<?> result = repo.extractorFor(List.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void randomAccess() {
         RandomValueExtractor<?> result = repo.extractorFor(RandomAccess.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void cloneable() {
         RandomValueExtractor<?> result = repo.extractorFor(Cloneable.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void serializable() {
         RandomValueExtractor<?> result = repo.extractorFor(Serializable.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass(), IntegerExtractor.class);
     }
 
     @Test
     public void abstractCollection() {
         RandomValueExtractor<?> result = repo.extractorFor(AbstractCollection.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void collection() {
         RandomValueExtractor<?> result = repo.extractorFor(Collection.class);
 
-        assertSingleExtractor(result);
+        assertExtractors(result, extractor.getClass());
     }
 
     @Test
     public void iterable() {
         RandomValueExtractor<?> result = repo.extractorFor(Iterable.class);
 
-        assertSingleExtractor(result);
-    }
-
-    private void assertSingleExtractor(RandomValueExtractor<?> result) {
-        assumeThat(result, is(CompositeRandomValueExtractor.class));
-
-        CompositeRandomValueExtractor composite = (CompositeRandomValueExtractor) result;
-        assertEquals(1, composite.components.size());
-        assertThat(composite.components.get(0), is(extractor.getClass()));
+        assertExtractors(result, extractor.getClass());
     }
 }
