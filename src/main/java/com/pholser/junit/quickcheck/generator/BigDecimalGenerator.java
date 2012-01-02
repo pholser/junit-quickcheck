@@ -23,29 +23,27 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.math.BigDecimal;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+public class BigDecimalGenerator extends Generator<BigDecimal> {
+    private final BigIntegerGenerator bigIntegerGenerator;
 
-/**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
- *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
- */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
-    /**
-     * @return the choices of generators for the theory parameter
-     */
-    Class<? extends Generator>[] value() default {};
+    public BigDecimalGenerator() {
+        this(new BigIntegerGenerator());
+    }
+
+    protected BigDecimalGenerator(BigIntegerGenerator bigIntegerGenerator) {
+        super(BigDecimal.class);
+
+        this.bigIntegerGenerator = bigIntegerGenerator;
+    }
+
+    @Override
+    public BigDecimal generate(SourceOfRandomness random, int size) {
+        return new BigDecimal(bigIntegerGenerator.generate(random, size), size);
+    }
 }

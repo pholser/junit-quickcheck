@@ -1,0 +1,2 @@
+com.pholser.junit.quickcheck.test.generator.AnotherShortGenerator
+com.pholser.junit.quickcheck.test.generator.FooGenerator

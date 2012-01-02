@@ -21,31 +21,36 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
+ * Produces values for theory parameters of types that have components, such as arrays and lists.
  *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
+ * @param <T> type of theory parameter to apply this generator's values to
  */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
+public abstract class ComponentizedGenerator<T> extends Generator<T> {
+    protected final List<Generator<?>> componentGenerators = new ArrayList<Generator<?>>();
+
     /**
-     * @return the choices of generators for the theory parameter
+     * @param type class token for type of theory parameter this generator is applicable to
      */
-    Class<? extends Generator>[] value() default {};
+    protected ComponentizedGenerator(Class<T> type) {
+        super(type);
+    }
+
+    @Override
+    public boolean hasComponents() {
+        return true;
+    }
+
+    @Override
+    public void addComponentGenerators(List<Generator<?>> componentGenerators) {
+        this.componentGenerators.clear();
+        this.componentGenerators.addAll(componentGenerators);
+    }
 }

@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -56,7 +57,7 @@ public class FromOtherExtractorTest {
         }
     }
 
-    public static class Sequence extends RandomValueExtractor<Integer> {
+    public static class Sequence extends Generator<Integer> {
         private int next = 0;
 
         public Sequence() {
@@ -64,7 +65,7 @@ public class FromOtherExtractorTest {
         }
 
         @Override
-        public Integer extract(SourceOfRandomness random, int size) {
+        public Integer generate(SourceOfRandomness random, int size) {
             return next++;
         }
     }
@@ -82,13 +83,13 @@ public class FromOtherExtractorTest {
         }
     }
 
-    public static class StringSpitterOuter extends RandomValueExtractor<String> {
+    public static class StringSpitterOuter extends Generator<String> {
         public StringSpitterOuter() {
             super(String.class);
         }
 
         @Override
-        public String extract(SourceOfRandomness random, int size) {
+        public String generate(SourceOfRandomness random, int size) {
             return "foo";
         }
     }

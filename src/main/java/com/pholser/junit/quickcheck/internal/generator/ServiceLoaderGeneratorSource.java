@@ -23,29 +23,32 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ServiceLoader;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static java.util.Collections.*;
 
-/**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
- *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
- */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
-    /**
-     * @return the choices of generators for the theory parameter
-     */
-    Class<? extends Generator>[] value() default {};
+public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
+    @SuppressWarnings("rawtypes")
+    private final ServiceLoader<Generator> loader;
+
+    public ServiceLoaderGeneratorSource() {
+        loader = ServiceLoader.load(Generator.class);
+    }
+
+    @Override
+    public Iterator<Generator<?>> iterator() {
+        List<Generator<?>> generators = new ArrayList<Generator<?>>();
+
+        for (Generator<?> each : loader)
+            generators.add(each);
+
+        return unmodifiableList(generators).iterator();
+    }
 }

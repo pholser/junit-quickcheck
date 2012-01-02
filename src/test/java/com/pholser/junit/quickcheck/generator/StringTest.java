@@ -23,29 +23,41 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.lang.reflect.Type;
+import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
-/**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
- *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
- */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
-    /**
-     * @return the choices of generators for the theory parameter
-     */
-    Class<? extends Generator>[] value() default {};
+public class StringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    @Override
+    protected void primeSourceOfRandomness() {
+        when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
+            .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c')
+            .thenReturn((int) 'd').thenReturn((int) 'e').thenReturn((int) 'f');
+    }
+
+    @Override
+    protected Type parameterType() {
+        return String.class;
+    }
+
+    @Override
+    protected int sampleSize() {
+        return 4;
+    }
+
+    @Override
+    protected List<?> randomValues() {
+        return asList("", "a", "bc", "def");
+    }
+
+    @Override
+    public void verifyInteractionWithRandomness() {
+        verify(random, times(6)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+    }
 }

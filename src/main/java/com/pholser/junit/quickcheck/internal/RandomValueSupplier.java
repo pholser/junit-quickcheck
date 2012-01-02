@@ -29,11 +29,11 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.internal.extractors.BasicExtractorSource;
-import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
-import com.pholser.junit.quickcheck.internal.extractors.ServiceLoaderExtractorSource;
-import com.pholser.junit.quickcheck.internal.generate.RandomTheoryParameterGenerator;
-import com.pholser.junit.quickcheck.internal.generate.TheoryParameterGenerator;
+import com.pholser.junit.quickcheck.internal.generator.BasicGeneratorSource;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
+import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
+import com.pholser.junit.quickcheck.internal.generator.TheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
@@ -47,7 +47,7 @@ public class RandomValueSupplier extends ParameterSupplier {
      */
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
-            new ExtractorRepository().add(new BasicExtractorSource()).add(new ServiceLoaderExtractorSource())));
+            new GeneratorRepository().add(new BasicGeneratorSource()).add(new ServiceLoaderGeneratorSource())));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {
@@ -58,9 +58,9 @@ public class RandomValueSupplier extends ParameterSupplier {
     public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
         ParameterContext context = new ParameterContext(signature.getType());
         context.addQuantifier(signature.getAnnotation(ForAll.class));
-        From explicitExtractors = signature.getAnnotation(From.class);
-        if (explicitExtractors != null)
-            context.addExtractors(explicitExtractors);
+        From explicitGenerators = signature.getAnnotation(From.class);
+        if (explicitGenerators != null)
+            context.addGenerators(explicitGenerators);
 
         return generator.generate(context);
     }

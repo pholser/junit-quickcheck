@@ -25,27 +25,35 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.util.Collections;
 
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import org.junit.Before;
+import org.junit.Test;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static org.junit.Assert.*;
 
-/**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
- *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
- */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
-    /**
-     * @return the choices of generators for the theory parameter
-     */
-    Class<? extends Generator>[] value() default {};
+public class GeneratorTest {
+    private Generator<Object> generator;
+
+    @Before
+    public void setUp() {
+        generator = new Generator<Object>(Object.class) {
+            @Override
+            public Object generate(SourceOfRandomness random, int size) {
+                return this;
+            }
+        };
+    }
+
+    @Test
+    public void noComponents() {
+        assertFalse(generator.hasComponents());
+    }
+
+    @Test
+    public void addingComponentsDoesNothing() {
+        generator.addComponentGenerators(Collections.<Generator<?>>emptyList());
+    }
 }

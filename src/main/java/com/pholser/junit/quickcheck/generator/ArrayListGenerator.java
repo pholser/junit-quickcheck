@@ -23,29 +23,23 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.util.ArrayList;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
+    public ArrayListGenerator() {
+        super(ArrayList.class);
+    }
 
-/**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
- *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
- */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
-    /**
-     * @return the choices of generators for the theory parameter
-     */
-    Class<? extends Generator>[] value() default {};
+    @Override
+    public ArrayList<?> generate(SourceOfRandomness random, int size) {
+        ArrayList<Object> items = new ArrayList<Object>();
+        for (int i = 0; i < size; ++i)
+            items.add(componentGenerators.get(0).generate(random, size));
+
+        return items;
+    }
 }

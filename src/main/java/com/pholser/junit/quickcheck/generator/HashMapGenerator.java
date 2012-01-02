@@ -23,29 +23,30 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.util.HashMap;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
+    public HashMapGenerator() {
+        super(HashMap.class);
+    }
 
-/**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
- * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
- *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
- */
-@Target(PARAMETER)
-@Retention(RUNTIME)
-public @interface From {
-    /**
-     * @return the choices of generators for the theory parameter
-     */
-    Class<? extends Generator>[] value() default {};
+    @Override
+    public HashMap<?, ?> generate(SourceOfRandomness random, int size) {
+        HashMap<Object, Object> items = new HashMap<Object, Object>();
+
+        for (int itemsAdded = 0; itemsAdded < size;) {
+            Object key = componentGenerators.get(0).generate(random, size);
+            Object value = componentGenerators.get(1).generate(random, size);
+            if (!items.containsKey(key)) {
+                items.put(key, value);
+                ++itemsAdded;
+            }
+        }
+
+        return items;
+    }
 }

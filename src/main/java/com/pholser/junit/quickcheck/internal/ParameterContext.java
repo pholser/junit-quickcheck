@@ -29,16 +29,16 @@ import java.lang.reflect.Type;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.RandomValueExtractor;
-import com.pholser.junit.quickcheck.internal.extractors.ExtractorRepository;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.javaruntype.type.Types;
 
 public class ParameterContext {
-    private static final String EXPLICIT_EXTRACTOR_TYPE_MISMATCH_MESSAGE =
-        "The extractor %s named in @%s on parameter of type %s does not produce a type-compatible object";
+    private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =
+        "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
 
     private final Type parameterType;
-    private final ExtractorRepository repo = new ExtractorRepository();
+    private final GeneratorRepository repo = new GeneratorRepository();
     private int sampleSize;
 
     public ParameterContext(Type parameterType) {
@@ -50,22 +50,22 @@ public class ParameterContext {
         return this;
     }
 
-    public ParameterContext addExtractors(From extractors) {
-        for (Class<? extends RandomValueExtractor> each : extractors.value()) {
-            RandomValueExtractor<?> extractor = Reflection.instantiate(each);
-            ensureCorrectType(extractor);
-            repo.add(extractor);
+    public ParameterContext addGenerators(From generators) {
+        for (Class<? extends Generator> each : generators.value()) {
+            Generator<?> generator = Reflection.instantiate(each);
+            ensureCorrectType(generator);
+            repo.add(generator);
         }
 
         return this;
     }
 
-    private void ensureCorrectType(RandomValueExtractor<?> extractor) {
+    private void ensureCorrectType(Generator<?> generator) {
         org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
-        for (Class<?> each : extractor.types()) {
-            org.javaruntype.type.Type<?> extractorType = Types.forJavaLangReflectType(each);
-            if (!parmType.isAssignableFrom(extractorType)) {
-                throw new IllegalArgumentException(String.format(EXPLICIT_EXTRACTOR_TYPE_MISMATCH_MESSAGE, each,
+        for (Class<?> each : generator.types()) {
+            org.javaruntype.type.Type<?> generatorType = Types.forJavaLangReflectType(each);
+            if (!parmType.isAssignableFrom(generatorType)) {
+                throw new IllegalArgumentException(String.format(EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE, each,
                     From.class.getName(), parameterType));
             }
         }
@@ -79,7 +79,7 @@ public class ParameterContext {
         return sampleSize;
     }
 
-    public RandomValueExtractor<?> explicitExtractor() {
-        return repo.isEmpty() ? null : repo.extractorFor(parameterType);
+    public Generator<?> explicitGenerator() {
+        return repo.isEmpty() ? null : repo.generatorFor(parameterType);
     }
 }
