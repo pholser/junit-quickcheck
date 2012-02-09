@@ -70,9 +70,9 @@ parameters of the following types:
 * `java.util.HashMap` of those types
 * arrays
 
-When multiple extractors can satisfy a given theory parameter based on its type
+When multiple generators can satisfy a given theory parameter based on its type
 (for example, `java.io.Serializable`), on a given generation one of the multiple
-extractors will be chosen at random with equal probability.
+generators will be chosen at random with equal probability.
 
 #### Using other types
 
