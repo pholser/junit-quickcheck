@@ -61,55 +61,55 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     public void abstractList() {
         Generator<?> result = repo.generatorFor(AbstractList.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void list() {
         Generator<?> result = repo.generatorFor(List.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void randomAccess() {
         Generator<?> result = repo.generatorFor(RandomAccess.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void cloneable() {
         Generator<?> result = repo.generatorFor(Cloneable.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void serializable() {
         Generator<?> result = repo.generatorFor(Serializable.class);
 
-        assertExtractors(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
     @Test
     public void abstractCollection() {
         Generator<?> result = repo.generatorFor(AbstractCollection.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void collection() {
         Generator<?> result = repo.generatorFor(Collection.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void iterable() {
         Generator<?> result = repo.generatorFor(Iterable.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 }

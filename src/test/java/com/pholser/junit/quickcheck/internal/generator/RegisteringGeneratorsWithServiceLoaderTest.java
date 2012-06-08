@@ -20,11 +20,11 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
 
     @Test
     public void bringsInTypesOtherThanBasicTypes() {
-        assertExtractors(repo.generatorFor(Foo.class), FooGenerator.class);
+        assertGenerators(repo.generatorFor(Foo.class), FooGenerator.class);
     }
 
     @Test
     public void bringsInTypesToSupplementBasicTypes() {
-        assertExtractors(repo.generatorFor(short.class), ShortGenerator.class, AnotherShortGenerator.class);
+        assertGenerators(repo.generatorFor(short.class), ShortGenerator.class, AnotherShortGenerator.class);
     }
 }

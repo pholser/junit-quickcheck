@@ -93,7 +93,7 @@ public class GeneratorRepository {
     }
 
     private void registerHierarchy(Class<?> type, Generator<?> generator) {
-        addExtractor(type, generator);
+        addGenerator(type, generator);
 
         if (type.getSuperclass() != null)
             registerHierarchy(type.getSuperclass(), generator);
@@ -101,7 +101,7 @@ public class GeneratorRepository {
             registerHierarchy(each, generator);
     }
 
-    private void addExtractor(Class<?> type, Generator<?> generator) {
+    private void addGenerator(Class<?> type, Generator<?> generator) {
         // Do not feed Collections or Maps to things of type Object, including type parameters.
         if (Object.class.equals(type)) {
             Class<?> firstType = generator.types().get(0);
@@ -135,7 +135,7 @@ public class GeneratorRepository {
 
         List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
-            forComponents.add(extractorForTypeParameter(each));
+            forComponents.add(generatorForTypeParameter(each));
 
         for (Generator<?> each : matches) {
             if (each.hasComponents())
@@ -145,7 +145,7 @@ public class GeneratorRepository {
         return new CompositeGenerator(matches);
     }
 
-    private Generator<?> extractorForTypeParameter(TypeParameter<?> parameter) {
+    private Generator<?> generatorForTypeParameter(TypeParameter<?> parameter) {
         return parameter instanceof WildcardTypeParameter
             ? generatorFor(int.class)
             : generatorForTypeToken(parameter.getType());
@@ -154,7 +154,7 @@ public class GeneratorRepository {
     private List<Generator<?>> generatorsForRawClass(Class<?> clazz) {
         Set<Generator<?>> matches = generators.get(clazz);
         if (matches == null)
-            throw new IllegalArgumentException("Cannot find extractor for " + clazz);
+            throw new IllegalArgumentException("Cannot find generator for " + clazz);
 
         List<Generator<?>> copies = new ArrayList<Generator<?>>();
         for (Generator<?> each : matches)

@@ -47,7 +47,9 @@ annotate the theory parameter with `@ForAll`:
         @Theory
         public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
             Crypto crypto = new Crypto();
+
             byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII", key));
+
             assertEquals(plaintext, new String(crypto.decrypt(ciphertext, key)));
         }
     }

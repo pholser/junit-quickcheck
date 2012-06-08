@@ -25,14 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 
-public class FloatExtractor extends Generator<Float> {
+public class FloatGenerator extends Generator<Float> {
     @SuppressWarnings("unchecked")
-    public FloatExtractor() {
+    public FloatGenerator() {
         super(asList(float.class, Float.class));
     }
 

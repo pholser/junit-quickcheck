@@ -45,7 +45,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
     @SuppressWarnings("unchecked")
     @Override
     protected Class<? extends Generator>[] explicitGenerators() {
-        return new Class[] { FooExtractor.class, BarExtractor.class, BazExtractor.class };
+        return new Class[] { FooGenerator.class, BarGenerator.class, BazGenerator.class };
     }
 
     @Override
@@ -68,8 +68,8 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
         verify(random, times(3)).nextInt(0, 2);
     }
 
-    public static class FooExtractor extends Generator<String> {
-        public FooExtractor() {
+    public static class FooGenerator extends Generator<String> {
+        public FooGenerator() {
             super(String.class);
         }
 
@@ -79,8 +79,8 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
         }
     }
 
-    public static class BarExtractor extends Generator<String> {
-        public BarExtractor() {
+    public static class BarGenerator extends Generator<String> {
+        public BarGenerator() {
             super(String.class);
         }
 
@@ -90,8 +90,8 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
         }
     }
 
-    public static class BazExtractor extends Generator<String> {
-        public BazExtractor() {
+    public static class BazGenerator extends Generator<String> {
+        public BazGenerator() {
             super(String.class);
         }
 

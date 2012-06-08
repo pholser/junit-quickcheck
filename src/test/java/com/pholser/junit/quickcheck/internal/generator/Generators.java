@@ -11,11 +11,11 @@ public class Generators {
         throw new UnsupportedOperationException();
     }
 
-    public static void assertExtractors(Generator<?> result, Class<? extends Generator>... expectedTypes) {
+    public static void assertGenerators(Generator<?> result, Class<? extends Generator>... expectedTypes) {
         assumeThat(result, is(CompositeGenerator.class));
 
         CompositeGenerator composite = (CompositeGenerator) result;
         for (int i = 0; i < expectedTypes.length; ++i)
-            assertThat("extractors[" + i + ']', composite.componentGenerator(i), is(expectedTypes[i]));
+            assertThat("generators[" + i + ']', composite.componentGenerator(i), is(expectedTypes[i]));
     }
 }

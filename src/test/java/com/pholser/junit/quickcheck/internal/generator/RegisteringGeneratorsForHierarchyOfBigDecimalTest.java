@@ -58,34 +58,34 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     public void bigDecimal() {
         Generator<?> result = repo.generatorFor(BigDecimal.class);
 
-        assertExtractors(result, generator.getClass());
+        assertGenerators(result, generator.getClass());
     }
 
     @Test
     public void comparable() {
         Generator<?> result = repo.generatorFor(Comparable.class);
 
-        assertExtractors(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
     @Test
     public void serializable() {
         Generator<?> result = repo.generatorFor(Serializable.class);
 
-        assertExtractors(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
     @Test
     public void number() {
         Generator<?> result = repo.generatorFor(Number.class);
 
-        assertExtractors(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
     @Test
     public void object() {
         Generator<?> result = repo.generatorFor(Object.class);
 
-        assertExtractors(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 }

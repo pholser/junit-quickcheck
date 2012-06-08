@@ -56,7 +56,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         quantifier = mock(ForAll.class);
         explicitGenerators = mock(From.class);
         primeSampleSize();
-        primeExplicitExtractors();
+        primeExplicitGenerators();
 
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(random, new GeneratorRepository().add(source));
@@ -72,7 +72,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         when(quantifier.sampleSize()).thenReturn(sampleSize());
     }
 
-    private void primeExplicitExtractors() {
+    private void primeExplicitGenerators() {
         when(explicitGenerators.value()).thenReturn(explicitGenerators());
     }
 

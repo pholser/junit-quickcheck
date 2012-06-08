@@ -36,7 +36,7 @@ import com.pholser.junit.quickcheck.generator.BooleanGenerator;
 import com.pholser.junit.quickcheck.generator.ByteGenerator;
 import com.pholser.junit.quickcheck.generator.CharacterGenerator;
 import com.pholser.junit.quickcheck.generator.DoubleGenerator;
-import com.pholser.junit.quickcheck.generator.FloatExtractor;
+import com.pholser.junit.quickcheck.generator.FloatGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.HashMapGenerator;
 import com.pholser.junit.quickcheck.generator.HashSetGenerator;
@@ -55,7 +55,7 @@ public class BasicGeneratorSource implements Iterable<Generator<?>> {
             new ByteGenerator(),
             new CharacterGenerator(),
             new DoubleGenerator(),
-            new FloatExtractor(),
+            new FloatGenerator(),
             new IntegerGenerator(),
             new LongGenerator(),
             new ShortGenerator(),
