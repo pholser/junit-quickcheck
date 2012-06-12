@@ -15,8 +15,6 @@ public class DateGenerator extends Generator<Date> {
 
     @Override
     public Date generate(SourceOfRandomness random, int size) {
-    	Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    	c.setTimeInMillis(longGenerator.generate(random, size));
-    	return c.getTime();
+        return new Date(longGenerator.generate(random, size));
     }
 }
