@@ -37,6 +37,6 @@ public class BooleanGenerator extends Generator<Boolean> {
 
     @Override
     public Boolean generate(SourceOfRandomness random, int size) {
-        return random.nextBoolean();
+        return size % 2 == 0;
     }
 }
