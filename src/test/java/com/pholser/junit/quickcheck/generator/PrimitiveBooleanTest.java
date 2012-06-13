@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class PrimitiveBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextBoolean()).thenReturn(false).thenReturn(true);
+        // no interaction with randomness for the boolean generator
     }
 
     @Override
@@ -56,6 +56,6 @@ public class PrimitiveBooleanTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextBoolean();
+        // no interaction with randomness for the boolean generator
     }
 }
