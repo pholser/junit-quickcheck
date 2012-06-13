@@ -60,6 +60,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.ArrayGenerator;
+import com.pholser.junit.quickcheck.generator.EnumGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.TypeParameter;
@@ -130,6 +131,9 @@ public class GeneratorRepository {
             org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
             return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component));
         }
+        
+        if (typeToken.getRawClass().isEnum())
+        	return new EnumGenerator(typeToken.getRawClass());
 
         List<Generator<?>> matches = generatorsForRawClass(typeToken.getRawClass());
 

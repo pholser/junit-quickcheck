@@ -46,7 +46,12 @@ public class ParameterContext {
     }
 
     public ParameterContext addQuantifier(ForAll quantifier) {
-        this.sampleSize = quantifier.sampleSize();
+    	org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
+    	if (parmType.getRawClass().isEnum())
+    		// No point in generating duplicates
+    		this.sampleSize = parmType.getRawClass().getEnumConstants().length;
+    	else
+    		this.sampleSize = quantifier.sampleSize();
         return this;
     }
 
