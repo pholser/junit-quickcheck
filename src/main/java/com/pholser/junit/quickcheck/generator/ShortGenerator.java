@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.lang.Short.*;

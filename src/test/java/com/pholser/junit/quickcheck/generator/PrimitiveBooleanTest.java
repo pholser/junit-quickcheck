@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class PrimitiveBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextBoolean()).thenReturn(false).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(random.nextBoolean()).thenReturn(false).thenReturn(true);
     }
 
     @Override
@@ -46,16 +46,16 @@ public class PrimitiveBooleanTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     protected int sampleSize() {
-        return 4;
+        return 2;
     }
 
     @Override
     protected List<?> randomValues() {
-        return asList(false, true, true, false);
+        return asList(false, true);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(4)).nextBoolean();
+        verify(random, times(2)).nextBoolean();
     }
 }

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -46,13 +46,20 @@ public class ParameterContext {
     }
 
     public ParameterContext addQuantifier(ForAll quantifier) {
-    	org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
-    	if (parmType.getRawClass().isEnum())
-    		// No point in generating duplicates
-    		this.sampleSize = parmType.getRawClass().getEnumConstants().length;
-    	else
-    		this.sampleSize = quantifier.sampleSize();
+        org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
+        decideSampleSize(quantifier, parmType);
         return this;
+    }
+
+    private void decideSampleSize(ForAll quantifier, org.javaruntype.type.Type<?> parmType) {
+        Class<?> raw = parmType.getRawClass();
+
+        if (boolean.class.equals(raw) || Boolean.class.equals(raw))
+            this.sampleSize = 2;
+        else if (parmType.getRawClass().isEnum())
+            this.sampleSize = parmType.getRawClass().getEnumConstants().length;
+        else
+            this.sampleSize = quantifier.sampleSize();
     }
 
     public ParameterContext addGenerators(From generators) {
@@ -67,8 +74,10 @@ public class ParameterContext {
 
     private void ensureCorrectType(Generator<?> generator) {
         org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
+
         for (Class<?> each : generator.types()) {
             org.javaruntype.type.Type<?> generatorType = Types.forJavaLangReflectType(each);
+
             if (!parmType.isAssignableFrom(generatorType)) {
                 throw new IllegalArgumentException(String.format(EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE, each,
                     From.class.getName(), parameterType));

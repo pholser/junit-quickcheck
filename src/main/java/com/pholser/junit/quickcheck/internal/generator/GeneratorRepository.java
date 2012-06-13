@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -26,7 +26,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -133,7 +133,7 @@ public class GeneratorRepository {
         }
         
         if (typeToken.getRawClass().isEnum())
-        	return new EnumGenerator(typeToken.getRawClass());
+            return new EnumGenerator(typeToken.getRawClass());
 
         List<Generator<?>> matches = generatorsForRawClass(typeToken.getRawClass());
 

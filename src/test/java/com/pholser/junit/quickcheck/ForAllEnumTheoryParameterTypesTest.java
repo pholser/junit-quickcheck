@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -35,11 +35,10 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllEnumTheoryParameterTypesTest {
-	
-	public enum TestEnum {
-		E1, E2, E3, E4, E5;
-	}
-	
+    public enum TestEnum {
+        E1, E2, E3, E4, E5
+    }
+
     @Test
     public void enumShouldUseNumberOfEnumsAsSampleSize() {
         assertThat(testResult(EnumSuperclass.class), isSuccessful());
@@ -48,10 +47,11 @@ public class ForAllEnumTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class EnumSuperclass {
-    	static int iterations;
+        static int iterations;
+
         @Theory
         public void shouldHold(@ForAll TestEnum e) {
-        	++iterations;
+            ++iterations;
         }
     }
 }

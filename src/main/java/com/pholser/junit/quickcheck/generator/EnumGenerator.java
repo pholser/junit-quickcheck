@@ -1,21 +1,44 @@
+/*
+ The MIT License
+
+ Copyright (c) 2010-2012 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-@SuppressWarnings("rawtypes")
 public class EnumGenerator extends Generator<Enum> {
-    private final Class<?> componentType;
+    private final Class<?> enumType;
 
-    public EnumGenerator(Class<?> componentType) {
+    public EnumGenerator(Class<?> enumType) {
         super(Enum.class);
 
-        this.componentType = componentType;
+        this.enumType = enumType;
     }
 
     @Override
     public Enum<?> generate(SourceOfRandomness random, int size) {
-    	Object[] enums = componentType.getEnumConstants();
-    	// Prevent indexoutofbounds if we are called out of context
-    	return (Enum<?>) enums[size % enums.length];
+        Object[] values = enumType.getEnumConstants();
+        return (Enum<?>) values[size % values.length];
     }
 }
