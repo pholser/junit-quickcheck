@@ -67,6 +67,7 @@ parameters of the following types:
 
 * all Java primitives and primitive wrappers
 * `java.math.Big(Decimal|Integer)`
+* `java.util.Date`
 * `java.util.ArrayList` of those types
 * `java.util.HashSet` of those types
 * `java.util.HashMap` of those types
