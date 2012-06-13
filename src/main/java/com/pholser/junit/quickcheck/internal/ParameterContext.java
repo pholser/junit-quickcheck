@@ -56,8 +56,8 @@ public class ParameterContext {
 
         if (boolean.class.equals(raw) || Boolean.class.equals(raw))
             this.sampleSize = 2;
-        else if (parmType.getRawClass().isEnum())
-            this.sampleSize = parmType.getRawClass().getEnumConstants().length;
+        else if (raw.isEnum())
+            this.sampleSize = raw.getEnumConstants().length;
         else
             this.sampleSize = quantifier.sampleSize();
     }
