@@ -39,7 +39,7 @@ import static org.mockito.Mockito.*;
 public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        // no interaction with randomness for the boolean generator
+        // no interaction with randomness
     }
 
     @Override
@@ -60,6 +60,6 @@ public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForThe
 
     @Override
     public void verifyInteractionWithRandomness() {
-        // no interaction with randomness for the boolean generator
+        // no interaction with randomness
     }
 }

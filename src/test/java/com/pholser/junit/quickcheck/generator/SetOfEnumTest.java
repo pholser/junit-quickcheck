@@ -25,21 +25,44 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Set;
 
-public class EnumGenerator extends Generator<Enum> {
-    private int invocations;
-    private final Class<?> enumType;
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
-    public EnumGenerator(Class<?> enumType) {
-        super(Enum.class);
+import static com.google.common.collect.Sets.*;
+import static java.util.Arrays.*;
 
-        this.enumType = enumType;
+public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    enum Ternary {
+        YES, NO, MAYBE
     }
 
     @Override
-    public Enum<?> generate(SourceOfRandomness random, int size) {
-        Object[] values = enumType.getEnumConstants();
-        return (Enum<?>) values[invocations++ % values.length];
+    protected void primeSourceOfRandomness() {
+        // no interaction with randomness
+    }
+
+    @Override
+    protected Type parameterType() {
+        return new ParameterizedTypeImpl(Set.class, Ternary.class);
+    }
+
+    @Override
+    protected int sampleSize() {
+        return 3;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected List<?> randomValues() {
+        return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.MAYBE));
+    }
+
+    @Override
+    public void verifyInteractionWithRandomness() {
+        // no interaction with randomness
     }
 }
