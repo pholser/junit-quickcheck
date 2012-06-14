@@ -25,14 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 
 public class BooleanGenerator extends Generator<Boolean> {
-    private final AtomicInteger invocations = new AtomicInteger(0);
+    private int invocations;
 
     @SuppressWarnings("unchecked")
     public BooleanGenerator() {
@@ -41,6 +39,6 @@ public class BooleanGenerator extends Generator<Boolean> {
 
     @Override
     public Boolean generate(SourceOfRandomness random, int size) {
-        return invocations.incrementAndGet() % 2 == 0;
+        return ++invocations % 2 == 0;
     }
 }
