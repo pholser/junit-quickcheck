@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -66,6 +67,9 @@ public class Objects {
 
         if (first == null || second == null)
             return false;
+        
+        if (first instanceof Set<?> && second instanceof Set<?>)
+            return linearDeepEquals((Set<?>) first, (Set<?>) second);
 
         if (first instanceof Collection<?> && second instanceof Collection<?>)
             return linearDeepEquals((Collection<?>) first, (Collection<?>) second);
@@ -105,4 +109,24 @@ public class Objects {
 
         return true;
     }
+    
+    private static boolean linearDeepEquals(Set<?> first, Set<?> second) {
+        if (first.size() != second.size())
+            return false;
+
+        for (Object o1 : first) {
+        	boolean found = false;
+        	for (Object o2 : second)
+        		if (deepEquals(o1, o2)) {
+        			found = true;
+        			break;
+        		}
+			if (!found) {
+				return false;
+			}
+        }
+
+        return true;
+    }
+
 }
