@@ -33,7 +33,9 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-/** Inspired by <a href="http://aberrantcode.blogspot.com/2007/07/collections-deepequals.html">this blog entry</a>. */
+/**
+ * Inspired by <a href="http://aberrantcode.blogspot.com/2007/07/collections-deepequals.html">this blog entry</a>.
+ */
 public class Objects {
     private Objects() {
         throw new UnsupportedOperationException();
@@ -67,7 +69,7 @@ public class Objects {
 
         if (first == null || second == null)
             return false;
-        
+
         if (first instanceof Set<?> && second instanceof Set<?>)
             return linearDeepEquals((Set<?>) first, (Set<?>) second);
 
@@ -109,24 +111,25 @@ public class Objects {
 
         return true;
     }
-    
+
     private static boolean linearDeepEquals(Set<?> first, Set<?> second) {
         if (first.size() != second.size())
             return false;
 
         for (Object o1 : first) {
-        	boolean found = false;
-        	for (Object o2 : second)
-        		if (deepEquals(o1, o2)) {
-        			found = true;
-        			break;
-        		}
-			if (!found) {
-				return false;
-			}
+            boolean found = false;
+
+            for (Object o2 : second) {
+                if (deepEquals(o1, o2)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+                return false;
         }
 
         return true;
     }
-
 }

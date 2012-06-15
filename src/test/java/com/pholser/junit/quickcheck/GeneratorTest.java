@@ -54,6 +54,6 @@ public class GeneratorTest {
 
     @Test
     public void addingComponentsDoesNothing() {
-        generator.addComponentGenerators(Collections.<Generator<?>>emptyList());
+        generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
     }
 }

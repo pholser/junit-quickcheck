@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.junit.Before;
 import org.junit.Test;
 

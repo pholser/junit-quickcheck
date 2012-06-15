@@ -79,12 +79,12 @@ public class FromOtherGeneratorTest {
     @RunWith(Theories.class)
     public static class WithGeneratorTypeThatDoesNotMatchTheoryParmType {
         @Theory
-        public void shouldHold(@ForAll @From(StringSpitterOuter.class) Number n) {
+        public void shouldHold(@ForAll @From(StringEmitter.class) Number n) {
         }
     }
 
-    public static class StringSpitterOuter extends Generator<String> {
-        public StringSpitterOuter() {
+    public static class StringEmitter extends Generator<String> {
+        public StringEmitter() {
             super(String.class);
         }
 
