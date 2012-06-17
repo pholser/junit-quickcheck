@@ -38,6 +38,9 @@ import com.pholser.junit.quickcheck.generator.ArrayGenerator;
 import com.pholser.junit.quickcheck.generator.EnumGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Reflection;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.SuperTypeParameter;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
@@ -125,6 +128,13 @@ public class GeneratorRepository {
     }
 
     private Generator<?> generatorForTypeParameter(TypeParameter<?> parameter) {
+        if (parameter instanceof StandardTypeParameter<?>)
+            return generatorForTypeToken(parameter.getType());
+        if (parameter instanceof WildcardTypeParameter)
+            return generatorFor(int.class);
+        if (parameter instanceof ExtendsTypeParameter<?>)
+            return generatorForTypeToken(parameter.getType());
+        if (parameter instanceof SuperTypeParameter<?>)
         return parameter instanceof WildcardTypeParameter
             ? generatorFor(int.class)
             : generatorForTypeToken(parameter.getType());

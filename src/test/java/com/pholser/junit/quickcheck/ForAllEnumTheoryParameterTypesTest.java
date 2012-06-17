@@ -40,7 +40,7 @@ public class ForAllEnumTheoryParameterTypesTest {
     }
 
     @Test
-    public void enumShouldUseNumberOfEnumsAsSampleSize() {
+    public void usesNumberOfEnumsAsSampleSize() {
         assertThat(testResult(EnumSuperclass.class), isSuccessful());
         assertEquals(5, EnumSuperclass.iterations);
     }

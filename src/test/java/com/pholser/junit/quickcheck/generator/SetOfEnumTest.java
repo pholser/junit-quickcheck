@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Sets.*;
 import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
 public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     enum Ternary {
@@ -42,7 +43,7 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
 
     @Override
     protected void primeSourceOfRandomness() {
-        // no interaction with randomness
+        verifyNoMoreInteractions(random);
     }
 
     @Override
@@ -63,6 +64,6 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
 
     @Override
     public void verifyInteractionWithRandomness() {
-        // no interaction with randomness
+        verifyNoMoreInteractions(random);
     }
 }
