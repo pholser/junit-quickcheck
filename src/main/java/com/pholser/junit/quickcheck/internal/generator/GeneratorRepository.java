@@ -115,7 +115,7 @@ public class GeneratorRepository {
             org.javaruntype.type.Type<Object[]> arrayTypeToken = (org.javaruntype.type.Type<Object[]>) typeToken;
 
             org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
-            return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, allowMixedTypes));
+            return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, true));
         }
         
         if (typeToken.getRawClass().isEnum())
