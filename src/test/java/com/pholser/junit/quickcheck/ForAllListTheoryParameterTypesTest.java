@@ -75,7 +75,7 @@ public class ForAllListTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ListOfUpperBound {
         @Theory
-        public void shouldHold(@ForAll List<? super String> items) {
+        public void shouldHold(@ForAll List<? super Number> items) {
             for (Object each : items) {
                 assertThat(each.getClass(), anyOf(is(String.class), is(Object.class)));
             }
