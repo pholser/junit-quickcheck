@@ -26,28 +26,34 @@
 package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
+import static com.pholser.junit.quickcheck.Strings.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        int integerIndex = Iterables.indexOf(source, Predicates.instanceOf(IntegerGenerator.class));
-        when(random.nextInt(0, Iterables.size(source) - 4))
-            .thenReturn(integerIndex).thenReturn(integerIndex).thenReturn(integerIndex);
-        when(random.nextInt(-1, 1)).thenReturn(1);
-        when(random.nextInt(-2, 2)).thenReturn(2).thenReturn(-2).thenReturn(0).thenReturn(-1);
+        int bigDecimalIndex = Iterables.indexOf(source, Predicates.instanceOf(BigDecimalGenerator.class));
+        when(randomForParameterGenerator.nextBytes(0)).thenReturn(new byte[0]);
+        when(randomForParameterGenerator.nextBytes(1)).thenReturn(bytesOf("a"));
+        when(randomForParameterGenerator.nextBytes(2)).thenReturn(bytesOf("bc"))
+            .thenReturn(bytesOf("de"))
+            .thenReturn(bytesOf("fg"))
+            .thenReturn(bytesOf("hi"));
+        when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
+        when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 4)).thenReturn(bigDecimalIndex);
     }
 
     @Override
@@ -65,15 +71,20 @@ public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheory
     protected List<?> randomValues() {
         List<List<?>[]> values = new ArrayList<List<?>[]>();
         values.add(new List<?>[0]);
-        values.add(new List<?>[] { asList(1) });
-        values.add(new List<?>[] { asList(2, -2), asList(0, -1) });
+        values.add(new List<?>[] { asList(new BigDecimal(new BigInteger(bytesOf("a")), 1)) });
+        values.add(new List<?>[] {
+            asList(new BigDecimal(new BigInteger(bytesOf("bc")), 2), new BigDecimal(new BigInteger(bytesOf("de")), 2)),
+            asList(new BigDecimal(new BigInteger(bytesOf("fg")), 2), new BigDecimal(new BigInteger(bytesOf("hi")), 2)),
+        });
         return values;
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(5)).nextInt(0, Iterables.size(source) - 4);
-        verify(random).nextInt(-1, 1);
-        verify(random, times(4)).nextInt(-2, 2);
+        verify(randomForParameterGenerator).nextBytes(1);
+        verify(randomForParameterGenerator, times(4)).nextBytes(2);
+        verifyNoMoreInteractions(randomForParameterGenerator);
+        verify(randomForGeneratorRepo, times(3)).nextInt(0, Iterables.size(source) - 4);
+        verifyNoMoreInteractions(randomForGeneratorRepo);
     }
 }

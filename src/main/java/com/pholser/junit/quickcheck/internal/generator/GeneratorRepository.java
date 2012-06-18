@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,9 @@ import java.util.Set;
 import com.pholser.junit.quickcheck.generator.ArrayGenerator;
 import com.pholser.junit.quickcheck.generator.EnumGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Reflection;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.javaruntype.type.ExtendsTypeParameter;
 import org.javaruntype.type.StandardTypeParameter;
 import org.javaruntype.type.SuperTypeParameter;
@@ -48,7 +51,12 @@ import org.javaruntype.type.WildcardTypeParameter;
 import static org.javaruntype.type.Types.*;
 
 public class GeneratorRepository {
+    private final SourceOfRandomness random;
     private final Map<Class<?>, Set<Generator<?>>> generators = new HashMap<Class<?>, Set<Generator<?>>>();
+
+    public GeneratorRepository(SourceOfRandomness random) {
+        this.random = random;
+    }
 
     public boolean isEmpty() {
         return generators.isEmpty();
@@ -98,22 +106,22 @@ public class GeneratorRepository {
     }
 
     public Generator<?> generatorFor(Type type) {
-        return generatorForTypeToken(Types.forJavaLangReflectType(type));
+        return generatorForTypeToken(Types.forJavaLangReflectType(type), true);
     }
 
-    private Generator<?> generatorForTypeToken(org.javaruntype.type.Type<?> typeToken) {
+    private Generator<?> generatorForTypeToken(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
         if (typeToken.isArray()) {
             @SuppressWarnings("unchecked")
             org.javaruntype.type.Type<Object[]> arrayTypeToken = (org.javaruntype.type.Type<Object[]>) typeToken;
 
             org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
-            return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component));
+            return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, allowMixedTypes));
         }
         
         if (typeToken.getRawClass().isEnum())
             return new EnumGenerator(typeToken.getRawClass());
 
-        List<Generator<?>> matches = generatorsForRawClass(typeToken.getRawClass());
+        List<Generator<?>> matches = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
 
         List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
@@ -129,21 +137,26 @@ public class GeneratorRepository {
 
     private Generator<?> generatorForTypeParameter(TypeParameter<?> parameter) {
         if (parameter instanceof StandardTypeParameter<?>)
-            return generatorForTypeToken(parameter.getType());
+            return generatorForTypeToken(parameter.getType(), true);
         if (parameter instanceof WildcardTypeParameter)
             return generatorFor(int.class);
         if (parameter instanceof ExtendsTypeParameter<?>)
-            return generatorForTypeToken(parameter.getType());
+            return generatorForTypeToken(parameter.getType(), false);
         if (parameter instanceof SuperTypeParameter<?>)
-        return parameter instanceof WildcardTypeParameter
-            ? generatorFor(int.class)
-            : generatorForTypeToken(parameter.getType());
+            return generatorForTypeToken(parameter.getType(), false);
+        return null;
     }
 
-    private List<Generator<?>> generatorsForRawClass(Class<?> clazz) {
+    private List<Generator<?>> generatorsForRawClass(Class<?> clazz, boolean allowMixedTypes) {
         Set<Generator<?>> matches = generators.get(clazz);
         if (matches == null)
             throw new IllegalArgumentException("Cannot find generator for " + clazz);
+
+        if (!allowMixedTypes) {
+            Generator<?> singleMatch = Items.randomElementFrom(matches, random);
+            matches = new HashSet<Generator<?>>();
+            matches.add(singleMatch);
+        }
 
         List<Generator<?>> copies = new ArrayList<Generator<?>>();
         for (Generator<?> each : matches)

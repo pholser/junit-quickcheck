@@ -23,43 +23,33 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.internal;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.Set;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static java.util.Arrays.*;
+import static com.google.common.collect.Sets.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class WrapperIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(-0, 0)).thenReturn(0);
-        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(1);
-        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-1);
+public class RandomElementFromItemsTest {
+    @Mock private SourceOfRandomness random;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
 
-    @Override
-    protected Type parameterType() {
-        return Integer.class;
-    }
+    @Test
+    public void choosingFromSet() {
+        Set<String> names = newHashSet("alpha", "bravo", "charlie", "delta");
+        when(random.nextInt(0, names.size() - 1)).thenReturn(2);
 
-    @Override
-    protected int sampleSize() {
-        return 3;
-    }
-
-    @Override
-    protected List<?> randomValues() {
-        return asList(0, 1, -1);
-    }
-
-    @Override
-    public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextInt(-0, 0);
-        verify(randomForParameterGenerator).nextInt(-1, 1);
-        verify(randomForParameterGenerator).nextInt(-2, 2);
+        assertEquals("charlie", Items.randomElementFrom(names, random));
     }
 }

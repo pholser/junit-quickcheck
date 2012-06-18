@@ -32,6 +32,7 @@ import java.util.Set;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+import org.mockito.Matchers;
 
 import static com.google.common.collect.Sets.*;
 import static java.util.Arrays.*;
@@ -40,7 +41,9 @@ import static org.mockito.Mockito.*;
 public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE)).thenReturn(6).thenReturn(7).thenReturn(8);
+        when(randomForParameterGenerator.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE))
+            .thenReturn(6).thenReturn(7).thenReturn(8);
+        when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
     }
 
     @Override
@@ -61,6 +64,6 @@ public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
     }
 }

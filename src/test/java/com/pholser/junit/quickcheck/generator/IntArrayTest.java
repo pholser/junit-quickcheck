@@ -36,9 +36,9 @@ import static org.mockito.Mockito.*;
 public class IntArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(-1, 1)).thenReturn(-1);
-        when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
-        when(random.nextInt(-3, 3)).thenReturn(-3).thenReturn(3).thenReturn(-1);
+        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(-1);
+        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(-3, 3)).thenReturn(-3).thenReturn(3).thenReturn(-1);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class IntArrayTest extends GeneratingUniformRandomValuesForTheoryParamete
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(-1, 1);
-        verify(random, times(2)).nextInt(-2, 2);
-        verify(random, times(3)).nextInt(-3, 3);
+        verify(randomForParameterGenerator).nextInt(-1, 1);
+        verify(randomForParameterGenerator, times(2)).nextInt(-2, 2);
+        verify(randomForParameterGenerator, times(3)).nextInt(-3, 3);
     }
 }

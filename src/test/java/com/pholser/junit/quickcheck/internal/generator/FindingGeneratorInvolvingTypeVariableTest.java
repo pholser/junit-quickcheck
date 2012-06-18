@@ -29,8 +29,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.generator.BasicGeneratorSource;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.TypeVariableImpl;
@@ -38,14 +37,19 @@ import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.exceptions.TypeValidationException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class FindingGeneratorInvolvingTypeVariableTest {
     private GeneratorRepository repo;
     private TypeVariable<Class<?>> typeVariable;
+    @Mock private SourceOfRandomness random;
 
     @Before
     public void setUp() {
-        repo = new GeneratorRepository().add(new BasicGeneratorSource());
+        MockitoAnnotations.initMocks(this);
+
+        repo = new GeneratorRepository(random).add(new BasicGeneratorSource());
         typeVariable = new TypeVariableImpl<Class<?>>("E", List.class, new Type[] { Object.class });
     }
 

@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
@@ -43,7 +44,7 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
 
     @Override
     protected void primeSourceOfRandomness() {
-        verifyNoMoreInteractions(random);
+        verifyNoMoreInteractions(randomForParameterGenerator);
     }
 
     @Override
@@ -53,17 +54,18 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
 
     @Override
     protected int sampleSize() {
-        return 3;
+        return 4;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.MAYBE));
+        return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.YES),
+            newHashSet(Ternary.YES, Ternary.NO, Ternary.MAYBE));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verifyNoMoreInteractions(random);
+        verifyNoMoreInteractions(randomForParameterGenerator);
     }
 }

@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class DateTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextLong())
+        when(randomForParameterGenerator.nextLong())
             .thenReturn(0L).thenReturn(60000L).thenReturn(100000000L).thenReturn(300000000000L);
     }
 
@@ -58,6 +58,6 @@ public class DateTest extends GeneratingUniformRandomValuesForTheoryParameterTes
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(4)).nextLong();
+        verify(randomForParameterGenerator, times(4)).nextLong();
     }
 }

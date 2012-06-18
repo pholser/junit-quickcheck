@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class ThreeDCharArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
+        when(randomForParameterGenerator.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
             .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g').thenReturn((int) 'h')
             .thenReturn((int) 'i');
@@ -65,6 +65,6 @@ public class ThreeDCharArrayTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(9)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(randomForParameterGenerator, times(9)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

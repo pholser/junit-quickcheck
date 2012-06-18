@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class StringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
+        when(randomForParameterGenerator.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c')
             .thenReturn((int) 'd').thenReturn((int) 'e').thenReturn((int) 'f');
     }
@@ -58,6 +58,6 @@ public class StringTest extends GeneratingUniformRandomValuesForTheoryParameterT
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(6)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(randomForParameterGenerator, times(6)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

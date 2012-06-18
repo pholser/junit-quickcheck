@@ -23,40 +23,20 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.internal;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.Collection;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
-import static java.lang.Long.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
-
-public class PrimitiveLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextLong()).thenReturn(MAX_VALUE);
+public class Items {
+    private Items() {
+        throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected Type parameterType() {
-        return long.class;
-    }
-
-    @Override
-    protected int sampleSize() {
-        return 1;
-    }
-
-    @Override
-    protected List<?> randomValues() {
-        return asList(MAX_VALUE);
-    }
-
-    @Override
-    public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextLong();
+    @SuppressWarnings("unchecked")
+    public static <T> T randomElementFrom(Collection<T> items, SourceOfRandomness random) {
+        Object[] asArray = items.toArray(new Object[items.size()]);
+        return (T) asArray[random.nextInt(0, items.size() - 1)];
     }
 }

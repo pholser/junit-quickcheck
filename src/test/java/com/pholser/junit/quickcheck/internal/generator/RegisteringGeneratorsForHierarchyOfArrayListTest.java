@@ -35,8 +35,10 @@ import java.util.RandomAccess;
 import com.pholser.junit.quickcheck.generator.ArrayListGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.IntegerGenerator;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
@@ -44,10 +46,11 @@ import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     private GeneratorRepository repo;
     private ArrayListGenerator generator;
+    @Mock private SourceOfRandomness random;
 
     @Before
     public void setUp() {
-        repo = new GeneratorRepository();
+        repo = new GeneratorRepository(random);
 
         generator = new ArrayListGenerator();
         List<Generator<?>> generators = newArrayList();

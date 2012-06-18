@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -32,6 +33,7 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.google.common.collect.Lists.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -133,7 +135,7 @@ public class ForAllListTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ListOfListOfUpperBound {
         @Theory
-        public void shouldHold(@ForAll List<List<? extends Number>> items) {
+        public void shouldHold(@ForAll(sampleSize = 7) List<List<? extends Number>> items) {
             for (List<? extends Number> each : items) {
                 for (Number n : each) {
                     // ensuring the cast works

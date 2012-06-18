@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class WrapperByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(-95).thenReturn(-94).thenReturn(-93)
+        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(-95).thenReturn(-94).thenReturn(-93)
             .thenReturn(-92);
     }
 
@@ -59,6 +59,6 @@ public class WrapperByteTest extends GeneratingUniformRandomValuesForTheoryParam
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(4)).nextInt(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(4)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

@@ -36,30 +36,32 @@ import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.contrib.theories.PotentialAssignment;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static com.pholser.junit.quickcheck.Objects.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
-    protected SourceOfRandomness random;
+    @Mock protected SourceOfRandomness randomForParameterGenerator;
+    @Mock protected SourceOfRandomness randomForGeneratorRepo;
+    @Mock private ForAll quantifier;
+    @Mock private From explicitGenerators;
     protected BasicGeneratorSource source;
-    private ForAll quantifier;
-    private From explicitGenerators;
     private List<PotentialAssignment> theoryParms;
 
     @Before
     public final void setUp() {
-        random = mock(SourceOfRandomness.class);
+        MockitoAnnotations.initMocks(this);
         source = new BasicGeneratorSource();
         primeSourceOfRandomness();
-        quantifier = mock(ForAll.class);
-        explicitGenerators = mock(From.class);
         primeSampleSize();
         primeExplicitGenerators();
 
         RandomTheoryParameterGenerator generator =
-            new RandomTheoryParameterGenerator(random, new GeneratorRepository().add(source));
+            new RandomTheoryParameterGenerator(randomForParameterGenerator,
+                new GeneratorRepository(randomForGeneratorRepo).add(source));
 
         ParameterContext context = new ParameterContext(parameterType());
         context.addQuantifier(quantifier);

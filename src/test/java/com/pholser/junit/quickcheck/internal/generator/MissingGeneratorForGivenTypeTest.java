@@ -25,15 +25,21 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class MissingGeneratorForGivenTypeTest {
     private GeneratorRepository repo;
+    @Mock private SourceOfRandomness random;
 
     @Before
     public void setUp() {
-        repo = new GeneratorRepository();
+        MockitoAnnotations.initMocks(this);
+
+        repo = new GeneratorRepository(random);
     }
 
     @Test(expected = IllegalArgumentException.class)

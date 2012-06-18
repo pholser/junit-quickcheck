@@ -40,7 +40,7 @@ import static org.mockito.Mockito.*;
 public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextFloat()).thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
+        when(randomForParameterGenerator.nextFloat()).thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextFloat();
+        verify(randomForParameterGenerator, times(3)).nextFloat();
     }
 }

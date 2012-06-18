@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class WrapperDoubleTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextDouble()).thenReturn(7D).thenReturn(8D).thenReturn(9D).thenReturn(2D);
+        when(randomForParameterGenerator.nextDouble()).thenReturn(7D).thenReturn(8D).thenReturn(9D).thenReturn(2D);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class WrapperDoubleTest extends GeneratingUniformRandomValuesForTheoryPar
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(4)).nextDouble();
+        verify(randomForParameterGenerator, times(4)).nextDouble();
     }
 }

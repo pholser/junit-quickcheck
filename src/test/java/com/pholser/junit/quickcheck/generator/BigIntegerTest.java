@@ -38,10 +38,10 @@ import static org.mockito.Mockito.*;
 public class BigIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextBytes(0)).thenReturn(new byte[0]);
-        when(random.nextBytes(1)).thenReturn(bytesOf("a"));
-        when(random.nextBytes(2)).thenReturn(bytesOf("bc"));
-        when(random.nextBytes(3)).thenReturn(bytesOf("def"));
+        when(randomForParameterGenerator.nextBytes(0)).thenReturn(new byte[0]);
+        when(randomForParameterGenerator.nextBytes(1)).thenReturn(bytesOf("a"));
+        when(randomForParameterGenerator.nextBytes(2)).thenReturn(bytesOf("bc"));
+        when(randomForParameterGenerator.nextBytes(3)).thenReturn(bytesOf("def"));
     }
 
     @Override
@@ -62,9 +62,9 @@ public class BigIntegerTest extends GeneratingUniformRandomValuesForTheoryParame
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextBytes(0);
-        verify(random).nextBytes(1);
-        verify(random).nextBytes(2);
-        verify(random).nextBytes(3);
+        verify(randomForParameterGenerator).nextBytes(0);
+        verify(randomForParameterGenerator).nextBytes(1);
+        verify(randomForParameterGenerator).nextBytes(2);
+        verify(randomForParameterGenerator).nextBytes(3);
     }
 }

@@ -40,9 +40,9 @@ import static org.mockito.Mockito.*;
 public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(-1, 1)).thenReturn(1);
-        when(random.nextInt(-2, 2)).thenReturn(-2).thenReturn(-2).thenReturn(2);
-        when(random.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
+        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(1);
+        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-2).thenReturn(-2).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
             .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g');
     }
@@ -68,7 +68,7 @@ public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTh
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(-1, 1);
-        verify(random, times(7)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(randomForParameterGenerator).nextInt(-1, 1);
+        verify(randomForParameterGenerator, times(7)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

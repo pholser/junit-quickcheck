@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextFloat()).thenReturn(7F).thenReturn(8F);
+        when(randomForParameterGenerator.nextFloat()).thenReturn(7F).thenReturn(8F);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryPa
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(2)).nextFloat();
+        verify(randomForParameterGenerator, times(2)).nextFloat();
     }
 }

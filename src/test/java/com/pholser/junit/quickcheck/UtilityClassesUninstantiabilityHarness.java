@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -35,6 +36,7 @@ import org.junit.Test;
 import org.junit.internal.matchers.TypeSafeMatcher;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 
 public abstract class UtilityClassesUninstantiabilityHarness {
@@ -49,6 +51,8 @@ public abstract class UtilityClassesUninstantiabilityHarness {
     @Test
     public final void attemptToInstantiate() throws Exception {
         Constructor<?> constructor = utility.getDeclaredConstructor();
+        assertTrue("need a private no-arg constructor", Modifier.isPrivate(constructor.getModifiers()));
+
         constructor.setAccessible(true);
 
         thrown.expect(InvocationTargetException.class);

@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
@@ -39,7 +40,7 @@ import static org.mockito.Mockito.*;
 public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        // no interaction with randomness
+        verifyNoMoreInteractions(randomForParameterGenerator);
     }
 
     @Override
@@ -49,17 +50,17 @@ public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForThe
 
     @Override
     protected int sampleSize() {
-        return 3;
+        return 4;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(false), newHashSet(true, false));
+        return asList(newHashSet(), newHashSet(false), newHashSet(true, false), newHashSet(true, false));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        // no interaction with randomness
+        verifyNoMoreInteractions(randomForParameterGenerator);
     }
 }

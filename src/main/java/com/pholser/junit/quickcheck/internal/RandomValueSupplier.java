@@ -47,7 +47,9 @@ public class RandomValueSupplier extends ParameterSupplier {
      */
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
-            new GeneratorRepository().add(new BasicGeneratorSource()).add(new ServiceLoaderGeneratorSource())));
+            new GeneratorRepository(new JDKSourceOfRandomness())
+                .add(new BasicGeneratorSource())
+                .add(new ServiceLoaderGeneratorSource())));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {

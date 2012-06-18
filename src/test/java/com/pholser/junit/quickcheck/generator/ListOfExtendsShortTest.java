@@ -39,7 +39,8 @@ import static org.mockito.Mockito.*;
 public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(Short.MIN_VALUE, Short.MAX_VALUE)).thenReturn(-1).thenReturn(-2).thenReturn(-3);
+        when(randomForParameterGenerator.nextInt(Short.MIN_VALUE, Short.MAX_VALUE))
+            .thenReturn(-1).thenReturn(-2).thenReturn(-3);
     }
 
     @Override
@@ -60,6 +61,6 @@ public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheo
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(Short.MIN_VALUE, Short.MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextInt(Short.MIN_VALUE, Short.MAX_VALUE);
     }
 }

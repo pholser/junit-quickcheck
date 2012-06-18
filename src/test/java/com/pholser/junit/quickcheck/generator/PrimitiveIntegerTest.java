@@ -36,8 +36,8 @@ import static org.mockito.Mockito.*;
 public class PrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(-0, 0)).thenReturn(0);
-        when(random.nextInt(-1, 1)).thenReturn(-1);
+        when(randomForParameterGenerator.nextInt(-0, 0)).thenReturn(0);
+        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(-1);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random).nextInt(-0, 0);
-        verify(random).nextInt(-1, 1);
+        verify(randomForParameterGenerator).nextInt(-0, 0);
+        verify(randomForParameterGenerator).nextInt(-1, 1);
     }
 }

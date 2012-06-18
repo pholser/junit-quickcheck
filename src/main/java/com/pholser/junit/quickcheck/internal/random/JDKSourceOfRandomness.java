@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.internal.random;
 
 import java.security.SecureRandom;
+import java.util.Collection;
 import java.util.Random;
 
 import static java.lang.Double.*;

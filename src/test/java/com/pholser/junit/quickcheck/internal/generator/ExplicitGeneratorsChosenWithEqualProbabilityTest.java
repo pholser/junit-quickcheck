@@ -39,7 +39,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
 
     @Override
     protected void primeSourceOfRandomness() {
-        when(random.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2);
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(random, times(3)).nextInt(0, 2);
+        verify(randomForParameterGenerator, times(3)).nextInt(0, 2);
     }
 
     public static class FooGenerator extends Generator<String> {

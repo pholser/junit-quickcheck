@@ -45,17 +45,18 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
 
     @Override
     public List<PotentialAssignment> generate(ParameterContext context) {
-        Generator<?> generator = context.explicitGenerator();
-        if (generator == null) {
-            generator = repository.generatorFor(context.parameterType());
-        }
-
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
         for (int i = 0; i < context.sampleSize(); ++i, ++invocationCount) {
+            Generator<?> generator = decideGenerator(context);
             Object nextValue = generator.generate(random, i);
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
         }
 
         return assignments;
+    }
+
+    private Generator<?> decideGenerator(ParameterContext context) {
+        Generator<?> generator = context.explicitGenerator();
+        return generator != null ? generator : repository.generatorFor(context.parameterType());
     }
 }

@@ -31,6 +31,7 @@ import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.javaruntype.type.Types;
 
 public class ParameterContext {
@@ -38,7 +39,7 @@ public class ParameterContext {
         "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
 
     private final Type parameterType;
-    private final GeneratorRepository repo = new GeneratorRepository();
+    private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
     private int sampleSize;
 
     public ParameterContext(Type parameterType) {

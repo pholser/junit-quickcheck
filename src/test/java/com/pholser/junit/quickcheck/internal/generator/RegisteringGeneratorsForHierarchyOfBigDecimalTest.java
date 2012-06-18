@@ -32,8 +32,10 @@ import java.util.List;
 import com.pholser.junit.quickcheck.generator.BigDecimalGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.IntegerGenerator;
+import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
@@ -41,10 +43,11 @@ import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     private GeneratorRepository repo;
     private BigDecimalGenerator generator;
+    @Mock private SourceOfRandomness random;
 
     @Before
     public void setUp() {
-        repo = new GeneratorRepository();
+        repo = new GeneratorRepository(random);
 
         generator = new BigDecimalGenerator();
         List<Generator<?>> generators = newArrayList();
