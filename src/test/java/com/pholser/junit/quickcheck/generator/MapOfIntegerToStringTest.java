@@ -41,10 +41,10 @@ public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTh
     @Override
     protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(1);
-        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-2).thenReturn(-2).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
         when(randomForParameterGenerator.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
-            .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g');
+            .thenReturn((int) 'e');
     }
 
     @Override
@@ -62,13 +62,13 @@ public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTh
     protected List<?> randomValues() {
         Map<Integer, String> doubleton = newHashMap();
         doubleton.put(-2, "bc");
-        doubleton.put(2, "fg");
+        doubleton.put(2, "de");
         return asList(newHashMap(), singletonMap(1, "a"), doubleton);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextInt(-1, 1);
-        verify(randomForParameterGenerator, times(7)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(randomForParameterGenerator, times(5)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

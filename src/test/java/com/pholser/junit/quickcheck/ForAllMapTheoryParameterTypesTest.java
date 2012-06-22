@@ -23,32 +23,29 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
 
-public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
-    public HashMapGenerator() {
-        super(HashMap.class);
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
+
+public class ForAllMapTheoryParameterTypesTest {
+    @Test
+    public void huhToHuh() {
+        assertThat(testResult(MapOfHuhToHuh.class), isSuccessful());
     }
 
-    @Override
-    public HashMap<?, ?> generate(SourceOfRandomness random, int size) {
-        HashMap<Object, Object> items = new HashMap<Object, Object>();
-
-        for (int itemsAdded = 0; itemsAdded < size; ++itemsAdded) {
-            Object key = componentGenerators.get(0).generate(random, size);
-            Object value = componentGenerators.get(1).generate(random, size);
-            items.put(key, value);
+    @RunWith(Theories.class)
+    public static class MapOfHuhToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 12) Map<?, ?> items) {
         }
-
-        return items;
-    }
-
-    @Override
-    public int numberOfNeededComponents() {
-        return 2;
     }
 }
