@@ -38,8 +38,6 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-// TODO: For the ? extends and ? super parms, find the most specific common supertype of the elements, and assert
-// that it is a supertype or subtype of the bound.
 public class ForAllListTheoryParameterTypesTest {
     @Test
     public void huh() {
