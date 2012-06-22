@@ -135,11 +135,12 @@ public class GeneratorRepository {
     private void addComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
         if (generator.hasComponents()) {
             if (componentGenerators.isEmpty()) {
+                List<Generator<?>> substituteComponentGenerators = new ArrayList<Generator<?>>();
                 for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
-                    componentGenerators.add(generatorFor(int.class));
-            }
-
-            generator.addComponentGenerators(componentGenerators);
+                    substituteComponentGenerators.add(generatorFor(int.class));
+                generator.addComponentGenerators(substituteComponentGenerators);
+            } else
+                generator.addComponentGenerators(componentGenerators);
         }
     }
 

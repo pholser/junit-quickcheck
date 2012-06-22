@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 import org.junit.Test;
@@ -32,6 +34,7 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.pholser.junit.quickcheck.Classes.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -45,7 +48,50 @@ public class ForAllMapTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class MapOfHuhToHuh {
         @Theory
-        public void shouldHold(@ForAll(sampleSize = 12) Map<?, ?> items) {
+        public void shouldHold(@ForAll Map<?, ?> items) {
+        }
+    }
+
+    @Test
+    public void huhToUpperBound() {
+        assertThat(testResult(MapOfHuhToUpperBound.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToUpperBound {
+        @Theory
+        public void shouldHold(@ForAll Map<?, ? extends Short> items) {
+            if (!items.isEmpty()) {
+                Class<?> superclass = nearestCommonSuperclassOf(classesOf(items.values()));
+                assertThat(Short.class, isAssignableFrom(superclass));
+            }
+        }
+    }
+
+    @Test
+    public void huhToLowerBound() {
+        assertThat(testResult(MapOfHuhToLowerBound.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToLowerBound {
+        @Theory
+        public void shouldHold(@ForAll Map<?, ? super Date> items) {
+        }
+    }
+
+    @Test
+    public void huhToArrayOfSerializable() {
+        assertThat(testResult(MapOfHuhToArrayOfSerializable.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToArrayOfSerializable {
+        @Theory
+        public void shouldHold(@ForAll Map<?, Serializable[]> items) {
+            for (Serializable[] each : items.values()) {
+                // ensuring the cast works
+            }
         }
     }
 }
