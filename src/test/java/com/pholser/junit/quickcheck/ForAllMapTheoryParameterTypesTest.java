@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -90,7 +91,61 @@ public class ForAllMapTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll Map<?, Serializable[]> items) {
             for (Serializable[] each : items.values()) {
+                for (Serializable s : each) {
+                    // ensuring the cast works
+                }
+            }
+        }
+    }
+
+    @Test
+    public void huhToListOfHuh() {
+        assertThat(testResult(MapOfHuhToListOfHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToListOfHuh {
+        @Theory
+        public void shouldHold(@ForAll Map<?, List<?>> items) {
+            for (List<?> each : items.values()) {
                 // ensuring the cast works
+            }
+        }
+    }
+
+    @Test
+    public void huhToMapOfIntegerToString() {
+        assertThat(testResult(MapOfHuhToMapOfIntegerToString.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToMapOfIntegerToString {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, Map<Integer, String>> items) {
+            for (Map<Integer, String> each : items.values()) {
+                for (Map.Entry<Integer, String> eachEntry : each.entrySet()) {
+                    // ensuring the cast works
+                    Integer key = eachEntry.getKey();
+                    String value = eachEntry.getValue();
+                }
+            }
+        }
+    }
+
+    @Test
+    public void huhToListOfHuhExtendsSerializable() {
+        assertThat(testResult(MapOfHuhToListOfHuhExtendsSerializable.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToListOfHuhExtendsSerializable {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<? extends Serializable>> items) {
+            for (List<? extends Serializable> each : items.values()) {
+                if (!each.isEmpty()) {
+                    Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
+                    assertThat(Serializable.class, isAssignableFrom(superclass));
+                }
             }
         }
     }

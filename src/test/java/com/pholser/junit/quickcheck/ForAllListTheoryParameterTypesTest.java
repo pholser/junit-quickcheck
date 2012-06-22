@@ -89,7 +89,9 @@ public class ForAllListTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll List<int[]> items) {
             for (int[] each : items) {
-                // ensuring the cast works
+                for (int i : each) {
+                    // ensuring the cast works
+                }
             }
         }
     }
@@ -119,7 +121,9 @@ public class ForAllListTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll List<List<Integer>> items) {
             for (List<Integer> each : items) {
-                // ensuring the cast works
+                for (Integer i : each) {
+                    // ensuring the cast works
+                }
             }
         }
     }
