@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.util.Collections;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
@@ -47,7 +48,8 @@ public class RandomElementFromItemsTest {
 
     @Test
     public void choosingFromSet() {
-        Set<String> names = newHashSet("alpha", "bravo", "charlie", "delta");
+        Set<String> names = newLinkedHashSet();
+        Collections.addAll(names, "alpha", "bravo", "charlie", "delta");
         when(random.nextInt(0, names.size() - 1)).thenReturn(2);
 
         assertEquals("charlie", Items.randomElementFrom(names, random));

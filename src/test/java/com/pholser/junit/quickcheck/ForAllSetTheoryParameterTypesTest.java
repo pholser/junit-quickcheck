@@ -32,6 +32,7 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.pholser.junit.quickcheck.Classes.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -59,8 +60,9 @@ public class ForAllSetTheoryParameterTypesTest {
     public static class SetOfLowerBound {
         @Theory
         public void shouldHold(@ForAll Set<? extends Integer> items) {
-            for (Integer each : items) {
-                // ensuring the cast works
+            if (!items.isEmpty()) {
+                Class<?> superclass = nearestCommonSuperclassOf(classesOf(items));
+                assertThat(Integer.class, isAssignableFrom(superclass));
             }
         }
     }
@@ -74,9 +76,6 @@ public class ForAllSetTheoryParameterTypesTest {
     public static class SetOfUpperBound {
         @Theory
         public void shouldHold(@ForAll Set<? super String> items) {
-            for (Object each : items) {
-                assertThat(each.getClass(), anyOf(is(String.class), is(Object.class)));
-            }
         }
     }
 
@@ -135,8 +134,9 @@ public class ForAllSetTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll Set<Set<? extends Number>> items) {
             for (Set<? extends Number> each : items) {
-                for (Number n : each) {
-                    // ensuring the cast works
+                if (!items.isEmpty()) {
+                    Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
+                    assertThat(Number.class, isAssignableFrom(superclass));
                 }
             }
         }
@@ -152,9 +152,6 @@ public class ForAllSetTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll Set<Set<? super Float>> items) {
             for (Set<? super Float> each : items) {
-                for (Object o : each) {
-                    assertThat(o.getClass(), anyOf(is(Float.class), is(Object.class)));
-                }
             }
         }
     }

@@ -29,10 +29,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+import org.javaruntype.type.Types;
 
+import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
@@ -41,6 +45,15 @@ public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryP
     @Override
     protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextFloat()).thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
+        org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
+        List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
+        when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
+            .thenReturn(supertypes.indexOf(floatType))
+            .thenReturn(0)
+            .thenReturn(supertypes.indexOf(floatType))
+            .thenReturn(0)
+            .thenReturn(supertypes.indexOf(floatType))
+            .thenReturn(0);
     }
 
     @Override

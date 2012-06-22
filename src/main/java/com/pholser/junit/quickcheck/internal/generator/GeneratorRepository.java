@@ -126,13 +126,21 @@ public class GeneratorRepository {
         List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));
-
-        for (Generator<?> each : matches) {
-            if (each.hasComponents())
-                each.addComponentGenerators(forComponents);
-        }
+        for (Generator<?> each : matches)
+            addComponentGenerators(each, forComponents);
 
         return new CompositeGenerator(matches);
+    }
+
+    private void addComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
+        if (generator.hasComponents()) {
+            if (componentGenerators.isEmpty()) {
+                for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
+                    componentGenerators.add(generatorFor(int.class));
+            }
+
+            generator.addComponentGenerators(componentGenerators);
+        }
     }
 
     private Generator<?> generatorForTypeParameter(TypeParameter<?> parameter) {
@@ -140,21 +148,13 @@ public class GeneratorRepository {
             return generatorForTypeToken(parameter.getType(), true);
         if (parameter instanceof WildcardTypeParameter)
             return generatorFor(int.class);
-
-        // TODO: super needs some work.
-        /*
-         "? extends Foo" really means "some unknown type that is at least Foo.".
-         As it stands, the below will end up choosing exactly one generator that can produce Foos or more specific.
-         "? super Foo" really means "some unknown type that is at most Foo.".
-         The below doesn't really work, because it could end up producing a subtype of Foo rather than a supertype.
-         We need a way to elect to produce a supertype of Foo that has a registered generator.
-         Maybe select at random from the set { Foo, types-assignable-from-Foo } at random until you find one that
-         has a registered generator?
-         */
         if (parameter instanceof ExtendsTypeParameter<?>)
             return generatorForTypeToken(parameter.getType(), false);
-        if (parameter instanceof SuperTypeParameter<?>)
-            return generatorForTypeToken(parameter.getType(), false);
+        if (parameter instanceof SuperTypeParameter<?>) {
+            Set<org.javaruntype.type.Type<?>> supertypes = Reflection.supertypes(parameter.getType());
+            org.javaruntype.type.Type<?> chosen = Items.randomElementFrom(supertypes, random);
+            return generatorForTypeToken(chosen, false);
+        }
         return null;
     }
 

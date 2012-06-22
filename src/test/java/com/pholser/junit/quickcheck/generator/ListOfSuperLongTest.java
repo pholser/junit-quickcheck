@@ -28,10 +28,13 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+import org.javaruntype.type.Types;
 
+import static com.google.common.collect.Lists.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
@@ -41,6 +44,15 @@ public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryP
     protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 100)).thenReturn(2).thenReturn(1);
         when(randomForParameterGenerator.nextLong()).thenReturn(3L).thenReturn(4L).thenReturn(5L);
+        org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
+        List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
+        when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
+            .thenReturn(supertypes.indexOf(longType))
+            .thenReturn(0)
+            .thenReturn(supertypes.indexOf(longType))
+            .thenReturn(0)
+            .thenReturn(supertypes.indexOf(longType))
+            .thenReturn(0);
     }
 
     @Override

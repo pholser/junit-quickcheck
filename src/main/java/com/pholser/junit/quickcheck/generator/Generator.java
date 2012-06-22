@@ -84,6 +84,10 @@ public abstract class Generator<T> {
         return false;
     }
 
+    public int numberOfNeededComponents() {
+        return 0;
+    }
+
     /**
      * Adds component generators to this generator.
      *

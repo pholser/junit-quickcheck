@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -33,12 +32,14 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static com.google.common.collect.Lists.*;
+import static com.pholser.junit.quickcheck.Classes.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+// TODO: For the ? extends and ? super parms, find the most specific common supertype of the elements, and assert
+// that it is a supertype or subtype of the bound.
 public class ForAllListTheoryParameterTypesTest {
     @Test
     public void huh() {
@@ -53,21 +54,6 @@ public class ForAllListTheoryParameterTypesTest {
     }
 
     @Test
-    public void lowerBounded() {
-        assertThat(testResult(ListOfLowerBound.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class ListOfLowerBound {
-        @Theory
-        public void shouldHold(@ForAll List<? extends Integer> items) {
-            for (Integer each : items) {
-                // ensuring the cast works
-            }
-        }
-    }
-
-    @Test
     public void upperBounded() {
         assertThat(testResult(ListOfUpperBound.class), isSuccessful());
     }
@@ -75,10 +61,23 @@ public class ForAllListTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ListOfUpperBound {
         @Theory
-        public void shouldHold(@ForAll List<? super Number> items) {
-            for (Object each : items) {
-                assertThat(each.getClass(), anyOf(is(String.class), is(Object.class)));
+        public void shouldHold(@ForAll List<? extends Integer> items) {
+            if (!items.isEmpty()) {
+                Class<?> superclass = nearestCommonSuperclassOf(classesOf(items));
+                assertThat(Integer.class, isAssignableFrom(superclass));
             }
+        }
+    }
+
+    @Test
+    public void lowerBounded() {
+        assertThat(testResult(ListOfLowerBound.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfLowerBound {
+        @Theory
+        public void shouldHold(@ForAll List<? super Number> items) {
         }
     }
 
@@ -137,8 +136,9 @@ public class ForAllListTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 7) List<List<? extends Number>> items) {
             for (List<? extends Number> each : items) {
-                for (Number n : each) {
-                    // ensuring the cast works
+                if (!each.isEmpty()) {
+                    Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
+                    assertThat(Number.class, isAssignableFrom(superclass));
                 }
             }
         }
@@ -153,11 +153,6 @@ public class ForAllListTheoryParameterTypesTest {
     public static class ListOfListOfLowerBound {
         @Theory
         public void shouldHold(@ForAll List<List<? super Float>> items) {
-            for (List<? super Float> each : items) {
-                for (Object o : each) {
-                    assertThat(o.getClass(), anyOf(is(Float.class), is(Object.class)));
-                }
-            }
         }
     }
 }

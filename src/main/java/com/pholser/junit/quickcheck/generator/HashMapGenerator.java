@@ -49,4 +49,9 @@ public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
 
         return items;
     }
+
+    @Override
+    public int numberOfNeededComponents() {
+        return 2;
+    }
 }

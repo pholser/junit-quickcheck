@@ -44,4 +44,9 @@ public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
 
         return items;
     }
+
+    @Override
+    public int numberOfNeededComponents() {
+        return 1;
+    }
 }

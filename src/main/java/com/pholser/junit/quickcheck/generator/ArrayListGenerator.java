@@ -42,4 +42,9 @@ public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
 
         return items;
     }
+
+    @Override
+    public int numberOfNeededComponents() {
+        return 1;
+    }
 }

@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.javaruntype.type.Type;
+
 public final class Reflection {
     private Reflection() {
         throw new UnsupportedOperationException();
@@ -36,6 +41,13 @@ public final class Reflection {
         } catch (Exception ex) {
             throw reflectionException(ex);
         }
+    }
+
+    public static Set<Type<?>> supertypes(Type<?> bottom) {
+        Set<Type<?>> supertypes = new HashSet<Type<?>>();
+        supertypes.add(bottom);
+        supertypes.addAll(bottom.getAllTypesAssignableFromThis());
+        return supertypes;
     }
 
     private static RuntimeException reflectionException(Exception ex) {
