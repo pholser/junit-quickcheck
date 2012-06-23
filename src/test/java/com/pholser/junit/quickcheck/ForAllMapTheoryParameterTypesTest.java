@@ -26,10 +26,14 @@
 package com.pholser.junit.quickcheck;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -49,7 +53,7 @@ public class ForAllMapTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class MapOfHuhToHuh {
         @Theory
-        public void shouldHold(@ForAll Map<?, ?> items) {
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, ?> items) {
         }
     }
 
@@ -61,7 +65,7 @@ public class ForAllMapTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class MapOfHuhToUpperBound {
         @Theory
-        public void shouldHold(@ForAll Map<?, ? extends Short> items) {
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? extends Short> items) {
             if (!items.isEmpty()) {
                 Class<?> superclass = nearestCommonSuperclassOf(classesOf(items.values()));
                 assertThat(Short.class, isAssignableFrom(superclass));
@@ -77,7 +81,7 @@ public class ForAllMapTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class MapOfHuhToLowerBound {
         @Theory
-        public void shouldHold(@ForAll Map<?, ? super Date> items) {
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? super Date> items) {
         }
     }
 
@@ -89,7 +93,7 @@ public class ForAllMapTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class MapOfHuhToArrayOfSerializable {
         @Theory
-        public void shouldHold(@ForAll Map<?, Serializable[]> items) {
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, Serializable[]> items) {
             for (Serializable[] each : items.values()) {
                 for (Serializable s : each) {
                     // ensuring the cast works
@@ -106,7 +110,7 @@ public class ForAllMapTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class MapOfHuhToListOfHuh {
         @Theory
-        public void shouldHold(@ForAll Map<?, List<?>> items) {
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<?>> items) {
             for (List<?> each : items.values()) {
                 // ensuring the cast works
             }
@@ -133,18 +137,154 @@ public class ForAllMapTheoryParameterTypesTest {
     }
 
     @Test
-    public void huhToListOfHuhExtendsSerializable() {
-        assertThat(testResult(MapOfHuhToListOfHuhExtendsSerializable.class), isSuccessful());
+    public void huhToListOfUpperBound() {
+        assertThat(testResult(MapOfHuhToListOfUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class MapOfHuhToListOfHuhExtendsSerializable {
+    public static class MapOfHuhToListOfUpperBound {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<? extends Serializable>> items) {
             for (List<? extends Serializable> each : items.values()) {
                 if (!each.isEmpty()) {
                     Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
                     assertThat(Serializable.class, isAssignableFrom(superclass));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void huhToSetOfLowerBound() {
+        assertThat(testResult(MapOfHuhToSetOfLowerBound.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfHuhToSetOfLowerBound {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<?, Set<? super HashMap<?, ?>>> items) {
+            for (Set<? super HashMap<?, ?>> each : items.values()) {
+                for (Object eachItem : each) {
+                }
+            }
+        }
+    }
+
+    @Test
+    public void upperBoundToHuh() {
+        assertThat(testResult(MapOfUpperBoundToHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfUpperBoundToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<? extends Number, ?> items) {
+            if (!items.isEmpty()) {
+                Class<?> superclass = nearestCommonSuperclassOf(classesOf(items.keySet()));
+                assertThat(Number.class, isAssignableFrom(superclass));
+            }
+        }
+    }
+
+    @Test
+    public void lowerBoundToHuh() {
+        assertThat(testResult(MapOfLowerBoundToHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfLowerBoundToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<? super int[], ?> items) {
+        }
+    }
+
+    @Test
+    public void arrayOfDateToHuh() {
+        assertThat(testResult(MapOfArrayOfDateToHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfArrayOfDateToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<Date[], ?> items) {
+            for (Date[] each : items.keySet()) {
+                for (Date d : each) {
+                    // ensuring the cast works
+                }
+            }
+        }
+    }
+
+    @Test
+    public void setOfHuhToHuh() {
+        assertThat(testResult(SetOfHuhToHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class SetOfHuhToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<Set<?>, ?> items) {
+            for (Set<?> each : items.keySet()) {
+                // ensuring the cast works
+            }
+        }
+    }
+
+    @Test
+    public void mapOfIntegerToStringToMapOfShortToDate() {
+        assertThat(testResult(MapOfIntegerToStringToMapOfShortToDate.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class MapOfIntegerToStringToMapOfShortToDate {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<Map<Integer, String>, Map<Short, Date>> items) {
+            for (Map.Entry<Map<Integer, String>, Map<Short, Date>> entry : items.entrySet()) {
+                Map<Integer, String> byInteger = entry.getKey();
+                Map<Short, Date> byShort = entry.getValue();
+                for (Map.Entry<Integer, String> integerEntry : byInteger.entrySet()) {
+                    // ensuring the cast works
+                    Integer key = integerEntry.getKey();
+                    String value = integerEntry.getValue();
+                }
+                for (Map.Entry<Short, Date> shortEntry : byShort.entrySet()) {
+                    // ensuring the cast works
+                    Short key = shortEntry.getKey();
+                    Date value = shortEntry.getValue();
+                }
+            }
+        }
+    }
+
+    @Test
+    public void iterableOfUpperBoundToHuh() {
+        assertThat(testResult(IterableOfUpperBoundToHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class IterableOfUpperBoundToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<Iterable<? extends Number>, ?> items) {
+            for (Iterable<? extends Number> each : items.keySet()) {
+                if (!Iterables.isEmpty(each)) {
+                    Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
+                    assertThat(Number.class, isAssignableFrom(superclass));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void collectionOfLowerBoundToHuh() {
+        assertThat(testResult(CollectionOfLowerBoundToHuh.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class CollectionOfLowerBoundToHuh {
+        @Theory
+        public void shouldHold(@ForAll(sampleSize = 20) Map<Collection<? super List<?>>, ?> items) {
+            for (Collection<? super List<?>> each : items.keySet()) {
+                for (Object eachItem : each) {
                 }
             }
         }
