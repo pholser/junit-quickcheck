@@ -49,8 +49,8 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     }
 
     @Override
-    public void addComponentGenerators(List<Generator<?>> componentGenerators) {
-        this.componentGenerators.clear();
-        this.componentGenerators.addAll(componentGenerators);
+    public void addComponentGenerators(List<Generator<?>> generators) {
+        componentGenerators.clear();
+        componentGenerators.addAll(generators);
     }
 }

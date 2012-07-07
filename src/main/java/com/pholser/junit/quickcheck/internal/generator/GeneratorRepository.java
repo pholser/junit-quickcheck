@@ -43,7 +43,6 @@ import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.javaruntype.type.ExtendsTypeParameter;
 import org.javaruntype.type.StandardTypeParameter;
-import org.javaruntype.type.SuperTypeParameter;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
@@ -127,18 +126,18 @@ public class GeneratorRepository {
         for (TypeParameter<?> each : typeToken.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));
         for (Generator<?> each : matches)
-            addComponentGenerators(each, forComponents);
+            applyComponentGenerators(each, forComponents);
 
         return new CompositeGenerator(matches);
     }
 
-    private void addComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
+    private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
         if (generator.hasComponents()) {
             if (componentGenerators.isEmpty()) {
-                List<Generator<?>> substituteComponentGenerators = new ArrayList<Generator<?>>();
+                List<Generator<?>> substitutes = new ArrayList<Generator<?>>();
                 for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
-                    substituteComponentGenerators.add(generatorFor(int.class));
-                generator.addComponentGenerators(substituteComponentGenerators);
+                    substitutes.add(generatorFor(int.class));
+                generator.addComponentGenerators(substitutes);
             } else
                 generator.addComponentGenerators(componentGenerators);
         }
@@ -151,12 +150,11 @@ public class GeneratorRepository {
             return generatorFor(int.class);
         if (parameter instanceof ExtendsTypeParameter<?>)
             return generatorForTypeToken(parameter.getType(), false);
-        if (parameter instanceof SuperTypeParameter<?>) {
-            Set<org.javaruntype.type.Type<?>> supertypes = Reflection.supertypes(parameter.getType());
-            org.javaruntype.type.Type<?> chosen = Items.randomElementFrom(supertypes, random);
-            return generatorForTypeToken(chosen, false);
-        }
-        return null;
+
+        // must be "? super X"
+        Set<org.javaruntype.type.Type<?>> supertypes = Reflection.supertypes(parameter.getType());
+        org.javaruntype.type.Type<?> chosen = Items.randomElementFrom(supertypes, random);
+        return generatorForTypeToken(chosen, false);
     }
 
     private List<Generator<?>> generatorsForRawClass(Class<?> clazz, boolean allowMixedTypes) {
