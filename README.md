@@ -68,10 +68,13 @@ parameters of the following types:
 * all Java primitives and primitive wrappers
 * `java.math.Big(Decimal|Integer)`
 * `java.util.Date`
+* any `enum`
 * `java.util.ArrayList` of those types
 * `java.util.HashSet` of those types
 * `java.util.HashMap` of those types
 * arrays
+
+Sample size is disregarded for booleans and `enum`s. Booleans will effectively have a sample size of 2; `true` and `false` are both considered when running a theory with a boolean parameter. `enum`s will effectively have a sample size equal to the number of values of the `enum`; all these values are considered when running a theory with an `enum` parameter.
 
 When multiple generators can satisfy a given theory parameter based on its type
 (for example, `java.io.Serializable`), on a given generation one of the multiple
