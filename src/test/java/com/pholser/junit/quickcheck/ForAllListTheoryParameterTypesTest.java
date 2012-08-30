@@ -75,7 +75,7 @@ public class ForAllListTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ListOfLowerBound {
         @Theory
-        public void shouldHold(@ForAll List<? super Number> items) {
+        public void shouldHold(@ForAll(sampleSize = 10) List<? super Number> items) {
         }
     }
 
@@ -154,7 +154,7 @@ public class ForAllListTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ListOfListOfLowerBound {
         @Theory
-        public void shouldHold(@ForAll List<List<? super Float>> items) {
+        public void shouldHold(@ForAll(sampleSize = 5) List<List<? super Float>> items) {
         }
     }
 }

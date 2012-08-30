@@ -59,7 +59,7 @@ public class ForAllSetTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class SetOfLowerBound {
         @Theory
-        public void shouldHold(@ForAll Set<? extends Integer> items) {
+        public void shouldHold(@ForAll(sampleSize = 15) Set<? extends Integer> items) {
             if (!items.isEmpty()) {
                 Class<?> superclass = nearestCommonSuperclassOf(classesOf(items));
                 assertThat(Integer.class, isAssignableFrom(superclass));
@@ -150,7 +150,7 @@ public class ForAllSetTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class SetOfSetOfLowerBound {
         @Theory
-        public void shouldHold(@ForAll Set<Set<? super Float>> items) {
+        public void shouldHold(@ForAll(sampleSize = 10) Set<Set<? super Float>> items) {
             for (Set<? super Float> each : items) {
             }
         }
