@@ -46,7 +46,7 @@ public class FindingGeneratorInvolvingTypeVariableTest {
     @Mock private SourceOfRandomness random;
 
     @Before
-    public void setUp() {
+    public void beforeEach() {
         MockitoAnnotations.initMocks(this);
 
         repo = new GeneratorRepository(random).add(new BasicGeneratorSource());

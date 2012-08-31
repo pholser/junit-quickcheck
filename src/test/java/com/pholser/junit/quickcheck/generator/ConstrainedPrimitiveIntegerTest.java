@@ -23,42 +23,46 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import java.util.Collections;
+import java.lang.reflect.Type;
+import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-import org.junit.Before;
-import org.junit.Test;
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-import static org.junit.Assert.*;
+import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
-public class GeneratorTest {
-    private Generator<Object> generator;
-
-    @Before
-    public void beforeEach() {
-        generator = new Generator<Object>(Object.class) {
-            @Override
-            public Object generate(SourceOfRandomness random, int size) {
-                return this;
-            }
-        };
+public class ConstrainedPrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    @Override
+    protected void primeSourceOfRandomness() {
+        when(randomForParameterGenerator.nextInt(-0, 0)).thenReturn(0);
+        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(1).thenReturn(-1);
     }
 
-    @Test
-    public void noComponents() {
-        assertFalse(generator.hasComponents());
+    @Override
+    protected Type parameterType() {
+        return int.class;
     }
 
-    @Test
-    public void numberOfNeededComponents() {
-        assertEquals(0, generator.numberOfNeededComponents());
+    @Override
+    protected int sampleSize() {
+        return 2;
     }
 
-    @Test
-    public void addingComponentsDoesNothing() {
-        generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
+    @Override
+    protected List<?> randomValues() {
+        return asList(0, -1);
+    }
+
+    @Override
+    protected String constraintExpression() {
+        return "#root <= 0";
+    }
+
+    @Override
+    public void verifyInteractionWithRandomness() {
+        verify(randomForParameterGenerator).nextInt(-0, 0);
+        verify(randomForParameterGenerator, times(2)).nextInt(-1, 1);
     }
 }

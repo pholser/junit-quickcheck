@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
@@ -41,6 +42,7 @@ public class ParameterContext {
     private final Type parameterType;
     private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
     private int sampleSize;
+    private String expression;
 
     public ParameterContext(Type parameterType) {
         this.parameterType = parameterType;
@@ -61,6 +63,13 @@ public class ParameterContext {
             this.sampleSize = raw.getEnumConstants().length;
         else
             this.sampleSize = quantifier.sampleSize();
+    }
+
+    public ParameterContext addConstraint(SuchThat constraint) {
+        if (constraint != null)
+            this.expression = constraint.value();
+
+        return this;
     }
 
     public ParameterContext addGenerators(From generators) {
@@ -92,6 +101,10 @@ public class ParameterContext {
 
     public int sampleSize() {
         return sampleSize;
+    }
+
+    public String expression() {
+        return expression;
     }
 
     public Generator<?> explicitGenerator() {

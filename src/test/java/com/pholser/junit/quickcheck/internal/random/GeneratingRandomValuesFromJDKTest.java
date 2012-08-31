@@ -42,7 +42,7 @@ public class GeneratingRandomValuesFromJDKTest {
     private JDKSourceOfRandomness source;
 
     @Before
-    public void setUp() {
+    public void beforeEach() {
         random = mock(Random.class);
         source = new JDKSourceOfRandomness(random);
     }

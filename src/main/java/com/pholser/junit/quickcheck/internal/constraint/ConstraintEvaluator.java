@@ -21,44 +21,25 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.internal.constraint;
 
-import java.util.Collections;
+import ognl.Ognl;
+import ognl.OgnlException;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-public class GeneratorTest {
-    private Generator<Object> generator;
-
-    @Before
-    public void beforeEach() {
-        generator = new Generator<Object>(Object.class) {
-            @Override
-            public Object generate(SourceOfRandomness random, int size) {
-                return this;
-            }
-        };
+public class ConstraintEvaluator {
+    static class EvaluationException extends RuntimeException {
+        EvaluationException(Throwable cause) {
+            super(cause);
+        }
     }
 
-    @Test
-    public void noComponents() {
-        assertFalse(generator.hasComponents());
-    }
-
-    @Test
-    public void numberOfNeededComponents() {
-        assertEquals(0, generator.numberOfNeededComponents());
-    }
-
-    @Test
-    public void addingComponentsDoesNothing() {
-        generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
+    public boolean evaluate(String expression, Object candidate) {
+        try {
+            return (Boolean) Ognl.getValue(expression, candidate);
+        } catch (OgnlException ex) {
+            throw new EvaluationException(ex);
+        }
     }
 }

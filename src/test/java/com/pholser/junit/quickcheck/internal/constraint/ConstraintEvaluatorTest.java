@@ -21,44 +21,43 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.internal.constraint;
 
-import java.util.Collections;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import static com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator.*;
 import static org.junit.Assert.*;
+import static org.junit.rules.ExpectedException.*;
 
-public class GeneratorTest {
-    private Generator<Object> generator;
+public class ConstraintEvaluatorTest {
+    @Rule public final ExpectedException thrown = none();
+
+    private ConstraintEvaluator evaluator;
 
     @Before
     public void beforeEach() {
-        generator = new Generator<Object>(Object.class) {
-            @Override
-            public Object generate(SourceOfRandomness random, int size) {
-                return this;
-            }
-        };
+        evaluator = new ConstraintEvaluator();
     }
 
     @Test
-    public void noComponents() {
-        assertFalse(generator.hasComponents());
+    public void whenExpressionEvaluatesTrue() {
+        assertTrue(evaluator.evaluate("#root > 0", 1));
     }
 
     @Test
-    public void numberOfNeededComponents() {
-        assertEquals(0, generator.numberOfNeededComponents());
+    public void whenExpressionEvaluatesFalse() {
+        assertFalse(evaluator.evaluate("#root > 0", -2));
     }
 
     @Test
-    public void addingComponentsDoesNothing() {
-        generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
+    public void whenExpressionIsMalformed() {
+        thrown.expect(EvaluationException.class);
+
+        evaluator.evaluate("#root !*@&#^*", 0);
     }
 }

@@ -30,8 +30,10 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,23 +50,28 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
     @Mock private ForAll quantifier;
     @Mock private From explicitGenerators;
+    @Mock private SuchThat constraint;
     protected BasicGeneratorSource source;
     private List<PotentialAssignment> theoryParms;
 
     @Before
-    public final void setUp() {
+    public final void beforeEach() {
         MockitoAnnotations.initMocks(this);
+
         source = new BasicGeneratorSource();
         primeSourceOfRandomness();
         primeSampleSize();
         primeExplicitGenerators();
+        primeConstraint();
 
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(randomForParameterGenerator,
-                new GeneratorRepository(randomForGeneratorRepo).add(source));
+                new GeneratorRepository(randomForGeneratorRepo).add(source),
+                new ConstraintEvaluator());
 
         ParameterContext context = new ParameterContext(parameterType());
         context.addQuantifier(quantifier);
+        context.addConstraint(constraint);
         if (explicitGenerators.value() != null)
             context.addGenerators(explicitGenerators);
         theoryParms = generator.generate(context);
@@ -78,11 +85,19 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         when(explicitGenerators.value()).thenReturn(explicitGenerators());
     }
 
+    private void primeConstraint() {
+        when(constraint.value()).thenReturn(constraintExpression());
+    }
+
     protected abstract void primeSourceOfRandomness();
 
     protected abstract Type parameterType();
 
     protected abstract int sampleSize();
+
+    protected String constraintExpression() {
+        return null;
+    }
 
     protected Class<? extends Generator>[] explicitGenerators() {
         return null;

@@ -42,7 +42,7 @@ public class RandomElementFromItemsTest {
     @Mock private SourceOfRandomness random;
 
     @Before
-    public void setUp() {
+    public void beforeEach() {
         MockitoAnnotations.initMocks(this);
     }
 

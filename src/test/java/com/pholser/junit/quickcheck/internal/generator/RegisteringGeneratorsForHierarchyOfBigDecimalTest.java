@@ -46,7 +46,7 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     @Mock private SourceOfRandomness random;
 
     @Before
-    public void setUp() {
+    public void beforeEach() {
         repo = new GeneratorRepository(random);
 
         generator = new BigDecimalGenerator();

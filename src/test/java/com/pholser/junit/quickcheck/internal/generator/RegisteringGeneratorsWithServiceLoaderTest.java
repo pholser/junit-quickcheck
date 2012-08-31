@@ -17,7 +17,7 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
     @Mock private SourceOfRandomness random;
 
     @Before
-    public void setUp() {
+    public void beforeEach() {
         MockitoAnnotations.initMocks(this);
 
         repo = new GeneratorRepository(random);

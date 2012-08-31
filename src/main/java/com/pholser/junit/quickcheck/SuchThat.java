@@ -25,40 +25,18 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Collections;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-import org.junit.Before;
-import org.junit.Test;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
-import static org.junit.Assert.*;
-
-public class GeneratorTest {
-    private Generator<Object> generator;
-
-    @Before
-    public void beforeEach() {
-        generator = new Generator<Object>(Object.class) {
-            @Override
-            public Object generate(SourceOfRandomness random, int size) {
-                return this;
-            }
-        };
-    }
-
-    @Test
-    public void noComponents() {
-        assertFalse(generator.hasComponents());
-    }
-
-    @Test
-    public void numberOfNeededComponents() {
-        assertEquals(0, generator.numberOfNeededComponents());
-    }
-
-    @Test
-    public void addingComponentsDoesNothing() {
-        generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
-    }
+/**
+ * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
+ * with this annotation to constrain the values generated for the parameter.
+ */
+@Target(PARAMETER)
+@Retention(RUNTIME)
+public @interface SuchThat {
+    String value();
 }

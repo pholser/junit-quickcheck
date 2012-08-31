@@ -30,26 +30,39 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
 import org.junit.contrib.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final GeneratorRepository repository;
+    private final ConstraintEvaluator evaluator;
     private int invocationCount;
 
-    public RandomTheoryParameterGenerator(SourceOfRandomness random, GeneratorRepository repository) {
+    public RandomTheoryParameterGenerator(SourceOfRandomness random, GeneratorRepository repository,
+                                          ConstraintEvaluator evaluator) {
         this.random = random;
         this.repository = repository;
+        this.evaluator = evaluator;
     }
 
     @Override
     public List<PotentialAssignment> generate(ParameterContext context) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
-        for (int i = 0; i < context.sampleSize(); ++i, ++invocationCount) {
+        for (int i = 0; i < context.sampleSize();) {
             Generator<?> generator = decideGenerator(context);
             Object nextValue = generator.generate(random, i);
+
+            if (context.expression() != null && !evaluator.evaluate(context.expression(), nextValue))
+                continue;
+
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
+            ++i;
+            ++invocationCount;
         }
 
         return assignments;
