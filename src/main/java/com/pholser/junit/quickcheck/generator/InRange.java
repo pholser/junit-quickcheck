@@ -25,37 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+@Target(PARAMETER)
+@Retention(RUNTIME)
+public @interface InRange {
+    String min() default "";
 
-public class PrimitiveBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBoolean()).thenReturn(false).thenReturn(true);
-    }
-
-    @Override
-    protected Type parameterType() {
-        return boolean.class;
-    }
-
-    @Override
-    protected int sampleSize() {
-        return 2;
-    }
-
-    @Override
-    protected List<?> randomValues() {
-        return asList(false, true);
-    }
-
-    @Override
-    public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextBoolean();
-    }
+    String max() default "";
 }

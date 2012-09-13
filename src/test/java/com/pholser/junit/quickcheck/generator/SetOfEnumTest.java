@@ -44,7 +44,8 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
 
     @Override
     protected void primeSourceOfRandomness() {
-        verifyNoMoreInteractions(randomForParameterGenerator);
+        when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2).thenReturn(0)
+            .thenReturn(1).thenReturn(2);
     }
 
     @Override
@@ -60,12 +61,12 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.YES),
+        return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.MAYBE),
             newHashSet(Ternary.YES, Ternary.NO, Ternary.MAYBE));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verifyNoMoreInteractions(randomForParameterGenerator);
+        verify(randomForParameterGenerator, times(6)).nextInt(0, 2);
     }
 }

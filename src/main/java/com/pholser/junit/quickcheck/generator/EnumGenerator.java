@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 public class EnumGenerator extends Generator<Enum> {
-    private int invocations;
     private final Class<?> enumType;
 
     public EnumGenerator(Class<?> enumType) {
@@ -40,6 +39,6 @@ public class EnumGenerator extends Generator<Enum> {
     @Override
     public Enum<?> generate(SourceOfRandomness random, int size) {
         Object[] values = enumType.getEnumConstants();
-        return (Enum<?>) values[invocations++ % values.length];
+        return (Enum<?>) values[random.nextInt(0, values.length - 1)];
     }
 }

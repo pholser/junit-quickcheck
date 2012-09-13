@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class WrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        verifyNoMoreInteractions(randomForParameterGenerator);
+        when(randomForParameterGenerator.nextBoolean()).thenReturn(true).thenReturn(false);
     }
 
     @Override
@@ -51,11 +51,11 @@ public class WrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryPa
 
     @Override
     protected List<?> randomValues() {
-        return asList(false, true);
+        return asList(true, false);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verifyNoMoreInteractions(randomForParameterGenerator);
+        verify(randomForParameterGenerator, times(2)).nextBoolean();
     }
 }
