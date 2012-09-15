@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import java.util.Collections;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class GeneratorTest {
     public void beforeEach() {
         generator = new Generator<Object>(Object.class) {
             @Override
-            public Object generate(SourceOfRandomness random, int size) {
+            public Object generate(SourceOfRandomness random, GenerationStatus status) {
                 return this;
             }
         };

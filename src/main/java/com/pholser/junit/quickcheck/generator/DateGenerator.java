@@ -62,7 +62,7 @@ public class DateGenerator extends Generator<Date> {
     }
 
     @Override
-    public Date generate(SourceOfRandomness random, int size) {
-        return new Date(longGenerator.generate(random, size));
+    public Date generate(SourceOfRandomness random, GenerationStatus status) {
+        return new Date(longGenerator.generate(random, status));
     }
 }

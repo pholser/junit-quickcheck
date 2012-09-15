@@ -35,11 +35,11 @@ public class StringGenerator extends Generator<String> {
     }
 
     @Override
-    public String generate(SourceOfRandomness random, int size) {
-        StringBuilder buffer = new StringBuilder(size);
+    public String generate(SourceOfRandomness random, GenerationStatus status) {
+        StringBuilder buffer = new StringBuilder(status.size());
 
-        for (int i = 0; i < size; ++i)
-            buffer.append(charGenerator.generate(random, size));
+        for (int i = 0; i < status.size(); ++i)
+            buffer.append(charGenerator.generate(random, status));
 
         return buffer.toString();
     }

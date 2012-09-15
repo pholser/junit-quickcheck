@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.util.HashSet;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
@@ -36,11 +35,11 @@ public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
     }
 
     @Override
-    public HashSet<?> generate(SourceOfRandomness random, int size) {
+    public HashSet<?> generate(SourceOfRandomness random, GenerationStatus status) {
         HashSet<Object> items = new HashSet<Object>();
 
-        for (int itemsAdded = 0; itemsAdded < size; ++itemsAdded)
-            items.add(componentGenerators.get(0).generate(random, size));
+        for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded)
+            items.add(componentGenerators.get(0).generate(random, status));
 
         return items;
     }

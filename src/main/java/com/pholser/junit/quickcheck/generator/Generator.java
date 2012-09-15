@@ -25,9 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
@@ -70,11 +74,12 @@ public abstract class Generator<T> {
      * Produces a value for a theory parameter.
      *
      * @param random a source of randomness to be used when generating the value.
-     * @param size a non-negative value that the generator can use to influence the magnitude of the generated value,
-     * if desired.
+     * @param status an object that the generator can use to influence the value it produces. For example, a generator
+     * for lists can use the {@link GenerationStatus#size() size} method to generate lists with a given number of
+     * elements.
      * @return the generated value
      */
-    public abstract T generate(SourceOfRandomness random, int size);
+    public abstract T generate(SourceOfRandomness random, GenerationStatus status);
 
     /**
      * @return whether this generator has component generators, such as for those generators that produce lists or
@@ -95,5 +100,16 @@ public abstract class Generator<T> {
      */
     public void addComponentGenerators(List<Generator<?>> componentGenerators) {
         // do nothing by default
+    }
+
+    public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
+        for (Map.Entry<Class<? extends Annotation>, Annotation> eachEntry : configurationsByType.entrySet())
+            configure(eachEntry.getKey(), eachEntry.getValue());
+    }
+
+    private void configure(Class<? extends Annotation> annotationType, Annotation configuration) {
+        Method configurer = Reflection.findMethodQuietly(getClass(), "configure", annotationType);
+        if (configurer != null)
+            Reflection.invokeQuietly(configurer, this, configuration);
     }
 }

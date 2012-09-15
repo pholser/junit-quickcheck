@@ -37,7 +37,7 @@ public class ShortGenerator extends Generator<Short> {
     }
 
     @Override
-    public Short generate(SourceOfRandomness random, int size) {
+    public Short generate(SourceOfRandomness random, GenerationStatus status) {
         return (short) random.nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

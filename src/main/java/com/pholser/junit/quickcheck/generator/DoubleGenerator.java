@@ -36,7 +36,7 @@ public class DoubleGenerator extends Generator<Double> {
     }
 
     @Override
-    public Double generate(SourceOfRandomness random, int size) {
+    public Double generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextDouble();
     }
 }

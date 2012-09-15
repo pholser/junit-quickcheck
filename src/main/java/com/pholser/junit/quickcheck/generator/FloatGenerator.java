@@ -36,7 +36,7 @@ public class FloatGenerator extends Generator<Float> {
     }
 
     @Override
-    public Float generate(SourceOfRandomness random, int size) {
+    public Float generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextFloat();
     }
 }

@@ -25,15 +25,16 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.pholser.junit.quickcheck.Objects.*;
+import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -66,14 +68,16 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
 
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(randomForParameterGenerator,
-                new GeneratorRepository(randomForGeneratorRepo).add(source),
-                new ConstraintEvaluator());
+                new GeneratorRepository(randomForGeneratorRepo).add(source));
 
         ParameterContext context = new ParameterContext(parameterType());
         context.addQuantifier(quantifier);
         context.addConstraint(constraint);
         if (explicitGenerators.value() != null)
             context.addGenerators(explicitGenerators);
+        for (Map.Entry<Class<? extends Annotation>, Annotation> each : configurations().entrySet())
+            context.addConfiguration(each.getKey(), each.getValue());
+
         theoryParms = generator.generate(context);
     }
 
@@ -94,6 +98,10 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     protected abstract Type parameterType();
 
     protected abstract int sampleSize();
+
+    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        return emptyMap();
+    }
 
     protected String constraintExpression() {
         return null;

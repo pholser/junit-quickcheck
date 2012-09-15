@@ -41,10 +41,10 @@ public class ArrayGenerator extends Generator<Object> {
     }
 
     @Override
-    public Object generate(SourceOfRandomness random, int size) {
-        Object array = Array.newInstance(componentType, size);
-        for (int i = 0; i < size; ++i)
-            Array.set(array, i, componentGenerator.generate(random, size));
+    public Object generate(SourceOfRandomness random, GenerationStatus status) {
+        Object array = Array.newInstance(componentType, status.size());
+        for (int i = 0; i < Array.getLength(array); ++i)
+            Array.set(array, i, componentGenerator.generate(random, status));
 
         return array;
     }

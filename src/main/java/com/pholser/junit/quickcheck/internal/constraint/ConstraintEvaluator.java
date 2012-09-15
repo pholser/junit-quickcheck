@@ -29,15 +29,25 @@ import ognl.Ognl;
 import ognl.OgnlException;
 
 public class ConstraintEvaluator {
-    static class EvaluationException extends RuntimeException {
+    private final Object constraint;
+
+    public static class EvaluationException extends RuntimeException {
         EvaluationException(Throwable cause) {
             super(cause);
         }
     }
 
-    public boolean evaluate(String expression, Object candidate) {
+    public ConstraintEvaluator(String constraint) {
         try {
-            return (Boolean) Ognl.getValue(expression, candidate);
+            this.constraint = constraint == null ? null : Ognl.parseExpression(constraint);
+        } catch (OgnlException e) {
+            throw new EvaluationException(e);
+        }
+    }
+
+    public boolean evaluate(Object candidate) {
+        try {
+            return constraint == null || (Boolean) Ognl.getValue(constraint, candidate);
         } catch (OgnlException ex) {
             throw new EvaluationException(ex);
         }

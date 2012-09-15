@@ -37,7 +37,7 @@ public class CharacterGenerator extends Generator<Character> {
     }
 
     @Override
-    public Character generate(SourceOfRandomness random, int size) {
+    public Character generate(SourceOfRandomness random, GenerationStatus status) {
         return (char) random.nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

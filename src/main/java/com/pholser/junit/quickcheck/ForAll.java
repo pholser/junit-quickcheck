@@ -46,4 +46,10 @@ public @interface ForAll {
      * @return the number of different values to give the annotated theory parameter
      */
     int sampleSize() default 100;
+
+    /**
+     * @return the ratio of discarded generated values to successful generated values above which values will no
+     * longer be generated
+     */
+    int discardRatio() default 0;
 }

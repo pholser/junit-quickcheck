@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.Test;
@@ -65,7 +66,7 @@ public class FromOtherGeneratorTest {
         }
 
         @Override
-        public Integer generate(SourceOfRandomness random, int size) {
+        public Integer generate(SourceOfRandomness random, GenerationStatus status) {
             return next++;
         }
     }
@@ -89,7 +90,7 @@ public class FromOtherGeneratorTest {
         }
 
         @Override
-        public String generate(SourceOfRandomness random, int size) {
+        public String generate(SourceOfRandomness random, GenerationStatus status) {
             return "foo";
         }
     }

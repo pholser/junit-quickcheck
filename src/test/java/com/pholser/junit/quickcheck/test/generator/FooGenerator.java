@@ -1,5 +1,6 @@
 package com.pholser.junit.quickcheck.test.generator;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
@@ -9,7 +10,7 @@ public class FooGenerator extends Generator<Foo> {
     }
 
     @Override
-    public Foo generate(SourceOfRandomness random, int size) {
-        return new Foo(size);
+    public Foo generate(SourceOfRandomness random, GenerationStatus status) {
+        return new Foo(status.size());
     }
 }

@@ -35,10 +35,10 @@ public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
     }
 
     @Override
-    public ArrayList<?> generate(SourceOfRandomness random, int size) {
+    public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
         ArrayList<Object> items = new ArrayList<Object>();
-        for (int i = 0; i < size; ++i)
-            items.add(componentGenerators.get(0).generate(random, size));
+        for (int i = 0; i < status.size(); ++i)
+            items.add(componentGenerators.get(0).generate(random, status));
 
         return items;
     }

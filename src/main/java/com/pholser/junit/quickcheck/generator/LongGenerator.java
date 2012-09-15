@@ -36,7 +36,7 @@ public class LongGenerator extends Generator<Long> {
     }
 
     @Override
-    public Long generate(SourceOfRandomness random, int size) {
+    public Long generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextLong();
     }
 }

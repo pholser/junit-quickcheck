@@ -41,23 +41,23 @@ public class ConstraintEvaluatorTest {
 
     @Before
     public void beforeEach() {
-        evaluator = new ConstraintEvaluator();
+        evaluator = new ConstraintEvaluator("#root > 0");
     }
 
     @Test
     public void whenExpressionEvaluatesTrue() {
-        assertTrue(evaluator.evaluate("#root > 0", 1));
+        assertTrue(evaluator.evaluate(1));
     }
 
     @Test
     public void whenExpressionEvaluatesFalse() {
-        assertFalse(evaluator.evaluate("#root > 0", -2));
+        assertFalse(evaluator.evaluate(-2));
     }
 
     @Test
     public void whenExpressionIsMalformed() {
         thrown.expect(EvaluationException.class);
 
-        evaluator.evaluate("#root !*@&#^*", 0);
+        new ConstraintEvaluator("#root !*@&#^*");
     }
 }

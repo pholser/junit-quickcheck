@@ -30,7 +30,7 @@ import java.util.List;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
-import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.internal.generator.BasicGeneratorSource;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
@@ -40,6 +40,8 @@ import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
 import org.junit.contrib.theories.PotentialAssignment;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;
@@ -51,8 +53,7 @@ public class RandomValueSupplier extends ParameterSupplier {
         this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
             new GeneratorRepository(new JDKSourceOfRandomness())
                 .add(new BasicGeneratorSource())
-                .add(new ServiceLoaderGeneratorSource()),
-            new ConstraintEvaluator()));
+                .add(new ServiceLoaderGeneratorSource())));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {
@@ -61,13 +62,16 @@ public class RandomValueSupplier extends ParameterSupplier {
 
     @Override
     public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
-        ParameterContext context = new ParameterContext(signature.getType());
-        context.addQuantifier(signature.getAnnotation(ForAll.class));
-        context.addConstraint(signature.getAnnotation(SuchThat.class));
+        ParameterContext parameter = new ParameterContext(signature.getType());
+        parameter.addQuantifier(signature.getAnnotation(ForAll.class));
+        parameter.addConstraint(signature.getAnnotation(SuchThat.class));
+
         From explicitGenerators = signature.getAnnotation(From.class);
         if (explicitGenerators != null)
-            context.addGenerators(explicitGenerators);
+            parameter.addGenerators(explicitGenerators);
 
-        return generator.generate(context);
+        parameter.addConfigurations(markedAnnotations(signature.getAnnotations(), GeneratorConfiguration.class));
+
+        return generator.generate(parameter);
     }
 }

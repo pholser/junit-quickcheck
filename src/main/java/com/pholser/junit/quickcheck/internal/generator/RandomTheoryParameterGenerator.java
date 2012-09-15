@@ -32,44 +32,27 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlException;
 import org.junit.contrib.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final GeneratorRepository repository;
-    private final ConstraintEvaluator evaluator;
-    private int invocationCount;
 
-    public RandomTheoryParameterGenerator(SourceOfRandomness random, GeneratorRepository repository,
-                                          ConstraintEvaluator evaluator) {
+    public RandomTheoryParameterGenerator(SourceOfRandomness random, GeneratorRepository repository) {
         this.random = random;
         this.repository = repository;
-        this.evaluator = evaluator;
     }
 
     @Override
-    public List<PotentialAssignment> generate(ParameterContext context) {
+    public List<PotentialAssignment> generate(ParameterContext parameter) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
-        for (int i = 0; i < context.sampleSize();) {
-            Generator<?> generator = decideGenerator(context);
-            Object nextValue = generator.generate(random, i);
 
-            if (context.expression() != null && !evaluator.evaluate(context.expression(), nextValue))
-                continue;
-
+        GenerationContext generation = new GenerationContext(parameter, repository);
+        while (generation.shouldContinue()) {
+            Object nextValue = generation.generate(random);
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
-            ++i;
-            ++invocationCount;
         }
 
         return assignments;
-    }
-
-    private Generator<?> decideGenerator(ParameterContext context) {
-        Generator<?> generator = context.explicitGenerator();
-        return generator != null ? generator : repository.generatorFor(context.parameterType());
     }
 }

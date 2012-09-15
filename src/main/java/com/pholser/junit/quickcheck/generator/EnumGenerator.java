@@ -37,7 +37,7 @@ public class EnumGenerator extends Generator<Enum> {
     }
 
     @Override
-    public Enum<?> generate(SourceOfRandomness random, int size) {
+    public Enum<?> generate(SourceOfRandomness random, GenerationStatus status) {
         Object[] values = enumType.getEnumConstants();
         return (Enum<?>) values[random.nextInt(0, values.length - 1)];
     }

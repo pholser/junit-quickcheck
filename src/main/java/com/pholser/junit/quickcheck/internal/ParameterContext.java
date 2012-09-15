@@ -25,7 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
@@ -35,6 +39,8 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
 import org.javaruntype.type.Types;
 
+import static java.util.Collections.*;
+
 public class ParameterContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =
         "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
@@ -42,7 +48,10 @@ public class ParameterContext {
     private final Type parameterType;
     private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
     private int sampleSize;
-    private String expression;
+    private int discardRatio;
+    private String constraint;
+    private Map<Class<? extends Annotation>, Annotation> configurations =
+        new HashMap<Class<? extends Annotation>, Annotation>();
 
     public ParameterContext(Type parameterType) {
         this.parameterType = parameterType;
@@ -51,6 +60,7 @@ public class ParameterContext {
     public ParameterContext addQuantifier(ForAll quantifier) {
         org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
         decideSampleSize(quantifier, parmType);
+        this.discardRatio = quantifier.discardRatio();
         return this;
     }
 
@@ -67,7 +77,7 @@ public class ParameterContext {
 
     public ParameterContext addConstraint(SuchThat constraint) {
         if (constraint != null)
-            this.expression = constraint.value();
+            this.constraint = constraint.value();
 
         return this;
     }
@@ -80,6 +90,16 @@ public class ParameterContext {
         }
 
         return this;
+    }
+
+    public ParameterContext addConfigurations(List<Annotation> configurations) {
+        for (Annotation each : configurations)
+            addConfiguration(each.annotationType(), each);
+        return this;
+    }
+
+    public void addConfiguration(Class<? extends Annotation> annotationType, Annotation configuration) {
+        this.configurations.put(annotationType, configuration);
     }
 
     private void ensureCorrectType(Generator<?> generator) {
@@ -103,11 +123,19 @@ public class ParameterContext {
         return sampleSize;
     }
 
-    public String expression() {
-        return expression;
+    public int discardRatio() {
+        return discardRatio;
+    }
+
+    public String constraint() {
+        return constraint;
     }
 
     public Generator<?> explicitGenerator() {
         return repo.isEmpty() ? null : repo.generatorFor(parameterType);
+    }
+
+    public Map<Class<? extends Annotation>, Annotation> configurations() {
+        return unmodifiableMap(configurations);
     }
 }

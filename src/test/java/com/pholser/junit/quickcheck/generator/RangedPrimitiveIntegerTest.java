@@ -21,44 +21,53 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+*/
 
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck.generator;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-public class CompositeGenerator extends Generator<Object> {
-    private final List<Generator<?>> componentGenerators;
+import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
-    public CompositeGenerator(List<Generator<?>> componentGenerators) {
-        super(Object.class);
-
-        this.componentGenerators = new ArrayList<Generator<?>>(componentGenerators);
+public class RangedPrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    @Override
+    protected void primeSourceOfRandomness() {
+        when(randomForParameterGenerator.nextInt(-4, 5)).thenReturn(-2).thenReturn(3);
     }
 
     @Override
-    public Object generate(SourceOfRandomness random, GenerationStatus status) {
-        Generator<?> generator = componentGenerators.size() == 1
-            ? componentGenerators.get(0)
-            : componentGenerators.get(random.nextInt(0, componentGenerators.size() - 1));
-
-        return generator.generate(random, status);
-    }
-
-    public Generator<?> componentGenerator(int index) {
-        return componentGenerators.get(index);
+    protected Type parameterType() {
+        return int.class;
     }
 
     @Override
-    public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
-        for (Generator<?> each : componentGenerators)
-            each.configure(configurationsByType);
+    protected int sampleSize() {
+        return 2;
+    }
+
+    @Override
+    protected List<?> randomValues() {
+        return asList(-2, 3);
+    }
+
+    @Override
+    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        InRange range = mock(InRange.class);
+        when(range.min()).thenReturn("-4");
+        when(range.max()).thenReturn("5");
+        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
+    }
+
+    @Override
+    public void verifyInteractionWithRandomness() {
+        verify(randomForParameterGenerator, times(2)).nextInt(-4, 5);
     }
 }

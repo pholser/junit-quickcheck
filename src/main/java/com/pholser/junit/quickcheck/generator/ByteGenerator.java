@@ -37,7 +37,7 @@ public class ByteGenerator extends Generator<Byte> {
     }
 
     @Override
-    public Byte generate(SourceOfRandomness random, int size) {
+    public Byte generate(SourceOfRandomness random, GenerationStatus status) {
         return (byte) random.nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

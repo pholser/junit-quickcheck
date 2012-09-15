@@ -43,7 +43,7 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
     }
 
     @Override
-    public BigDecimal generate(SourceOfRandomness random, int size) {
-        return new BigDecimal(bigIntegerGenerator.generate(random, size), size);
+    public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
+        return new BigDecimal(bigIntegerGenerator.generate(random, status), status.size());
     }
 }

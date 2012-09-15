@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
@@ -74,7 +75,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
         }
 
         @Override
-        public String generate(SourceOfRandomness random, int size) {
+        public String generate(SourceOfRandomness random, GenerationStatus status) {
             return "foo";
         }
     }
@@ -85,7 +86,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
         }
 
         @Override
-        public String generate(SourceOfRandomness random, int size) {
+        public String generate(SourceOfRandomness random, GenerationStatus status) {
             return "bar";
         }
     }
@@ -96,7 +97,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest
         }
 
         @Override
-        public String generate(SourceOfRandomness random, int size) {
+        public String generate(SourceOfRandomness random, GenerationStatus status) {
             return "baz";
         }
     }

@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -34,6 +33,5 @@ import static java.lang.annotation.RetentionPolicy.*;
 
 @Target(ANNOTATION_TYPE)
 @Retention(RUNTIME)
-public @interface ConfiguredWith {
-    Class<? extends Annotation>[] value();
+public @interface GeneratorConfiguration {
 }

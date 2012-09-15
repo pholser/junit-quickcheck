@@ -33,8 +33,9 @@ import static java.lang.annotation.RetentionPolicy.*;
 
 @Target(PARAMETER)
 @Retention(RUNTIME)
+@GeneratorConfiguration
 public @interface InRange {
-    String min() default "";
+    String min();
 
-    String max() default "";
+    String max();
 }
