@@ -123,8 +123,8 @@
         <configuration>
           <check>
             <haltOnFailure>true</haltOnFailure>
-            <branchRate>100</branchRate>
-            <totalBranchRate>100</totalBranchRate>
+            <branchRate>96</branchRate>
+            <totalBranchRate>99</totalBranchRate>
             <totalLineRate>100</totalLineRate>
           </check>
         </configuration>

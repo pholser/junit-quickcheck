@@ -29,4 +29,11 @@ class IllegalAccessProblematic {
     private IllegalAccessProblematic() {
         // no-op
     }
+
+    IllegalAccessProblematic(int i) {
+    }
+
+    private void foo() {
+        // no-op
+    }
 }

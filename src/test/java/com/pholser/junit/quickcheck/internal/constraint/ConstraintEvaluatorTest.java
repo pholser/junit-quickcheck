@@ -60,4 +60,11 @@ public class ConstraintEvaluatorTest {
 
         new ConstraintEvaluator("#root !*@&#^*");
     }
+
+    @Test
+    public void whenExpressionCannotBeEvaluatedCorrectly() {
+        thrown.expect(EvaluationException.class);
+
+        new ConstraintEvaluator("#root.foo == 'bar'").evaluate(3);
+    }
 }

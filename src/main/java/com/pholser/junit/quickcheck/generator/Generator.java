@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
@@ -108,8 +109,14 @@ public abstract class Generator<T> {
     }
 
     private void configure(Class<? extends Annotation> annotationType, Annotation configuration) {
-        Method configurer = Reflection.findMethodQuietly(getClass(), "configure", annotationType);
-        if (configurer != null)
-            Reflection.invokeQuietly(configurer, this, configuration);
+        Method configurer;
+
+        try {
+            configurer = Reflection.findMethodQuietly(getClass(), "configure", annotationType);
+        } catch (ReflectionException ex) {
+            return;
+        }
+
+        Reflection.invokeQuietly(configurer, this, configuration);
     }
 }

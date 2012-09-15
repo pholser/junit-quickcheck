@@ -21,26 +21,19 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-public class Generators {
-    private Generators() {
-        throw new UnsupportedOperationException();
-    }
-
-    public static void assertGenerators(Generator<?> result, Class<? extends Generator>... expectedTypes) {
-        assumeThat(result, is(CompositeGenerator.class));
-
-        CompositeGenerator composite = (CompositeGenerator) result;
-        for (int i = 0; i < expectedTypes.length; ++i)
-            assertThat("generators[" + i + ']', composite.componentGenerator(i), is(expectedTypes[i]));
-    }
+public class ExceededDiscardRatioTest {
 }

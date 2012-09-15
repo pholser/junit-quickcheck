@@ -93,14 +93,6 @@ public final class Reflection {
     }
 
     private static RuntimeException reflectionException(Exception ex) {
-        if (ex instanceof NoSuchMethodException)
-            return new ReflectionException(ex);
-        if (ex instanceof InstantiationException)
-            return new ReflectionException(ex);
-        if (ex instanceof IllegalAccessException)
-            return new ReflectionException(ex);
-        if (ex instanceof IllegalArgumentException)
-            return new ReflectionException(ex);
         if (ex instanceof InvocationTargetException)
             return new ReflectionException(((InvocationTargetException) ex).getTargetException());
         if (ex instanceof RuntimeException)

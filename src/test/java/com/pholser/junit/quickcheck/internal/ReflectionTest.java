@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.lang.reflect.Method;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -62,5 +64,49 @@ public class ReflectionTest {
         protected InstantiationProblematic() {
             // no-op
         }
+    }
+
+    @Test
+    public void findingNonExistentMethodQuietlyWrapsNoSuchMethodException() {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(NoSuchMethodException.class.getName());
+
+        findMethodQuietly(getClass(), "foo");
+    }
+
+    @Test
+    public void invokingMethodQuietlyWrapsIllegalAccessException() throws Exception {
+        Method method = IllegalAccessProblematic.class.getDeclaredMethod("foo");
+
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(IllegalAccessException.class.getName());
+
+        invokeQuietly(method, new IllegalAccessProblematic(0));
+    }
+
+    @Test
+    public void invokingMethodQuietlyPropagatesExceptionRaisedByMethod() {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(NumberFormatException.class.getName());
+
+        invokeQuietly(findMethodQuietly(getClass(), "bar"), this);
+    }
+
+    @Test
+    public void invokingMethodPropagatesIllegalArgumentException() {
+        thrown.expect(IllegalArgumentException.class);
+
+        invokeQuietly(findMethodQuietly(getClass(), "bar"), this, "baz");
+    }
+
+    @Test
+    public void invokingMethodQuietlyPropagatesOtherRuntimeExceptions() throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        invokeQuietly(findMethodQuietly(getClass(), "bar"), null);
+    }
+
+    public void bar() {
+        throw new NumberFormatException();
     }
 }

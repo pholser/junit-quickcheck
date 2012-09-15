@@ -41,10 +41,8 @@ public class IntegerGenerator extends Generator<Integer> {
 
     public void configure(InRange range) {
         this.range = range;
-        if (range != null) {
-            min = Integer.valueOf(range.min());
-            max = Integer.valueOf(range.max());
-        }
+        min = Integer.valueOf(range.min());
+        max = Integer.valueOf(range.max());
     }
 
     @Override

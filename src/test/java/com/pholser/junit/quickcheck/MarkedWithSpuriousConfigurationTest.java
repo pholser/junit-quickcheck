@@ -23,24 +23,35 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import java.util.Formatter;
 
-import static org.hamcrest.CoreMatchers.*;
+import com.pholser.junit.quickcheck.generator.InRange;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
+
+import static com.pholser.junit.quickcheck.Annotations.*;
 import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-public class Generators {
-    private Generators() {
-        throw new UnsupportedOperationException();
+public class MarkedWithSpuriousConfigurationTest {
+    @Test
+    public void okIfParameterMarkedWithUnexpectedConfiguration() {
+        assertThat(testResult(WithSpuriousConfiguration.class), isSuccessful());
+        assertEquals(Formatter.BigDecimalLayoutForm.values().length, WithSpuriousConfiguration.iterations);
     }
 
-    public static void assertGenerators(Generator<?> result, Class<? extends Generator>... expectedTypes) {
-        assumeThat(result, is(CompositeGenerator.class));
+    @RunWith(Theories.class)
+    public static class WithSpuriousConfiguration {
+        static int iterations;
 
-        CompositeGenerator composite = (CompositeGenerator) result;
-        for (int i = 0; i < expectedTypes.length; ++i)
-            assertThat("generators[" + i + ']', composite.componentGenerator(i), is(expectedTypes[i]));
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "3", max = "6") Formatter.BigDecimalLayoutForm f) {
+            ++iterations;
+        }
     }
 }
