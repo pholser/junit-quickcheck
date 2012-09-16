@@ -31,13 +31,21 @@ import static java.lang.Short.*;
 import static java.util.Arrays.*;
 
 public class ShortGenerator extends Generator<Short> {
+    private short min = MIN_VALUE;
+    private short max = MAX_VALUE;
+
     @SuppressWarnings("unchecked")
     public ShortGenerator() {
         super(asList(short.class, Short.class));
     }
 
+    public void configure(InRange range) {
+        min = Short.valueOf(range.min());
+        max = Short.valueOf(range.max());
+    }
+
     @Override
     public Short generate(SourceOfRandomness random, GenerationStatus status) {
-        return (short) random.nextInt(MIN_VALUE, MAX_VALUE);
+        return (short) random.nextInt(min, max);
     }
 }

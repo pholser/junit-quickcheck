@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.ShortGenerator;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -196,6 +197,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedWrapperInteger() {
+        assertThat(testResult(RangedWrapperInteger.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperInteger {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-4", max = "3") int i) {
+            assertThat(i, allOf(greaterThanOrEqualTo(-4), lessThanOrEqualTo(3)));
+        }
+    }
+
+    @Test
     public void primitiveLong() {
         assertThat(testResult(PrimitiveLong.class), isSuccessful());
     }
@@ -232,6 +246,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveShort() {
+        assertThat(testResult(RangedPrimitiveShort.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveShort {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "35", max = "67") short s) {
+            assertThat(s, allOf(greaterThanOrEqualTo((short) 35), lessThanOrEqualTo((short) 67)));
+        }
+    }
+
+    @Test
     public void wrapperShort() {
         assertThat(testResult(WrapperShort.class), isSuccessful());
     }
@@ -240,6 +267,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperShort {
         @Theory
         public void shouldHold(@ForAll Short s) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperShort() {
+        assertThat(testResult(RangedWrapperShort.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperShort {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-10", max = "0") short s) {
+            assertThat(s, allOf(greaterThanOrEqualTo((short) -10), lessThanOrEqualTo((short) 0)));
         }
     }
 }

@@ -12,13 +12,16 @@ to the function, then executes the function using lots of random arguments to se
 
 #### Theories
 
-JUnit's answer to function properties is the notion of theories. Programmers write parameterized tests marked as
+JUnit's answer to function properties is the notion of _theories_. Programmers write parameterized tests marked as
 theories, run using a special test runner:
 
     @RunWith(Theories.class)
     public class Accounts {
         @Theory
         public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
+            assumeThat(originalBalance, greaterThan(0));
+            assumeThat(withdrawalAmount, allOf(greaterThan(0), lessThan(originalBalance));
+
             Account account = new Account(originalBalance);
 
             account.withdraw(withdrawalAmount);
@@ -28,15 +31,16 @@ theories, run using a special test runner:
     }
 
 #### So?
+
 TDD/BDD builds up designs example by example. The resulting test suites give programmers confidence that their code
 works for the examples they thought of. Theories offer a means to express statements about code that should hold for
-an entire domain of inputs, not just a handful of examples, and validate those statements against lots of randomly
+an entire domain of inputs, not just a handful of examples, and to validate those statements against lots of randomly
 generated inputs.
 
 ### Using junit-quickcheck
 
 Create theories as you normally would with JUnit. If you want JUnit to exercise the theory with lots of randomly
-generated values for a theory parameter, annotate the theory parameter with `@ForAll`:
+generated values for a theory parameter, mark the theory parameter with `@ForAll`:
 
     @RunWith(Theories.class)
     public class SymmetricKeyCryptography {
@@ -66,26 +70,37 @@ Out of the box, junit-quickcheck can generate random values for theory parameter
 * `java.util.ArrayList` of those types
 * `java.util.HashSet` of those types
 * `java.util.HashMap` of those types
-* arrays
+* arrays of those types
 
 When multiple generators can satisfy a given theory parameter based on its type (for example, `java.io.Serializable`),
 on a given generation one of the multiple generators will be chosen at random with equal probability.
 
-#### Using other types
+#### Generating values of other types
 
 If you wish to generate random values for theory parameters of other types, or to override the default means of
-generation for a supported type, annotate the theory parameter with `@From` and supply the class(es) of the `Generator`
-to be used. If you give multiple classes in `@From`, one will be chosen on every generation with equal probability.
+generation for a supported type, mark the theory parameter already marked as `@ForAll` with `@From` and supply the
+class(es) of the `Generator` to be used. If you give multiple classes in `@From`, one will be chosen on every
+generation with equal probability.
 
-If you wish to add a generator for a type without having to use `@From`, you can
-package your `Generator` in a [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)
-JAR file and place the JAR on the class path. junit-quickcheck will make those generators available for use.
-Any generators you supply in this manner for already-supported types complement the built-in generators, they do not
-override them.
+If you wish to add a generator for a type without having to use `@From`, you can package your `Generator` in a
+[ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html) JAR file and place the JAR on
+the class path. junit-quickcheck will make those generators available for use. Any generators you supply in this manner
+for already-supported types complement the built-in generators, they do not override them.
+
+#### Configuring generators
+
+Over the period of generating values for a single theory parameter, you can feed specific configurations to the
+generator(s) for values of the parameter's type. If you mark a theory parameter already marked as `@ForAll` with an
+annotation that is itself marked as `@GeneratorConfiguration`, then if the `Generator` for that parameter's type has a
+public method named `configure` that accepts a single parameter of the annotation type, junit-quickcheck will call the
+`configure` method reflectively, passing it the annotation:
+
+
+A `Generator` can have many such `configure` methods.
 
 ### How it works
 
-junit-quickcheck leverages the little-known
+junit-quickcheck leverages the
 [`ParameterSupplier`](http://kentbeck.github.com/junit/javadoc/latest/org/junit/experimental/theories/ParameterSupplier.html)
 feature of JUnit.
 

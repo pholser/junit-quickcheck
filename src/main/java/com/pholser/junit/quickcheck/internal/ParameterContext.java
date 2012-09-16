@@ -47,6 +47,7 @@ public class ParameterContext {
 
     private final Type parameterType;
     private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
+
     private int sampleSize;
     private int discardRatio;
     private String constraint;
@@ -67,6 +68,7 @@ public class ParameterContext {
     private void decideSampleSize(ForAll quantifier, org.javaruntype.type.Type<?> parmType) {
         Class<?> raw = parmType.getRawClass();
 
+        // TODO: move this responsibility to the boolean and enum generators, controlled by @Enumerative
         if (boolean.class.equals(raw) || Boolean.class.equals(raw))
             this.sampleSize = 2;
         else if (raw.isEnum())
