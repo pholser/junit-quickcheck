@@ -31,13 +31,21 @@ import static java.lang.Byte.*;
 import static java.util.Arrays.*;
 
 public class ByteGenerator extends Generator<Byte> {
+    private byte min = MIN_VALUE;
+    private byte max = MAX_VALUE;
+
     @SuppressWarnings("unchecked")
     public ByteGenerator() {
         super(asList(byte.class, Byte.class));
     }
 
+    public void configure(InRange range) {
+        min = Byte.valueOf(range.min());
+        max = Byte.valueOf(range.max());
+    }
+
     @Override
     public Byte generate(SourceOfRandomness random, GenerationStatus status) {
-        return (byte) random.nextInt(MIN_VALUE, MAX_VALUE);
+        return (byte) random.nextInt(min, max);
     }
 }

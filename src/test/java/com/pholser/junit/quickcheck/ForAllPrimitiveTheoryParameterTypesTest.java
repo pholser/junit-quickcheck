@@ -76,6 +76,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveByte() {
+        assertThat(testResult(RangedPrimitiveByte.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveByte {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-23", max = "34") byte b) {
+            assertThat(b, allOf(greaterThanOrEqualTo((byte) -23), lessThanOrEqualTo((byte) 34)));
+        }
+    }
+
+    @Test
     public void wrapperByte() {
         assertThat(testResult(WrapperByte.class), isSuccessful());
     }
@@ -84,6 +97,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperByte {
         @Theory
         public void shouldHold(@ForAll Byte b) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperByte() {
+        assertThat(testResult(RangedWrapperByte.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperByte {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-3", max = "2") Byte b) {
+            assertThat(b, allOf(greaterThanOrEqualTo((byte) -3), lessThanOrEqualTo((byte) 2)));
         }
     }
 
@@ -204,7 +230,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperInteger {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "-4", max = "3") int i) {
+        public void shouldHold(@ForAll @InRange(min = "-4", max = "3") Integer i) {
             assertThat(i, allOf(greaterThanOrEqualTo(-4), lessThanOrEqualTo(3)));
         }
     }
@@ -278,7 +304,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperShort {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "-10", max = "0") short s) {
+        public void shouldHold(@ForAll @InRange(min = "-10", max = "0") Short s) {
             assertThat(s, allOf(greaterThanOrEqualTo((short) -10), lessThanOrEqualTo((short) 0)));
         }
     }
