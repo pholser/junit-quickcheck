@@ -28,9 +28,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import org.junit.contrib.theories.PotentialAssignment;
 

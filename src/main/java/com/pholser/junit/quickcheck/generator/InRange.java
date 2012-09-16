@@ -28,9 +28,15 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.pholser.junit.quickcheck.ForAll;
+
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
+/**
+ * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with
+ * {@link ForAll} with this annotation to constrain the values generated for the parameter to a given range.
+ */
 @Target(PARAMETER)
 @Retention(RUNTIME)
 @GeneratorConfiguration

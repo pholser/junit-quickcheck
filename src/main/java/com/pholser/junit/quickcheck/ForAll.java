@@ -49,7 +49,8 @@ public @interface ForAll {
 
     /**
      * @return the ratio of discarded generated values to successful generated values above which values will no
-     * longer be generated
+     * longer be generated. For a negative value, generation will cease immediately. For a zero value, generation will
+     * stop if the number of discarded generated values exceeds the {@linkplain #sampleSize() sample size}.
      */
     int discardRatio() default 0;
 }
