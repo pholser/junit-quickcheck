@@ -126,6 +126,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveCharacter() {
+        assertThat(testResult(RangedPrimitiveCharacter.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveCharacter {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "a", max = "z") char ch) {
+            assertThat(ch, allOf(greaterThanOrEqualTo('a'), lessThanOrEqualTo('z')));
+        }
+    }
+
+    @Test
     public void wrapperCharacter() {
         assertThat(testResult(WrapperCharacter.class), isSuccessful());
     }
@@ -134,6 +147,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperCharacter {
         @Theory
         public void shouldHold(@ForAll Character ch) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperCharacter() {
+        assertThat(testResult(RangedWrapperCharacter.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperCharacter {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "0", max = "9") char ch) {
+            assertThat(ch, allOf(greaterThanOrEqualTo('0'), lessThanOrEqualTo('9')));
         }
     }
 

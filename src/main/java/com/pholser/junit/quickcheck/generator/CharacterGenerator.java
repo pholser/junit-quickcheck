@@ -31,13 +31,21 @@ import static java.lang.Character.*;
 import static java.util.Arrays.*;
 
 public class CharacterGenerator extends Generator<Character> {
+    private char min = MIN_VALUE;
+    private char max = MAX_VALUE;
+
     @SuppressWarnings("unchecked")
     public CharacterGenerator() {
         super(asList(char.class, Character.class));
     }
 
+    public void configure(InRange range) {
+        min = range.min().charAt(0);
+        max = range.max().charAt(0);
+    }
+
     @Override
     public Character generate(SourceOfRandomness random, GenerationStatus status) {
-        return (char) random.nextInt(MIN_VALUE, MAX_VALUE);
+        return (char) random.nextInt(min, max);
     }
 }
