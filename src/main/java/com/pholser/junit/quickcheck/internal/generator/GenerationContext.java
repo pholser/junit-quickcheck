@@ -54,7 +54,7 @@ public class GenerationContext implements GenerationStatus {
     }
 
     private Object generateUsing(Generator<?> generator, SourceOfRandomness random) {
-        Object nextValue = null;
+        Object nextValue;
 
         do {
             nextValue = generator.generate(random, this);
