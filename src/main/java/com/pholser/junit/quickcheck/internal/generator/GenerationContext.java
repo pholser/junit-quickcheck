@@ -114,4 +114,9 @@ public class GenerationContext implements GenerationStatus {
     public int size() {
         return successfulEvaluations;
     }
+
+    @Override
+    public int attempts() {
+        return successfulEvaluations + discards;
+    }
 }

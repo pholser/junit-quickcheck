@@ -21,35 +21,18 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+*/
 
-package com.pholser.junit.quickcheck.internal.constraint;
+package com.pholser.junit.quickcheck.generator;
 
-import ognl.Ognl;
-import ognl.OgnlException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-public class ConstraintEvaluator {
-    private final Object constraint;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
-    public static class EvaluationException extends RuntimeException {
-        EvaluationException(Throwable cause) {
-            super(cause);
-        }
-    }
-
-    public ConstraintEvaluator(String constraint) {
-        try {
-            this.constraint = constraint == null ? null : Ognl.parseExpression(constraint);
-        } catch (OgnlException ex) {
-            throw new EvaluationException(ex);
-        }
-    }
-
-    public boolean evaluate(Object candidate) {
-        try {
-            return constraint == null || (Boolean) Ognl.getValue(constraint, candidate);
-        } catch (OgnlException ex) {
-            throw new EvaluationException(ex);
-        }
-    }
+@Target(PARAMETER)
+@Retention(RUNTIME)
+@GeneratorConfiguration
+public @interface ValuesOf {
 }

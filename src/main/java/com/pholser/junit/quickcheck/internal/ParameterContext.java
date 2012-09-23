@@ -48,7 +48,8 @@ public class ParameterContext {
     private final Type parameterType;
     private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
 
-    private int sampleSize;
+    private int configuredSampleSize;
+    private SampleSizer sampleSizer;
     private int discardRatio;
     private String constraint;
     private Map<Class<? extends Annotation>, Annotation> configurations =
@@ -59,22 +60,9 @@ public class ParameterContext {
     }
 
     public ParameterContext addQuantifier(ForAll quantifier) {
-        org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
-        decideSampleSize(quantifier, parmType);
+        this.configuredSampleSize = quantifier.sampleSize();
         this.discardRatio = quantifier.discardRatio();
         return this;
-    }
-
-    private void decideSampleSize(ForAll quantifier, org.javaruntype.type.Type<?> parmType) {
-        Class<?> raw = parmType.getRawClass();
-
-        // TODO: move this responsibility to the boolean and enum generators, controlled by @Enumerative
-        if (boolean.class.equals(raw) || Boolean.class.equals(raw))
-            this.sampleSize = 2;
-        else if (raw.isEnum())
-            this.sampleSize = raw.getEnumConstants().length;
-        else
-            this.sampleSize = quantifier.sampleSize();
     }
 
     public ParameterContext addConstraint(SuchThat constraint) {
@@ -122,7 +110,10 @@ public class ParameterContext {
     }
 
     public int sampleSize() {
-        return sampleSize;
+        if (sampleSizer == null)
+            sampleSizer = new SampleSizer(configuredSampleSize, this);
+
+        return sampleSizer.sampleSize();
     }
 
     public int discardRatio() {

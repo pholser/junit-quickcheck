@@ -21,35 +21,32 @@
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+*/
 
-package com.pholser.junit.quickcheck.internal.constraint;
+package com.pholser.junit.quickcheck.internal;
 
-import ognl.Ognl;
-import ognl.OgnlException;
+import com.pholser.junit.quickcheck.generator.ValuesOf;
+import org.javaruntype.type.Types;
 
-public class ConstraintEvaluator {
-    private final Object constraint;
+class SampleSizer {
+    private final int sampleSize;
 
-    public static class EvaluationException extends RuntimeException {
-        EvaluationException(Throwable cause) {
-            super(cause);
-        }
+    SampleSizer(int configuredSampleSize, ParameterContext parameter) {
+        org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameter.parameterType());
+        Class<?> raw = parmType.getRawClass();
+
+        if (parameter.configurations().containsKey(ValuesOf.class)) {
+            if (boolean.class.equals(raw) || Boolean.class.equals(raw))
+                sampleSize = 2;
+            else if (raw.isEnum())
+                sampleSize = raw.getEnumConstants().length;
+            else
+                sampleSize = configuredSampleSize;
+        } else
+            sampleSize = configuredSampleSize;
     }
 
-    public ConstraintEvaluator(String constraint) {
-        try {
-            this.constraint = constraint == null ? null : Ognl.parseExpression(constraint);
-        } catch (OgnlException ex) {
-            throw new EvaluationException(ex);
-        }
-    }
-
-    public boolean evaluate(Object candidate) {
-        try {
-            return constraint == null || (Boolean) Ognl.getValue(constraint, candidate);
-        } catch (OgnlException ex) {
-            throw new EvaluationException(ex);
-        }
+    int sampleSize() {
+        return sampleSize;
     }
 }

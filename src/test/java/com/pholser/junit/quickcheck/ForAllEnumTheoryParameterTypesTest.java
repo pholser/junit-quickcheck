@@ -25,11 +25,18 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.pholser.junit.quickcheck.Annotations.*;
+import static com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest.TestEnum.*;
+import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -40,9 +47,9 @@ public class ForAllEnumTheoryParameterTypesTest {
     }
 
     @Test
-    public void usesNumberOfEnumsAsSampleSize() {
+    public void usesRegularSampleSize() throws Exception {
         assertThat(testResult(EnumSuperclass.class), isSuccessful());
-        assertEquals(5, EnumSuperclass.iterations);
+        assertEquals(defaultSampleSize(), EnumSuperclass.iterations);
     }
 
     @RunWith(Theories.class)
@@ -52,6 +59,41 @@ public class ForAllEnumTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll TestEnum e) {
             ++iterations;
+        }
+    }
+
+    @Test
+    public void usesNumberOfEnumsAsSampleSizeWhenMarkedWithValuesOf() {
+        assertThat(testResult(EnumWithValuesOf.class), isSuccessful());
+        assertEquals(asList(E1, E2, E3, E4, E5), EnumWithValuesOf.values);
+    }
+
+    @RunWith(Theories.class)
+    public static class EnumWithValuesOf {
+        static List<TestEnum> values = new ArrayList<TestEnum>();
+
+        @Theory
+        public void shouldHold(@ForAll @ValuesOf TestEnum e) {
+            values.add(e);
+        }
+    }
+
+    @Test
+    public void whenConstrained() {
+        assertThat(testResult(EnumWithValuesOfAndConstraint.class), isSuccessful());
+        assertEquals(asList(E1, E2, E4, E5, E1), EnumWithValuesOfAndConstraint.values);
+    }
+
+    @RunWith(Theories.class)
+    public static class EnumWithValuesOfAndConstraint {
+        static List<TestEnum> values = new ArrayList<TestEnum>();
+
+        @Theory
+        public void shouldHold(@ForAll @ValuesOf
+            @SuchThat("#root != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")
+            TestEnum e) {
+
+            values.add(e);
         }
     }
 }

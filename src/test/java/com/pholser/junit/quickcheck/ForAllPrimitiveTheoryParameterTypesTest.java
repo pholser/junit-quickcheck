@@ -25,13 +25,19 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.ShortGenerator;
+import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.pholser.junit.quickcheck.Annotations.*;
+import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.number.OrderingComparison.*;
 import static org.junit.Assert.*;
@@ -60,6 +66,38 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperBoolean {
         @Theory
         public void shouldHold(@ForAll Boolean b) {
+        }
+    }
+
+    @Test
+    public void primitiveBooleanWithValuesOf() {
+        assertThat(testResult(PrimitiveBooleanWithValuesOf.class), isSuccessful());
+        assertEquals(asList(false, true), PrimitiveBooleanWithValuesOf.values);
+    }
+
+    @RunWith(Theories.class)
+    public static class PrimitiveBooleanWithValuesOf {
+        static List<Boolean> values = new ArrayList<Boolean>();
+
+        @Theory
+        public void shouldHold(@ForAll @ValuesOf boolean b) {
+            values.add(b);
+        }
+    }
+
+    @Test
+    public void wrapperBooleanWithValuesOf() {
+        assertThat(testResult(WrapperBooleanWithValuesOf.class), isSuccessful());
+        assertEquals(asList(false, true), WrapperBooleanWithValuesOf.values);
+    }
+
+    @RunWith(Theories.class)
+    public static class WrapperBooleanWithValuesOf {
+        static List<Boolean> values = new ArrayList<Boolean>();
+
+        @Theory
+        public void shouldHold(@ForAll @ValuesOf Boolean b) {
+            values.add(b);
         }
     }
 
@@ -332,6 +370,22 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
         @Theory
         public void shouldHold(@ForAll @InRange(min = "-10", max = "0") Short s) {
             assertThat(s, allOf(greaterThanOrEqualTo((short) -10), lessThanOrEqualTo((short) 0)));
+        }
+    }
+
+    @Test
+    public void valuesOfHasNoEffectOnNonBooleanNonEnum() throws Exception {
+        assertThat(testResult(ValuesOfOnInt.class), isSuccessful());
+        assertEquals(defaultSampleSize(), ValuesOfOnInt.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ValuesOfOnInt {
+        static int iterations;
+
+        @Theory
+        public void shouldHold(@ForAll @ValuesOf int i) {
+            ++iterations;
         }
     }
 }

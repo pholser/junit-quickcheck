@@ -30,13 +30,19 @@ import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class BooleanGenerator extends Generator<Boolean> {
+    private boolean randomly = true;
+
     @SuppressWarnings("unchecked")
     public BooleanGenerator() {
         super(asList(boolean.class, Boolean.class));
     }
 
+    public void configure(ValuesOf flag) {
+        randomly = false;
+    }
+
     @Override
     public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextBoolean();
+        return randomly ? random.nextBoolean() : status.attempts() % 2 != 0;
     }
 }
