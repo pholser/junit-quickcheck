@@ -25,8 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
 import static java.util.Arrays.*;
 
 public class FloatGenerator extends Generator<Float> {

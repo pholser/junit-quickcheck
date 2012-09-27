@@ -32,8 +32,8 @@ class SampleSizer {
     private final int sampleSize;
 
     SampleSizer(int configuredSampleSize, ParameterContext parameter) {
-        org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameter.parameterType());
-        Class<?> raw = parmType.getRawClass();
+        org.javaruntype.type.Type<?> parameterType = Types.forJavaLangReflectType(parameter.parameterType());
+        Class<?> raw = parameterType.getRawClass();
 
         if (parameter.configurations().containsKey(ValuesOf.class)) {
             if (boolean.class.equals(raw) || Boolean.class.equals(raw))

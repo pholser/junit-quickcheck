@@ -27,8 +27,6 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.math.BigDecimal;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
 public class BigDecimalGenerator extends Generator<BigDecimal> {
     private final BigIntegerGenerator bigIntegerGenerator;
 

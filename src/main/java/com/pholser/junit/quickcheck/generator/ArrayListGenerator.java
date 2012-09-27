@@ -27,8 +27,6 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.util.ArrayList;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
 public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
     public ArrayListGenerator() {
         super(ArrayList.class);

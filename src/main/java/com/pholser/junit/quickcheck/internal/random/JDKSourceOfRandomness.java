@@ -28,6 +28,8 @@ package com.pholser.junit.quickcheck.internal.random;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
+
 import static java.lang.Double.*;
 import static java.lang.Float.*;
 import static java.lang.String.*;

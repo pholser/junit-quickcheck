@@ -27,8 +27,6 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.util.HashSet;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
 public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
     public HashSetGenerator() {
         super(HashSet.class);

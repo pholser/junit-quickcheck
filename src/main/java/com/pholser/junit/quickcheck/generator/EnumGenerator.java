@@ -25,11 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
 public class EnumGenerator extends Generator<Enum> {
     private final Class<?> enumType;
-    private boolean randomly = true;
+    private ValuesOf turnOffRandomness;
 
     public EnumGenerator(Class<?> enumType) {
         super(Enum.class);
@@ -38,12 +36,15 @@ public class EnumGenerator extends Generator<Enum> {
     }
 
     public void configure(ValuesOf flag) {
-        randomly = false;
+        turnOffRandomness = flag;
     }
 
     @Override
     public Enum<?> generate(SourceOfRandomness random, GenerationStatus status) {
         Object[] values = enumType.getEnumConstants();
-        return (Enum<?>) values[randomly ? random.nextInt(0, values.length - 1) : status.attempts() % values.length];
+        int index = turnOffRandomness == null
+            ? random.nextInt(0, values.length - 1)
+            : status.attempts() % values.length;
+        return (Enum<?>) values[index];
     }
 }

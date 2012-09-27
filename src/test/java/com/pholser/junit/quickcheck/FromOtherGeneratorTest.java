@@ -30,7 +30,7 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;

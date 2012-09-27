@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.TypeVariableImpl;

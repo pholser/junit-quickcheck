@@ -25,12 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
-
 import static java.util.Arrays.*;
 
 public class BooleanGenerator extends Generator<Boolean> {
-    private boolean randomly = true;
+    private ValuesOf turnOffRandomness;
 
     @SuppressWarnings("unchecked")
     public BooleanGenerator() {
@@ -38,11 +36,11 @@ public class BooleanGenerator extends Generator<Boolean> {
     }
 
     public void configure(ValuesOf flag) {
-        randomly = false;
+        turnOffRandomness = flag;
     }
 
     @Override
     public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
-        return randomly ? random.nextBoolean() : status.attempts() % 2 != 0;
+        return turnOffRandomness == null ? random.nextBoolean() : status.attempts() % 2 != 0;
     }
 }

@@ -23,7 +23,7 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.random;
+package com.pholser.junit.quickcheck.generator;
 
 public interface SourceOfRandomness {
     int nextInt();

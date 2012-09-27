@@ -95,8 +95,128 @@ annotation that is itself marked as `@GeneratorConfiguration`, then if the `Gene
 public method named `configure` that accepts a single parameter of the annotation type, junit-quickcheck will call the
 `configure` method reflectively, passing it the annotation:
 
+    @GeneratorConfiguration
+    public @interface Stuff {
+        // ...
+    }
+
+    public class FooGenerator extends Generator<Foo> {
+        // ...
+
+        public void configure(@Stuff stuff) {
+            // ...
+        }
+    }
+
+    @RunWith(Theories.class)
+    public class FooTheories {
+        @Theory
+        public void holds(@ForAll @Stuff Foo f) {
+            // ...
+        }
+    }
 
 A `Generator` can have many such `configure` methods.
+
+#### Constraining generated values
+
+##### Assumptions
+
+Theories often use _assumptions_ to declare conditions under which the theories hold:
+
+    @RunWith(Theories.class)
+    public class PrimeFactorsTheories {
+        @Theory
+        public void factorsPassPrimalityTest(@ForAll int n) {
+            assumeThat(n, greaterThan(0));
+
+            for (int each : PrimeFactors.of(n))
+                assertTrue(BigInteger.valueOf(each).isProbablePrime(1000));
+        }
+
+        @Theory
+        public void factorsMultiplyToOriginal(@ForAll int n) {
+            assumeThat(n, greaterThan(0));
+
+            int product = 1;
+            for (int each : PrimeFactors.of(n))
+                product *= each;
+
+            assertEquals(n, product);
+        }
+
+        @Theory
+        public void factorizationsAreUnique(@ForAll int m, @ForAll int n) {
+            assumeThat(m, greaterThan(0));
+            assumeThat(n, greaterThan(0));
+            assumeThat(m, not(equalTo(n)));
+
+            assertThat(PrimeFactors.of(m), not(equalTo(PrimeFactors.of(n))));
+        }
+    }
+
+There are times when using assumptions with junit-quickcheck may yield too few values that meet the desired
+criteria:
+
+    @RunWith(Theories.class)
+    public class SingleDigitTheories {
+        @Theory
+        public void hold(@ForAll int digit) {
+            // hope we get enough single digits
+            assumeThat(digit, greaterThanOrEqualTo(0));
+            assumeThat(digit, lessThanOrEqualTo(9));
+
+            // ...
+        }
+    }
+
+Here, junit-quickcheck will generate 100 values, but there's not much guarantee that we'll get very many, if any,
+values to test out the theory.
+
+##### Generator configuration methods
+
+Generator configuration methods and annotations can serve to constrain the values that a generator emits. For example,
+the `@InRange` annotation on theory parameters of `int` or narrower causes the generators for those types to emit
+values that fall within a configured minimum/maximum:
+
+    @RunWith(Theories.class)
+    public class SingleDigitTheories {
+        @Theory
+        public void hold(@ForAll @InRange(min = "0", max = "9") int digit) {
+            // ...
+        }
+    }
+
+Now, the generator will be configured to ensure that every value generated meets the desired criteria -- no need to
+couch the desired range of values as an assumption.
+
+When using assumptions with junit-quickcheck, every value fed to a `@ForAll` theory parameter counts against the
+sample size, even if it doesn't pass any assumptions made against it in the theory. You could end up with no values
+passing the assumption.
+
+Using generator configurations, assumptions aren't very important, if needed at all -- every value fed to a `@ForAll`
+theory parameter counts against the sample size, but will meet some expectations that assumptions would otherwise have
+tested.
+
+##### Constraint expressions
+
+Constraint expressions enable you to filter the values that reach a theory parameter. Mark a theory parameter already
+marked as `@ForAll` with `@SuchThat`, supplying an [OGNL](http://commons.apache.org/ognl) expression that will be used
+to decide whether a generated value will be given to the theory method.
+
+    @RunWith(Theories.class)
+    public class SingleDigitTheories {
+        @Theory
+        public void hold(@ForAll @SuchThat("#root > 0") int digit) {
+            // ...
+        }
+    }
+
+`#root` refers to the theory parameter itself. Currently, constraint expression cannot refer to other theory parameters.
+
+junit-quickcheck will continue to generate values for a theory parameter with a constraint expression until `sampleSize`
+values pass the constraint, or until the ratio of constraint passes to constraint failures is greater than the
+`discardRatio` specified by `@ForAll`, if any. Exceeding the discard ratio is treated as an assumption violation.
 
 ### How it works
 

@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck.test.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
 
 public class FooGenerator extends Generator<Foo> {
     public FooGenerator() {
