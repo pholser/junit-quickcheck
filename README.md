@@ -95,6 +95,8 @@ annotation that is itself marked as `@GeneratorConfiguration`, then if the `Gene
 public method named `configure` that accepts a single parameter of the annotation type, junit-quickcheck will call the
 `configure` method reflectively, passing it the annotation:
 
+    @Target(PARAMETER)
+    @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface Stuff {
         // ...
@@ -212,11 +214,12 @@ to decide whether a generated value will be given to the theory method.
         }
     }
 
-`#root` refers to the theory parameter itself. Currently, constraint expression cannot refer to other theory parameters.
+`#root` refers to the theory parameter itself. Currently, constraint expressions cannot refer to other theory
+parameters.
 
-junit-quickcheck will continue to generate values for a theory parameter with a constraint expression until `sampleSize`
-values pass the constraint, or until the ratio of constraint passes to constraint failures is greater than the
-`discardRatio` specified by `@ForAll`, if any. Exceeding the discard ratio is treated as an assumption violation.
+junit-quickcheck generates values for a theory parameter with a constraint expression until `sampleSize` values pass
+the constraint, or until the ratio of constraint passes to constraint failures is greater than the `discardRatio`
+specified by `@ForAll`, if any. Exceeding the discard ratio is treated as an assumption violation.
 
 ### How it works
 
