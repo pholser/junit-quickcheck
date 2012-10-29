@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
  * with this annotation to generate all its values in turn, rather than at random.</p>
  *
- * <p>Currently this annotation is recognized by parameters of type {@code boolean} and {@link Enum}.</p>
+ * <p>Currently this annotation is recognized on parameters of type {@code boolean} and {@link Enum}.</p>
  */
 @Target(PARAMETER)
 @Retention(RUNTIME)

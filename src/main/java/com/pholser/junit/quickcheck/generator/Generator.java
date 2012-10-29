@@ -89,6 +89,9 @@ public abstract class Generator<T> {
         return false;
     }
 
+    /**
+     * @return how many component generators this generator needs
+     */
     public int numberOfNeededComponents() {
         return 0;
     }
@@ -102,6 +105,24 @@ public abstract class Generator<T> {
         // do nothing by default
     }
 
+    /**
+     * <p>Tells this generator to configure itself using annotations from a theory parameter.</p>
+     *
+     * <p>The annotations fed to this method will be those annotations on the theory parameter that are themselves
+     * marked with {@link GeneratorConfiguration}.</p>
+     *
+     * <p>By default, the generator will configure itself by:</p>
+     * <ul>
+     *     <li>For each of the given annotations:</li>
+     *     <ul>
+     *         <li>Find a {@code public} method on the generator named {@code configure}, that accepts a single
+     *         parameter of the annotation type</li>
+     *         <li>Invoke the {@code configure} method reflectively, passing the annotation as the argument</li>
+     *     </ul>
+     * </ul>
+     *
+     * @param configurationsByType a map of configuration annotations, keyed by annotation type
+     */
     public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
         for (Map.Entry<Class<? extends Annotation>, Annotation> eachEntry : configurationsByType.entrySet())
             configure(eachEntry.getKey(), eachEntry.getValue());

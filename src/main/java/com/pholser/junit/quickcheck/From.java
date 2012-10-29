@@ -45,7 +45,7 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Retention(RUNTIME)
 public @interface From {
     /**
-     * @return the choices of generators for the theory parameter
+     * @return the choices of generators for the annotated theory parameter
      */
     Class<? extends Generator>[] value() default {};
 }
