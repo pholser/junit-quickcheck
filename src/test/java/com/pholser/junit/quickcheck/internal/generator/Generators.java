@@ -37,10 +37,10 @@ public class Generators {
     }
 
     public static void assertGenerators(Generator<?> result, Class<? extends Generator>... expectedTypes) {
-        assumeThat(result, is(CompositeGenerator.class));
+        assumeThat(result, instanceOf(CompositeGenerator.class));
 
         CompositeGenerator composite = (CompositeGenerator) result;
         for (int i = 0; i < expectedTypes.length; ++i)
-            assertThat("generators[" + i + ']', composite.componentGenerator(i), is(expectedTypes[i]));
+            assertThat("generators[" + i + ']', composite.componentGenerator(i), instanceOf(expectedTypes[i]));
     }
 }

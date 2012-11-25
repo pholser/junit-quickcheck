@@ -31,9 +31,9 @@ import java.lang.reflect.Modifier;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.matchers.TypeSafeMatcher;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
