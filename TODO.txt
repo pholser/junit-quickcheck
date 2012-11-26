@@ -1,3 +1,0 @@
-TODO: annotations to influence size
--- careful not to conflate size and numeric range.
-TODO: maxSize

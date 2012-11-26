@@ -83,6 +83,7 @@ public class GenerationContext implements GenerationStatus {
         else
             ++discards;
 
+        // TODO: Make this raise something other than AssumptionViolatedException
         if (tooManyDiscards()) {
             throw new AssumptionViolatedException(
                 String.format(DISCARD_RATIO_MESSAGE, parameter.discardRatio(), discards, successfulEvaluations,
