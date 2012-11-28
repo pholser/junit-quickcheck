@@ -48,12 +48,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperBooleanArray() {
-        assertThat(testResult(WrapperBooleanArray.class), isSuccessful());
+    public void wrapper2DBooleanArray() {
+        assertThat(testResult(Wrapper2DBooleanArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperBooleanArray {
+    public static class Wrapper2DBooleanArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Boolean[][] b) {
         }
@@ -72,12 +72,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperByteArray() {
-        assertThat(testResult(WrapperByteArray.class), isSuccessful());
+    public void wrapper2DByteArray() {
+        assertThat(testResult(Wrapper2DByteArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperByteArray {
+    public static class Wrapper2DByteArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Byte[][] b) {
         }
@@ -96,12 +96,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperCharacterArray() {
-        assertThat(testResult(WrapperCharacterArray.class), isSuccessful());
+    public void wrapper2DCharacterArray() {
+        assertThat(testResult(Wrapper2DCharacterArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperCharacterArray {
+    public static class Wrapper2DCharacterArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Character[][] ch) {
         }
@@ -144,12 +144,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperFloatArray() {
-        assertThat(testResult(WrapperFloatArray.class), isSuccessful());
+    public void wrapper2DFloatArray() {
+        assertThat(testResult(Wrapper2DFloatArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperFloatArray {
+    public static class Wrapper2DFloatArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Float[][] f) {
         }
@@ -168,12 +168,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperIntegerArray() {
-        assertThat(testResult(WrapperIntegerArray.class), isSuccessful());
+    public void wrapper2DIntegerArray() {
+        assertThat(testResult(Wrapper2DIntegerArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperIntegerArray {
+    public static class Wrapper2DIntegerArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Integer[][] i) {
         }
@@ -192,12 +192,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperLongArray() {
-        assertThat(testResult(WrapperLongArray.class), isSuccessful());
+    public void wrapper2DLongArray() {
+        assertThat(testResult(Wrapper2DLongArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperLongArray {
+    public static class Wrapper2DLongArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Long[][] ell) {
         }
@@ -216,12 +216,12 @@ public class ForAllPrimitive2DArrayTheoryParameterTypesTest {
     }
 
     @Test
-    public void wrapperShortArray() {
-        assertThat(testResult(WrapperShortArray.class), isSuccessful());
+    public void wrapper2DShortArray() {
+        assertThat(testResult(Wrapper2DShortArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class WrapperShortArray {
+    public static class Wrapper2DShortArray {
         @Theory
         public void shouldHold(@ForAll(sampleSize = 10) Short[][] s) {
         }

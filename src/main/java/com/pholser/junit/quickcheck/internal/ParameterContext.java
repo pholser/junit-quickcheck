@@ -46,6 +46,7 @@ public class ParameterContext {
         "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
 
     private final Type parameterType;
+    private final String parameterName;
     private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
 
     private int configuredSampleSize;
@@ -55,8 +56,9 @@ public class ParameterContext {
     private Map<Class<? extends Annotation>, Annotation> configurations =
         new HashMap<Class<? extends Annotation>, Annotation>();
 
-    public ParameterContext(Type parameterType) {
+    public ParameterContext(Type parameterType, String parameterName) {
         this.parameterType = parameterType;
+        this.parameterName = parameterName;
     }
 
     public ParameterContext addQuantifier(ForAll quantifier) {
@@ -107,6 +109,10 @@ public class ParameterContext {
 
     public Type parameterType() {
         return parameterType;
+    }
+
+    public String parameterName() {
+        return parameterName;
     }
 
     public int sampleSize() {

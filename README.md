@@ -209,7 +209,7 @@ to decide whether a generated value will be given to the theory method.
     @RunWith(Theories.class)
     public class SingleDigitTheories {
         @Theory
-        public void hold(@ForAll @SuchThat("#root > 0") int digit) {
+        public void hold(@ForAll @SuchThat("#digit > 0") int digit) {
             // ...
         }
     }

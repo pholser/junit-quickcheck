@@ -57,7 +57,7 @@ public class ConstrainedPrimitiveIntegerTest extends GeneratingUniformRandomValu
 
     @Override
     protected String constraintExpression() {
-        return "#root <= 0";
+        return '#' + PARAMETER_NAME + " <= 0";
     }
 
     @Override

@@ -25,12 +25,14 @@
 
 package com.pholser.junit.quickcheck.internal.constraint;
 
+import ognl.NoSuchPropertyException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 
@@ -41,30 +43,50 @@ public class ConstraintEvaluatorTest {
 
     @Before
     public void beforeEach() {
-        evaluator = new ConstraintEvaluator("#root > 0");
+        evaluator = new ConstraintEvaluator("#x > 0");
     }
 
     @Test
     public void whenExpressionEvaluatesTrue() {
-        assertTrue(evaluator.evaluate(1));
+        evaluator.bind("x", 1);
+
+        assertTrue(evaluator.evaluate());
     }
 
     @Test
     public void whenExpressionEvaluatesFalse() {
-        assertFalse(evaluator.evaluate(-2));
+        evaluator.bind("x", -2);
+
+        assertFalse(evaluator.evaluate());
     }
 
     @Test
     public void whenExpressionIsMalformed() {
         thrown.expect(EvaluationException.class);
+        thrown.expectMessage("Malformed");
 
-        new ConstraintEvaluator("#root !*@&#^*");
+        evaluator = new ConstraintEvaluator("#x !*@&#^*");
     }
 
     @Test
     public void whenExpressionCannotBeEvaluatedCorrectly() {
-        thrown.expect(EvaluationException.class);
+        evaluator = new ConstraintEvaluator("#x.foo == 'bar'");
+        evaluator.bind("x", 4);
 
-        new ConstraintEvaluator("#root.foo == 'bar'").evaluate(3);
+        thrown.expect(EvaluationException.class);
+        thrown.expectCause(isA(NoSuchPropertyException.class));
+
+        evaluator.evaluate();
+    }
+
+    @Test
+    public void whenExpressionContainsAnUndefinedVariable() {
+        evaluator = new ConstraintEvaluator("#x == -3");
+        evaluator.bind("y", -3);
+
+        thrown.expect(EvaluationException.class);
+        thrown.expectMessage("Referring to undefined variable");
+
+        evaluator.evaluate();
     }
 }

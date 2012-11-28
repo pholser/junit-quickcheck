@@ -36,12 +36,12 @@ public class GenerationContextTest {
         when(generator.generate(same(random), any(GenerationStatus.class))).thenReturn(10).thenReturn(9).thenReturn(8)
             .thenReturn(7).thenReturn(6).thenReturn(5).thenReturn(4).thenReturn(3).thenReturn(2).thenReturn(1)
             .thenReturn(0);
-        when(constraint.value()).thenReturn("#root > 0");
+        when(constraint.value()).thenReturn("#x > 0");
     }
 
     @Test
     public void whenDiscardRatioExceededEvenWithSomeSuccesses() {
-        ParameterContext parameter = new ParameterContext(int.class);
+        ParameterContext parameter = new ParameterContext(int.class, "x");
         parameter.addQuantifier(quantifier);
         parameter.addConstraint(constraint);
 

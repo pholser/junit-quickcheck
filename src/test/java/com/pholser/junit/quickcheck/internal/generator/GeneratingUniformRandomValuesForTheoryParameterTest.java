@@ -48,6 +48,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
+    protected static final String PARAMETER_NAME = "arg0";
+
     @Mock protected SourceOfRandomness randomForParameterGenerator;
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
     @Mock private ForAll quantifier;
@@ -70,7 +72,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
             new RandomTheoryParameterGenerator(randomForParameterGenerator,
                 new GeneratorRepository(randomForGeneratorRepo).add(source));
 
-        ParameterContext context = new ParameterContext(parameterType());
+        ParameterContext context = new ParameterContext(parameterType(), PARAMETER_NAME);
         context.addQuantifier(quantifier);
         context.addConstraint(constraint);
         if (explicitGenerators.value() != null)

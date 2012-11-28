@@ -76,7 +76,8 @@ public class GenerationContext implements GenerationStatus {
     }
 
     private boolean evaluate(Object value) {
-        boolean result = evaluator.evaluate(value);
+        evaluator.bind(parameter.parameterName(), value);
+        boolean result = evaluator.evaluate();
 
         if (result)
             ++successfulEvaluations;

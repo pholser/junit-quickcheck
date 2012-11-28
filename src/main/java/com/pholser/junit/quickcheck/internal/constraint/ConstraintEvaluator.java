@@ -25,13 +25,22 @@
 
 package com.pholser.junit.quickcheck.internal.constraint;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ognl.Ognl;
+import ognl.OgnlContext;
 import ognl.OgnlException;
 
 public class ConstraintEvaluator {
     private final Object constraint;
+    private final OgnlContext bindings;
 
     public static class EvaluationException extends RuntimeException {
+        EvaluationException(String message) {
+            super(message);
+        }
+
         EvaluationException(Throwable cause) {
             super(cause);
         }
@@ -40,16 +49,28 @@ public class ConstraintEvaluator {
     public ConstraintEvaluator(String constraint) {
         try {
             this.constraint = constraint == null ? null : Ognl.parseExpression(constraint);
+            this.bindings = new OgnlContext() {
+                @Override
+                public Object get(Object key) {
+                    if (!containsKey(key))
+                        throw new EvaluationException("Referring to undefined variable '" + key + "']");
+                    return super.get(key);
+                }
+            };
         } catch (OgnlException ex) {
             throw new EvaluationException(ex);
         }
     }
 
-    public boolean evaluate(Object candidate) {
+    public boolean evaluate() {
         try {
-            return constraint == null || (Boolean) Ognl.getValue(constraint, candidate);
+            return constraint == null || (Boolean) Ognl.getValue(constraint, bindings, (Object) null);
         } catch (OgnlException ex) {
             throw new EvaluationException(ex);
         }
+    }
+
+    public void bind(String name, Object value) {
+        bindings.put(name, value);
     }
 }

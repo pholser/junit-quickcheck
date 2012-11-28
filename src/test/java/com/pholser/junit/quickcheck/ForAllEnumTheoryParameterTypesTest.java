@@ -90,7 +90,7 @@ public class ForAllEnumTheoryParameterTypesTest {
 
         @Theory
         public void shouldHold(@ForAll @ValuesOf
-            @SuchThat("#root != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")
+            @SuchThat("#e != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")
             TestEnum e) {
 
             values.add(e);
