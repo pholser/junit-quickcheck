@@ -27,16 +27,11 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
-import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
-import org.junit.internal.AssumptionViolatedException;
 
 public class GenerationContext implements GenerationStatus {
-    static final String DISCARD_RATIO_MESSAGE =
-        "For parameter with discard ratio [%d], %d unsuccessful values and %d successes for a discard ratio of [%f]."
-            + " Stopping.";
-
     private final ParameterContext parameter;
     private final GeneratorRepository repository;
     private final ConstraintEvaluator evaluator;
@@ -84,12 +79,8 @@ public class GenerationContext implements GenerationStatus {
         else
             ++discards;
 
-        // TODO: Make this raise something other than AssumptionViolatedException
-        if (tooManyDiscards()) {
-            throw new AssumptionViolatedException(
-                String.format(DISCARD_RATIO_MESSAGE, parameter.discardRatio(), discards, successfulEvaluations,
-                    (double) discards / successfulEvaluations));
-        }
+        if (tooManyDiscards())
+            throw new DiscardRatioExceededException(parameter, discards, successfulEvaluations);
 
         return result;
     }
@@ -120,5 +111,18 @@ public class GenerationContext implements GenerationStatus {
     @Override
     public int attempts() {
         return successfulEvaluations + discards;
+    }
+
+    public static class DiscardRatioExceededException extends RuntimeException {
+        private static final long serialVersionUID = Long.MIN_VALUE;
+
+        static final String MESSAGE_TEMPLATE =
+            "For parameter [%s] with discard ratio [%d], %d unsuccessful values and %d successes"
+                + " for a discard ratio of [%f]. Stopping.";
+
+        DiscardRatioExceededException(ParameterContext parameter, int discards, int successfulEvaluations) {
+            super(String.format(MESSAGE_TEMPLATE, parameter.parameterName(), parameter.discardRatio(), discards,
+                successfulEvaluations, (double) discards / successfulEvaluations));
+        }
     }
 }

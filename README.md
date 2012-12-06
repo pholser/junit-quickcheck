@@ -214,12 +214,12 @@ to decide whether a generated value will be given to the theory method.
         }
     }
 
-`#root` refers to the theory parameter itself. Currently, constraint expressions cannot refer to other theory
-parameters.
+You can refer to the name of the theory parameter as an OGNL variable reference in the constraint expression.
+Constraint expressions cannot refer to other theory parameters.
 
 junit-quickcheck generates values for a theory parameter with a constraint expression until `sampleSize` values pass
 the constraint, or until the ratio of constraint passes to constraint failures is greater than the `discardRatio`
-specified by `@ForAll`, if any. Exceeding the discard ratio is treated as an assumption violation.
+specified by `@ForAll`, if any. Exceeding the discard ratio raises an exception and thus fails the theory.
 
 ### How it works
 

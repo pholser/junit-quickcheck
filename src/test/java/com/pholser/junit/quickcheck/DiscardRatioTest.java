@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.internal.generator.GenerationContext;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -54,7 +55,8 @@ public class DiscardRatioTest {
 
     @Test
     public void willStopGeneratingValuesAfterDiscardRatioExceeded() {
-        assertThat(testResult(ExceededDiscardRatio.class), isSuccessful());
+        assertThat(testResult(ExceededDiscardRatio.class),
+            hasFailureContaining(GenerationContext.DiscardRatioExceededException.class.getName()));
         assertEquals(0, ExceededDiscardRatio.iterations);
     }
 
@@ -63,16 +65,15 @@ public class DiscardRatioTest {
         static int iterations;
 
         @Theory
-        public void shouldHold(@ForAll(discardRatio = 3)
-                               @InRange(min = "3", max = "4")
-                               @SuchThat("#i < 3") int i) {
+        public void shouldHold(@ForAll(discardRatio = 3) @InRange(min = "3", max = "4") @SuchThat("#i < 3") int i) {
             ++iterations;
         }
     }
 
     @Test
     public void zeroRatioStopsAfterDiscardsExceedSampleSize() {
-        assertThat(testResult(ZeroDiscardRatio.class), isSuccessful());
+        assertThat(testResult(ZeroDiscardRatio.class),
+            hasFailureContaining(GenerationContext.DiscardRatioExceededException.class.getName()));
         assertEquals(0, ZeroDiscardRatio.iterations);
     }
 

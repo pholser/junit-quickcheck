@@ -48,8 +48,9 @@ public class GenerationContextTest {
         GenerationContext generation =
             new GenerationContext(parameter, new GeneratorRepository(random).add(generator));
 
-        thrown.expect(AssumptionViolatedException.class);
-        thrown.expectMessage(String.format(GenerationContext.DISCARD_RATIO_MESSAGE, 3, 30, 10, 3D));
+        thrown.expect(GenerationContext.DiscardRatioExceededException.class);
+        thrown.expectMessage(String.format(GenerationContext.DiscardRatioExceededException.MESSAGE_TEMPLATE,
+            parameter.parameterName(), parameter.discardRatio(), 30, 10, 3D));
 
         while (generation.shouldContinue())
             generation.generate(random);
