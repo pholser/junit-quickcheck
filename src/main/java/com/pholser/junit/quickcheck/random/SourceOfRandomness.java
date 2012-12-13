@@ -72,19 +72,53 @@ public class SourceOfRandomness {
         delegate.setSeed(seed);
     }
 
-    public int nextInt(int min, int max) {
-        if (min > max)
-            throw new IllegalArgumentException(format("bad range, %d > %d", min, max));
+    public byte nextByte(byte min, byte max) {
+        return (byte) nextLong(min, max);
+    }
 
-        if (min == max)
+    public short nextShort(short min, short max) {
+        return (short) nextLong(min, max);
+    }
+
+    public char nextChar(char min, char max) {
+        checkRange(min > max, "bad range, %c > %c", min, max);
+
+        return (char) nextLong(min, max);
+    }
+
+    public int nextInt(int min, int max) {
+        return (int) nextLong(min, max);
+    }
+
+    public long nextLong(long min, long max) {
+        checkRange(min > max, "bad range, %d > %d", min, max);
+
+        long range = max - min + 1;
+        return min + (long) (range * delegate.nextDouble());
+    }
+
+    public float nextFloat(float min, float max) {
+        return (float) nextDouble(min, max);
+    }
+
+    public double nextDouble(double min, double max) {
+        int comparison = Double.compare(min, max);
+
+        checkRange(comparison > 0, "bad range, %f > %f", min, max);
+        if (comparison == 0)
             return min;
-        int nextRandom = delegate.nextInt(max - min + 1);
-        return nextRandom + min;
+
+        return min + (max - min) * delegate.nextDouble();
     }
 
     public byte[] nextBytes(int count) {
         byte[] buffer = new byte[count];
         delegate.nextBytes(buffer);
         return buffer;
+    }
+
+    private void checkRange(boolean condition, String pattern, Object min, Object max) {
+        if (condition)
+            throw new IllegalArgumentException(format(pattern, min, max));
     }
 }
