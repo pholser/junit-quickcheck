@@ -32,7 +32,7 @@ import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class CompositeGenerator extends Generator<Object> {
     private final List<Generator<?>> componentGenerators;

@@ -27,6 +27,8 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.util.HashMap;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
     public HashMapGenerator() {
         super(HashMap.class);

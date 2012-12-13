@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.Types;
 
 import static java.util.Collections.*;
@@ -47,7 +48,7 @@ public class ParameterContext {
 
     private final Type parameterType;
     private final String parameterName;
-    private final GeneratorRepository repo = new GeneratorRepository(new JDKSourceOfRandomness());
+    private final GeneratorRepository repo = new GeneratorRepository(new SourceOfRandomness(new SecureRandom()));
 
     private int configuredSampleSize;
     private SampleSizer sampleSizer;

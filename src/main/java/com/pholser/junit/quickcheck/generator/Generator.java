@@ -33,6 +33,7 @@ import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 import static java.util.Collections.*;

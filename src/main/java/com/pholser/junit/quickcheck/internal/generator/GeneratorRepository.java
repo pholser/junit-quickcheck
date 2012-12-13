@@ -40,7 +40,7 @@ import com.pholser.junit.quickcheck.generator.EnumGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.ExtendsTypeParameter;
 import org.javaruntype.type.StandardTypeParameter;
 import org.javaruntype.type.TypeParameter;

@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.util.Collection;
 
-import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class Items {
     private Items() {

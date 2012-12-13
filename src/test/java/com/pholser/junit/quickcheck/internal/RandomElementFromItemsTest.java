@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.internal;
 import java.util.Collections;
 import java.util.Set;
 
-import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

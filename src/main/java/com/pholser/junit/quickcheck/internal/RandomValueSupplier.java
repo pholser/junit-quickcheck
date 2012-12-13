@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.security.SecureRandom;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.ForAll;
@@ -33,10 +34,10 @@ import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.internal.generator.BasicGeneratorSource;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
+import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.internal.generator.TheoryParameterGenerator;
-import com.pholser.junit.quickcheck.internal.random.JDKSourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
 import org.junit.contrib.theories.PotentialAssignment;
@@ -50,8 +51,8 @@ public class RandomValueSupplier extends ParameterSupplier {
      * Called by JUnit reflectively.
      */
     public RandomValueSupplier() {
-        this(new RandomTheoryParameterGenerator(new JDKSourceOfRandomness(),
-            new GeneratorRepository(new JDKSourceOfRandomness())
+        this(new RandomTheoryParameterGenerator(new SourceOfRandomness(new SecureRandom()),
+            new GeneratorRepository(new SourceOfRandomness(new SecureRandom()))
                 .add(new BasicGeneratorSource())
                 .add(new ServiceLoaderGeneratorSource())));
     }

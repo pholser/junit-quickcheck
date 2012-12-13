@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 import static java.lang.Byte.*;
 import static java.util.Arrays.*;
 

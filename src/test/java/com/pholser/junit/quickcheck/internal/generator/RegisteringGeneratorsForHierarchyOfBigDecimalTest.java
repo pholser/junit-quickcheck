@@ -32,7 +32,7 @@ import java.util.List;
 import com.pholser.junit.quickcheck.generator.BigDecimalGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.IntegerGenerator;
-import com.pholser.junit.quickcheck.generator.SourceOfRandomness;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 public class StringGenerator extends Generator<String> {
     private final CharacterGenerator charGenerator = new CharacterGenerator();
 

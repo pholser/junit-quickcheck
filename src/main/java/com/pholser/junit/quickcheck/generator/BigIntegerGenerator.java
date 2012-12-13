@@ -27,6 +27,8 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.math.BigInteger;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 public class BigIntegerGenerator extends Generator<BigInteger> {
     public BigIntegerGenerator() {
         super(BigInteger.class);

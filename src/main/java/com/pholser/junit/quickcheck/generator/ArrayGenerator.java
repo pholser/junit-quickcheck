@@ -27,6 +27,8 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.Array;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
     private final Generator<?> componentGenerator;
