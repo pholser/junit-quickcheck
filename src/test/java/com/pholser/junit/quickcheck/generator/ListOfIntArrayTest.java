@@ -31,6 +31,7 @@ import java.util.List;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
+import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
@@ -38,8 +39,8 @@ import static org.mockito.Mockito.*;
 public class ListOfIntArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(-1);
-        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-2).thenReturn(2).thenReturn(0).thenReturn(1);
+        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE))
+            .thenReturn(-1).thenReturn(-2).thenReturn(2).thenReturn(0).thenReturn(1);
     }
 
     @Override
@@ -55,12 +56,11 @@ public class ListOfIntArrayTest extends GeneratingUniformRandomValuesForTheoryPa
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(emptyList(), singletonList(new int[]{-1}), asList(new int[] { -2, 2 }, new int[] { 0, 1 }));
+        return asList(emptyList(), singletonList(new int[] { -1 }), asList(new int[] { -2, 2 }, new int[] { 0, 1 }));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextInt(-1, 1);
-        verify(randomForParameterGenerator, times(4)).nextInt(-2, 2);
+        verify(randomForParameterGenerator, times(5)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

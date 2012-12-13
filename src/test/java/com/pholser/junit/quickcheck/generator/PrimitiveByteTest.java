@@ -37,7 +37,8 @@ import static org.mockito.Mockito.*;
 public class PrimitiveByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(-12).thenReturn(-11).thenReturn(-10);
+        when(randomForParameterGenerator.nextByte(MIN_VALUE, MAX_VALUE))
+            .thenReturn((byte) -12).thenReturn((byte) -11).thenReturn((byte) -10);
     }
 
     @Override
@@ -58,6 +59,6 @@ public class PrimitiveByteTest extends GeneratingUniformRandomValuesForTheoryPar
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextByte(MIN_VALUE, MAX_VALUE);
     }
 }

@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomVa
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
+import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
@@ -39,8 +40,8 @@ import static org.mockito.Mockito.*;
 public class ListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(1);
-        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(2).thenReturn(-2);
+        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE))
+            .thenReturn(1).thenReturn(2).thenReturn(-2);
     }
 
     @Override
@@ -61,7 +62,6 @@ public class ListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParamet
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextInt(-1, 1);
-        verify(randomForParameterGenerator, times(2)).nextInt(-2, 2);
+        verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

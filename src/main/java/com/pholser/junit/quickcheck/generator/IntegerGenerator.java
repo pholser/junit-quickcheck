@@ -30,9 +30,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class IntegerGenerator extends Generator<Integer> {
-    private InRange range;
-    private int min;
-    private int max;
+    private int min = Integer.MIN_VALUE;
+    private int max = Integer.MAX_VALUE;
 
     @SuppressWarnings("unchecked")
     public IntegerGenerator() {
@@ -40,13 +39,12 @@ public class IntegerGenerator extends Generator<Integer> {
     }
 
     public void configure(InRange range) {
-        this.range = range;
         min = Integer.valueOf(range.min());
         max = Integer.valueOf(range.max());
     }
 
     @Override
     public Integer generate(SourceOfRandomness random, GenerationStatus status) {
-        return range != null ? random.nextInt(min, max) : random.nextInt(-status.size(), status.size());
+        return random.nextInt(min, max);
     }
 }

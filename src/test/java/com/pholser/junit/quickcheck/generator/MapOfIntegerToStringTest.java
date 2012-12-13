@@ -40,11 +40,10 @@ import static org.mockito.Mockito.*;
 public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(1);
-        when(randomForParameterGenerator.nextInt(-2, 2)).thenReturn(-2).thenReturn(2);
-        when(randomForParameterGenerator.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
-            .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
-            .thenReturn((int) 'e');
+        when(randomForParameterGenerator.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE))
+            .thenReturn(1).thenReturn(-2).thenReturn(2);
+        when(randomForParameterGenerator.nextChar(Character.MIN_VALUE, Character.MAX_VALUE))
+            .thenReturn('a').thenReturn('b').thenReturn('c').thenReturn('d').thenReturn('e');
     }
 
     @Override
@@ -68,7 +67,7 @@ public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTh
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextInt(-1, 1);
-        verify(randomForParameterGenerator, times(5)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        verify(randomForParameterGenerator, times(5)).nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 }

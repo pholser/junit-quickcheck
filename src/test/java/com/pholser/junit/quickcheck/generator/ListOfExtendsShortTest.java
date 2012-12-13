@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomVa
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
+import static java.lang.Short.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
@@ -39,8 +40,8 @@ import static org.mockito.Mockito.*;
 public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(Short.MIN_VALUE, Short.MAX_VALUE))
-            .thenReturn(-1).thenReturn(-2).thenReturn(-3);
+        when(randomForParameterGenerator.nextShort(MIN_VALUE, MAX_VALUE))
+            .thenReturn((short) -1).thenReturn((short) -2).thenReturn((short) -3);
     }
 
     @Override
@@ -56,11 +57,11 @@ public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheo
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(emptyList(), asList(Short.valueOf("-1")), asList(Short.valueOf("-2"), Short.valueOf("-3")));
+        return asList(emptyList(), asList((short) -1), asList((short) -2, (short) -3));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(Short.MIN_VALUE, Short.MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextShort(MIN_VALUE, MAX_VALUE);
     }
 }

@@ -32,17 +32,17 @@ import java.util.Set;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
-import org.mockito.Matchers;
 
 import static com.google.common.collect.Sets.*;
+import static java.lang.Byte.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE))
-            .thenReturn(6).thenReturn(7).thenReturn(8);
+        when(randomForParameterGenerator.nextByte(MIN_VALUE, MAX_VALUE))
+            .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
     }
 
@@ -59,11 +59,11 @@ public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheory
     @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(Byte.valueOf("6")), newHashSet(Byte.valueOf("7"), Byte.valueOf("8")));
+        return asList(newHashSet(), newHashSet((byte) 6), newHashSet((byte) 7, (byte) 8));
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextByte(MIN_VALUE, MAX_VALUE);
     }
 }

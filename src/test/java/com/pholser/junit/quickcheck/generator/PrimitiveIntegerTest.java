@@ -30,14 +30,14 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
+import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(-0, 0)).thenReturn(0);
-        when(randomForParameterGenerator.nextInt(-1, 1)).thenReturn(-1);
+        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(0).thenReturn(-1);
     }
 
     @Override
@@ -57,7 +57,6 @@ public class PrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheory
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextInt(-0, 0);
-        verify(randomForParameterGenerator).nextInt(-1, 1);
+        verify(randomForParameterGenerator, times(2)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

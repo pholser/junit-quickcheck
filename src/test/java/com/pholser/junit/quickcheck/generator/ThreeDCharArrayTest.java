@@ -30,16 +30,16 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
+import static java.lang.Character.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ThreeDCharArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(Character.MIN_VALUE, Character.MAX_VALUE))
-            .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
-            .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g').thenReturn((int) 'h')
-            .thenReturn((int) 'i');
+        when(randomForParameterGenerator.nextChar(MIN_VALUE, MAX_VALUE))
+            .thenReturn('a').thenReturn('b').thenReturn('c').thenReturn('d').thenReturn('e').thenReturn('f')
+            .thenReturn('g').thenReturn('h').thenReturn('i');
     }
 
     @Override
@@ -65,6 +65,6 @@ public class ThreeDCharArrayTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(9)).nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
+        verify(randomForParameterGenerator, times(9)).nextChar(MIN_VALUE, MAX_VALUE);
     }
 }

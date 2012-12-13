@@ -177,6 +177,32 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveCharacterWithBogusMin() {
+        assertThat(testResult(RangedPrimitiveCharacterWithBogusMin.class),
+            hasSingleFailureContaining(InRange.class.getSimpleName() + " min not a char"));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveCharacterWithBogusMin {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "", max = "z") char ch) {
+        }
+    }
+
+    @Test
+    public void rangedPrimitiveCharacterWithBogusMax() {
+        assertThat(testResult(RangedPrimitiveCharacterWithBogusMax.class),
+            hasSingleFailureContaining(InRange.class.getSimpleName() + " max not a char"));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveCharacterWithBogusMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "a", max = "zz") char ch) {
+        }
+    }
+
+    @Test
     public void wrapperCharacter() {
         assertThat(testResult(WrapperCharacter.class), isSuccessful());
     }
@@ -196,8 +222,34 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "0", max = "9") char ch) {
+        public void shouldHold(@ForAll @InRange(min = "0", max = "9") Character ch) {
             assertThat(ch, allOf(greaterThanOrEqualTo('0'), lessThanOrEqualTo('9')));
+        }
+    }
+
+    @Test
+    public void rangedWrapperCharacterWithBogusMin() {
+        assertThat(testResult(RangedWrapperCharacterWithBogusMin.class),
+            hasSingleFailureContaining(InRange.class.getSimpleName() + " min not a char"));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperCharacterWithBogusMin {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "abc", max = "d") Character ch) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperCharacterWithBogusMax() {
+        assertThat(testResult(RangedWrapperCharacterWithBogusMax.class),
+            hasSingleFailureContaining(InRange.class.getSimpleName() + " max not a char"));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperCharacterWithBogusMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "a", max = "xyz") Character ch) {
         }
     }
 

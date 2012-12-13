@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class PrimitiveCharTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn((int) 't');
+        when(randomForParameterGenerator.nextChar(MIN_VALUE, MAX_VALUE)).thenReturn('t');
     }
 
     @Override
@@ -57,6 +57,6 @@ public class PrimitiveCharTest extends GeneratingUniformRandomValuesForTheoryPar
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextInt(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator).nextChar(MIN_VALUE, MAX_VALUE);
     }
 }
