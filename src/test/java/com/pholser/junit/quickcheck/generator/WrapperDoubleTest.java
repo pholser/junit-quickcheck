@@ -30,13 +30,15 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
+import static java.lang.Double.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperDoubleTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextDouble()).thenReturn(7D).thenReturn(8D).thenReturn(9D).thenReturn(2D);
+        when(randomForParameterGenerator.nextDouble(-MAX_VALUE, MAX_VALUE))
+            .thenReturn(7D).thenReturn(8D).thenReturn(9D).thenReturn(2D);
     }
 
     @Override
@@ -56,6 +58,6 @@ public class WrapperDoubleTest extends GeneratingUniformRandomValuesForTheoryPar
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(4)).nextDouble();
+        verify(randomForParameterGenerator, times(4)).nextDouble(-MAX_VALUE, MAX_VALUE);
     }
 }

@@ -38,13 +38,15 @@ import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
+import static java.lang.Float.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextFloat()).thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
+        when(randomForParameterGenerator.nextFloat(-MAX_VALUE, MAX_VALUE))
+            .thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
         org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
@@ -74,6 +76,6 @@ public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextFloat();
+        verify(randomForParameterGenerator, times(3)).nextFloat(-MAX_VALUE, MAX_VALUE);
     }
 }

@@ -31,13 +31,14 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
+import static java.lang.Long.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class DateTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextLong())
+        when(randomForParameterGenerator.nextLong(MIN_VALUE, MAX_VALUE))
             .thenReturn(0L).thenReturn(60000L).thenReturn(100000000L).thenReturn(300000000000L);
     }
 
@@ -58,6 +59,6 @@ public class DateTest extends GeneratingUniformRandomValuesForTheoryParameterTes
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(4)).nextLong();
+        verify(randomForParameterGenerator, times(4)).nextLong(MIN_VALUE, MAX_VALUE);
     }
 }

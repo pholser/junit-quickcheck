@@ -178,13 +178,13 @@ values to test out the theory.
 ##### Generator configuration methods
 
 Generator configuration methods and annotations can serve to constrain the values that a generator emits. For example,
-the `@InRange` annotation on theory parameters of `int` or narrower causes the generators for those types to emit
-values that fall within a configured minimum/maximum:
+the `@InRange` annotation on theory parameters of integral and floating-point types causes the generators for those
+types to emit values that fall within a configured minimum/maximum:
 
     @RunWith(Theories.class)
     public class SingleDigitTheories {
         @Theory
-        public void hold(@ForAll @InRange(min = "0", max = "9") int digit) {
+        public void hold(@ForAll @InRange(minInt = 0, maxInt = 9) int digit) {
             // ...
         }
     }

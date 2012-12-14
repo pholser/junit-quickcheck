@@ -35,15 +35,17 @@ import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
-import static java.util.Arrays.*;
+import static java.lang.Long.*;
+import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 100)).thenReturn(2).thenReturn(1);
-        when(randomForParameterGenerator.nextLong()).thenReturn(3L).thenReturn(4L).thenReturn(5L);
+        when(randomForParameterGenerator.nextLong(MIN_VALUE, MAX_VALUE)).thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
@@ -73,6 +75,6 @@ public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryP
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextLong();
+        verify(randomForParameterGenerator, times(3)).nextLong(MIN_VALUE, MAX_VALUE);
     }
 }

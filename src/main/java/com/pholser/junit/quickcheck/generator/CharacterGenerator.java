@@ -40,21 +40,12 @@ public class CharacterGenerator extends Generator<Character> {
     }
 
     public void configure(InRange range) {
-        checkRangeChar(range.min(), "min");
-        checkRangeChar(range.max(), "max");
-
-        min = range.min().charAt(0);
-        max = range.max().charAt(0);
+        min = range.minChar();
+        max = range.maxChar();
     }
 
     @Override
     public Character generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextChar(min, max);
-    }
-
-    private void checkRangeChar(String value, String indicator) {
-        if (value.length() != 1)
-            throw new IllegalArgumentException(String.format("@%s %s not a char: [%s]", InRange.class.getSimpleName(),
-                indicator, value));
     }
 }

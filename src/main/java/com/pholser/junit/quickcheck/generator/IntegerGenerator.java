@@ -27,11 +27,12 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 
 public class IntegerGenerator extends Generator<Integer> {
-    private int min = Integer.MIN_VALUE;
-    private int max = Integer.MAX_VALUE;
+    private int min = MIN_VALUE;
+    private int max = MAX_VALUE;
 
     @SuppressWarnings("unchecked")
     public IntegerGenerator() {
@@ -39,8 +40,8 @@ public class IntegerGenerator extends Generator<Integer> {
     }
 
     public void configure(InRange range) {
-        min = Integer.valueOf(range.min());
-        max = Integer.valueOf(range.max());
+        min = range.minInt();
+        max = range.maxInt();
     }
 
     @Override

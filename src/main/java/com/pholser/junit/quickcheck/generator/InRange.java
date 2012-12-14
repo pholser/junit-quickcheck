@@ -41,7 +41,35 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Retention(RUNTIME)
 @GeneratorConfiguration
 public @interface InRange {
-    String min();
+    byte minByte() default Byte.MIN_VALUE;
 
-    String max();
+    byte maxByte() default Byte.MAX_VALUE;
+
+    short minShort() default Short.MIN_VALUE;
+
+    short maxShort() default Short.MAX_VALUE;
+
+    char minChar() default Character.MIN_VALUE;
+
+    char maxChar() default Character.MAX_VALUE;
+
+    int minInt() default Integer.MIN_VALUE;
+
+    int maxInt() default Integer.MAX_VALUE;
+
+    long minLong() default Long.MIN_VALUE;
+
+    long maxLong() default Long.MAX_VALUE;
+
+    float minFloat() default -Float.MAX_VALUE;
+
+    float maxFloat() default Float.MAX_VALUE;
+
+    double minDouble() default -Double.MAX_VALUE;
+
+    double maxDouble() default Double.MAX_VALUE;
+
+    String min() default "";
+
+    String max() default "";
 }

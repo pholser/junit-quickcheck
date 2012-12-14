@@ -40,8 +40,8 @@ public class ShortGenerator extends Generator<Short> {
     }
 
     public void configure(InRange range) {
-        min = Short.valueOf(range.min());
-        max = Short.valueOf(range.max());
+        min = range.minShort();
+        max = range.maxShort();
     }
 
     @Override

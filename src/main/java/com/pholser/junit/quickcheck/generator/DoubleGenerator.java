@@ -27,16 +27,25 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.lang.Double.*;
 import static java.util.Arrays.*;
 
 public class DoubleGenerator extends Generator<Double> {
+    private double min = -MAX_VALUE;
+    private double max = MAX_VALUE;
+
     @SuppressWarnings("unchecked")
     public DoubleGenerator() {
         super(asList(double.class, Double.class));
     }
 
+    public void configure(InRange range) {
+        min = range.minDouble();
+        max = range.maxDouble();
+    }
+
     @Override
     public Double generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextDouble();
+        return random.nextDouble(min, max);
     }
 }

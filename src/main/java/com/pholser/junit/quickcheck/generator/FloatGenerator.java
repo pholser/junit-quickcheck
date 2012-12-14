@@ -27,16 +27,25 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.lang.Float.*;
 import static java.util.Arrays.*;
 
 public class FloatGenerator extends Generator<Float> {
+    private float min = -MAX_VALUE;
+    private float max = MAX_VALUE;
+
     @SuppressWarnings("unchecked")
     public FloatGenerator() {
         super(asList(float.class, Float.class));
     }
 
+    public void configure(InRange range) {
+        min = range.minFloat();
+        max = range.maxFloat();
+    }
+
     @Override
     public Float generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextFloat();
+        return random.nextFloat(min, max);
     }
 }

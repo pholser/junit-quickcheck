@@ -121,8 +121,34 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedPrimitiveByte {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "-23", max = "34") byte b) {
+        public void shouldHold(@ForAll @InRange(minByte = -23, maxByte = 34) byte b) {
             assertThat(b, allOf(greaterThanOrEqualTo((byte) -23), lessThanOrEqualTo((byte) 34)));
+        }
+    }
+
+    @Test
+    public void leftOpenEndedRangedPrimitiveByte() {
+        assertThat(testResult(LeftOpenEndedRangedPrimitiveByte.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class LeftOpenEndedRangedPrimitiveByte {
+        @Theory
+        public void shouldHold(@ForAll @InRange(maxByte = 0) byte b) {
+            assertThat(b, lessThanOrEqualTo((byte) 0));
+        }
+    }
+
+    @Test
+    public void rightOpenEndedRangedPrimitiveByte() {
+        assertThat(testResult(RightOpenEndedRangedPrimitiveByte.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RightOpenEndedRangedPrimitiveByte {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minByte = 0) byte b) {
+            assertThat(b, greaterThanOrEqualTo((byte) 0));
         }
     }
 
@@ -146,8 +172,34 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperByte {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "-3", max = "2") Byte b) {
+        public void shouldHold(@ForAll @InRange(minByte = -3, maxByte = 2) Byte b) {
             assertThat(b, allOf(greaterThanOrEqualTo((byte) -3), lessThanOrEqualTo((byte) 2)));
+        }
+    }
+
+    @Test
+    public void leftOpenEndedRangedWrapperByte() {
+        assertThat(testResult(LeftOpenEndedRangedWrapperByte.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class LeftOpenEndedRangedWrapperByte {
+        @Theory
+        public void shouldHold(@ForAll @InRange(maxByte = 0) Byte b) {
+            assertThat(b, lessThanOrEqualTo((byte) 0));
+        }
+    }
+
+    @Test
+    public void rightOpenEndedRangedWrapperByte() {
+        assertThat(testResult(RightOpenEndedRangedWrapperByte.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RightOpenEndedRangedWrapperByte {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minByte = 0) Byte b) {
+            assertThat(b, greaterThanOrEqualTo((byte) 0));
         }
     }
 
@@ -171,34 +223,34 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedPrimitiveCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "a", max = "z") char ch) {
+        public void shouldHold(@ForAll @InRange(minChar = 'a', maxChar = 'z') char ch) {
             assertThat(ch, allOf(greaterThanOrEqualTo('a'), lessThanOrEqualTo('z')));
         }
     }
 
     @Test
-    public void rangedPrimitiveCharacterWithBogusMin() {
-        assertThat(testResult(RangedPrimitiveCharacterWithBogusMin.class),
-            hasSingleFailureContaining(InRange.class.getSimpleName() + " min not a char"));
+    public void leftOpenEndedRangedPrimitiveCharacter() {
+        assertThat(testResult(LeftOpenEndedRangedPrimitiveCharacter.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class RangedPrimitiveCharacterWithBogusMin {
+    public static class LeftOpenEndedRangedPrimitiveCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "", max = "z") char ch) {
+        public void shouldHold(@ForAll @InRange(maxChar = '\u00FF') char ch) {
+            assertThat(ch, lessThanOrEqualTo('\u00FF'));
         }
     }
 
     @Test
-    public void rangedPrimitiveCharacterWithBogusMax() {
-        assertThat(testResult(RangedPrimitiveCharacterWithBogusMax.class),
-            hasSingleFailureContaining(InRange.class.getSimpleName() + " max not a char"));
+    public void rightOpenEndedRangedPrimitiveCharacter() {
+        assertThat(testResult(RightOpenEndedRangedPrimitiveCharacter.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class RangedPrimitiveCharacterWithBogusMax {
+    public static class RightOpenEndedRangedPrimitiveCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "a", max = "zz") char ch) {
+        public void shouldHold(@ForAll @InRange(minChar = '\uFF00') char ch) {
+            assertThat(ch, greaterThanOrEqualTo('\uFF00'));
         }
     }
 
@@ -222,34 +274,34 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "0", max = "9") Character ch) {
+        public void shouldHold(@ForAll @InRange(minChar = '0', maxChar = '9') Character ch) {
             assertThat(ch, allOf(greaterThanOrEqualTo('0'), lessThanOrEqualTo('9')));
         }
     }
 
     @Test
-    public void rangedWrapperCharacterWithBogusMin() {
-        assertThat(testResult(RangedWrapperCharacterWithBogusMin.class),
-            hasSingleFailureContaining(InRange.class.getSimpleName() + " min not a char"));
+    public void leftOpenEndedRangedWrapperCharacter() {
+        assertThat(testResult(LeftOpenEndedRangedWrapperCharacter.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class RangedWrapperCharacterWithBogusMin {
+    public static class LeftOpenEndedRangedWrapperCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "abc", max = "d") Character ch) {
+        public void shouldHold(@ForAll @InRange(maxChar = '\u00FF') Character ch) {
+            assertThat(ch, lessThanOrEqualTo('\u00FF'));
         }
     }
 
     @Test
-    public void rangedWrapperCharacterWithBogusMax() {
-        assertThat(testResult(RangedWrapperCharacterWithBogusMax.class),
-            hasSingleFailureContaining(InRange.class.getSimpleName() + " max not a char"));
+    public void rightOpenEndedRangedWrapperCharacter() {
+        assertThat(testResult(RightOpenEndedRangedWrapperCharacter.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class RangedWrapperCharacterWithBogusMax {
+    public static class RightOpenEndedRangedWrapperCharacter {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "a", max = "xyz") Character ch) {
+        public void shouldHold(@ForAll @InRange(minChar = '\uFF00') Character ch) {
+            assertThat(ch, greaterThanOrEqualTo('\uFF00'));
         }
     }
 
@@ -266,6 +318,45 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveDouble() {
+        assertThat(testResult(RangedPrimitiveDouble.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveDouble {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minDouble = Math.E, maxDouble = Math.PI) double d) {
+            assertThat(d, allOf(greaterThanOrEqualTo(Math.E), lessThanOrEqualTo(Math.PI)));
+        }
+    }
+
+    @Test
+    public void leftOpenEndedRangedPrimitiveDouble() {
+        assertThat(testResult(LeftOpenEndedRangedPrimitiveDouble.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class LeftOpenEndedRangedPrimitiveDouble {
+        @Theory
+        public void shouldHold(@ForAll @InRange(maxDouble = -1E40) double d) {
+            assertThat(d, lessThanOrEqualTo(-1E40));
+        }
+    }
+
+    @Test
+    public void rightOpenEndedRangedPrimitiveDouble() {
+        assertThat(testResult(RightOpenEndedRangedPrimitiveDouble.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RightOpenEndedRangedPrimitiveDouble {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minDouble = 1E300) double d) {
+            assertThat(d, greaterThanOrEqualTo(1E300));
+        }
+    }
+
+    @Test
     public void wrapperDouble() {
         assertThat(testResult(WrapperDouble.class), isSuccessful());
     }
@@ -274,6 +365,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperDouble {
         @Theory
         public void shouldHold(@ForAll Double d) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperDouble() {
+        assertThat(testResult(RangedWrapperDouble.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperDouble {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minDouble = Math.E, maxDouble = Math.PI) Double d) {
+            assertThat(d, allOf(greaterThanOrEqualTo(Math.E), lessThanOrEqualTo(Math.PI)));
         }
     }
 
@@ -290,6 +394,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveFloat() {
+        assertThat(testResult(RangedPrimitiveFloat.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveFloat {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minFloat = 2.51234F, maxFloat = 9.23423F) float f) {
+            assertThat(f, allOf(greaterThanOrEqualTo(2.51234F), lessThanOrEqualTo(9.23423F)));
+        }
+    }
+
+    @Test
     public void wrapperFloat() {
         assertThat(testResult(WrapperFloat.class), isSuccessful());
     }
@@ -298,6 +415,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperFloat {
         @Theory
         public void shouldHold(@ForAll Float f) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperFloat() {
+        assertThat(testResult(RangedWrapperFloat.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperFloat {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minFloat = -0.1234F, maxFloat = 0.000123F) Float f) {
+            assertThat(f, allOf(greaterThanOrEqualTo(-0.1234F), lessThanOrEqualTo(0.000123F)));
         }
     }
 
@@ -321,7 +451,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedPrimitiveInteger {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "2", max = "10") int i) {
+        public void shouldHold(@ForAll @InRange(minInt = 2, maxInt = 10) int i) {
             assertThat(i, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(10)));
         }
     }
@@ -346,7 +476,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperInteger {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "-4", max = "3") Integer i) {
+        public void shouldHold(@ForAll @InRange(minInt = -4, maxInt = 3) Integer i) {
             assertThat(i, allOf(greaterThanOrEqualTo(-4), lessThanOrEqualTo(3)));
         }
     }
@@ -364,6 +494,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     }
 
     @Test
+    public void rangedPrimitiveLong() {
+        assertThat(testResult(RangedPrimitiveLong.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedPrimitiveLong {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minLong = -10, maxLong = 20) long ell) {
+            assertThat(ell, allOf(greaterThanOrEqualTo(-10L), lessThanOrEqualTo(20L)));
+        }
+    }
+
+    @Test
     public void wrapperLong() {
         assertThat(testResult(WrapperLong.class), isSuccessful());
     }
@@ -372,6 +515,19 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     public static class WrapperLong {
         @Theory
         public void shouldHold(@ForAll Long ell) {
+        }
+    }
+
+    @Test
+    public void rangedWrapperLong() {
+        assertThat(testResult(RangedWrapperLong.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedWrapperLong {
+        @Theory
+        public void shouldHold(@ForAll @InRange(minLong = -10, maxLong = 20) Long ell) {
+            assertThat(ell, allOf(greaterThanOrEqualTo(-10L), lessThanOrEqualTo(20L)));
         }
     }
 
@@ -395,7 +551,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedPrimitiveShort {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "35", max = "67") short s) {
+        public void shouldHold(@ForAll @InRange(minShort = 35, maxShort = 67) short s) {
             assertThat(s, allOf(greaterThanOrEqualTo((short) 35), lessThanOrEqualTo((short) 67)));
         }
     }
@@ -420,7 +576,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedWrapperShort {
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "-10", max = "0") Short s) {
+        public void shouldHold(@ForAll @InRange(minShort = -10, maxShort = 0) Short s) {
             assertThat(s, allOf(greaterThanOrEqualTo((short) -10), lessThanOrEqualTo((short) 0)));
         }
     }

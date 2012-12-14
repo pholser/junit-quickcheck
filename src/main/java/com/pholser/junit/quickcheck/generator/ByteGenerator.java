@@ -40,8 +40,8 @@ public class ByteGenerator extends Generator<Byte> {
     }
 
     public void configure(InRange range) {
-        min = Byte.valueOf(range.min());
-        max = Byte.valueOf(range.max());
+        min = range.minByte();
+        max = range.maxByte();
     }
 
     @Override

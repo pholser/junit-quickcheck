@@ -65,7 +65,7 @@ public class DiscardRatioTest {
         static int iterations;
 
         @Theory
-        public void shouldHold(@ForAll(discardRatio = 3) @InRange(min = "3", max = "4") @SuchThat("#i < 3") int i) {
+        public void shouldHold(@ForAll(discardRatio = 3) @InRange(minInt = 3, maxInt = 4) @SuchThat("#i < 3") int i) {
             ++iterations;
         }
     }
@@ -82,7 +82,7 @@ public class DiscardRatioTest {
         static int iterations;
 
         @Theory
-        public void shouldHold(@ForAll @InRange(min = "3", max = "4") @SuchThat("#i < 3") int i) {
+        public void shouldHold(@ForAll @InRange(minInt = 3, maxInt = 4) @SuchThat("#i < 3") int i) {
             ++iterations;
         }
     }

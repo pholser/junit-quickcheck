@@ -61,8 +61,8 @@ public class RangedPrimitiveIntegerTest extends GeneratingUniformRandomValuesFor
     @Override
     protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
-        when(range.min()).thenReturn("-4");
-        when(range.max()).thenReturn("5");
+        when(range.minInt()).thenReturn(-4);
+        when(range.maxInt()).thenReturn(5);
         return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 

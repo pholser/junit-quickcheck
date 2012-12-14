@@ -27,16 +27,25 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.lang.Long.*;
 import static java.util.Arrays.*;
 
 public class LongGenerator extends Generator<Long> {
+    private long min = MIN_VALUE;
+    private long max = MAX_VALUE;
+
     @SuppressWarnings("unchecked")
     public LongGenerator() {
         super(asList(long.class, Long.class));
     }
 
+    public void configure(InRange range) {
+        min = range.minLong();
+        max = range.maxLong();
+    }
+
     @Override
     public Long generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextLong();
+        return random.nextLong(min, max);
     }
 }

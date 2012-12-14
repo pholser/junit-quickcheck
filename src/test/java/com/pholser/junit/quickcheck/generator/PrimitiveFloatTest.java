@@ -30,13 +30,14 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
+import static java.lang.Float.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextFloat()).thenReturn(7F).thenReturn(8F);
+        when(randomForParameterGenerator.nextFloat(-MAX_VALUE, MAX_VALUE)).thenReturn(7F).thenReturn(8F);
     }
 
     @Override
@@ -56,6 +57,6 @@ public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryPa
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextFloat();
+        verify(randomForParameterGenerator, times(2)).nextFloat(-MAX_VALUE, MAX_VALUE);
     }
 }
