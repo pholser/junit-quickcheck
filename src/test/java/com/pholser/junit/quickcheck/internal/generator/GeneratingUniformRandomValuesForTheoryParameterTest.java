@@ -59,7 +59,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     private List<PotentialAssignment> theoryParms;
 
     @Before
-    public final void beforeEach() {
+    public final void beforeEach() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         source = new BasicGeneratorSource();
@@ -95,7 +95,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         when(constraint.value()).thenReturn(constraintExpression());
     }
 
-    protected abstract void primeSourceOfRandomness();
+    protected abstract void primeSourceOfRandomness() throws Exception;
 
     protected abstract Type parameterType();
 

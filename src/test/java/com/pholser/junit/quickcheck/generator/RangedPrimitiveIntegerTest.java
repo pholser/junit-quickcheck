@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

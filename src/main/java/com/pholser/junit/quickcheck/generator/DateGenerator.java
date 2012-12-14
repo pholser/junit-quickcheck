@@ -50,19 +50,45 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class DateGenerator extends Generator<Date> {
-    private final LongGenerator longGenerator = new LongGenerator();
+    private Date min = new Date(Integer.MIN_VALUE);
+    private Date max = new Date(Long.MAX_VALUE);
 
     public DateGenerator() {
         super(Date.class);
     }
 
+    public void configure(InRange range) {
+        SimpleDateFormat formatter = new SimpleDateFormat(range.format());
+        formatter.setLenient(false);
+
+        try {
+            if (!defaultAttribute("min").equals(range.min()))
+                min = formatter.parse(range.min());
+            if (!defaultAttribute("max").equals(range.max()))
+                max = formatter.parse(range.max());
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        if (min.getTime() > max.getTime())
+            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+    }
+
     @Override
     public Date generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Date(longGenerator.generate(random, status));
+        long timestamp = random.nextLong(min.getTime(), max.getTime());
+        return new Date(timestamp);
+    }
+
+    private Object defaultAttribute(String attribute) {
+        return Reflection.defaultValueOf(InRange.class, attribute);
     }
 }

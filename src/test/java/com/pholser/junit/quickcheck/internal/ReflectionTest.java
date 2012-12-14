@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 
 public class ReflectionTest {
@@ -108,5 +109,22 @@ public class ReflectionTest {
 
     public void bar() {
         throw new NumberFormatException();
+    }
+
+    @Test
+    public void findingDefaultValueOfAnnotationAttribute() throws Exception {
+        assertEquals("baz", defaultValueOf(Foo.class, "bar"));
+    }
+
+    @Test
+    public void missingAnnotationAttribute() throws Exception {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(NoSuchMethodException.class.getName());
+
+        defaultValueOf(Foo.class, "noneSuch");
+    }
+
+    public static @interface Foo {
+        String bar() default "baz";
     }
 }

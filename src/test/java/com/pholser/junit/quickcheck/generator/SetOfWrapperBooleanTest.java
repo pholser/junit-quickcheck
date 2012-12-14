@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 

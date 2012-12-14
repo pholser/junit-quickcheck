@@ -72,4 +72,6 @@ public @interface InRange {
     String min() default "";
 
     String max() default "";
+
+    String format() default "";
 }

@@ -55,6 +55,14 @@ public final class Reflection {
         return supertypes;
     }
 
+    public static Object defaultValueOf(Class<? extends Annotation> annotationType, String attribute) {
+        try {
+            return annotationType.getMethod(attribute).getDefaultValue();
+        } catch (Exception ex) {
+            throw reflectionException(ex);
+        }
+    }
+
     public static List<Annotation> markedAnnotations(List<Annotation> annotations,
                                                      Class<? extends Annotation> marker) {
         List<Annotation> marked = new ArrayList<Annotation>();

@@ -25,41 +25,43 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
-import org.javaruntype.type.Types;
+import org.junit.Before;
 
-import static com.google.common.collect.Lists.*;
-import static com.google.common.collect.Sets.*;
-import static java.lang.Float.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class RangedDateTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    private final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+    private Date first;
+    private Date second;
+    private Date third;
+    private Date min;
+    private Date max;
+
     @Override
-    protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextFloat(-MAX_VALUE, MAX_VALUE))
-            .thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
-        org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
-        List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
-        when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
-            .thenReturn(supertypes.indexOf(floatType))
-            .thenReturn(0)
-            .thenReturn(supertypes.indexOf(floatType))
-            .thenReturn(0)
-            .thenReturn(supertypes.indexOf(floatType))
-            .thenReturn(0);
+    protected void primeSourceOfRandomness() throws Exception {
+        first = formatter.parse("12/25/945");
+        second = formatter.parse("7/4/1776");
+        third = formatter.parse("8/26/2008");
+        min = formatter.parse("1/1/500");
+        max = formatter.parse("12/31/2020");
+        when(randomForParameterGenerator.nextLong(min.getTime(), max.getTime()))
+            .thenReturn(first.getTime()).thenReturn(second.getTime()).thenReturn(third.getTime());
     }
 
     @Override
     protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, new WildcardTypeImpl(new Type[0], new Type[] { Float.class }));
+        return Date.class;
     }
 
     @Override
@@ -67,14 +69,22 @@ public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryP
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(2.2F), newHashSet(2.3F, 2.4F));
+        return asList(new Date(first.getTime()), new Date(second.getTime()), new Date(third.getTime()));
+    }
+
+    @Override
+    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        InRange range = mock(InRange.class);
+        when(range.min()).thenReturn("1/1/500");
+        when(range.max()).thenReturn("12/31/2020");
+        when(range.format()).thenReturn("MM/dd/yyyy");
+        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextFloat(-MAX_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextLong(min.getTime(), max.getTime());
     }
 }
