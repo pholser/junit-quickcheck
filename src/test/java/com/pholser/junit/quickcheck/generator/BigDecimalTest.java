@@ -27,21 +27,15 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-import static com.pholser.junit.quickcheck.Strings.*;
 import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
 
 public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBytes(0)).thenReturn(new byte[0]);
-        when(randomForParameterGenerator.nextBytes(1)).thenReturn(bytesOf("a"));
-        when(randomForParameterGenerator.nextBytes(2)).thenReturn(bytesOf("bc"));
     }
 
     @Override
@@ -56,15 +50,10 @@ public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParame
 
     @Override
     protected List<?> randomValues() {
-        return asList(new BigDecimal(BigInteger.ZERO, 0),
-            new BigDecimal(new BigInteger(bytesOf("a")), 1),
-            new BigDecimal(new BigInteger(bytesOf("bc")), 2));
+        return asList(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(1)).nextBytes(0);
-        verify(randomForParameterGenerator, times(1)).nextBytes(1);
-        verify(randomForParameterGenerator, times(1)).nextBytes(2);
     }
 }

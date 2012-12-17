@@ -30,13 +30,31 @@ import java.math.BigInteger;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class BigIntegerGenerator extends Generator<BigInteger> {
+    private BigInteger min;
+    private BigInteger max;
+
     public BigIntegerGenerator() {
         super(BigInteger.class);
     }
 
+    public void configure(InRange range) {
+        min = new BigInteger(range.min());
+        max = new BigInteger(range.max());
+    }
+
     @Override
     public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
-        byte[] bytes = random.nextBytes(status.size());
-        return bytes.length == 0 ? BigInteger.ZERO : new BigInteger(bytes);
+        if (min != null && max != null) {
+            BigInteger range = max.subtract(min);
+            BigInteger generated;
+
+            do {
+                generated = random.nextBigInteger(range.bitLength());
+            } while (generated.compareTo(range) >= 0);
+
+            return generated.add(min);
+        }
+
+        return random.nextBigInteger(status.size() + 1);
     }
 }

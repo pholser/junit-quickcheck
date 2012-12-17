@@ -25,9 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
@@ -36,13 +40,16 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class BigIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class RangedBigIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    private final BigInteger min = new BigInteger("-12345678123456781234567812345678");
+    private final BigInteger max = new BigInteger("987654321987654321");
+
     @Override
     protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBigInteger(1)).thenReturn(ONE);
-        when(randomForParameterGenerator.nextBigInteger(2)).thenReturn(new BigInteger("3"));
-        when(randomForParameterGenerator.nextBigInteger(3)).thenReturn(new BigInteger("-7"));
-        when(randomForParameterGenerator.nextBigInteger(4)).thenReturn(new BigInteger("12"));
+        int numberOfBits = max.subtract(min).bitLength();
+        when(randomForParameterGenerator.nextBigInteger(numberOfBits))
+            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE)).thenReturn(ONE).thenReturn(TEN)
+            .thenReturn(ZERO).thenReturn(new BigInteger("234234234234"));
     }
 
     @Override
@@ -57,14 +64,19 @@ public class BigIntegerTest extends GeneratingUniformRandomValuesForTheoryParame
 
     @Override
     protected List<?> randomValues() {
-        return asList(ONE, new BigInteger("3"), new BigInteger("-7"), new BigInteger("12"));
+        return asList(min.add(ONE), min.add(TEN), min.add(ZERO), min.add(new BigInteger("234234234234")));
+    }
+
+    @Override
+    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        InRange range = mock(InRange.class);
+        when(range.min()).thenReturn(min.toString());
+        when(range.max()).thenReturn(max.toString());
+        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextBigInteger(1);
-        verify(randomForParameterGenerator).nextBigInteger(2);
-        verify(randomForParameterGenerator).nextBigInteger(3);
-        verify(randomForParameterGenerator).nextBigInteger(4);
+        verify(randomForParameterGenerator, times(5)).nextBigInteger(max.subtract(min).bitLength());
     }
 }

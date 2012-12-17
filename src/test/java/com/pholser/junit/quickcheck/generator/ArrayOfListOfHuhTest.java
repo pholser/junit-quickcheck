@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.common.base.Predicates;
@@ -45,15 +46,12 @@ import static org.mockito.Mockito.*;
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        int bigDecimalIndex = Iterables.indexOf(source, Predicates.instanceOf(BigDecimalGenerator.class));
-        when(randomForParameterGenerator.nextBytes(0)).thenReturn(new byte[0]);
-        when(randomForParameterGenerator.nextBytes(1)).thenReturn(bytesOf("a"));
-        when(randomForParameterGenerator.nextBytes(2)).thenReturn(bytesOf("bc"))
-            .thenReturn(bytesOf("de"))
-            .thenReturn(bytesOf("fg"))
-            .thenReturn(bytesOf("hi"));
+        int dateIndex = 11;
+        when(randomForParameterGenerator.nextLong(Integer.MIN_VALUE, Long.MAX_VALUE))
+            .thenReturn(1L).thenReturn(7L).thenReturn(63L).thenReturn(127L)
+            .thenReturn(255L);
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
-        when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 4)).thenReturn(bigDecimalIndex);
+        when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 4)).thenReturn(dateIndex);
     }
 
     @Override
@@ -71,18 +69,14 @@ public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheory
     protected List<?> randomValues() {
         List<List<?>[]> values = new ArrayList<List<?>[]>();
         values.add(new List<?>[0]);
-        values.add(new List<?>[] { asList(new BigDecimal(new BigInteger(bytesOf("a")), 1)) });
-        values.add(new List<?>[] {
-            asList(new BigDecimal(new BigInteger(bytesOf("bc")), 2), new BigDecimal(new BigInteger(bytesOf("de")), 2)),
-            asList(new BigDecimal(new BigInteger(bytesOf("fg")), 2), new BigDecimal(new BigInteger(bytesOf("hi")), 2)),
-        });
+        values.add(new List<?>[] { asList(new Date(1L)) });
+        values.add(new List<?>[] { asList(new Date(7L), new Date(63L)), asList(new Date(127L), new Date(255L)) });
         return values;
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextBytes(1);
-        verify(randomForParameterGenerator, times(4)).nextBytes(2);
+        verify(randomForParameterGenerator, times(5)).nextLong(Integer.MIN_VALUE, Long.MAX_VALUE);
         verifyNoMoreInteractions(randomForParameterGenerator);
         verify(randomForGeneratorRepo, times(3)).nextInt(0, Iterables.size(source) - 4);
         verifyNoMoreInteractions(randomForGeneratorRepo);

@@ -30,20 +30,12 @@ import java.math.BigDecimal;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class BigDecimalGenerator extends Generator<BigDecimal> {
-    private final BigIntegerGenerator bigIntegerGenerator;
-
     public BigDecimalGenerator() {
-        this(new BigIntegerGenerator());
-    }
-
-    protected BigDecimalGenerator(BigIntegerGenerator bigIntegerGenerator) {
         super(BigDecimal.class);
-
-        this.bigIntegerGenerator = bigIntegerGenerator;
     }
 
     @Override
     public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
-        return new BigDecimal(bigIntegerGenerator.generate(random, status), status.size());
+        return BigDecimal.ZERO;
     }
 }

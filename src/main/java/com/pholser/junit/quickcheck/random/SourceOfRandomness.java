@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 import static java.lang.String.*;
@@ -115,6 +116,10 @@ public class SourceOfRandomness {
         byte[] buffer = new byte[count];
         delegate.nextBytes(buffer);
         return buffer;
+    }
+
+    public BigInteger nextBigInteger(int numberOfBits) {
+        return new BigInteger(numberOfBits, delegate);
     }
 
     private void checkRange(boolean condition, String pattern, Object min, Object max) {
