@@ -29,6 +29,10 @@ import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.math.BigInteger.*;
+
 public class BigIntegerGenerator extends Generator<BigInteger> {
     private BigInteger min;
     private BigInteger max;
@@ -38,26 +42,33 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
     }
 
     public void configure(InRange range) {
-        min = new BigInteger(range.min());
-        max = new BigInteger(range.max());
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = new BigInteger(range.min());
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = new BigInteger(range.max());
+        if (min != null && max != null)
+            checkRange("d", min, max);
     }
-
-    // TODO: missing min or max == +/- 10^size, or opposite +/- that if it would make the range illegal
-    // TODO: range check
 
     @Override
     public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
-        if (min != null && max != null) {
-            BigInteger range = max.subtract(min);
-            BigInteger generated;
+        if (min == null && max == null)
+            return random.nextBigInteger(status.size() + 1);
 
-            do {
-                generated = random.nextBigInteger(range.bitLength());
-            } while (generated.compareTo(range) >= 0);
+        BigInteger minToUse = min;
+        BigInteger maxToUse = max;
+        if (minToUse == null)
+            minToUse = maxToUse.subtract(TEN.pow(status.size() + 1));
+        else if (maxToUse == null)
+            maxToUse = minToUse.add(TEN.pow(status.size() + 1));
 
-            return generated.add(min);
-        }
+        BigInteger range = maxToUse.subtract(minToUse);
+        BigInteger generated;
 
-        return random.nextBigInteger(status.size() + 1);
+        do {
+            generated = random.nextBigInteger(range.bitLength());
+        } while (generated.compareTo(range) >= 0);
+
+        return generated.add(minToUse);
     }
 }

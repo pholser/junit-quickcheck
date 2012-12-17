@@ -28,11 +28,13 @@ package com.pholser.junit.quickcheck;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.pholser.junit.quickcheck.generator.InRange;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -47,6 +49,84 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     public static class BigIntegerTheory {
         @Theory
         public void shouldHold(@ForAll BigInteger i) {
+        }
+    }
+
+    @Test
+    public void rangedBigIntegerWithBackwardsRange() {
+        assertThat(testResult(RangedBigIntegerWithBackwardsRange.class),
+            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigIntegerWithBackwardsRange {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1", max = "0") BigInteger i) {
+        }
+    }
+
+    @Test
+    public void rangedBigIntegerWithMalformedMin() {
+        assertThat(testResult(RangedBigIntegerWithMalformedMin.class),
+            hasSingleFailureContaining(NumberFormatException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigIntegerWithMalformedMin {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-(*&!(#*!@", max = "0") BigInteger i) {
+        }
+    }
+
+    @Test
+    public void rangedBigIntegerWithMalformedMax() {
+        assertThat(testResult(RangedBigIntegerWithMalformedMax.class),
+            hasSingleFailureContaining(NumberFormatException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigIntegerWithMalformedMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-1234", max = "237KJAHDLKAJHS") BigInteger i) {
+        }
+    }
+
+    @Test
+    public void rangedBigIntegerWithNoMin() {
+        assertThat(testResult(RangedBigIntegerWithNoMin.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigIntegerWithNoMin {
+        @Theory
+        public void shouldHold(@ForAll @InRange(max = "0") BigInteger i) {
+            assertThat(i, lessThanOrEqualTo(BigInteger.ZERO));
+        }
+    }
+
+    @Test
+    public void rangedBigIntegerWithNoMax() {
+        assertThat(testResult(RangedBigIntegerWithNoMax.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigIntegerWithNoMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1") BigInteger i) {
+            assertThat(i, greaterThanOrEqualTo(BigInteger.ONE));
+        }
+    }
+
+    @Test
+    public void rangedBigIntegerWithMinAndMax() {
+        assertThat(testResult(RangedBigIntegerWithMinAndMax.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigIntegerWithMinAndMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1", max = "10000000") BigInteger i) {
+            assertThat(i, allOf(greaterThanOrEqualTo(BigInteger.ONE), lessThanOrEqualTo(new BigInteger("10000000"))));
         }
     }
 

@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.random;
 import java.math.BigInteger;
 import java.util.Random;
 
-import static java.lang.String.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 public class SourceOfRandomness {
     private final Random delegate;
@@ -82,7 +82,7 @@ public class SourceOfRandomness {
     }
 
     public char nextChar(char min, char max) {
-        checkRange(min > max, "bad range, %c > %c", min, max);
+        checkRange("c", min, max);
 
         return (char) nextLong(min, max);
     }
@@ -92,7 +92,7 @@ public class SourceOfRandomness {
     }
 
     public long nextLong(long min, long max) {
-        checkRange(min > max, "bad range, %d > %d", min, max);
+        checkRange("d", min, max);
 
         long range = max - min + 1;
         return min + (long) (range * delegate.nextDouble());
@@ -103,13 +103,8 @@ public class SourceOfRandomness {
     }
 
     public double nextDouble(double min, double max) {
-        int comparison = Double.compare(min, max);
-
-        checkRange(comparison > 0, "bad range, %f > %f", min, max);
-        if (comparison == 0)
-            return min;
-
-        return min + (max - min) * delegate.nextDouble();
+        int comparison = checkRange("f", min, max);
+        return comparison == 0 ? min : min + (max - min) * delegate.nextDouble();
     }
 
     public byte[] nextBytes(int count) {
@@ -120,10 +115,5 @@ public class SourceOfRandomness {
 
     public BigInteger nextBigInteger(int numberOfBits) {
         return new BigInteger(numberOfBits, delegate);
-    }
-
-    private void checkRange(boolean condition, String pattern, Object min, Object max) {
-        if (condition)
-            throw new IllegalArgumentException(format(pattern, min, max));
     }
 }
