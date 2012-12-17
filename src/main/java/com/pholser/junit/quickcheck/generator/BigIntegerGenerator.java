@@ -42,6 +42,9 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
         max = new BigInteger(range.max());
     }
 
+    // TODO: missing min or max == +/- 10^size, or opposite +/- that if it would make the range illegal
+    // TODO: range check
+
     @Override
     public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
         if (min != null && max != null) {

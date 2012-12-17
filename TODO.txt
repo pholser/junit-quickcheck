@@ -1,5 +1,3 @@
--- Clarify API of source of randomness
-   -- How to guarantee ranges of ints/longs/doubles/floats and less? Big(Decimal|Integer)?
 -- Do we need size control?
 -- Do we need different random distributions?
 -- Do we need @Frequency?
