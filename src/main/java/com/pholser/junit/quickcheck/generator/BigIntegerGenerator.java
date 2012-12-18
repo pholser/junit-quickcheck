@@ -52,15 +52,17 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
 
     @Override
     public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
+        int numberOfBits = status.size() + 1;
+
         if (min == null && max == null)
-            return random.nextBigInteger(status.size() + 1);
+            return random.nextBigInteger(numberOfBits);
 
         BigInteger minToUse = min;
         BigInteger maxToUse = max;
         if (minToUse == null)
-            minToUse = maxToUse.subtract(TEN.pow(status.size() + 1));
+            minToUse = maxToUse.subtract(TEN.pow(numberOfBits));
         else if (maxToUse == null)
-            maxToUse = minToUse.add(TEN.pow(status.size() + 1));
+            maxToUse = minToUse.add(TEN.pow(numberOfBits));
 
         BigInteger range = maxToUse.subtract(minToUse);
         BigInteger generated;
