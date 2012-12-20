@@ -26,16 +26,77 @@
 package com.pholser.junit.quickcheck.generator;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.lang.Math.*;
+import static java.math.BigDecimal.*;
+
 public class BigDecimalGenerator extends Generator<BigDecimal> {
+    private BigDecimal min;
+    private BigDecimal max;
+    private Precision precision;
+
     public BigDecimalGenerator() {
         super(BigDecimal.class);
     }
 
+    public void configure(InRange range) {
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = new BigDecimal(range.min());
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = new BigDecimal(range.max());
+        if (min != null && max != null)
+            checkRange("f", min, max);
+    }
+
+    public void configure(Precision precision) {
+        this.precision = precision;
+    }
+
     @Override
     public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
-        return BigDecimal.ZERO;
+        BigDecimal minToUse = min;
+        BigDecimal maxToUse = max;
+        int power = status.size() + 1;
+
+        if (minToUse == null && maxToUse == null) {
+            maxToUse = TEN.pow(power);
+            minToUse = maxToUse.negate();
+        }
+
+        int scale = decideScale();
+
+        if (minToUse == null)
+            minToUse = maxToUse.subtract(TEN.pow(power));
+        else if (maxToUse == null)
+            maxToUse = minToUse.add(TEN.pow(power));
+
+        BigDecimal minShifted = minToUse.movePointRight(scale);
+        BigDecimal maxShifted = maxToUse.movePointRight(scale);
+        BigInteger range = maxShifted.toBigInteger().subtract(minShifted.toBigInteger());
+
+        BigInteger generated;
+        do {
+            generated = random.nextBigInteger(range.bitLength());
+        } while (generated.compareTo(range) >= 0);
+
+        return minShifted.add(new BigDecimal(generated)).movePointLeft(scale);
+    }
+
+    private int decideScale() {
+        int scale = Integer.MIN_VALUE;
+
+        if (min != null)
+            scale = max(scale, min.scale());
+        if (max != null)
+            scale = max(scale, max.scale());
+        if (precision != null)
+            scale = max(scale, precision.scale());
+
+        return max(scale, 0);
     }
 }

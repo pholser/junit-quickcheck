@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
@@ -133,11 +133,11 @@ public abstract class Generator<T> {
         Method configurer;
 
         try {
-            configurer = Reflection.findMethodQuietly(getClass(), "configure", annotationType);
+            configurer = findMethodQuietly(getClass(), "configure", annotationType);
         } catch (ReflectionException ex) {
             return;
         }
 
-        Reflection.invokeQuietly(configurer, this, configuration);
+        invokeQuietly(configurer, this, configuration);
     }
 }

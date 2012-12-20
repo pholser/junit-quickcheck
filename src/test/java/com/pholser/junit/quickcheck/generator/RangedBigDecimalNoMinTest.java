@@ -25,34 +25,33 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-
-    private BigDecimal first;
-    private BigDecimal second;
-    private BigDecimal third;
+public class RangedBigDecimalNoMinTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    private final BigDecimal max = new BigDecimal("987654321987654321.09876");
+    private final BigInteger maxBigInt = max.movePointRight(5).toBigInteger();
 
     @Override
     protected void primeSourceOfRandomness() {
-        first = TEN.subtract(TEN.negate());
-        second = TEN.pow(2).subtract(TEN.pow(2).negate());
-        third = TEN.pow(3).subtract(TEN.pow(3).negate());
-        when(randomForParameterGenerator.nextBigInteger(first.toBigInteger().bitLength()))
-            .thenReturn(new BigInteger("999999999999")).thenReturn(BigInteger.ONE);
-        when(randomForParameterGenerator.nextBigInteger(second.toBigInteger().bitLength()))
-            .thenReturn(new BigInteger("136"));
-        when(randomForParameterGenerator.nextBigInteger(third.toBigInteger().bitLength()))
-            .thenReturn(new BigInteger("768"));
+        when(randomForParameterGenerator.nextBigInteger(
+            maxBigInt.subtract(maxBigInt.subtract(TEN.movePointRight(5).toBigInteger())).bitLength()))
+            .thenReturn(new BigInteger("6"));
+        when(randomForParameterGenerator.nextBigInteger(
+            maxBigInt.subtract(maxBigInt.subtract(TEN.pow(2).movePointRight(5).toBigInteger())).bitLength()))
+            .thenReturn(new BigInteger("35"));
     }
 
     @Override
@@ -62,18 +61,27 @@ public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParame
 
     @Override
     protected int sampleSize() {
-        return 3;
+        return 2;
     }
 
     @Override
     protected List<?> randomValues() {
-        return asList(new BigDecimal("-9"), new BigDecimal("36"), new BigDecimal("-232"));
+        return asList(new BigDecimal("987654321987654311.09882"), new BigDecimal("987654321987654221.09911"));
+    }
+
+    @Override
+    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        InRange range = mock(InRange.class);
+        when(range.min()).thenReturn((String) defaultValueOf(InRange.class, "min"));
+        when(range.max()).thenReturn(max.toString());
+        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override
     public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextBigInteger(first.toBigInteger().bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(second.toBigInteger().bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(third.toBigInteger().bitLength());
+        verify(randomForParameterGenerator).nextBigInteger(
+            maxBigInt.subtract(maxBigInt.subtract(TEN.movePointRight(5).toBigInteger())).bitLength());
+        verify(randomForParameterGenerator).nextBigInteger(
+            maxBigInt.subtract(maxBigInt.subtract(TEN.pow(2).movePointRight(5).toBigInteger())).bitLength());
     }
 }

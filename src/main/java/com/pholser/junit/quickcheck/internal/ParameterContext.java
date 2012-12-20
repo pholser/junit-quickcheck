@@ -92,7 +92,7 @@ public class ParameterContext {
     }
 
     public void addConfiguration(Class<? extends Annotation> annotationType, Annotation configuration) {
-        this.configurations.put(annotationType, configuration);
+        configurations.put(annotationType, configuration);
     }
 
     private void ensureCorrectType(Generator<?> generator) {
