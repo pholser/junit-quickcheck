@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.Precision;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -139,6 +140,192 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     public static class BigDecimalTheory {
         @Theory
         public void shouldHold(@ForAll BigDecimal d) {
+        }
+    }
+
+    @Test
+    public void bigDecimalWithSpecifiedPrecision() {
+        assertThat(testResult(BigDecimalTheory.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class BigDecimalWithSpecifiedPrecisionTheory {
+        @Theory
+        public void shouldHold(@ForAll @Precision(scale = 5) BigDecimal d) {
+            assertEquals(5, d.scale());
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithBackwardsRange() {
+        assertThat(testResult(RangedBigDecimalWithBackwardsRange.class),
+            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithBackwardsRange {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1.02", max = "1.01999") BigDecimal d) {
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithMalformedMin() {
+        assertThat(testResult(RangedBigDecimalWithMalformedMin.class),
+            hasSingleFailureContaining(NumberFormatException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithMalformedMin {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "ZXCZXC", max = "-34.56") BigDecimal d) {
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithMalformedMax() {
+        assertThat(testResult(RangedBigDecimalWithMalformedMax.class),
+            hasSingleFailureContaining(NumberFormatException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithMalformedMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-1234.5678", max = "***@*@*") BigInteger i) {
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithNoMin() {
+        assertThat(testResult(RangedBigDecimalWithNoMin.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithNoMin {
+        @Theory
+        public void shouldHold(@ForAll @InRange(max = "-0.000123123") BigDecimal d) {
+            assertEquals(9, d.scale());
+            assertThat(d, lessThanOrEqualTo(new BigDecimal("-0.000123123")));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithNoMinLesserSpecifiedPrecision() {
+        assertThat(testResult(RangedBigDecimalWithNoMinLesserSpecifiedPrecision.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithNoMinLesserSpecifiedPrecision {
+        @Theory
+        public void shouldHold(@ForAll @InRange(max = "-0.000123123") @Precision(scale = 8) BigDecimal d) {
+            assertEquals(9, d.scale());
+            assertThat(d, lessThanOrEqualTo(new BigDecimal("-0.000123123")));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithNoMinGreaterSpecifiedPrecision() {
+        assertThat(testResult(RangedBigDecimalWithNoMinGreaterSpecifiedPrecision.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithNoMinGreaterSpecifiedPrecision {
+        @Theory
+        public void shouldHold(@ForAll @InRange(max = "-0.000123123") @Precision(scale = 10) BigDecimal d) {
+            assertEquals(10, d.scale());
+            assertThat(d, lessThanOrEqualTo(new BigDecimal("-0.000123123")));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithNoMax() {
+        assertThat(testResult(RangedBigDecimalWithNoMax.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithNoMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1.23456789") BigDecimal d) {
+            assertEquals(8, d.scale());
+            assertThat(d, greaterThanOrEqualTo(new BigDecimal("1.23456789")));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithNoMaxLesserSpecifiedPrecision() {
+        assertThat(testResult(RangedBigDecimalWithNoMaxLesserSpecifiedPrecision.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithNoMaxLesserSpecifiedPrecision {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1.23456789") @Precision(scale = 7) BigDecimal d) {
+            assertEquals(8, d.scale());
+            assertThat(d, greaterThanOrEqualTo(new BigDecimal("1.23456789")));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithNoMaxGreaterSpecifiedPrecision() {
+        assertThat(testResult(RangedBigDecimalWithNoMaxGreaterSpecifiedPrecision.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithNoMaxGreaterSpecifiedPrecision {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "1.23456789") @Precision(scale = 9) BigDecimal d) {
+            assertEquals(9, d.scale());
+            assertThat(d, greaterThanOrEqualTo(new BigDecimal("1.23456789")));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithMinAndMax() {
+        assertThat(testResult(RangedBigDecimalWithMinAndMax.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithMinAndMax {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321") BigDecimal d) {
+            assertEquals(8, d.scale());
+            assertThat(d, allOf(
+                greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
+                lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision() {
+        assertThat(testResult(RangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321")
+                                       @Precision(scale = 7) BigDecimal d) {
+            assertEquals(8, d.scale());
+            assertThat(d, allOf(
+                greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
+                lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
+        }
+    }
+
+    @Test
+    public void rangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision() {
+        assertThat(testResult(RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision {
+        @Theory
+        public void shouldHold(@ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321")
+                                       @Precision(scale = 11) BigDecimal d) {
+            assertEquals(11, d.scale());
+            assertThat(d, allOf(
+                greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
+                lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
         }
     }
 }

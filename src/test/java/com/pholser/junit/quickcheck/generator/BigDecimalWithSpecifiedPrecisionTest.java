@@ -25,10 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
@@ -36,16 +39,16 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class BigDecimalWithSpecifiedPrecisionTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     private BigDecimal first;
     private BigDecimal second;
     private BigDecimal third;
 
     @Override
     protected void primeSourceOfRandomness() {
-        first = TEN.subtract(TEN.negate());
-        second = TEN.pow(2).subtract(TEN.pow(2).negate());
-        third = TEN.pow(3).subtract(TEN.pow(3).negate());
+        first = TEN.subtract(TEN.negate()).movePointRight(5);
+        second = TEN.pow(2).subtract(TEN.pow(2).negate()).movePointRight(5);
+        third = TEN.pow(3).subtract(TEN.pow(3).negate()).movePointRight(5);
         when(randomForParameterGenerator.nextBigInteger(first.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("999999999999")).thenReturn(BigInteger.ONE);
         when(randomForParameterGenerator.nextBigInteger(second.toBigInteger().bitLength()))
@@ -66,7 +69,14 @@ public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParame
 
     @Override
     protected List<?> randomValues() {
-        return asList(new BigDecimal("-9"), new BigDecimal("36"), new BigDecimal("-232"));
+        return asList(new BigDecimal("-9.99999"), new BigDecimal("-99.99864"), new BigDecimal("-999.99232"));
+    }
+
+    @Override
+    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        Precision precision = mock(Precision.class);
+        when(precision.scale()).thenReturn(5);
+        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(Precision.class, precision);
     }
 
     @Override
