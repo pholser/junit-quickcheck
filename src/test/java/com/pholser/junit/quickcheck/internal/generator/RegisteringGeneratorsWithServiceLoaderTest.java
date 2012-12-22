@@ -32,19 +32,19 @@ import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.FooGenerator;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsWithServiceLoaderTest {
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
     @Before
     public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
-
         repo = new GeneratorRepository(random);
         repo.add(new BasicGeneratorSource()).add(new ServiceLoaderGeneratorSource());
     }

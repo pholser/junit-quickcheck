@@ -25,9 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.constraint;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ognl.Ognl;
 import ognl.OgnlContext;
 import ognl.OgnlException;

@@ -37,12 +37,12 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-public class Classes {
+class Classes {
     private Classes() {
         throw new UnsupportedOperationException();
     }
 
-    public static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
+    static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
         return new TypeSafeMatcher<Class<?>>() {
             @Override
             protected boolean matchesSafely(Class<?> item) {
@@ -56,7 +56,7 @@ public class Classes {
         };
     }
 
-    public static List<Class<?>> classesOf(Iterable<?> items) {
+    static List<Class<?>> classesOf(Iterable<?> items) {
         return FluentIterable.from(items)
             .transform(new Function<Object, Class<?>>() {
                 @Override
@@ -66,24 +66,24 @@ public class Classes {
             }).toImmutableList();
     }
 
-    public static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
+    static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
         return commonSuperclassesOf(classes).get(0);
     }
 
-    private static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
+    static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
         // start off with set from first hierarchy
-        Set<Class<?>> rollingIntersect = new LinkedHashSet<Class<?>>(getClassesBfs(classes.get(0)));
+        Set<Class<?>> rollingIntersect = new LinkedHashSet<Class<?>>(getClassesBreadthFirst(classes.get(0)));
 
         // intersect with next
         if (classes.size() > 1) {
             for (Class<?> each : classes.subList(1, classes.size()))
-                rollingIntersect.retainAll(getClassesBfs(each));
+                rollingIntersect.retainAll(getClassesBreadthFirst(each));
         }
 
         return new ArrayList<Class<?>>(rollingIntersect);
     }
 
-    private static Set<Class<?>> getClassesBfs(Class<?> clazz) {
+    static Set<Class<?>> getClassesBreadthFirst(Class<?> clazz) {
         Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
         Set<Class<?>> nextLevel = new LinkedHashSet<Class<?>>();
         nextLevel.add(clazz);

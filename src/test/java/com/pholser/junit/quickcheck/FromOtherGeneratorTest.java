@@ -73,12 +73,12 @@ public class FromOtherGeneratorTest {
 
     @Test
     public void typeMismatch() throws Exception {
-        assertThat(testResult(WithGeneratorTypeThatDoesNotMatchTheoryParmType.class),
+        assertThat(testResult(WithGeneratorTypeThatDoesNotMatchTheoryParameterType.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(Theories.class)
-    public static class WithGeneratorTypeThatDoesNotMatchTheoryParmType {
+    public static class WithGeneratorTypeThatDoesNotMatchTheoryParameterType {
         @Theory
         public void shouldHold(@ForAll @From(StringEmitter.class) Number n) {
         }

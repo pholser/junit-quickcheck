@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.generator.ShortGenerator;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;

@@ -34,7 +34,6 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static java.lang.Long.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;

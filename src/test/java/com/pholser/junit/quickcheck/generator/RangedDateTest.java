@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -35,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
-import org.junit.Before;
 
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;

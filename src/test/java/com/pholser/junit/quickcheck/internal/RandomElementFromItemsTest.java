@@ -29,22 +29,18 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.google.common.collect.Sets.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RandomElementFromItemsTest {
     @Mock private SourceOfRandomness random;
-
-    @Before
-    public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void choosingFromSet() {

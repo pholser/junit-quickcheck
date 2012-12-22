@@ -31,11 +31,9 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-import static com.pholser.junit.quickcheck.Strings.*;
 import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;

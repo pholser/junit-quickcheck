@@ -28,17 +28,17 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MissingGeneratorForGivenTypeTest {
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
     @Before
     public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
-
         repo = new GeneratorRepository(random);
     }
 

@@ -31,7 +31,6 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-import static com.pholser.junit.quickcheck.Strings.*;
 import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;

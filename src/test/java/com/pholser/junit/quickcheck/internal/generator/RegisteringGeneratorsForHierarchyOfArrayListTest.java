@@ -38,11 +38,14 @@ import com.pholser.junit.quickcheck.generator.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     private GeneratorRepository repo;
     private ArrayListGenerator generator;

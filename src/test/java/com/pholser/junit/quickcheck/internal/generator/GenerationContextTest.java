@@ -10,13 +10,15 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static java.util.Arrays.*;
 import static org.junit.rules.ExpectedException.*;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class GenerationContextTest {
     @Rule public final ExpectedException thrown = none();
 
@@ -28,7 +30,6 @@ public class GenerationContextTest {
     @Before
     @SuppressWarnings("unchecked")
     public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
         when(quantifier.sampleSize()).thenReturn(20);
         when(quantifier.discardRatio()).thenReturn(3);
         when(generator.types()).thenReturn(asList(int.class));

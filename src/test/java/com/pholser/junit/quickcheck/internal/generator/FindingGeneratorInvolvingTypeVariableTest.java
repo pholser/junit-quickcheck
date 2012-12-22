@@ -37,9 +37,11 @@ import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.exceptions.TypeValidationException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class FindingGeneratorInvolvingTypeVariableTest {
     private GeneratorRepository repo;
     private TypeVariable<Class<?>> typeVariable;
@@ -47,8 +49,6 @@ public class FindingGeneratorInvolvingTypeVariableTest {
 
     @Before
     public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
-
         repo = new GeneratorRepository(random).add(new BasicGeneratorSource());
         typeVariable = new TypeVariableImpl<Class<?>>("E", List.class, new Type[] { Object.class });
     }

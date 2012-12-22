@@ -34,7 +34,7 @@ import com.google.common.base.Objects;
 
 import static java.lang.System.*;
 
-public final class ParameterizedTypeImpl implements ParameterizedType {
+public class ParameterizedTypeImpl implements ParameterizedType {
     private final Type raw;
     private final Type[] actualTypeArguments;
 

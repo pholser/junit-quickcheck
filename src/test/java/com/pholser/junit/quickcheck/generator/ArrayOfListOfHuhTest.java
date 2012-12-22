@@ -26,20 +26,16 @@
 package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
-import static com.pholser.junit.quickcheck.Strings.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 

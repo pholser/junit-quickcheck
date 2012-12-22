@@ -29,12 +29,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Arrays {
+class Arrays {
     private Arrays() {
         throw new UnsupportedOperationException();
     }
 
-    public static List<?> toList(Object array) {
+    static List<?> toList(Object array) {
         int length = Array.getLength(array);
 
         List<Object> items = new ArrayList<Object>();
