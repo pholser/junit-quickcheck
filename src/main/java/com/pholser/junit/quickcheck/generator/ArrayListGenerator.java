@@ -29,6 +29,13 @@ import java.util.ArrayList;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * <p>Produces values for theory parameters of type {@link ArrayList}.</p>
+ *
+ * <p>The generated list has a number of elements decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}. The individual elements will have a type
+ * corresponding to the theory parameter's type argument.</p>
+ */
 public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
     public ArrayListGenerator() {
         super(ArrayList.class);

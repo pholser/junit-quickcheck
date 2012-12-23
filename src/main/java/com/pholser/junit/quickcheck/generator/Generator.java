@@ -85,6 +85,7 @@ public abstract class Generator<T> {
     /**
      * @return whether this generator has component generators, such as for those generators that produce lists or
      * arrays.
+     * @see #addComponentGenerators(java.util.List)
      */
     public boolean hasComponents() {
         return false;
@@ -92,13 +93,17 @@ public abstract class Generator<T> {
 
     /**
      * @return how many component generators this generator needs
+     * @see #addComponentGenerators(java.util.List)
      */
     public int numberOfNeededComponents() {
         return 0;
     }
 
     /**
-     * Adds component generators to this generator.
+     * <p>Adds component generators to this generator.</p>
+     *
+     * <p>Some generators need component generators to create proper values. For example, lists require a single
+     * component generator in order to generate elements that have the type of the list parameter's type argument.</p>
      *
      * @param componentGenerators component generators to add
      */

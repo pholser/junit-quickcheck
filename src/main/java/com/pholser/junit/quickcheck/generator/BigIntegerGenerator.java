@@ -33,6 +33,12 @@ import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.math.BigInteger.*;
 
+/**
+ * <p>Produces values for theory parameters of type {@link java.math.BigInteger}.</p>
+ *
+ * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+ */
 public class BigIntegerGenerator extends Generator<BigInteger> {
     private BigInteger min;
     private BigInteger max;
@@ -41,6 +47,17 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
         super(BigInteger.class);
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
+     * {@linkplain InRange#max() maximum}, with uniform distribution.</p>
+     *
+     * <p>If either endpoint of the range is not specified, its value takes on a magnitude influenced by
+     * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+
+     * @param range annotation that gives the range's constraints
+     * @throws NumberFormatException if the range's values cannot be converted to {@code BigInteger}
+     * @throws IllegalArgumentException if the range's values specify a nonsensical range
+     */
     public void configure(InRange range) {
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = new BigInteger(range.min());

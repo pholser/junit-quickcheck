@@ -29,6 +29,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 
+/**
+ * <p>Produces values for theory parameters of type {@code boolean} or {@link Boolean}.</p>
+ */
 public class BooleanGenerator extends Generator<Boolean> {
     private ValuesOf turnOffRandomness;
 
@@ -37,6 +40,14 @@ public class BooleanGenerator extends Generator<Boolean> {
         super(asList(boolean.class, Boolean.class));
     }
 
+    /**
+     * <p>Tells this generator to generate the values {@code true} and {@code false} on alternating requests.</p>
+     *
+     * <p>Without this configuration, {@code true} and {@code false} are generated with approximately equal
+     * probability.</p>
+     *
+     * @param flag annotation to turn off random generation and replace it with alternating values
+     */
     public void configure(ValuesOf flag) {
         turnOffRandomness = flag;
     }

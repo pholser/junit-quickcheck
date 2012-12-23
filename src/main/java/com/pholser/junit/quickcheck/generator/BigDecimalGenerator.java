@@ -35,6 +35,12 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.Math.*;
 import static java.math.BigDecimal.*;
 
+/**
+ * <p>Produces values for theory parameters of type {@link BigDecimal}.</p>
+ *
+ * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+ */
 public class BigDecimalGenerator extends Generator<BigDecimal> {
     private BigDecimal min;
     private BigDecimal max;
@@ -44,6 +50,17 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
         super(BigDecimal.class);
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
+     * {@linkplain InRange#max() maximum}, with uniform distribution.</p>
+     *
+     * <p>If either endpoint of the range is not specified, its value takes on a magnitude influenced by
+     * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     * @throws NumberFormatException if the range's values cannot be converted to {@code BigDecimal}
+     * @throws IllegalArgumentException if the range's values specify a nonsensical range
+     */
     public void configure(InRange range) {
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = new BigDecimal(range.min());
@@ -53,6 +70,17 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
             checkRange("f", min, max);
     }
 
+    /**
+     * <p>Tells this generator to produce values that have a specified {@linkplain Precision#scale() scale}.</p>
+     *
+     * <p>With no precision constraint and no {@linkplain #configure(InRange) min/max constraint}, the scale of the
+     * generated values is unspecified.</p>
+     *
+     * <p>Otherwise, the scale of the generated values is set as {@code max(0, precision.scale, range.min.scale,
+     * range.max.scale)}.</p>
+     *
+     * @param precision annotation that gives the desired scale of the generated values
+     */
     public void configure(Precision precision) {
         this.precision = precision;
     }
@@ -68,12 +96,12 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
             minToUse = maxToUse.negate();
         }
 
-        int scale = decideScale();
-
         if (minToUse == null)
             minToUse = maxToUse.subtract(TEN.pow(power));
         else if (maxToUse == null)
             maxToUse = minToUse.add(TEN.pow(power));
+
+        int scale = decideScale();
 
         BigDecimal minShifted = minToUse.movePointRight(scale);
         BigDecimal maxShifted = maxToUse.movePointRight(scale);
