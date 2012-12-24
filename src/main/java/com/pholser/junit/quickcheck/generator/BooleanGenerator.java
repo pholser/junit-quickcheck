@@ -30,7 +30,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 /**
- * <p>Produces values for theory parameters of type {@code boolean} or {@link Boolean}.</p>
+ * Produces values for theory parameters of type {@code boolean} or {@link Boolean}.
  */
 public class BooleanGenerator extends Generator<Boolean> {
     private ValuesOf turnOffRandomness;

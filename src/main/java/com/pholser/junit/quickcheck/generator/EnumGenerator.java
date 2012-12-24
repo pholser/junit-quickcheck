@@ -27,16 +27,33 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Produces values for {@code enum} theory parameters.
+ */
 public class EnumGenerator extends Generator<Enum> {
     private final Class<?> enumType;
     private ValuesOf turnOffRandomness;
 
+    /**
+     * Makes a new generator for an {@code enum} of a specific type.
+     *
+     * @param enumType the type of the {@code enum} to be generated
+     */
     public EnumGenerator(Class<?> enumType) {
         super(Enum.class);
 
         this.enumType = enumType;
     }
 
+    /**
+     * <p>Tells this generator to generate the values of the {@code enum} in turn on successive requests.</p>
+     *
+     * <p>Without this configuration, the values of the {@code enum} are are generated with approximately equal
+     * probability.</p>
+     *
+     * @param flag annotation to turn off random generation and replace it with values that cycle through the
+     * {@code enum}
+     */
     public void configure(ValuesOf flag) {
         turnOffRandomness = flag;
     }

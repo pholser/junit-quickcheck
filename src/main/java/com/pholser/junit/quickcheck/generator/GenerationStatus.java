@@ -25,8 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+/**
+ * {@link Generator}s are fed instances of this interface on each generation so that, if they choose, the generators
+ * can use these instances to influence the results of a generation for a particular theory parameter.
+ */
 public interface GenerationStatus {
+    /**
+     * @return an arbitrary "size" parameter; this value increases for every successful generation
+     */
     int size();
 
+    /**
+     * @return how many attempts have been made to generate a value for a theory parameter; generally greater than
+     * or equal to {@link #size()}.
+     */
     int attempts();
 }

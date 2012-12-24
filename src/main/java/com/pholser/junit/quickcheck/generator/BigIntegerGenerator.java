@@ -49,9 +49,9 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
 
     /**
      * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max() maximum}, with uniform distribution.</p>
+     * {@linkplain InRange#max() maximum} inclusive, with uniform distribution.</p>
      *
-     * <p>If either endpoint of the range is not specified, its value takes on a magnitude influenced by
+     * <p>If an endpoint of the range is not specified, its value takes on a magnitude influenced by
      * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
 
      * @param range annotation that gives the range's constraints

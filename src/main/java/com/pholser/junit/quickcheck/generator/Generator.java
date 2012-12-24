@@ -72,7 +72,11 @@ public abstract class Generator<T> {
     }
 
     /**
-     * Produces a value for a theory parameter.
+     * <p>Produces a value for a theory parameter.</p>
+     *
+     * <p>A generator may raise an unchecked exception if some condition exists which would lead to a confusing
+     * generation -- for example, if a generator honored {@link InRange} and its {@link InRange#minInt()} were
+     * greater than {@link InRange#maxInt()}.</p>
      *
      * @param random a source of randomness to be used when generating the value.
      * @param status an object that the generator can use to influence the value it produces. For example, a generator

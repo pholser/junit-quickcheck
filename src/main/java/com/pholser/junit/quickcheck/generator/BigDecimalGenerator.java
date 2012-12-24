@@ -51,10 +51,10 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max() maximum}, with uniform distribution.</p>
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} (inclusive)
+     * and/or {@linkplain InRange#max() maximum} (exclusive), with uniform distribution.</p>
      *
-     * <p>If either endpoint of the range is not specified, its value takes on a magnitude influenced by
+     * <p>If an endpoint of the range is not specified, its value takes on a magnitude influenced by
      * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
      *
      * @param range annotation that gives the range's constraints

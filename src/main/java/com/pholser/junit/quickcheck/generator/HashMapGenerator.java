@@ -29,6 +29,13 @@ import java.util.HashMap;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * <p>Produces values for theory parameters of type {@link java.util.HashMap}.</p>
+ *
+ * <p>The generated map has a number of entries decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}. The individual keys and values will have
+ * types corresponding to the theory parameter's type arguments.</p>
+ */
 public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
     public HashMapGenerator() {
         super(HashMap.class);

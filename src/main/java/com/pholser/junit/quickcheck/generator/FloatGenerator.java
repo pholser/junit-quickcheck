@@ -30,6 +30,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Float.*;
 import static java.util.Arrays.*;
 
+/**
+ * Produces values for theory parameters of type {@code float} or {@link Float}.
+ */
 public class FloatGenerator extends Generator<Float> {
     private float min = -MAX_VALUE;
     private float max = MAX_VALUE;
@@ -39,6 +42,15 @@ public class FloatGenerator extends Generator<Float> {
         super(asList(float.class, Float.class));
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minFloat()}  minimum}
+     * (inclusive) and/or {@linkplain InRange#maxFloat()}  maximum} (exclusive), with uniform distribution.</p>
+     *
+     * <p>If an endpoint of the range is not specified, the generator will use either -{@link Float#MAX_VALUE} or
+     * {@link Float#MAX_VALUE} as appropriate.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         min = range.minFloat();
         max = range.maxFloat();

@@ -30,6 +30,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Character.*;
 import static java.util.Arrays.*;
 
+/**
+ * Produces values for theory parameters of type {@code char} or {@link Character}.
+ */
 public class CharacterGenerator extends Generator<Character> {
     private char min = MIN_VALUE;
     private char max = MAX_VALUE;
@@ -39,6 +42,15 @@ public class CharacterGenerator extends Generator<Character> {
         super(asList(char.class, Character.class));
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minChar() minimum} and/or
+     * {@linkplain InRange#maxChar() maximum}, inclusive, with uniform distribution.</p>
+     *
+     * <p>If an endpoint of the range is not specified, the generator will use either {@link Character#MIN_VALUE} or
+     * {@link Character#MAX_VALUE} as appropriate.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         min = range.minChar();
         max = range.maxChar();

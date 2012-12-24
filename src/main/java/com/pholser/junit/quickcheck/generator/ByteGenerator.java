@@ -30,6 +30,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Byte.*;
 import static java.util.Arrays.*;
 
+/**
+ * Produces values for theory parameters of type {@code byte} or {@link Byte}.
+ */
 public class ByteGenerator extends Generator<Byte> {
     private byte min = MIN_VALUE;
     private byte max = MAX_VALUE;
@@ -39,6 +42,17 @@ public class ByteGenerator extends Generator<Byte> {
         super(asList(byte.class, Byte.class));
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minByte() minimum} and/or
+     * {@linkplain InRange#maxByte()} maximum}, inclusive, with uniform distribution.</p>
+     *
+     * <p>If an endpoint of the range is not specified, the generator will use either {@link Byte#MIN_VALUE} or
+     * {@link Byte#MAX_VALUE} as appropriate.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     * @throws NumberFormatException if the range's values cannot be converted to {@code byte}
+     * @throws IllegalArgumentException if the range's values specify a nonsensical range
+     */
     public void configure(InRange range) {
         min = range.minByte();
         max = range.maxByte();

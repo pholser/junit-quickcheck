@@ -30,6 +30,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Double.*;
 import static java.util.Arrays.*;
 
+/**
+ * Produces values for theory parameters of type {@code double} or {@link Double}.
+ */
 public class DoubleGenerator extends Generator<Double> {
     private double min = -MAX_VALUE;
     private double max = MAX_VALUE;
@@ -39,6 +42,15 @@ public class DoubleGenerator extends Generator<Double> {
         super(asList(double.class, Double.class));
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minDouble()}  minimum}
+     * (inclusive) and/or {@linkplain InRange#maxDouble()}  maximum} (exclusive), with uniform distribution.</p>
+     *
+     * <p>If an endpoint of the range is not specified, the generator will use either -{@link Double#MAX_VALUE} or
+     * {@link Double#MAX_VALUE} as appropriate.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         min = range.minDouble();
         max = range.maxDouble();
