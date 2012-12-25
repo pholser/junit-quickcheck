@@ -27,6 +27,12 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * <p>Produces values for theory parameters of type {@link String}.</p>
+ *
+ * The generated values will have {@linkplain String#length()} decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+ */
 public class StringGenerator extends Generator<String> {
     private final CharacterGenerator charGenerator = new CharacterGenerator();
 
