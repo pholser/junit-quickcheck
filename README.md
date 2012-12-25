@@ -67,6 +67,7 @@ Out of the box, junit-quickcheck can generate random values for theory parameter
 * `java.math.Big(Decimal|Integer)`
 * `java.util.Date`
 * any `enum`
+* String
 * `java.util.ArrayList` of those types
 * `java.util.HashSet` of those types
 * `java.util.HashMap` of those types
