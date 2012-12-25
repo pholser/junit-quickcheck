@@ -30,6 +30,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Short.*;
 import static java.util.Arrays.*;
 
+/**
+ * Produces values for theory parameters of type {@code short} or {@link Short}.
+ */
 public class ShortGenerator extends Generator<Short> {
     private short min = MIN_VALUE;
     private short max = MAX_VALUE;
@@ -39,6 +42,15 @@ public class ShortGenerator extends Generator<Short> {
         super(asList(short.class, Short.class));
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minShort() minimum} and/or
+     * {@linkplain InRange#maxShort()} maximum}, inclusive, with uniform distribution.</p>
+     *
+     * <p>If an endpoint of the range is not specified, the generator will use either {@link Short#MIN_VALUE} or
+     * {@link Short#MAX_VALUE} as appropriate.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         min = range.minShort();
         max = range.maxShort();

@@ -50,8 +50,6 @@ public class ByteGenerator extends Generator<Byte> {
      * {@link Byte#MAX_VALUE} as appropriate.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws NumberFormatException if the range's values cannot be converted to {@code byte}
-     * @throws IllegalArgumentException if the range's values specify a nonsensical range
      */
     public void configure(InRange range) {
         min = range.minByte();

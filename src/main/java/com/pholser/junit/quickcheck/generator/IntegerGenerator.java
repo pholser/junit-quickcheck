@@ -30,6 +30,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 
+/**
+ * Produces values for theory parameters of type {@code int} or {@link Integer}.
+ */
 public class IntegerGenerator extends Generator<Integer> {
     private int min = MIN_VALUE;
     private int max = MAX_VALUE;
@@ -39,6 +42,15 @@ public class IntegerGenerator extends Generator<Integer> {
         super(asList(int.class, Integer.class));
     }
 
+    /**
+     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minInt() minimum} and/or
+     * {@linkplain InRange#maxInt()} maximum}, inclusive, with uniform distribution.</p>
+     *
+     * <p>If an endpoint of the range is not specified, the generator will use either {@link Integer#MIN_VALUE} or
+     * {@link Integer#MAX_VALUE} as appropriate.</p>
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         min = range.minInt();
         max = range.maxInt();
