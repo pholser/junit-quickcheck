@@ -42,7 +42,7 @@ import static org.mockito.Mockito.*;
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override
     protected void primeSourceOfRandomness() {
-        int dateIndex = 11;
+        int dateIndex = 13;
         when(randomForParameterGenerator.nextLong(Integer.MIN_VALUE, Long.MAX_VALUE))
             .thenReturn(1L).thenReturn(7L).thenReturn(63L).thenReturn(127L)
             .thenReturn(255L);

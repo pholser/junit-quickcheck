@@ -25,7 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Comparator;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -126,5 +128,103 @@ public class ReflectionTest {
 
     public static @interface Foo {
         String bar() default "baz";
+    }
+
+    @Test
+    public void aClassIsNotASingleAbstractMethodType() {
+        assertNull(singleAbstractMethodOf(String.class));
+    }
+
+    @Test
+    public void anInterfaceWithNoMethodsIsNotASingleAbstractMethodType() {
+        assertNull(singleAbstractMethodOf(Serializable.class));
+    }
+
+    @Test
+    public void anInterfaceWithASingleAbstractMethodIsASingleAbstractMethodType() throws Exception {
+        assertEquals(Comparator.class.getMethod("compare", Object.class, Object.class),
+            singleAbstractMethodOf(Comparator.class));
+    }
+
+    @Test
+    public void anInterfaceThatOverridesEqualsIsNotASingleAbstractMethodType() throws Exception {
+        assertNull(singleAbstractMethodOf(OverridingEquals.class));
+    }
+
+    interface OverridingEquals {
+        boolean equals(Object o);
+    }
+
+    @Test
+    public void anInterfaceThatOverloadsEqualsCanBeASingleAbstractMethodType() throws Exception {
+        assertEquals(OverloadingEquals.class.getMethod("equals", String.class),
+            singleAbstractMethodOf(OverloadingEquals.class));
+    }
+
+    interface OverloadingEquals {
+        boolean equals(String s);
+    }
+
+    @Test
+    public void anInterfaceThatOverloadsEqualsWithMoreThanOneParameterCanBeASingleAbstractMethodType()
+        throws Exception {
+
+        assertEquals(OverloadingEqualsWithMoreParameters.class.getMethod("equals", Object.class, Object.class),
+            singleAbstractMethodOf(OverloadingEqualsWithMoreParameters.class));
+    }
+
+    interface OverloadingEqualsWithMoreParameters {
+        boolean equals(Object first, Object second);
+    }
+
+    @Test
+    public void anInterfaceThatOverloadsEqualsWithMixedParameterTypesIsNotASingleAbstractMethodType()
+        throws Exception {
+
+        assertEquals(
+            OverloadingEqualsWithMixedParameterTypes.class.getMethod("equals", Object.class, String.class, int.class),
+            singleAbstractMethodOf(OverloadingEqualsWithMixedParameterTypes.class));
+    }
+
+    interface OverloadingEqualsWithMixedParameterTypes {
+        boolean equals(Object first, String second, int third);
+    }
+
+    @Test
+    public void anInterfaceThatOverridesHashCodeIsNotASingleAbstractMethodType() throws Exception {
+        assertNull(singleAbstractMethodOf(OverridingHashCode.class));
+    }
+
+    interface OverridingHashCode {
+        int hashCode();
+    }
+
+    @Test
+    public void anInterfaceThatOverloadsHashCodeCanBeASingleAbstractMethodType() throws Exception {
+        assertEquals(OverloadingHashCode.class.getMethod("hashCode", Object.class),
+            singleAbstractMethodOf(OverloadingHashCode.class));
+    }
+
+    interface OverloadingHashCode {
+        int hashCode(Object o);
+    }
+
+    @Test
+    public void anInterfaceThatOverridesToStringIsNotASingleAbstractMethodType() throws Exception {
+        assertNull(singleAbstractMethodOf(OverridingToString.class));
+    }
+
+    interface OverridingToString {
+        String toString();
+    }
+
+    @Test
+    public void anInterfaceThatOverloadsToStringCanBeASingleAbstractMethodType() throws Exception {
+        assertEquals(OverloadingToString.class.getMethod("toString", Object.class),
+            singleAbstractMethodOf(OverloadingToString.class));
+    }
+
+    interface OverloadingToString {
+        String toString(Object o);
     }
 }

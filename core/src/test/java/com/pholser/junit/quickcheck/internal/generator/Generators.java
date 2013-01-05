@@ -43,4 +43,8 @@ public class Generators {
         for (int i = 0; i < expectedTypes.length; ++i)
             assertThat("generators[" + i + ']', composite.componentGenerator(i), instanceOf(expectedTypes[i]));
     }
+
+    public static Generator<?> componentOf(Generator<?> generator, int index) {
+        return ((CompositeGenerator) generator).componentGenerator(index);
+    }
 }

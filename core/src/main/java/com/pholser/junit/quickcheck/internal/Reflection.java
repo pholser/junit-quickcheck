@@ -28,11 +28,13 @@ package com.pholser.junit.quickcheck.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sun.source.tree.ModifiersTree;
 import org.javaruntype.type.Type;
 
 public final class Reflection {
@@ -98,6 +100,42 @@ public final class Reflection {
         } catch (Exception ex) {
             throw reflectionException(ex);
         }
+    }
+
+    public static Method singleAbstractMethodOf(Class<?> rawClass) {
+        if (!rawClass.isInterface())
+            return null;
+
+        int abstractCount = 0;
+        Method singleAbstractMethod = null;
+        for (Method each : rawClass.getMethods()) {
+            if (Modifier.isAbstract(each.getModifiers()) && !overridesJavaLangObjectMethod(each)) {
+                singleAbstractMethod = each;
+                ++abstractCount;
+            }
+        }
+
+        return abstractCount == 1 ? singleAbstractMethod : null;
+    }
+
+    private static boolean overridesJavaLangObjectMethod(Method method) {
+        return isEquals(method) || isHashCode(method) || isToString(method);
+    }
+
+    private static boolean isEquals(Method method) {
+        return "equals".equals(method.getName())
+            && method.getParameterTypes().length == 1
+            && Object.class.equals(method.getParameterTypes()[0]);
+    }
+
+    private static boolean isHashCode(Method method) {
+        return "hashCode".equals(method.getName())
+            && method.getParameterTypes().length == 0;
+    }
+
+    private static boolean isToString(Method method) {
+        return "toString".equals(method.getName())
+            && method.getParameterTypes().length == 0;
     }
 
     private static RuntimeException reflectionException(Exception ex) {

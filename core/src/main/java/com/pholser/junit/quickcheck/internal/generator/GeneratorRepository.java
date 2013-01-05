@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,6 +84,9 @@ public class GeneratorRepository {
 
         if (type.getSuperclass() != null)
             registerHierarchy(type.getSuperclass(), generator);
+        else if (type.isInterface())
+            registerHierarchy(Object.class, generator);
+
         for (Class<?> each : type.getInterfaces())
             registerHierarchy(each, generator);
     }
@@ -120,7 +124,7 @@ public class GeneratorRepository {
         if (typeToken.getRawClass().isEnum())
             return new EnumGenerator(typeToken.getRawClass());
 
-        List<Generator<?>> matches = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
+        List<Generator<?>> matches = findMatchingGenerators(typeToken, allowMixedTypes);
 
         List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
@@ -129,6 +133,25 @@ public class GeneratorRepository {
             applyComponentGenerators(each, forComponents);
 
         return new CompositeGenerator(matches);
+    }
+
+    private List<Generator<?>> findMatchingGenerators(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
+        List<Generator<?>> matches = new ArrayList<Generator<?>>();
+        if (!hasGeneratorsForRawClass(typeToken.getRawClass())) {
+            Method singleAbstractMethod = Reflection.singleAbstractMethodOf(typeToken.getRawClass());
+            if (singleAbstractMethod != null) {
+                @SuppressWarnings("unchecked")
+                LambdaGenerator lambdaGenerator = new LambdaGenerator(typeToken.getRawClass(),
+                    generatorFor(singleAbstractMethod.getGenericReturnType()));
+                matches.add(lambdaGenerator);
+            }
+        } else
+            matches = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
+
+        if (matches.isEmpty())
+            throw new IllegalArgumentException("Cannot find generator for " + typeToken.getRawClass());
+
+        return matches;
     }
 
     private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
@@ -159,8 +182,6 @@ public class GeneratorRepository {
 
     private List<Generator<?>> generatorsForRawClass(Class<?> clazz, boolean allowMixedTypes) {
         Set<Generator<?>> matches = generators.get(clazz);
-        if (matches == null)
-            throw new IllegalArgumentException("Cannot find generator for " + clazz);
 
         if (!allowMixedTypes) {
             Generator<?> singleMatch = Items.randomElementFrom(matches, random);
@@ -172,6 +193,11 @@ public class GeneratorRepository {
         for (Generator<?> each : matches)
             copies.add(each.hasComponents() ? copyOf(each) : each);
         return copies;
+    }
+
+    private boolean hasGeneratorsForRawClass(Class<?> clazz) {
+        Set<Generator<?>> matches = generators.get(clazz);
+        return matches != null;
     }
 
     private static Generator<?> copyOf(Generator<?> generator) {

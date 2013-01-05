@@ -56,7 +56,8 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     @Mock private From explicitGenerators;
     @Mock private SuchThat constraint;
     protected BasicGeneratorSource source;
-    private List<PotentialAssignment> theoryParms;
+    protected GeneratorRepository repository;
+    private List<PotentialAssignment> theoryParameters;
 
     @Before
     public final void beforeEach() throws Exception {
@@ -68,9 +69,13 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         primeExplicitGenerators();
         primeConstraint();
 
+        repository = new GeneratorRepository(randomForGeneratorRepo).add(source);
+        Iterable<Generator<?>> auxiliarySource = auxiliaryGeneratorSource();
+        if (auxiliarySource != null)
+            repository.add(auxiliarySource);
+
         RandomTheoryParameterGenerator generator =
-            new RandomTheoryParameterGenerator(randomForParameterGenerator,
-                new GeneratorRepository(randomForGeneratorRepo).add(source));
+            new RandomTheoryParameterGenerator(randomForParameterGenerator, repository);
 
         ParameterContext context = new ParameterContext(parameterType(), PARAMETER_NAME);
         context.addQuantifier(quantifier);
@@ -80,7 +85,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         for (Map.Entry<Class<? extends Annotation>, Annotation> each : configurations().entrySet())
             context.addConfiguration(each.getKey(), each.getValue());
 
-        theoryParms = generator.generate(context);
+        theoryParameters = generator.generate(context);
     }
 
     private void primeSampleSize() {
@@ -93,6 +98,10 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
 
     private void primeConstraint() {
         when(constraint.value()).thenReturn(constraintExpression());
+    }
+
+    protected Iterable<Generator<?>> auxiliaryGeneratorSource() {
+        return null;
     }
 
     protected abstract void primeSourceOfRandomness() throws Exception;
@@ -117,16 +126,22 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
 
     @Test
     public final void respectsSampleSize() {
-        assertEquals(quantifier.sampleSize(), theoryParms.size());
+        assertEquals(quantifier.sampleSize(), theoryParameters.size());
     }
 
     @Test
     public final void insertsTheRandomValuesIntoAssignments() throws Exception {
-        List<?> values = randomValues();
+        assertEquals(sampleSize(), theoryParameters.size());
 
+        List<?> values = randomValues();
         assertEquals(sampleSize(), values.size());
-        for (int i = 0; i < values.size(); ++i)
-            assertThat(i + "'th value", theoryParms.get(i).getValue(), deepEquals(values.get(i)));
+
+        for (int i = 0; i < theoryParameters.size(); ++i)
+            verifyEquivalenceOfTheoryParameter(i, values.get(i), theoryParameters.get(i).getValue());
+    }
+
+    protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual) {
+        assertThat(index + "'th value", expected, deepEquals(actual));
     }
 
     @Test

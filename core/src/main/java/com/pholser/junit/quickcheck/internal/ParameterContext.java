@@ -96,12 +96,12 @@ public class ParameterContext {
     }
 
     private void ensureCorrectType(Generator<?> generator) {
-        org.javaruntype.type.Type<?> parmType = Types.forJavaLangReflectType(parameterType);
+        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(parameterType);
 
         for (Class<?> each : generator.types()) {
-            org.javaruntype.type.Type<?> generatorType = Types.forJavaLangReflectType(each);
+            org.javaruntype.type.Type<?> generatorTypeToken = Types.forJavaLangReflectType(each);
 
-            if (!parmType.isAssignableFrom(generatorType)) {
+            if (!parameterTypeToken.isAssignableFrom(generatorTypeToken)) {
                 throw new IllegalArgumentException(String.format(EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE, each,
                     From.class.getName(), parameterType));
             }

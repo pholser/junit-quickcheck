@@ -60,6 +60,8 @@ public class BasicGeneratorSource implements Iterable<Generator<?>> {
             new IntegerGenerator(),
             new LongGenerator(),
             new ShortGenerator(),
+            new VoidGenerator(),
+            new CallableGenerator(),
             new StringGenerator(),
             new ArrayListGenerator(),
             new HashSetGenerator(),

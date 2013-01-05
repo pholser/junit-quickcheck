@@ -23,14 +23,27 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.guava.generator;
 
-public class Annotations {
-    private Annotations() {
-        throw new UnsupportedOperationException();
+import com.google.common.base.Function;
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Lambdas;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
+    public FunctionGenerator() {
+        super(Function.class);
     }
 
-    public static int defaultSampleSize() throws Exception {
-        return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
+    @SuppressWarnings("unchecked")
+    @Override
+    public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
+        return (Function<F, T>) Lambdas.makeLambda(Function.class, componentGenerators.get(1), status);
+    }
+
+    @Override
+    public int numberOfNeededComponents() {
+        return 2;
     }
 }

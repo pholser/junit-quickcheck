@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2012 Paul R. Holser, Jr.
+ Copyright (c) 2004-2011 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,14 +23,13 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-public class Annotations {
-    private Annotations() {
-        throw new UnsupportedOperationException();
-    }
+import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
+import com.pholser.junit.quickcheck.internal.Ranges;
 
-    public static int defaultSampleSize() throws Exception {
-        return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
+public class LambdasUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
+    public LambdasUtilityClassTest() {
+        super(Lambdas.class);
     }
 }

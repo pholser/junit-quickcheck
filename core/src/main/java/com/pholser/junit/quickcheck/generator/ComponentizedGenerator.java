@@ -28,6 +28,8 @@ package com.pholser.junit.quickcheck.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.*;
+
 /**
  * Produces values for theory parameters of types that have components, such as arrays and lists.
  *
@@ -44,7 +46,7 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     }
 
     @Override
-    public boolean hasComponents() {
+    public final boolean hasComponents() {
         return true;
     }
 
@@ -52,5 +54,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     public void addComponentGenerators(List<Generator<?>> generators) {
         componentGenerators.clear();
         componentGenerators.addAll(generators);
+    }
+
+    public List<Generator<?>> componentGenerators() {
+        return unmodifiableList(componentGenerators);
     }
 }

@@ -61,4 +61,8 @@ public class ArrayGenerator extends Generator<Object> {
 
         return array;
     }
+
+    public Generator<?> componentGenerator() {
+        return componentGenerator;
+    }
 }
