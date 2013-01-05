@@ -258,7 +258,7 @@ junit-quickcheck was written by Paul Holser, and is distributed under the MIT Li
 
     The MIT License
 
-    Copyright (c) 2010-2012 Paul R. Holser, Jr.
+    Copyright (c) 2010-2013 Paul R. Holser, Jr.
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
