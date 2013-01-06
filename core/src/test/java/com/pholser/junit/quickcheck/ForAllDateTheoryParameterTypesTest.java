@@ -40,27 +40,24 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllDateTheoryParameterTypesTest {
-    @Test
-    public void date() {
+    @Test public void date() {
         assertThat(testResult(DateTheory.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class DateTheory {
-        @Theory
-        public void shouldHold(@ForAll Date d) {
+        @Theory public void shouldHold(@ForAll Date d) {
         }
     }
 
-    @Test
-    public void rangedDate() {
+    @Test public void rangedDate() {
         assertThat(testResult(RangedDateTheory.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class RangedDateTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") Date d)
+        @Theory public void shouldHold(@ForAll
+                                       @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") Date d)
             throws Exception {
 
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -70,54 +67,49 @@ public class ForAllDateTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(testResult(MalformedMinDateTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(Theories.class)
     public static class MalformedMinDateTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") Date d) {
+        @Theory public void shouldHold(@ForAll
+                                       @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") Date d) {
         }
     }
 
-    @Test
-    public void malformedMax() {
+    @Test public void malformedMax() {
         assertThat(testResult(MalformedMaxDateTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(Theories.class)
     public static class MalformedMaxDateTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") Date d) {
+        @Theory public void shouldHold(@ForAll
+                                       @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") Date d) {
         }
     }
 
-    @Test
-    public void malformedFormat() {
+    @Test public void malformedFormat() {
         assertThat(testResult(MalformedFormatDateTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(Theories.class)
     public static class MalformedFormatDateTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") Date d) {
+        @Theory public void shouldHold(@ForAll
+                                       @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") Date d) {
         }
     }
 
-    @Test
-    public void missingMin() {
+    @Test public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MissingMinTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(max = "12/31/2012", format = "MM/dd/yyyy") Date d)
+        @Theory public void shouldHold(@ForAll @InRange(max = "12/31/2012", format = "MM/dd/yyyy") Date d)
             throws Exception {
 
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -125,15 +117,13 @@ public class ForAllDateTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void missingMax() {
+    @Test public void missingMax() {
         assertThat(testResult(MissingMaxTheory.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MissingMaxTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(min = "12/31/2012", format = "MM/dd/yyyy") Date d)
+        @Theory public void shouldHold(@ForAll @InRange(min = "12/31/2012", format = "MM/dd/yyyy") Date d)
             throws Exception {
 
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -141,16 +131,15 @@ public class ForAllDateTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(Theories.class)
     public static class BackwardsRangeTheory {
-        @Theory
-        public void shouldHold(@ForAll @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") Date d) {
+        @Theory public void shouldHold(@ForAll
+                                       @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") Date d) {
         }
     }
 }

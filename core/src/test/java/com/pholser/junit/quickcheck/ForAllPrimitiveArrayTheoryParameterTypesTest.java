@@ -35,195 +35,163 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllPrimitiveArrayTheoryParameterTypesTest {
-    @Test
-    public void primitiveBooleanArray() {
+    @Test public void primitiveBooleanArray() {
         assertThat(testResult(PrimitiveBooleanArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveBooleanArray {
-        @Theory
-        public void shouldHold(@ForAll boolean[] b) {
+        @Theory public void shouldHold(@ForAll boolean[] b) {
         }
     }
 
-    @Test
-    public void wrapperBooleanArray() {
+    @Test public void wrapperBooleanArray() {
         assertThat(testResult(WrapperBooleanArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperBooleanArray {
-        @Theory
-        public void shouldHold(@ForAll Boolean[] b) {
+        @Theory public void shouldHold(@ForAll Boolean[] b) {
         }
     }
 
-    @Test
-    public void primitiveByteArray() {
+    @Test public void primitiveByteArray() {
         assertThat(testResult(PrimitiveByteArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveByteArray {
-        @Theory
-        public void shouldHold(@ForAll byte[] b) {
+        @Theory public void shouldHold(@ForAll byte[] b) {
         }
     }
 
-    @Test
-    public void wrapperByteArray() {
+    @Test public void wrapperByteArray() {
         assertThat(testResult(WrapperByteArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperByteArray {
-        @Theory
-        public void shouldHold(@ForAll Byte[] b) {
+        @Theory public void shouldHold(@ForAll Byte[] b) {
         }
     }
 
-    @Test
-    public void primitiveCharacterArray() {
+    @Test public void primitiveCharacterArray() {
         assertThat(testResult(PrimitiveCharacterArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveCharacterArray {
-        @Theory
-        public void shouldHold(@ForAll char[] ch) {
+        @Theory public void shouldHold(@ForAll char[] ch) {
         }
     }
 
-    @Test
-    public void wrapperCharacterArray() {
+    @Test public void wrapperCharacterArray() {
         assertThat(testResult(WrapperCharacterArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperCharacterArray {
-        @Theory
-        public void shouldHold(@ForAll Character[] ch) {
+        @Theory public void shouldHold(@ForAll Character[] ch) {
         }
     }
 
-    @Test
-    public void primitiveDoubleArray() {
+    @Test public void primitiveDoubleArray() {
         assertThat(testResult(PrimitiveDoubleArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveDoubleArray {
-        @Theory
-        public void shouldHold(@ForAll double[] d) {
+        @Theory public void shouldHold(@ForAll double[] d) {
         }
     }
 
-    @Test
-    public void wrapperDoubleArray() {
+    @Test public void wrapperDoubleArray() {
         assertThat(testResult(WrapperDoubleArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperDoubleArray {
-        @Theory
-        public void shouldHold(@ForAll Double[] d) {
+        @Theory public void shouldHold(@ForAll Double[] d) {
         }
     }
 
-    @Test
-    public void primitiveFloatArray() {
+    @Test public void primitiveFloatArray() {
         assertThat(testResult(PrimitiveFloatArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveFloatArray {
-        @Theory
-        public void shouldHold(@ForAll float[] f) {
+        @Theory public void shouldHold(@ForAll float[] f) {
         }
     }
 
-    @Test
-    public void wrapperFloatArray() {
+    @Test public void wrapperFloatArray() {
         assertThat(testResult(WrapperFloatArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperFloatArray {
-        @Theory
-        public void shouldHold(@ForAll Float[] f) {
+        @Theory public void shouldHold(@ForAll Float[] f) {
         }
     }
 
-    @Test
-    public void primitiveIntegerArray() {
+    @Test public void primitiveIntegerArray() {
         assertThat(testResult(PrimitiveIntegerArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveIntegerArray {
-        @Theory
-        public void shouldHold(@ForAll int[] i) {
+        @Theory public void shouldHold(@ForAll int[] i) {
         }
     }
 
-    @Test
-    public void wrapperIntegerArray() {
+    @Test public void wrapperIntegerArray() {
         assertThat(testResult(WrapperIntegerArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperIntegerArray {
-        @Theory
-        public void shouldHold(@ForAll Integer[] i) {
+        @Theory public void shouldHold(@ForAll Integer[] i) {
         }
     }
 
-    @Test
-    public void primitiveLongArray() {
+    @Test public void primitiveLongArray() {
         assertThat(testResult(PrimitiveLongArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveLongArray {
-        @Theory
-        public void shouldHold(@ForAll long[] ell) {
+        @Theory public void shouldHold(@ForAll long[] ell) {
         }
     }
 
-    @Test
-    public void wrapperLongArray() {
+    @Test public void wrapperLongArray() {
         assertThat(testResult(WrapperLongArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperLongArray {
-        @Theory
-        public void shouldHold(@ForAll Long[] ell) {
+        @Theory public void shouldHold(@ForAll Long[] ell) {
         }
     }
 
-    @Test
-    public void primitiveShortArray() {
+    @Test public void primitiveShortArray() {
         assertThat(testResult(PrimitiveShortArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class PrimitiveShortArray {
-        @Theory
-        public void shouldHold(@ForAll short[] s) {
+        @Theory public void shouldHold(@ForAll short[] s) {
         }
     }
 
-    @Test
-    public void wrapperShortArray() {
+    @Test public void wrapperShortArray() {
         assertThat(testResult(WrapperShortArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WrapperShortArray {
-        @Theory
-        public void shouldHold(@ForAll Short[] s) {
+        @Theory public void shouldHold(@ForAll Short[] s) {
         }
     }
 }

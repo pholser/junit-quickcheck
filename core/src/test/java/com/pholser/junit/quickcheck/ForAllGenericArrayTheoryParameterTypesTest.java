@@ -37,15 +37,13 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllGenericArrayTheoryParameterTypesTest {
-    @Test
-    public void arrayOfListOfHuh() {
+    @Test public void arrayOfListOfHuh() {
         assertThat(testResult(ArrayOfListOfHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ArrayOfListOfHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 5) List<?>[] items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) List<?>[] items) {
         }
     }
 }

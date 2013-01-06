@@ -48,8 +48,7 @@ public abstract class UtilityClassesUninstantiabilityHarness {
         this.utility = utility;
     }
 
-    @Test
-    public final void attemptToInstantiate() throws Exception {
+    @Test public final void attemptToInstantiate() throws Exception {
         Constructor<?> constructor = utility.getDeclaredConstructor();
         assertTrue("need a private no-arg constructor", Modifier.isPrivate(constructor.getModifiers()));
 
@@ -63,12 +62,11 @@ public abstract class UtilityClassesUninstantiabilityHarness {
 
     private static Matcher<InvocationTargetException> causeOfType(final Class<? extends Throwable> type) {
         return new TypeSafeMatcher<InvocationTargetException>() {
-            @Override
-            public boolean matchesSafely(InvocationTargetException target) {
+            @Override public boolean matchesSafely(InvocationTargetException target) {
                 return type.isInstance(target.getTargetException());
             }
 
-            public void describeTo(Description description) {
+            @Override public void describeTo(Description description) {
                 description.appendText("an InvocationTargetException with target exception of ");
                 description.appendValue(type);
             }

@@ -45,27 +45,23 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllMapTheoryParameterTypesTest {
-    @Test
-    public void huhToHuh() {
+    @Test public void huhToHuh() {
         assertThat(testResult(MapOfHuhToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, ?> items) {
         }
     }
 
-    @Test
-    public void huhToUpperBound() {
+    @Test public void huhToUpperBound() {
         assertThat(testResult(MapOfHuhToUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToUpperBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? extends Short> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? extends Short> items) {
             if (!items.isEmpty()) {
                 Class<?> superclass = nearestCommonSuperclassOf(classesOf(items.values()));
                 assertThat(Short.class, isAssignableFrom(superclass));
@@ -73,27 +69,23 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void huhToLowerBound() {
+    @Test public void huhToLowerBound() {
         assertThat(testResult(MapOfHuhToLowerBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToLowerBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? super Date> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? super Date> items) {
         }
     }
 
-    @Test
-    public void huhToArrayOfSerializable() {
+    @Test public void huhToArrayOfSerializable() {
         assertThat(testResult(MapOfHuhToArrayOfSerializable.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToArrayOfSerializable {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, Serializable[]> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, Serializable[]> items) {
             for (Serializable[] each : items.values()) {
                 for (Serializable s : each) {
                     // ensuring the cast works
@@ -102,30 +94,26 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void huhToListOfHuh() {
+    @Test public void huhToListOfHuh() {
         assertThat(testResult(MapOfHuhToListOfHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToListOfHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<?>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<?>> items) {
             for (List<?> each : items.values()) {
                 // ensuring the cast works
             }
         }
     }
 
-    @Test
-    public void huhToMapOfIntegerToString() {
+    @Test public void huhToMapOfIntegerToString() {
         assertThat(testResult(MapOfHuhToMapOfIntegerToString.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToMapOfIntegerToString {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, Map<Integer, String>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, Map<Integer, String>> items) {
             for (Map<Integer, String> each : items.values()) {
                 for (Map.Entry<Integer, String> eachEntry : each.entrySet()) {
                     // ensuring the cast works
@@ -136,15 +124,13 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void huhToListOfUpperBound() {
+    @Test public void huhToListOfUpperBound() {
         assertThat(testResult(MapOfHuhToListOfUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToListOfUpperBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<? extends Serializable>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<? extends Serializable>> items) {
             for (List<? extends Serializable> each : items.values()) {
                 if (!each.isEmpty()) {
                     Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
@@ -154,15 +140,13 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void huhToSetOfLowerBound() {
+    @Test public void huhToSetOfLowerBound() {
         assertThat(testResult(MapOfHuhToSetOfLowerBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfHuhToSetOfLowerBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<?, Set<? super HashMap<?, ?>>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, Set<? super HashMap<?, ?>>> items) {
             for (Set<? super HashMap<?, ?>> each : items.values()) {
                 for (Object eachItem : each) {
                 }
@@ -170,15 +154,13 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void upperBoundToHuh() {
+    @Test public void upperBoundToHuh() {
         assertThat(testResult(MapOfUpperBoundToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfUpperBoundToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<? extends Number, ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<? extends Number, ?> items) {
             if (!items.isEmpty()) {
                 Class<?> superclass = nearestCommonSuperclassOf(classesOf(items.keySet()));
                 assertThat(Number.class, isAssignableFrom(superclass));
@@ -186,27 +168,23 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void lowerBoundToHuh() {
+    @Test public void lowerBoundToHuh() {
         assertThat(testResult(MapOfLowerBoundToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfLowerBoundToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<? super int[], ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<? super int[], ?> items) {
         }
     }
 
-    @Test
-    public void arrayOfDateToHuh() {
+    @Test public void arrayOfDateToHuh() {
         assertThat(testResult(MapOfArrayOfDateToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfArrayOfDateToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<Date[], ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Date[], ?> items) {
             for (Date[] each : items.keySet()) {
                 for (Date d : each) {
                     // ensuring the cast works
@@ -215,30 +193,26 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void setOfHuhToHuh() {
+    @Test public void setOfHuhToHuh() {
         assertThat(testResult(SetOfHuhToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfHuhToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<Set<?>, ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Set<?>, ?> items) {
             for (Set<?> each : items.keySet()) {
                 // ensuring the cast works
             }
         }
     }
 
-    @Test
-    public void mapOfIntegerToStringToMapOfShortToDate() {
+    @Test public void mapOfIntegerToStringToMapOfShortToDate() {
         assertThat(testResult(MapOfIntegerToStringToMapOfShortToDate.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class MapOfIntegerToStringToMapOfShortToDate {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<Map<Integer, String>, Map<Short, Date>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Map<Integer, String>, Map<Short, Date>> items) {
             for (Map.Entry<Map<Integer, String>, Map<Short, Date>> entry : items.entrySet()) {
                 Map<Integer, String> byInteger = entry.getKey();
                 Map<Short, Date> byShort = entry.getValue();
@@ -256,15 +230,13 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void iterableOfUpperBoundToHuh() {
+    @Test public void iterableOfUpperBoundToHuh() {
         assertThat(testResult(IterableOfUpperBoundToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class IterableOfUpperBoundToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<Iterable<? extends Number>, ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Iterable<? extends Number>, ?> items) {
             for (Iterable<? extends Number> each : items.keySet()) {
                 if (!Iterables.isEmpty(each)) {
                     Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
@@ -274,15 +246,13 @@ public class ForAllMapTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void collectionOfLowerBoundToHuh() {
+    @Test public void collectionOfLowerBoundToHuh() {
         assertThat(testResult(CollectionOfLowerBoundToHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class CollectionOfLowerBoundToHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 20) Map<Collection<? super List<?>>, ?> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Collection<? super List<?>>, ?> items) {
             for (Collection<? super List<?>> each : items.keySet()) {
                 for (Object eachItem : each) {
                 }

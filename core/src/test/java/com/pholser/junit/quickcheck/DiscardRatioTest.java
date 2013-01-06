@@ -37,8 +37,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class DiscardRatioTest {
-    @Test
-    public void negativeRatioWillNeverGenerateValues() {
+    @Test public void negativeRatioWillNeverGenerateValues() {
         assertThat(testResult(NegativeDiscardRatio.class), hasFailureContaining("Never found parameters"));
         assertEquals(0, NegativeDiscardRatio.iterations);
     }
@@ -47,14 +46,12 @@ public class DiscardRatioTest {
     public static class NegativeDiscardRatio {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll(discardRatio = -1) int i) {
+        @Theory public void shouldHold(@ForAll(discardRatio = -1) int i) {
             ++iterations;
         }
     }
 
-    @Test
-    public void willStopGeneratingValuesAfterDiscardRatioExceeded() {
+    @Test public void willStopGeneratingValuesAfterDiscardRatioExceeded() {
         assertThat(testResult(ExceededDiscardRatio.class),
             hasFailureContaining(GenerationContext.DiscardRatioExceededException.class.getName()));
         assertEquals(0, ExceededDiscardRatio.iterations);
@@ -70,8 +67,7 @@ public class DiscardRatioTest {
         }
     }
 
-    @Test
-    public void zeroRatioStopsAfterDiscardsExceedSampleSize() {
+    @Test public void zeroRatioStopsAfterDiscardsExceedSampleSize() {
         assertThat(testResult(ZeroDiscardRatio.class),
             hasFailureContaining(GenerationContext.DiscardRatioExceededException.class.getName()));
         assertEquals(0, ZeroDiscardRatio.iterations);
@@ -81,8 +77,7 @@ public class DiscardRatioTest {
     public static class ZeroDiscardRatio {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll @InRange(minInt = 3, maxInt = 4) @SuchThat("#i < 3") int i) {
+        @Theory public void shouldHold(@ForAll @InRange(minInt = 3, maxInt = 4) @SuchThat("#i < 3") int i) {
             ++iterations;
         }
     }

@@ -43,13 +43,11 @@ public class Objects {
 
     public static Matcher<Object> deepEquals(final Object comparand) {
         return new BaseMatcher<Object>() {
-            @Override
-            public boolean matches(Object target) {
+            @Override public boolean matches(Object target) {
                 return deepEquals(comparand, target);
             }
 
-            @Override
-            public void describeTo(Description description) {
+            @Override public void describeTo(Description description) {
                 description.appendText("an object that is deep-equals to ");
                 description.appendValue(comparand);
             }

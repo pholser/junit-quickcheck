@@ -38,28 +38,23 @@ import static org.junit.Assert.*;
 public class GeneratorTest {
     private Generator<Object> generator;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         generator = new Generator<Object>(Object.class) {
-            @Override
-            public Object generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
                 return this;
             }
         };
     }
 
-    @Test
-    public void noComponents() {
+    @Test public void noComponents() {
         assertFalse(generator.hasComponents());
     }
 
-    @Test
-    public void numberOfNeededComponents() {
+    @Test public void numberOfNeededComponents() {
         assertEquals(0, generator.numberOfNeededComponents());
     }
 
-    @Test
-    public void addingComponentsDoesNothing() {
+    @Test public void addingComponentsDoesNothing() {
         generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
     }
 }

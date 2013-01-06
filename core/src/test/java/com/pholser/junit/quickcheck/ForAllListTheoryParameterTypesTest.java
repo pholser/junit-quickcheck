@@ -38,27 +38,23 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllListTheoryParameterTypesTest {
-    @Test
-    public void huh() {
+    @Test public void huh() {
         assertThat(testResult(ListOfHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfHuh {
-        @Theory
-        public void shouldHold(@ForAll List<?> items) {
+        @Theory public void shouldHold(@ForAll List<?> items) {
         }
     }
 
-    @Test
-    public void upperBounded() {
+    @Test public void upperBounded() {
         assertThat(testResult(ListOfUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfUpperBound {
-        @Theory
-        public void shouldHold(@ForAll List<? extends Integer> items) {
+        @Theory public void shouldHold(@ForAll List<? extends Integer> items) {
             if (!items.isEmpty()) {
                 Class<?> superclass = nearestCommonSuperclassOf(classesOf(items));
                 assertThat(Integer.class, isAssignableFrom(superclass));
@@ -66,27 +62,23 @@ public class ForAllListTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void lowerBounded() {
+    @Test public void lowerBounded() {
         assertThat(testResult(ListOfLowerBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfLowerBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) List<? super Number> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 10) List<? super Number> items) {
         }
     }
 
-    @Test
-    public void intArray() {
+    @Test public void intArray() {
         assertThat(testResult(ListOfIntArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfIntArray {
-        @Theory
-        public void shouldHold(@ForAll List<int[]> items) {
+        @Theory public void shouldHold(@ForAll List<int[]> items) {
             for (int[] each : items) {
                 for (int i : each) {
                     // ensuring the cast works
@@ -95,8 +87,7 @@ public class ForAllListTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void listOfHuh() {
+    @Test public void listOfHuh() {
         assertThat(testResult(ListOfListOfHuh.class), isSuccessful());
     }
 
@@ -110,15 +101,13 @@ public class ForAllListTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void listOfInteger() {
+    @Test public void listOfInteger() {
         assertThat(testResult(ListOfListOfInteger.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfListOfInteger {
-        @Theory
-        public void shouldHold(@ForAll List<List<Integer>> items) {
+        @Theory public void shouldHold(@ForAll List<List<Integer>> items) {
             for (List<Integer> each : items) {
                 for (Integer i : each) {
                     // ensuring the cast works
@@ -127,15 +116,13 @@ public class ForAllListTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void listOfUpperBounded() {
+    @Test public void listOfUpperBounded() {
         assertThat(testResult(ListOfListOfUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfListOfUpperBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 7) List<List<? extends Number>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 7) List<List<? extends Number>> items) {
             for (List<? extends Number> each : items) {
                 if (!each.isEmpty()) {
                     Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
@@ -145,15 +132,13 @@ public class ForAllListTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void listOfLowerBounded() {
+    @Test public void listOfLowerBounded() {
         assertThat(testResult(ListOfListOfLowerBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ListOfListOfLowerBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 5) List<List<? super Float>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) List<List<? super Float>> items) {
         }
     }
 }

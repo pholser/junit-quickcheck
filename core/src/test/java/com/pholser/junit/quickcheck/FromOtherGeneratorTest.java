@@ -42,8 +42,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class FromOtherGeneratorTest {
-    @Test
-    public void explicitGeneratorTakesPrecedence() throws Exception {
+    @Test public void explicitGeneratorTakesPrecedence() throws Exception {
         assertThat(testResult(WithExplicitGenerator.class), isSuccessful());
         assertEquals(asList(0, 1, 2, 3, 4), WithExplicitGenerator.values);
     }
@@ -52,8 +51,7 @@ public class FromOtherGeneratorTest {
     public static class WithExplicitGenerator {
         public static final List<Integer> values = new ArrayList<Integer>();
 
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 5) @From(Sequence.class) int i) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) @From(Sequence.class) int i) {
             values.add(i);
         }
     }
@@ -65,22 +63,19 @@ public class FromOtherGeneratorTest {
             super(int.class);
         }
 
-        @Override
-        public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
             return next++;
         }
     }
 
-    @Test
-    public void typeMismatch() throws Exception {
+    @Test public void typeMismatch() throws Exception {
         assertThat(testResult(WithGeneratorTypeThatDoesNotMatchTheoryParameterType.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(Theories.class)
     public static class WithGeneratorTypeThatDoesNotMatchTheoryParameterType {
-        @Theory
-        public void shouldHold(@ForAll @From(StringEmitter.class) Number n) {
+        @Theory public void shouldHold(@ForAll @From(StringEmitter.class) Number n) {
         }
     }
 
@@ -89,8 +84,7 @@ public class FromOtherGeneratorTest {
             super(String.class);
         }
 
-        @Override
-        public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
             return "foo";
         }
     }

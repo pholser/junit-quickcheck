@@ -40,8 +40,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class MarkedWithSpuriousConfigurationTest {
-    @Test
-    public void okIfParameterMarkedWithUnexpectedConfiguration() {
+    @Test public void okIfParameterMarkedWithUnexpectedConfiguration() {
         assertThat(testResult(WithSpuriousConfiguration.class), isSuccessful());
         assertEquals(Formatter.BigDecimalLayoutForm.values().length, WithSpuriousConfiguration.iterations);
     }
@@ -50,8 +49,8 @@ public class MarkedWithSpuriousConfigurationTest {
     public static class WithSpuriousConfiguration {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll @ValuesOf @InRange(min = "3", max = "6") Formatter.BigDecimalLayoutForm f) {
+        @Theory public void shouldHold(@ForAll @ValuesOf
+                                       @InRange(min = "3", max = "6") Formatter.BigDecimalLayoutForm f) {
             ++iterations;
         }
     }

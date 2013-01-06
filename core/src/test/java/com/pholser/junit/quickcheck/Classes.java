@@ -44,13 +44,11 @@ class Classes {
 
     static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
         return new TypeSafeMatcher<Class<?>>() {
-            @Override
-            protected boolean matchesSafely(Class<?> item) {
+            @Override protected boolean matchesSafely(Class<?> item) {
                 return item.isAssignableFrom(other);
             }
 
-            @Override
-            public void describeTo(Description description) {
+            @Override public void describeTo(Description description) {
                 description.appendText("a class that is assignable from ").appendValue(other);
             }
         };
@@ -59,8 +57,7 @@ class Classes {
     static List<Class<?>> classesOf(Iterable<?> items) {
         return FluentIterable.from(items)
             .transform(new Function<Object, Class<?>>() {
-                @Override
-                public Class<?> apply(Object input) {
+                @Override public Class<?> apply(Object input) {
                     return input.getClass();
                 }
             }).toImmutableList();

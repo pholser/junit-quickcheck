@@ -35,27 +35,23 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllReferenceArrayTheoryParameterTypesTest {
-    @Test
-    public void stringArray() {
+    @Test public void stringArray() {
         assertThat(testResult(StringArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class StringArray {
-        @Theory
-        public void shouldHold(@ForAll String[] s) {
+        @Theory public void shouldHold(@ForAll String[] s) {
         }
     }
 
-    @Test
-    public void twoDObjectArray() {
+    @Test public void twoDObjectArray() {
         assertThat(testResult(TwoDObjectArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class TwoDObjectArray {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 5) Object[][] o) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) Object[][] o) {
         }
     }
 }

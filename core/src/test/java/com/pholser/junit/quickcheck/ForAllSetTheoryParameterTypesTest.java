@@ -38,27 +38,23 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllSetTheoryParameterTypesTest {
-    @Test
-    public void huh() {
+    @Test public void huh() {
         assertThat(testResult(SetOfHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfHuh {
-        @Theory
-        public void shouldHold(@ForAll Set<?> items) {
+        @Theory public void shouldHold(@ForAll Set<?> items) {
         }
     }
 
-    @Test
-    public void lowerBounded() {
+    @Test public void lowerBounded() {
         assertThat(testResult(SetOfLowerBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfLowerBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 15) Set<? extends Integer> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 15) Set<? extends Integer> items) {
             if (!items.isEmpty()) {
                 Class<?> superclass = nearestCommonSuperclassOf(classesOf(items));
                 assertThat(Integer.class, isAssignableFrom(superclass));
@@ -66,72 +62,62 @@ public class ForAllSetTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void upperBounded() {
+    @Test public void upperBounded() {
         assertThat(testResult(SetOfUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfUpperBound {
-        @Theory
-        public void shouldHold(@ForAll Set<? super String> items) {
+        @Theory public void shouldHold(@ForAll Set<? super String> items) {
         }
     }
 
-    @Test
-    public void intArray() {
+    @Test public void intArray() {
         assertThat(testResult(SetOfIntArray.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfIntArray {
-        @Theory
-        public void shouldHold(@ForAll Set<int[]> items) {
+        @Theory public void shouldHold(@ForAll Set<int[]> items) {
             for (int[] each : items) {
                 // ensuring the cast works
             }
         }
     }
 
-    @Test
-    public void setOfHuh() {
+    @Test public void setOfHuh() {
         assertThat(testResult(SetOfSetOfHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfSetOfHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Set<Set<?>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 10) Set<Set<?>> items) {
             for (Set<?> each : items) {
                 // ensuring the cast works
             }
         }
     }
 
-    @Test
-    public void setOfInteger() {
+    @Test public void setOfInteger() {
         assertThat(testResult(SetOfSetOfInteger.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfSetOfInteger {
-        @Theory
-        public void shouldHold(@ForAll Set<Set<Integer>> items) {
+        @Theory public void shouldHold(@ForAll Set<Set<Integer>> items) {
             for (Set<Integer> each : items) {
                 // ensuring the cast works
             }
         }
     }
 
-    @Test
-    public void setOfUpperBounded() {
+    @Test public void setOfUpperBounded() {
         assertThat(testResult(SetOfSetOfUpperBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfSetOfUpperBound {
-        @Theory
-        public void shouldHold(@ForAll Set<Set<? extends Number>> items) {
+        @Theory public void shouldHold(@ForAll Set<Set<? extends Number>> items) {
             for (Set<? extends Number> each : items) {
                 if (!items.isEmpty()) {
                     Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
@@ -141,15 +127,13 @@ public class ForAllSetTheoryParameterTypesTest {
         }
     }
 
-    @Test
-    public void setOfLowerBounded() {
+    @Test public void setOfLowerBounded() {
         assertThat(testResult(SetOfSetOfLowerBound.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class SetOfSetOfLowerBound {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) Set<Set<? super Float>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 10) Set<Set<? super Float>> items) {
             for (Set<? super Float> each : items) {
             }
         }

@@ -36,8 +36,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllSampleSizeTest {
-    @Test
-    public void shouldFeedADefaultNumberOfValuesToAMarkedParameter() throws Exception {
+    @Test public void shouldFeedADefaultNumberOfValuesToAMarkedParameter() throws Exception {
         assertThat(testResult(ForDefaultNumberOfValues.class), isSuccessful());
         assertEquals(defaultSampleSize(), ForDefaultNumberOfValues.iterations);
     }
@@ -46,14 +45,12 @@ public class ForAllSampleSizeTest {
     public static class ForDefaultNumberOfValues {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll int i) {
+        @Theory public void shouldHold(@ForAll int i) {
             ++iterations;
         }
     }
 
-    @Test
-    public void shouldRespectSampleSizeIfSpecified() {
+    @Test public void shouldRespectSampleSizeIfSpecified() {
         assertThat(testResult(ForSpecifiedNumberOfValues.class), isSuccessful());
         assertEquals(5, ForSpecifiedNumberOfValues.iterations);
     }
@@ -62,14 +59,12 @@ public class ForAllSampleSizeTest {
     public static class ForSpecifiedNumberOfValues {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 5) int i) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) int i) {
             ++iterations;
         }
     }
 
-    @Test
-    public void shouldBeAbleToMarkMultipleParametersForReceivingValues() {
+    @Test public void shouldBeAbleToMarkMultipleParametersForReceivingValues() {
         assertThat(testResult(ForValuesOfMultipleParameters.class), isSuccessful());
         assertEquals(21, ForValuesOfMultipleParameters.iterations);
     }
@@ -78,8 +73,7 @@ public class ForAllSampleSizeTest {
     public static class ForValuesOfMultipleParameters {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 3) int i, @ForAll(sampleSize = 7) int j) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 3) int i, @ForAll(sampleSize = 7) int j) {
             ++iterations;
         }
     }

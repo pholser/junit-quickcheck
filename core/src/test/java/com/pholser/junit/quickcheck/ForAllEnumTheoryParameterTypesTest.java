@@ -46,8 +46,7 @@ public class ForAllEnumTheoryParameterTypesTest {
         E1, E2, E3, E4, E5
     }
 
-    @Test
-    public void usesRegularSampleSize() throws Exception {
+    @Test public void usesRegularSampleSize() throws Exception {
         assertThat(testResult(EnumSuperclass.class), isSuccessful());
         assertEquals(defaultSampleSize(), EnumSuperclass.iterations);
     }
@@ -56,14 +55,12 @@ public class ForAllEnumTheoryParameterTypesTest {
     public static class EnumSuperclass {
         static int iterations;
 
-        @Theory
-        public void shouldHold(@ForAll TestEnum e) {
+        @Theory public void shouldHold(@ForAll TestEnum e) {
             ++iterations;
         }
     }
 
-    @Test
-    public void usesNumberOfEnumsAsSampleSizeWhenMarkedWithValuesOf() {
+    @Test public void usesNumberOfEnumsAsSampleSizeWhenMarkedWithValuesOf() {
         assertThat(testResult(EnumWithValuesOf.class), isSuccessful());
         assertEquals(asList(E1, E2, E3, E4, E5), EnumWithValuesOf.values);
     }
@@ -72,14 +69,12 @@ public class ForAllEnumTheoryParameterTypesTest {
     public static class EnumWithValuesOf {
         static List<TestEnum> values = new ArrayList<TestEnum>();
 
-        @Theory
-        public void shouldHold(@ForAll @ValuesOf TestEnum e) {
+        @Theory public void shouldHold(@ForAll @ValuesOf TestEnum e) {
             values.add(e);
         }
     }
 
-    @Test
-    public void whenConstrained() {
+    @Test public void whenConstrained() {
         assertThat(testResult(EnumWithValuesOfAndConstraint.class), isSuccessful());
         assertEquals(asList(E1, E2, E4, E5, E1), EnumWithValuesOfAndConstraint.values);
     }
@@ -88,8 +83,8 @@ public class ForAllEnumTheoryParameterTypesTest {
     public static class EnumWithValuesOfAndConstraint {
         static List<TestEnum> values = new ArrayList<TestEnum>();
 
-        @Theory
-        public void shouldHold(@ForAll @ValuesOf
+        @Theory public void shouldHold(
+            @ForAll @ValuesOf
             @SuchThat("#e != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")
             TestEnum e) {
 

@@ -35,15 +35,13 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllNumberTheoryParameterTypesTest {
-    @Test
-    public void huh() {
+    @Test public void huh() {
         assertThat(testResult(NumberSuperclass.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class NumberSuperclass {
-        @Theory
-        public void shouldHold(@ForAll Number n) {
+        @Theory public void shouldHold(@ForAll Number n) {
         }
     }
 }
