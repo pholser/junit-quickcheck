@@ -37,7 +37,7 @@ import java.util.Set;
 import com.sun.source.tree.ModifiersTree;
 import org.javaruntype.type.Type;
 
-public final class Reflection {
+public class Reflection {
     private Reflection() {
         throw new UnsupportedOperationException();
     }

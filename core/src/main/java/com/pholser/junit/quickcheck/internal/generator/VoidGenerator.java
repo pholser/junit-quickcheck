@@ -33,8 +33,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class VoidGenerator extends Generator<Void> {
-    @SuppressWarnings("unchecked")
-    public VoidGenerator() {
+    @SuppressWarnings("unchecked") public VoidGenerator() {
         super(asList(void.class, Void.class));
     }
 

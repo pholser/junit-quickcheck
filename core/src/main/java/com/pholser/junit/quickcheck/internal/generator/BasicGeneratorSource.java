@@ -48,8 +48,7 @@ import com.pholser.junit.quickcheck.generator.ShortGenerator;
 import com.pholser.junit.quickcheck.generator.StringGenerator;
 
 public class BasicGeneratorSource implements Iterable<Generator<?>> {
-    @Override
-    public Iterator<Generator<?>> iterator() {
+    @Override public Iterator<Generator<?>> iterator() {
         List<Generator<?>> generators = Arrays.<Generator<?>> asList(
             new BigDecimalGenerator(),
             new BigIntegerGenerator(),

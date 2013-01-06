@@ -103,13 +103,11 @@ public class GenerationContext implements GenerationStatus {
             : (discards / successfulEvaluations) >= parameter.discardRatio();
     }
 
-    @Override
-    public int size() {
+    @Override public int size() {
         return successfulEvaluations;
     }
 
-    @Override
-    public int attempts() {
+    @Override public int attempts() {
         return successfulEvaluations + discards;
     }
 

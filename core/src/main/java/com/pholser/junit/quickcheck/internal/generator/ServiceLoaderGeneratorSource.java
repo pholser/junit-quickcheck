@@ -35,15 +35,13 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import static java.util.Collections.*;
 
 public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
-    @SuppressWarnings("rawtypes")
-    private final ServiceLoader<Generator> loader;
+    @SuppressWarnings("rawtypes") private final ServiceLoader<Generator> loader;
 
     public ServiceLoaderGeneratorSource() {
         loader = ServiceLoader.load(Generator.class);
     }
 
-    @Override
-    public Iterator<Generator<?>> iterator() {
+    @Override public Iterator<Generator<?>> iterator() {
         List<Generator<?>> generators = new ArrayList<Generator<?>>();
 
         for (Generator<?> each : loader)

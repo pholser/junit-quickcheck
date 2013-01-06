@@ -41,8 +41,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         this.repository = repository;
     }
 
-    @Override
-    public List<PotentialAssignment> generate(ParameterContext parameter) {
+    @Override public List<PotentialAssignment> generate(ParameterContext parameter) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
 
         GenerationContext generation = new GenerationContext(parameter, repository);

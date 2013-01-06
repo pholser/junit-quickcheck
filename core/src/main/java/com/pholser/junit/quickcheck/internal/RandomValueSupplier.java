@@ -47,9 +47,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;
 
-    /**
-     * Called by JUnit reflectively.
-     */
+    /* Called by JUnit reflectively. */
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new SourceOfRandomness(new SecureRandom()),
             new GeneratorRepository(new SourceOfRandomness(new SecureRandom()))
@@ -61,8 +59,7 @@ public class RandomValueSupplier extends ParameterSupplier {
         this.generator = generator;
     }
 
-    @Override
-    public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
+    @Override public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
         ParameterContext parameter = new ParameterContext(signature.getType(), signature.getParameterName());
         parameter.addQuantifier(signature.getAnnotation(ForAll.class));
         parameter.addConstraint(signature.getAnnotation(SuchThat.class));

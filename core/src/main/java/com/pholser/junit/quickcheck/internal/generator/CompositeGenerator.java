@@ -43,8 +43,7 @@ public class CompositeGenerator extends Generator<Object> {
         this.componentGenerators = new ArrayList<Generator<?>>(componentGenerators);
     }
 
-    @Override
-    public Object generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
         Generator<?> generator = componentGenerators.size() == 1
             ? componentGenerators.get(0)
             : componentGenerators.get(random.nextInt(0, componentGenerators.size() - 1));
@@ -56,8 +55,7 @@ public class CompositeGenerator extends Generator<Object> {
         return componentGenerators.get(index);
     }
 
-    @Override
-    public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
+    @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
         for (Generator<?> each : componentGenerators)
             each.configure(configurationsByType);
     }
