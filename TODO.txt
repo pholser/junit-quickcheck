@@ -7,3 +7,6 @@
 -- Do we need Coarbitrary for things like Guava functions? What should be considered a functional type?
 -- nextLong(min, max) and nextDouble(min, max) -- getting them to span the entire range.
 -- Is @SuchThat with OGNL and Paranamer useful, or cute but not that helpful?
+
+-- site
+-- tighten up checkstyle, reporting
