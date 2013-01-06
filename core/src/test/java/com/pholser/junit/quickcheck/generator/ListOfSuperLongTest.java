@@ -42,8 +42,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 100)).thenReturn(2).thenReturn(1);
         when(randomForParameterGenerator.nextLong(MIN_VALUE, MAX_VALUE)).thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
@@ -57,24 +56,20 @@ public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryP
             .thenReturn(0);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[] { Long.class }));
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(emptyList(), asList(3L), asList(4L, 5L));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong(MIN_VALUE, MAX_VALUE);
     }
 }

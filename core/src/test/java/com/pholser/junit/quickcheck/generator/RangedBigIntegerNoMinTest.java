@@ -42,39 +42,33 @@ import static org.mockito.Mockito.*;
 public class RangedBigIntegerNoMinTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     private final BigInteger max = new BigInteger("987654321987654321");
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(max.subtract(max.subtract(TEN)).bitLength()))
             .thenReturn(new BigInteger("6"));
         when(randomForParameterGenerator.nextBigInteger(max.subtract(max.subtract(TEN.pow(2))).bitLength()))
             .thenReturn(new BigInteger("35"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigInteger.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new BigInteger("987654321987654317"), new BigInteger("987654321987654256"));
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.min()).thenReturn((String) defaultValueOf(InRange.class, "min"));
         when(range.max()).thenReturn(max.toString());
         return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextBigInteger(max.subtract(max.subtract(TEN)).bitLength());
         verify(randomForParameterGenerator).nextBigInteger(max.subtract(max.subtract(TEN.pow(2))).bitLength());
     }

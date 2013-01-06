@@ -35,29 +35,24 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveDoubleTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextDouble(-MAX_VALUE, MAX_VALUE))
             .thenReturn(2D).thenReturn(3D).thenReturn(4D);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return double.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(2D, 3D, 4D);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextDouble(-MAX_VALUE, MAX_VALUE);
     }
 }

@@ -36,31 +36,26 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BigIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(1)).thenReturn(ONE);
         when(randomForParameterGenerator.nextBigInteger(2)).thenReturn(new BigInteger("3"));
         when(randomForParameterGenerator.nextBigInteger(3)).thenReturn(new BigInteger("-7"));
         when(randomForParameterGenerator.nextBigInteger(4)).thenReturn(new BigInteger("12"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigInteger.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(ONE, new BigInteger("3"), new BigInteger("-7"), new BigInteger("12"));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextBigInteger(1);
         verify(randomForParameterGenerator).nextBigInteger(2);
         verify(randomForParameterGenerator).nextBigInteger(3);

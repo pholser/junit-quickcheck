@@ -35,31 +35,26 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextShort(MIN_VALUE, MAX_VALUE))
             .thenReturn((short) -9).thenReturn((short) -8).thenReturn((short) -7).thenReturn((short) -6)
             .thenReturn((short) -5);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return Short.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 5;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         short sh = -9;
         return asList(sh++, sh++, sh++, sh++, sh);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(5)).nextShort(MIN_VALUE, MAX_VALUE);
     }
 }

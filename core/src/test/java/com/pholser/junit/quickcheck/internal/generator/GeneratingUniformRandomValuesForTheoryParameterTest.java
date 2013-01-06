@@ -59,8 +59,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     protected GeneratorRepository repository;
     private List<PotentialAssignment> theoryParameters;
 
-    @Before
-    public final void beforeEach() throws Exception {
+    @Before public final void beforeEach() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         source = new BasicGeneratorSource();
@@ -124,13 +123,11 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
 
     protected abstract List<?> randomValues();
 
-    @Test
-    public final void respectsSampleSize() {
+    @Test public final void respectsSampleSize() {
         assertEquals(quantifier.sampleSize(), theoryParameters.size());
     }
 
-    @Test
-    public final void insertsTheRandomValuesIntoAssignments() throws Exception {
+    @Test public final void insertsTheRandomValuesIntoAssignments() throws Exception {
         assertEquals(sampleSize(), theoryParameters.size());
 
         List<?> values = randomValues();
@@ -144,6 +141,5 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         assertThat(index + "'th value", expected, deepEquals(actual));
     }
 
-    @Test
-    public abstract void verifyInteractionWithRandomness();
+    @Test public abstract void verifyInteractionWithRandomness();
 }

@@ -42,39 +42,33 @@ public class RangedBigIntegerTest extends GeneratingUniformRandomValuesForTheory
     private final BigInteger min = new BigInteger("-12345678123456781234567812345678");
     private final BigInteger max = new BigInteger("987654321987654321");
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         int numberOfBits = max.subtract(min).bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
             .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE)).thenReturn(ONE).thenReturn(TEN)
             .thenReturn(ZERO).thenReturn(new BigInteger("234234234234"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigInteger.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(min.add(ONE), min.add(TEN), min.add(ZERO), min.add(new BigInteger("234234234234")));
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.min()).thenReturn(min.toString());
         when(range.max()).thenReturn(max.toString());
         return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(5)).nextBigInteger(max.subtract(min).bitLength());
     }
 }

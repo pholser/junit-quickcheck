@@ -37,30 +37,25 @@ import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfIntArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE))
             .thenReturn(-1).thenReturn(-2).thenReturn(2).thenReturn(0).thenReturn(1);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(List.class, int[].class);
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(emptyList(), singletonList(new int[] { -1 }), asList(new int[] { -2, 2 }, new int[] { 0, 1 }));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(5)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

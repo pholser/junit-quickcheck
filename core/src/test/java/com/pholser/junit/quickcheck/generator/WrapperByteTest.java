@@ -35,30 +35,25 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextByte(MIN_VALUE, MAX_VALUE))
             .thenReturn((byte) -95).thenReturn((byte) -94).thenReturn((byte) -93).thenReturn((byte) -92);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return Byte.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         byte b = (byte) 0xA1;
         return asList(b++, b++, b++, b);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(4)).nextByte(MIN_VALUE, MAX_VALUE);
     }
 }

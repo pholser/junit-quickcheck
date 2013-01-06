@@ -35,28 +35,23 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(0).thenReturn(1).thenReturn(-1);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return Integer.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(0, 1, -1);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

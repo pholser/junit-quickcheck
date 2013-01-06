@@ -40,8 +40,7 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         int dateIndex = 13;
         when(randomForParameterGenerator.nextLong(Integer.MIN_VALUE, Long.MAX_VALUE))
             .thenReturn(1L).thenReturn(7L).thenReturn(63L).thenReturn(127L)
@@ -50,19 +49,16 @@ public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheory
         when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 4)).thenReturn(dateIndex);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new GenericArrayTypeImpl(
             new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0])));
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         List<List<?>[]> values = new ArrayList<List<?>[]>();
         values.add(new List<?>[0]);
         values.add(new List<?>[] { asList(new Date(1L)) });
@@ -70,8 +66,7 @@ public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheory
         return values;
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(5)).nextLong(Integer.MIN_VALUE, Long.MAX_VALUE);
         verifyNoMoreInteractions(randomForParameterGenerator);
         verify(randomForGeneratorRepo, times(3)).nextInt(0, Iterables.size(source) - 4);

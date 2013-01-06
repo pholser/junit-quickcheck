@@ -41,31 +41,26 @@ public class SetOfEnumTest extends GeneratingUniformRandomValuesForTheoryParamet
         YES, NO, MAYBE
     }
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2).thenReturn(0)
             .thenReturn(1).thenReturn(2);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(Set.class, Ternary.class);
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.MAYBE),
             newHashSet(Ternary.YES, Ternary.NO, Ternary.MAYBE));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(6)).nextInt(0, 2);
     }
 }

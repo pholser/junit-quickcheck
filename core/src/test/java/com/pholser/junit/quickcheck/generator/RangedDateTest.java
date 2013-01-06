@@ -46,8 +46,7 @@ public class RangedDateTest extends GeneratingUniformRandomValuesForTheoryParame
     private Date min;
     private Date max;
 
-    @Override
-    protected void primeSourceOfRandomness() throws Exception {
+    @Override protected void primeSourceOfRandomness() throws Exception {
         first = formatter.parse("12/25/945");
         second = formatter.parse("7/4/1776");
         third = formatter.parse("8/26/2008");
@@ -57,23 +56,19 @@ public class RangedDateTest extends GeneratingUniformRandomValuesForTheoryParame
             .thenReturn(first.getTime()).thenReturn(second.getTime()).thenReturn(third.getTime());
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return Date.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new Date(first.getTime()), new Date(second.getTime()), new Date(third.getTime()));
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.min()).thenReturn("1/1/500");
         when(range.max()).thenReturn("12/31/2020");
@@ -81,8 +76,7 @@ public class RangedDateTest extends GeneratingUniformRandomValuesForTheoryParame
         return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong(min.getTime(), max.getTime());
     }
 }

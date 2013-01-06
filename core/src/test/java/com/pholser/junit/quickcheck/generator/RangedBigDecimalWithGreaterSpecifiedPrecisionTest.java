@@ -46,34 +46,29 @@ public class RangedBigDecimalWithGreaterSpecifiedPrecisionTest
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         numberOfBits = max.movePointRight(6).subtract(min.movePointRight(6)).toBigInteger().bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
             .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE)).thenReturn(ONE).thenReturn(TEN)
             .thenReturn(ZERO).thenReturn(new BigInteger("234234234234"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigDecimal.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new BigDecimal("-12345678123456781234567812345.677999"),
             new BigDecimal("-12345678123456781234567812345.677990"),
             min.setScale(6),
             new BigDecimal("-12345678123456781234567578111.443766"));
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.min()).thenReturn(min.toString());
         when(range.max()).thenReturn(max.toString());
@@ -85,8 +80,7 @@ public class RangedBigDecimalWithGreaterSpecifiedPrecisionTest
             .build();
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(5)).nextBigInteger(numberOfBits);
     }
 }

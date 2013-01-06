@@ -41,14 +41,12 @@ public class LambdasTest {
     private BooleanGenerator returnValueGenerator;
     private Predicate<?> predicate;
 
-    @Before
-    public void setUp() {
+    @Before public void setUp() {
         returnValueGenerator = new BooleanGenerator();
         predicate = makeLambda(Predicate.class, returnValueGenerator, null);
     }
 
-    @Test
-    public void equalsBasedOnIdentity() {
+    @Test public void equalsBasedOnIdentity() {
         Predicate<?> duplicate = makeLambda(Predicate.class, returnValueGenerator, null);
 
         assertEquals(predicate, predicate);
@@ -57,18 +55,15 @@ public class LambdasTest {
         assertNotEquals(duplicate, predicate);
     }
 
-    @Test
-    public void hashCodeBasedOnIdentity() {
+    @Test public void hashCodeBasedOnIdentity() {
         assertEquals(System.identityHashCode(predicate), predicate.hashCode());
     }
 
-    @Test
-    public void toStringGivesAnIndicationOfItsRandomGeneration() {
+    @Test public void toStringGivesAnIndicationOfItsRandomGeneration() {
         assertEquals("a randomly generated instance of " + Predicate.class, predicate.toString());
     }
 
-    @Test
-    public void rejectsNonFunctionalInterface() {
+    @Test public void rejectsNonFunctionalInterface() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(Cloneable.class + " is not a functional interface");
 

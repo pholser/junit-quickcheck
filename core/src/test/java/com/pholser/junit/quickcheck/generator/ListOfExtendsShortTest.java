@@ -38,30 +38,25 @@ import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextShort(MIN_VALUE, MAX_VALUE))
             .thenReturn((short) -1).thenReturn((short) -2).thenReturn((short) -3);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Short.class }, new Type[0]));
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(emptyList(), asList((short) -1), asList((short) -2, (short) -3));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextShort(MIN_VALUE, MAX_VALUE);
     }
 }

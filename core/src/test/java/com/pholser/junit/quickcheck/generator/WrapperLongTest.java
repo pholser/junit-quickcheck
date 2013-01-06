@@ -35,29 +35,24 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextLong(MIN_VALUE, MAX_VALUE))
             .thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return Long.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(-3L, -2L, -1L);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong(MIN_VALUE, MAX_VALUE);
     }
 }

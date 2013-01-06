@@ -37,36 +37,30 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedPrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(-4, 5)).thenReturn(-2).thenReturn(3);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return int.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(-2, 3);
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.minInt()).thenReturn(-4);
         when(range.maxInt()).thenReturn(5);
         return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(2)).nextInt(-4, 5);
     }
 }

@@ -35,30 +35,25 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextShort(MIN_VALUE, MAX_VALUE))
             .thenReturn((short) 4).thenReturn((short) 5).thenReturn((short) 6).thenReturn((short) 7);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return short.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         short sh = 0x0004;
         return asList(sh++, sh++, sh++, sh);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(4)).nextShort(MIN_VALUE, MAX_VALUE);
     }
 }

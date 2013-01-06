@@ -35,34 +35,28 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ConstrainedPrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE))
             .thenReturn(0).thenReturn(1).thenReturn(-1);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return int.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(0, -1);
     }
 
-    @Override
-    protected String constraintExpression() {
+    @Override protected String constraintExpression() {
         return '#' + PARAMETER_NAME + " <= 0";
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

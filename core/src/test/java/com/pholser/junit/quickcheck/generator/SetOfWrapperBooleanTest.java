@@ -37,31 +37,26 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBoolean()).thenReturn(false).thenReturn(true).thenReturn(false)
             .thenReturn(true).thenReturn(false).thenReturn(true);
         verifyNoMoreInteractions(randomForParameterGenerator);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(Set.class, Boolean.class);
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(newHashSet(), newHashSet(false), newHashSet(true, false), newHashSet(true, false));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(6)).nextBoolean();
     }
 }

@@ -35,29 +35,24 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class DateTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextLong(Integer.MIN_VALUE, Long.MAX_VALUE))
             .thenReturn(0L).thenReturn(60000L).thenReturn(100000000L).thenReturn(300000000000L);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return Date.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 4;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new Date(0), new Date(60000), new Date(100000000), new Date(300000000000L));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(4)).nextLong(Integer.MIN_VALUE, Long.MAX_VALUE);
     }
 }

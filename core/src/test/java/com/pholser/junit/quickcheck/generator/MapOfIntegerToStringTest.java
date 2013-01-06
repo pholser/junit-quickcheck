@@ -38,35 +38,30 @@ import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE))
             .thenReturn(1).thenReturn(-2).thenReturn(2);
         when(randomForParameterGenerator.nextChar(Character.MIN_VALUE, Character.MAX_VALUE))
             .thenReturn('a').thenReturn('b').thenReturn('c').thenReturn('d').thenReturn('e');
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(Map.class, Integer.class, String.class);
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         Map<Integer, String> doubleton = newHashMap();
         doubleton.put(-2, "bc");
         doubleton.put(2, "de");
         return asList(newHashMap(), singletonMap(1, "a"), doubleton);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
         verify(randomForParameterGenerator, times(5)).nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
     }

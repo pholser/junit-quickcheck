@@ -35,28 +35,23 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextFloat(-MAX_VALUE, MAX_VALUE)).thenReturn(7F).thenReturn(8F);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return float.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(7F, 8F);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(2)).nextFloat(-MAX_VALUE, MAX_VALUE);
     }
 }

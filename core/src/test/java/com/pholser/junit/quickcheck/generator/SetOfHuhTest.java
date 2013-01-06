@@ -39,29 +39,24 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE)).thenReturn(1).thenReturn(-2).thenReturn(2);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(Set.class, new WildcardTypeImpl(new Type[0], new Type[0]));
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(newHashSet(), newHashSet(1), newHashSet(-2, 2));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
     }
 }

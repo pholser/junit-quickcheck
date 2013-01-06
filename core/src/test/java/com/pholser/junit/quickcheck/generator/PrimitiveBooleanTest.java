@@ -34,28 +34,23 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBoolean()).thenReturn(false).thenReturn(true);
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return boolean.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(false, true);
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(2)).nextBoolean();
     }
 }

@@ -46,8 +46,7 @@ public class RangedBigDecimalNoMaxWithLesserSpecifiedPrecisionTest
     private final BigDecimal min = new BigDecimal("-98765432198.7654321");
     private final BigInteger minBigInt = min.movePointRight(7).toBigInteger();
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(
             minBigInt.add(TEN.movePointRight(7).toBigInteger()).subtract(minBigInt).bitLength()))
             .thenReturn(new BigInteger("6"));
@@ -56,23 +55,19 @@ public class RangedBigDecimalNoMaxWithLesserSpecifiedPrecisionTest
             .thenReturn(new BigInteger("35"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigDecimal.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new BigDecimal("-98765432198.7654315"), new BigDecimal("-98765432198.7654286"));
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.min()).thenReturn(min.toString());
         when(range.max()).thenReturn((String) defaultValueOf(InRange.class, "max"));
@@ -84,8 +79,7 @@ public class RangedBigDecimalNoMaxWithLesserSpecifiedPrecisionTest
             .build();
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextBigInteger(
             minBigInt.add(TEN.movePointRight(7).toBigInteger()).subtract(minBigInt).bitLength());
         verify(randomForParameterGenerator).nextBigInteger(

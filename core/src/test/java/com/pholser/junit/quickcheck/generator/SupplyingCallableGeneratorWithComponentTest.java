@@ -53,8 +53,7 @@ public class SupplyingCallableGeneratorWithComponentTest {
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         repo = new GeneratorRepository(random).add(Arrays.<Generator<?>> asList(
             new IntegerGenerator(),
             new CallableGenerator(),
@@ -62,8 +61,7 @@ public class SupplyingCallableGeneratorWithComponentTest {
         when(random.nextInt(0, 1)).thenReturn(1);
     }
 
-    @Test
-    public void coaxingGeneratorToSupplyComponentForCallable() {
+    @Test public void coaxingGeneratorToSupplyComponentForCallable() {
         ArrayGenerator generator = (ArrayGenerator) repo.generatorFor(new GenericArrayTypeImpl(
             new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0]))));
 

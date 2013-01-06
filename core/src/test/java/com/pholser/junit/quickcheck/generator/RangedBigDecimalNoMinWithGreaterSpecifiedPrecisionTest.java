@@ -46,8 +46,7 @@ public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest
     private final BigDecimal max = new BigDecimal("987654321987654321.09876");
     private final BigInteger maxBigInt = max.movePointRight(8).toBigInteger();
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(
             maxBigInt.subtract(maxBigInt.subtract(TEN.movePointRight(8).toBigInteger())).bitLength()))
             .thenReturn(new BigInteger("6"));
@@ -56,23 +55,19 @@ public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest
             .thenReturn(new BigInteger("35"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigDecimal.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new BigDecimal("987654321987654311.09876006"), new BigDecimal("987654321987654221.09876035"));
     }
 
-    @Override
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
         InRange range = mock(InRange.class);
         when(range.min()).thenReturn((String) defaultValueOf(InRange.class, "min"));
         when(range.max()).thenReturn(max.toString());
@@ -84,8 +79,7 @@ public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest
             .build();
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextBigInteger(
             maxBigInt.subtract(maxBigInt.subtract(TEN.movePointRight(8).toBigInteger())).bitLength());
         verify(randomForParameterGenerator).nextBigInteger(

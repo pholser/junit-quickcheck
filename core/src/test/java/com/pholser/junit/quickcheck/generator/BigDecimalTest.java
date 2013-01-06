@@ -41,8 +41,7 @@ public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParame
     private BigDecimal second;
     private BigDecimal third;
 
-    @Override
-    protected void primeSourceOfRandomness() {
+    @Override protected void primeSourceOfRandomness() {
         first = TEN.subtract(TEN.negate());
         second = TEN.pow(2).subtract(TEN.pow(2).negate());
         third = TEN.pow(3).subtract(TEN.pow(3).negate());
@@ -54,23 +53,19 @@ public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParame
             .thenReturn(new BigInteger("768"));
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return BigDecimal.class;
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 3;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return asList(new BigDecimal("-9"), new BigDecimal("36"), new BigDecimal("-232"));
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(2)).nextBigInteger(first.toBigInteger().bitLength());
         verify(randomForParameterGenerator).nextBigInteger(second.toBigInteger().bitLength());
         verify(randomForParameterGenerator).nextBigInteger(third.toBigInteger().bitLength());
