@@ -25,35 +25,30 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.HashMap;
+import java.util.concurrent.Callable;
 
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.generator.Lambdas.*;
+
 /**
- * <p>Produces values for theory parameters of type {@link java.util.HashMap}.</p>
+ * Produces values for theory parameters of type {@code Callable}.
  *
- * <p>The generated map has a number of entries decided by
- * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}. The individual keys and values will have
- * types corresponding to the theory parameter's type arguments.</p>
+ * @param <V> the type of the values produced by the generated instances
  */
-public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
-    public HashMapGenerator() {
-        super(HashMap.class);
+public class CallableGenerator<V> extends ComponentizedGenerator<Callable> {
+    public CallableGenerator() {
+        super(Callable.class);
     }
 
-    @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
-        HashMap<Object, Object> items = new HashMap<Object, Object>();
-
-        for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded) {
-            Object key = componentGenerators.get(0).generate(random, status);
-            Object value = componentGenerators.get(1).generate(random, status);
-            items.put(key, value);
-        }
-
-        return items;
+    @SuppressWarnings("unchecked")
+    @Override public Callable<V> generate(SourceOfRandomness random, GenerationStatus status) {
+        return (Callable<V>) makeLambda(Callable.class, componentGenerators.get(0), status);
     }
 
     @Override public int numberOfNeededComponents() {
-        return 2;
+        return 1;
     }
 }

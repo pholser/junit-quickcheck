@@ -34,12 +34,12 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
+ * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
  * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
- * random with equal probability.
+ * random with equal probability.</p>
  *
- * If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.
+ * <p>If any of the generators so specified produce values of a type incompatible with the type of the marked theory
+ * parameter, {@link IllegalArgumentException} is raised.</p>
  */
 @Target(PARAMETER)
 @Retention(RUNTIME)

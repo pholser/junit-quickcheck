@@ -37,8 +37,7 @@ public class CharacterGenerator extends Generator<Character> {
     private char min = MIN_VALUE;
     private char max = MAX_VALUE;
 
-    @SuppressWarnings("unchecked")
-    public CharacterGenerator() {
+    @SuppressWarnings("unchecked") public CharacterGenerator() {
         super(asList(char.class, Character.class));
     }
 
@@ -56,8 +55,7 @@ public class CharacterGenerator extends Generator<Character> {
         max = range.maxChar();
     }
 
-    @Override
-    public Character generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Character generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextChar(min, max);
     }
 }

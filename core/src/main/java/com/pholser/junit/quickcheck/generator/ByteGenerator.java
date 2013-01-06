@@ -37,8 +37,7 @@ public class ByteGenerator extends Generator<Byte> {
     private byte min = MIN_VALUE;
     private byte max = MAX_VALUE;
 
-    @SuppressWarnings("unchecked")
-    public ByteGenerator() {
+    @SuppressWarnings("unchecked") public ByteGenerator() {
         super(asList(byte.class, Byte.class));
     }
 
@@ -56,8 +55,7 @@ public class ByteGenerator extends Generator<Byte> {
         max = range.maxByte();
     }
 
-    @Override
-    public Byte generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextByte(min, max);
     }
 }

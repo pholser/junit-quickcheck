@@ -37,8 +37,7 @@ public class IntegerGenerator extends Generator<Integer> {
     private int min = MIN_VALUE;
     private int max = MAX_VALUE;
 
-    @SuppressWarnings("unchecked")
-    public IntegerGenerator() {
+    @SuppressWarnings("unchecked") public IntegerGenerator() {
         super(asList(int.class, Integer.class));
     }
 
@@ -56,8 +55,7 @@ public class IntegerGenerator extends Generator<Integer> {
         max = range.maxInt();
     }
 
-    @Override
-    public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextInt(min, max);
     }
 }

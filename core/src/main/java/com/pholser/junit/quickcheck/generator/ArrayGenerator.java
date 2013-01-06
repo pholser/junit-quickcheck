@@ -53,8 +53,7 @@ public class ArrayGenerator extends Generator<Object> {
         this.componentGenerator = componentGenerator;
     }
 
-    @Override
-    public Object generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
         Object array = Array.newInstance(componentType, status.size());
         for (int i = 0; i < Array.getLength(array); ++i)
             Array.set(array, i, componentGenerator.generate(random, status));

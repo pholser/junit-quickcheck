@@ -31,7 +31,8 @@ import java.util.List;
 import static java.util.Collections.*;
 
 /**
- * Produces values for theory parameters of types that have components, such as arrays and lists.
+ * Produces values for theory parameters of types that have components that would also need generation, such as arrays,
+ * lists, and predicates.
  *
  * @param <T> type of theory parameter to apply this generator's values to
  */
@@ -45,13 +46,11 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         super(type);
     }
 
-    @Override
-    public final boolean hasComponents() {
+    @Override public final boolean hasComponents() {
         return true;
     }
 
-    @Override
-    public void addComponentGenerators(List<Generator<?>> generators) {
+    @Override public void addComponentGenerators(List<Generator<?>> generators) {
         componentGenerators.clear();
         componentGenerators.addAll(generators);
     }

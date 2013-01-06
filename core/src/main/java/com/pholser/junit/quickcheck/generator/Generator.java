@@ -49,8 +49,7 @@ public abstract class Generator<T> {
     /**
      * @param type class token for type of theory parameter this generator is applicable to
      */
-    @SuppressWarnings("unchecked")
-    protected Generator(Class<T> type) {
+    @SuppressWarnings("unchecked") protected Generator(Class<T> type) {
         this(asList(type));
     }
 

@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.generator.BigDecimalGenerator;
 import com.pholser.junit.quickcheck.generator.BigIntegerGenerator;
 import com.pholser.junit.quickcheck.generator.BooleanGenerator;
 import com.pholser.junit.quickcheck.generator.ByteGenerator;
+import com.pholser.junit.quickcheck.generator.CallableGenerator;
 import com.pholser.junit.quickcheck.generator.CharacterGenerator;
 import com.pholser.junit.quickcheck.generator.DateGenerator;
 import com.pholser.junit.quickcheck.generator.DoubleGenerator;

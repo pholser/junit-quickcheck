@@ -37,8 +37,7 @@ public class DoubleGenerator extends Generator<Double> {
     private double min = -MAX_VALUE;
     private double max = MAX_VALUE;
 
-    @SuppressWarnings("unchecked")
-    public DoubleGenerator() {
+    @SuppressWarnings("unchecked") public DoubleGenerator() {
         super(asList(double.class, Double.class));
     }
 
@@ -56,8 +55,7 @@ public class DoubleGenerator extends Generator<Double> {
         max = range.maxDouble();
     }
 
-    @Override
-    public Double generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextDouble(min, max);
     }
 }

@@ -40,8 +40,7 @@ public class StringGenerator extends Generator<String> {
         super(String.class);
     }
 
-    @Override
-    public String generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
         StringBuilder buffer = new StringBuilder(status.size());
 
         for (int i = 0; i < status.size(); ++i)

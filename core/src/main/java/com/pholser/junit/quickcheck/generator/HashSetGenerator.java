@@ -41,8 +41,7 @@ public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
         super(HashSet.class);
     }
 
-    @Override
-    public HashSet<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public HashSet<?> generate(SourceOfRandomness random, GenerationStatus status) {
         HashSet<Object> items = new HashSet<Object>();
 
         for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded)
@@ -51,8 +50,7 @@ public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
         return items;
     }
 
-    @Override
-    public int numberOfNeededComponents() {
+    @Override public int numberOfNeededComponents() {
         return 1;
     }
 }

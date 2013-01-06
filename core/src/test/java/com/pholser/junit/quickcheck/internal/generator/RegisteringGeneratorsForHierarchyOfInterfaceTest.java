@@ -25,13 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.io.Serializable;
-import java.util.AbstractCollection;
-import java.util.Collection;
 import java.util.List;
-import java.util.RandomAccess;
 import java.util.concurrent.Callable;
 
+import com.pholser.junit.quickcheck.generator.CallableGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;

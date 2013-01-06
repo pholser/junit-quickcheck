@@ -66,6 +66,7 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
             min = new BigDecimal(range.min());
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = new BigDecimal(range.max());
+
         if (min != null && max != null)
             checkRange("f", min, max);
     }
@@ -85,8 +86,7 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
         this.precision = precision;
     }
 
-    @Override
-    public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
         BigDecimal minToUse = min;
         BigDecimal maxToUse = max;
         int power = status.size() + 1;

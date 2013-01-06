@@ -41,8 +41,7 @@ public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
         super(ArrayList.class);
     }
 
-    @Override
-    public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
         ArrayList<Object> items = new ArrayList<Object>();
         for (int i = 0; i < status.size(); ++i)
             items.add(componentGenerators.get(0).generate(random, status));
@@ -50,8 +49,7 @@ public class ArrayListGenerator extends ComponentizedGenerator<ArrayList> {
         return items;
     }
 
-    @Override
-    public int numberOfNeededComponents() {
+    @Override public int numberOfNeededComponents() {
         return 1;
     }
 }

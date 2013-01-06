@@ -37,8 +37,7 @@ public class FloatGenerator extends Generator<Float> {
     private float min = -MAX_VALUE;
     private float max = MAX_VALUE;
 
-    @SuppressWarnings("unchecked")
-    public FloatGenerator() {
+    @SuppressWarnings("unchecked") public FloatGenerator() {
         super(asList(float.class, Float.class));
     }
 
@@ -56,8 +55,7 @@ public class FloatGenerator extends Generator<Float> {
         max = range.maxFloat();
     }
 
-    @Override
-    public Float generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextFloat(min, max);
     }
 }

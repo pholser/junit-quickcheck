@@ -67,8 +67,7 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
             checkRange("d", min, max);
     }
 
-    @Override
-    public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
         int numberOfBits = status.size() + 1;
 
         if (min == null && max == null)

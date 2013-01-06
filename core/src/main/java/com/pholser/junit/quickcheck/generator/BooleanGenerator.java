@@ -35,8 +35,7 @@ import static java.util.Arrays.*;
 public class BooleanGenerator extends Generator<Boolean> {
     private ValuesOf turnOffRandomness;
 
-    @SuppressWarnings("unchecked")
-    public BooleanGenerator() {
+    @SuppressWarnings("unchecked") public BooleanGenerator() {
         super(asList(boolean.class, Boolean.class));
     }
 
@@ -52,8 +51,7 @@ public class BooleanGenerator extends Generator<Boolean> {
         turnOffRandomness = flag;
     }
 
-    @Override
-    public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
         return turnOffRandomness == null ? random.nextBoolean() : status.attempts() % 2 != 0;
     }
 }
