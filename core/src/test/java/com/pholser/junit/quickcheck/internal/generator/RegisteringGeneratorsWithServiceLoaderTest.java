@@ -43,19 +43,16 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
         repo.add(new BasicGeneratorSource()).add(new ServiceLoaderGeneratorSource());
     }
 
-    @Test
-    public void bringsInTypesOtherThanBasicTypes() {
+    @Test public void bringsInTypesOtherThanBasicTypes() {
         assertGenerators(repo.generatorFor(Foo.class), FooGenerator.class);
     }
 
-    @Test
-    public void bringsInTypesToSupplementBasicTypes() {
+    @Test public void bringsInTypesToSupplementBasicTypes() {
         assertGenerators(repo.generatorFor(short.class), ShortGenerator.class, AnotherShortGenerator.class);
     }
 }

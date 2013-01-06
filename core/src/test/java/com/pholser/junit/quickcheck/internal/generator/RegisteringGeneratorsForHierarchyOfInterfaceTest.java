@@ -47,8 +47,7 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     private CallableGenerator<?> generator;
     @Mock private SourceOfRandomness random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
         generator = new CallableGenerator<Object>();
@@ -59,15 +58,13 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
         repo.add(generators);
     }
 
-    @Test
-    public void callable() {
+    @Test public void callable() {
         Generator<?> result = repo.generatorFor(Callable.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void object() {
+    @Test public void object() {
         Generator<?> result = repo.generatorFor(Object.class);
 
         assertGenerators(result, generator.getClass(), IntegerGenerator.class);

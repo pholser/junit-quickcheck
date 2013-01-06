@@ -41,36 +41,29 @@ import static com.google.common.collect.Lists.*;
 import static org.junit.Assert.*;
 
 public class FunctionOfStringToIntTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
-    @Override
-    protected void primeSourceOfRandomness() throws Exception {
+    @Override protected void primeSourceOfRandomness() throws Exception {
     }
 
-    @Override
-    protected Type parameterType() {
+    @Override protected Type parameterType() {
         return new ParameterizedTypeImpl(Function.class, String.class, Integer.class);
     }
 
-    @Override
-    protected int sampleSize() {
+    @Override protected int sampleSize() {
         return 2;
     }
 
-    @Override
-    protected List<?> randomValues() {
+    @Override protected List<?> randomValues() {
         return newArrayList(new Object(), new Object());
     }
 
-    @Override
-    public void verifyInteractionWithRandomness() {
+    @Override public void verifyInteractionWithRandomness() {
     }
 
-    @Override
-    protected Iterable<Generator<?>> auxiliaryGeneratorSource() {
+    @Override protected Iterable<Generator<?>> auxiliaryGeneratorSource() {
         return new ServiceLoaderGeneratorSource();
     }
 
-    @Override
-    protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual) {
+    @Override protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual) {
         @SuppressWarnings("unchecked")
         Function<String, Integer> f = (Function<String, Integer>) actual;
 

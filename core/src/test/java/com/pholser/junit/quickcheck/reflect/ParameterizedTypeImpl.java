@@ -44,23 +44,19 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         arraycopy(actualTypeArguments, 0, this.actualTypeArguments, 0, actualTypeArguments.length);
     }
 
-    @Override
-    public Type[] getActualTypeArguments() {
+    @Override public Type[] getActualTypeArguments() {
         return actualTypeArguments.clone();
     }
 
-    @Override
-    public Type getRawType() {
+    @Override public Type getRawType() {
         return raw;
     }
 
-    @Override
-    public Type getOwnerType() {
+    @Override public Type getOwnerType() {
         return null;
     }
 
-    @Override
-    public boolean equals(Object that) {
+    @Override public boolean equals(Object that) {
         if (this == that) {
             return true;
         }
@@ -74,13 +70,11 @@ public class ParameterizedTypeImpl implements ParameterizedType {
             && Arrays.equals(getActualTypeArguments(), other.getActualTypeArguments());
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return Objects.hashCode(getOwnerType(), getRawType(), Arrays.hashCode(getActualTypeArguments()));
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return raw.toString() + '<' + Joiner.on(", ").join(actualTypeArguments) + '>';
     }
 }

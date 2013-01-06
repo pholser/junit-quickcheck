@@ -37,8 +37,7 @@ public class MissingGeneratorForGivenTypeTest {
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
     }
 

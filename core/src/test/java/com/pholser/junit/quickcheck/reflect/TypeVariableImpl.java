@@ -44,23 +44,19 @@ public class TypeVariableImpl<D extends GenericDeclaration> implements TypeVaria
         this.bounds = bounds.clone();
     }
 
-    @Override
-    public Type[] getBounds() {
+    @Override public Type[] getBounds() {
         return bounds.clone();
     }
 
-    @Override
-    public D getGenericDeclaration() {
+    @Override public D getGenericDeclaration() {
         return declaration;
     }
 
-    @Override
-    public String getName() {
+    @Override public String getName() {
         return name;
     }
 
-    @Override
-    public boolean equals(Object that) {
+    @Override public boolean equals(Object that) {
         if (this == that)
             return true;
 
@@ -72,13 +68,11 @@ public class TypeVariableImpl<D extends GenericDeclaration> implements TypeVaria
             && Objects.equal(getGenericDeclaration(), other.getGenericDeclaration());
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return Objects.hashCode(getName(), getGenericDeclaration()) ^ Arrays.hashCode(getBounds());
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         StringBuilder buffer = new StringBuilder(getName());
 
         String boundDisplay = Joiner.on(" & ").join(getBounds());

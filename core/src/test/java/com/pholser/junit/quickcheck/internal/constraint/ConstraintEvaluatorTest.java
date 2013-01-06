@@ -41,35 +41,30 @@ public class ConstraintEvaluatorTest {
 
     private ConstraintEvaluator evaluator;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         evaluator = new ConstraintEvaluator("#x > 0");
     }
 
-    @Test
-    public void whenExpressionEvaluatesTrue() {
+    @Test public void whenExpressionEvaluatesTrue() {
         evaluator.bind("x", 1);
 
         assertTrue(evaluator.evaluate());
     }
 
-    @Test
-    public void whenExpressionEvaluatesFalse() {
+    @Test public void whenExpressionEvaluatesFalse() {
         evaluator.bind("x", -2);
 
         assertFalse(evaluator.evaluate());
     }
 
-    @Test
-    public void whenExpressionIsMalformed() {
+    @Test public void whenExpressionIsMalformed() {
         thrown.expect(EvaluationException.class);
         thrown.expectMessage("Malformed");
 
         evaluator = new ConstraintEvaluator("#x !*@&#^*");
     }
 
-    @Test
-    public void whenExpressionCannotBeEvaluatedCorrectly() {
+    @Test public void whenExpressionCannotBeEvaluatedCorrectly() {
         evaluator = new ConstraintEvaluator("#x.foo == 'bar'");
         evaluator.bind("x", 4);
 
@@ -79,8 +74,7 @@ public class ConstraintEvaluatorTest {
         evaluator.evaluate();
     }
 
-    @Test
-    public void whenExpressionContainsAnUndefinedVariable() {
+    @Test public void whenExpressionContainsAnUndefinedVariable() {
         evaluator = new ConstraintEvaluator("#x == -3");
         evaluator.bind("y", -3);
 

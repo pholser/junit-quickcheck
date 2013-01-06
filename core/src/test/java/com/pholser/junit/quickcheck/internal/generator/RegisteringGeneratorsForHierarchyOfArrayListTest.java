@@ -51,8 +51,7 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     private ArrayListGenerator generator;
     @Mock private SourceOfRandomness random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
         generator = new ArrayListGenerator();
@@ -63,57 +62,49 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
         repo.add(generators);
     }
 
-    @Test
-    public void abstractList() {
+    @Test public void abstractList() {
         Generator<?> result = repo.generatorFor(AbstractList.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void list() {
+    @Test public void list() {
         Generator<?> result = repo.generatorFor(List.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void randomAccess() {
+    @Test public void randomAccess() {
         Generator<?> result = repo.generatorFor(RandomAccess.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void cloneable() {
+    @Test public void cloneable() {
         Generator<?> result = repo.generatorFor(Cloneable.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void serializable() {
+    @Test public void serializable() {
         Generator<?> result = repo.generatorFor(Serializable.class);
 
         assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
-    @Test
-    public void abstractCollection() {
+    @Test public void abstractCollection() {
         Generator<?> result = repo.generatorFor(AbstractCollection.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void collection() {
+    @Test public void collection() {
         Generator<?> result = repo.generatorFor(Collection.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void iterable() {
+    @Test public void iterable() {
         Generator<?> result = repo.generatorFor(Iterable.class);
 
         assertGenerators(result, generator.getClass());

@@ -27,9 +27,8 @@ public class GenerationContextTest {
     @Mock private ForAll quantifier;
     @Mock private SuchThat constraint;
 
-    @Before
     @SuppressWarnings("unchecked")
-    public void beforeEach() {
+    @Before public void beforeEach() {
         when(quantifier.sampleSize()).thenReturn(20);
         when(quantifier.discardRatio()).thenReturn(3);
         when(generator.types()).thenReturn(asList(int.class));
@@ -39,8 +38,7 @@ public class GenerationContextTest {
         when(constraint.value()).thenReturn("#x > 0");
     }
 
-    @Test
-    public void whenDiscardRatioExceededEvenWithSomeSuccesses() {
+    @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() {
         ParameterContext parameter = new ParameterContext(int.class, "x");
         parameter.addQuantifier(quantifier);
         parameter.addConstraint(constraint);

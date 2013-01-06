@@ -37,13 +37,11 @@ public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
         return (Function<F, T>) Lambdas.makeLambda(Function.class, componentGenerators.get(1), status);
     }
 
-    @Override
-    public int numberOfNeededComponents() {
+    @Override public int numberOfNeededComponents() {
         return 2;
     }
 }

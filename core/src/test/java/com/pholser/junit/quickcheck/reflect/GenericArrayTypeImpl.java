@@ -37,13 +37,11 @@ public class GenericArrayTypeImpl implements GenericArrayType {
         this.componentType = componentType;
     }
 
-    @Override
-    public Type getGenericComponentType() {
+    @Override public Type getGenericComponentType() {
         return componentType;
     }
 
-    @Override
-    public boolean equals(Object that) {
+    @Override public boolean equals(Object that) {
         if (this == that)
             return true;
 
@@ -54,13 +52,11 @@ public class GenericArrayTypeImpl implements GenericArrayType {
         return Objects.equal(getGenericComponentType(), other.getGenericComponentType());
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return Objects.hashCode(getGenericComponentType());
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return getGenericComponentType().toString() + "[]";
     }
 }

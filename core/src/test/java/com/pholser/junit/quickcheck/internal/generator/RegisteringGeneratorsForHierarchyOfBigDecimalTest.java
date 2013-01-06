@@ -48,8 +48,7 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     private BigDecimalGenerator generator;
     @Mock private SourceOfRandomness random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
         generator = new BigDecimalGenerator();
@@ -60,36 +59,31 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
         repo.add(generators);
     }
 
-    @Test
-    public void bigDecimal() {
+    @Test public void bigDecimal() {
         Generator<?> result = repo.generatorFor(BigDecimal.class);
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test
-    public void comparable() {
+    @Test public void comparable() {
         Generator<?> result = repo.generatorFor(Comparable.class);
 
         assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
-    @Test
-    public void serializable() {
+    @Test public void serializable() {
         Generator<?> result = repo.generatorFor(Serializable.class);
 
         assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
-    @Test
-    public void number() {
+    @Test public void number() {
         Generator<?> result = repo.generatorFor(Number.class);
 
         assertGenerators(result, generator.getClass(), IntegerGenerator.class);
     }
 
-    @Test
-    public void object() {
+    @Test public void object() {
         Generator<?> result = repo.generatorFor(Object.class);
 
         assertGenerators(result, generator.getClass(), IntegerGenerator.class);

@@ -42,8 +42,7 @@ import static org.mockito.Mockito.*;
 public class RandomElementFromItemsTest {
     @Mock private SourceOfRandomness random;
 
-    @Test
-    public void choosingFromSet() {
+    @Test public void choosingFromSet() {
         Set<String> names = newLinkedHashSet();
         Collections.addAll(names, "alpha", "bravo", "charlie", "delta");
         when(random.nextInt(0, names.size() - 1)).thenReturn(2);

@@ -42,20 +42,17 @@ public class GeneratingRandomValuesTest {
     private SourceOfRandomness source;
     @Mock private Random random;
 
-    @Before
-    public void beforeEach() {
+    @Before public void beforeEach() {
         source = new SourceOfRandomness(random);
     }
 
-    @Test
-    public void delegatesToJDKForNextBoolean() {
+    @Test public void delegatesToJDKForNextBoolean() {
         source.nextBoolean();
 
         verify(random).nextBoolean();
     }
 
-    @Test
-    public void delegatesToJDKForNextBytes() {
+    @Test public void delegatesToJDKForNextBytes() {
         byte[] bytes = new byte[1];
 
         source.nextBytes(bytes);
@@ -63,50 +60,43 @@ public class GeneratingRandomValuesTest {
         verify(random).nextBytes(bytes);
     }
 
-    @Test
-    public void delegatesToJDKForNextDouble() {
+    @Test public void delegatesToJDKForNextDouble() {
         source.nextDouble();
 
         verify(random).nextDouble();
     }
 
-    @Test
-    public void delegatesToJDKForNextFloat() {
+    @Test public void delegatesToJDKForNextFloat() {
         source.nextFloat();
 
         verify(random).nextFloat();
     }
 
-    @Test
-    public void delegatesToJDKForNextGaussian() {
+    @Test public void delegatesToJDKForNextGaussian() {
         source.nextGaussian();
 
         verify(random).nextGaussian();
     }
 
-    @Test
-    public void delegatesToJDKForNextInt() {
+    @Test public void delegatesToJDKForNextInt() {
         source.nextInt();
 
         verify(random).nextInt();
     }
 
-    @Test
-    public void delegatesToJDKForNextIntFromZeroToN() {
+    @Test public void delegatesToJDKForNextIntFromZeroToN() {
         source.nextInt(2);
 
         verify(random).nextInt(2);
     }
 
-    @Test
-    public void delegatesToJDKForNextLong() {
+    @Test public void delegatesToJDKForNextLong() {
         source.nextLong();
 
         verify(random).nextLong();
     }
 
-    @Test
-    public void delegatesToJDKForSetSeed() {
+    @Test public void delegatesToJDKForSetSeed() {
         source.setSeed(2L);
 
         verify(random).setSeed(2L);
@@ -117,13 +107,11 @@ public class GeneratingRandomValuesTest {
         source.nextByte((byte) 0, (byte) -1);
     }
 
-    @Test
-    public void nextByteWithIdenticalMinAndMax() {
+    @Test public void nextByteWithIdenticalMinAndMax() {
         assertEquals((byte) -2, source.nextByte((byte) -2, (byte) -2));
     }
 
-    @Test
-    public void nextByteInRange() {
+    @Test public void nextByteInRange() {
         when(random.nextDouble()).thenReturn(0.23245);
 
         byte value = source.nextByte((byte) 3, (byte) 5);
@@ -133,8 +121,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo((byte) 3));
     }
 
-    @Test
-    public void nextByteAtLowEndOfRange() {
+    @Test public void nextByteAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         byte value = source.nextByte(Byte.MIN_VALUE, Byte.MAX_VALUE);
@@ -143,8 +130,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Byte.MIN_VALUE, value);
     }
 
-    @Test
-    public void nextByteAtHighEndOfRange() {
+    @Test public void nextByteAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         byte value = source.nextByte(Byte.MIN_VALUE, Byte.MAX_VALUE);
@@ -158,13 +144,11 @@ public class GeneratingRandomValuesTest {
         source.nextShort((short) 0, (short) -1);
     }
 
-    @Test
-    public void nextShortWithIdenticalMinAndMax() {
+    @Test public void nextShortWithIdenticalMinAndMax() {
         assertEquals((short) -2, source.nextShort((short) -2, (short) -2));
     }
 
-    @Test
-    public void nextShortInRange() {
+    @Test public void nextShortInRange() {
         when(random.nextDouble()).thenReturn(0.971234);
 
         short value = source.nextShort((short) 3, (short) 5);
@@ -174,8 +158,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo((short) 3));
     }
 
-    @Test
-    public void nextShortAtLowEndOfRange() {
+    @Test public void nextShortAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         short value = source.nextShort(Short.MIN_VALUE, Short.MAX_VALUE);
@@ -184,8 +167,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Short.MIN_VALUE, value);
     }
 
-    @Test
-    public void nextShortAtHighEndOfRange() {
+    @Test public void nextShortAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         short value = source.nextShort(Short.MIN_VALUE, Short.MAX_VALUE);
@@ -199,13 +181,11 @@ public class GeneratingRandomValuesTest {
         source.nextChar('b', 'a');
     }
 
-    @Test
-    public void nextCharWithIdenticalMinAndMax() {
+    @Test public void nextCharWithIdenticalMinAndMax() {
         assertEquals('c', source.nextChar('c', 'c'));
     }
 
-    @Test
-    public void nextCharInRange() {
+    @Test public void nextCharInRange() {
         when(random.nextDouble()).thenReturn(0.002341);
 
         char value = source.nextChar('d', 'f');
@@ -215,8 +195,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo('d'));
     }
 
-    @Test
-    public void nextCharAtLowEndOfRange() {
+    @Test public void nextCharAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         char value = source.nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
@@ -225,8 +204,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Character.MIN_VALUE, value);
     }
 
-    @Test
-    public void nextCharAtHighEndOfRange() {
+    @Test public void nextCharAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         char value = source.nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
@@ -240,13 +218,11 @@ public class GeneratingRandomValuesTest {
         source.nextInt(0, -1);
     }
 
-    @Test
-    public void nextIntWithIdenticalMinAndMax() {
+    @Test public void nextIntWithIdenticalMinAndMax() {
         assertEquals(-2, source.nextInt(-2, -2));
     }
 
-    @Test
-    public void nextIntInRange() {
+    @Test public void nextIntInRange() {
         when(random.nextDouble()).thenReturn(0.34);
 
         int value = source.nextInt(3, 5);
@@ -256,8 +232,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo(3));
     }
 
-    @Test
-    public void nextIntAtLowEndOfRange() {
+    @Test public void nextIntAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         int value = source.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -266,8 +241,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Integer.MIN_VALUE, value);
     }
 
-    @Test
-    public void nextIntAtHighEndOfRange() {
+    @Test public void nextIntAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         int value = source.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -281,13 +255,11 @@ public class GeneratingRandomValuesTest {
         source.nextLong(0L, -1L);
     }
 
-    @Test
-    public void nextLongWithIdenticalMinAndMax() {
+    @Test public void nextLongWithIdenticalMinAndMax() {
         assertEquals(-2L, source.nextLong(-2L, -2L));
     }
 
-    @Test
-    public void nextLongInRange() {
+    @Test public void nextLongInRange() {
         when(random.nextDouble()).thenReturn(0.654);
 
         long value = source.nextLong(3L, 5L);
@@ -297,8 +269,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo(3L));
     }
 
-    @Test
-    public void nextLongAtLowEndOfRange() {
+    @Test public void nextLongAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         long value = source.nextLong(Long.MIN_VALUE, Long.MAX_VALUE);
@@ -307,8 +278,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Long.MIN_VALUE, value);
     }
 
-    @Test
-    public void nextLongAtHighEndOfRange() {
+    @Test public void nextLongAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         long value = source.nextLong(Long.MAX_VALUE - 1, Long.MAX_VALUE);
@@ -322,13 +292,11 @@ public class GeneratingRandomValuesTest {
         source.nextFloat(0.2F, 0.1F);
     }
 
-    @Test
-    public void nextFloatWithIdenticalMinAndMax() {
+    @Test public void nextFloatWithIdenticalMinAndMax() {
         assertEquals(-2F, source.nextFloat(-2F, -2F), 0F);
     }
 
-    @Test
-    public void nextFloatInRange() {
+    @Test public void nextFloatInRange() {
         when(random.nextDouble()).thenReturn(0.3343443);
 
         float value = source.nextFloat(-4.56F, -1.234234F);
@@ -338,8 +306,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo(-4.56F));
     }
 
-    @Test
-    public void nextFloatAtLowEndOfRange() {
+    @Test public void nextFloatAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         float value = source.nextFloat(Float.MIN_VALUE, Float.MAX_VALUE);
@@ -348,8 +315,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Float.MIN_VALUE, value, 0F);
     }
 
-    @Test
-    public void nextFloatAtHighEndOfRange() {
+    @Test public void nextFloatAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         float value = source.nextFloat(Float.MIN_VALUE, Float.MAX_VALUE);
@@ -363,13 +329,11 @@ public class GeneratingRandomValuesTest {
         source.nextDouble(0.2, 0.1);
     }
 
-    @Test
-    public void nextDoubleWithIdenticalMinAndMax() {
+    @Test public void nextDoubleWithIdenticalMinAndMax() {
         assertEquals(-2D, source.nextDouble(-2D, -2D), 0D);
     }
 
-    @Test
-    public void nextDoubleInRange() {
+    @Test public void nextDoubleInRange() {
         when(random.nextDouble()).thenReturn(0.45);
 
         double value = source.nextDouble(-4.56, -1.234234);
@@ -379,8 +343,7 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo(-4.56));
     }
 
-    @Test
-    public void nextDoubleAtLowEndOfRange() {
+    @Test public void nextDoubleAtLowEndOfRange() {
         when(random.nextDouble()).thenReturn(0D);
 
         double value = source.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE);
@@ -389,8 +352,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Double.MIN_VALUE, value, 0D);
     }
 
-    @Test
-    public void nextDoubleAtHighEndOfRange() {
+    @Test public void nextDoubleAtHighEndOfRange() {
         when(random.nextDouble()).thenReturn(0.9999999999999999);
 
         double value = source.nextDouble(Double.MAX_VALUE - 1E292, Double.MAX_VALUE);
@@ -399,8 +361,7 @@ public class GeneratingRandomValuesTest {
         assertEquals(Double.MAX_VALUE, value, 0D);
     }
 
-    @Test
-    public void nextBytes() {
+    @Test public void nextBytes() {
         source.nextBytes(1);
 
         verify(random).nextBytes(new byte[1]);
