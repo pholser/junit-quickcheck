@@ -72,6 +72,7 @@ Out of the box, junit-quickcheck can generate random values for theory parameter
 * `java.util.HashSet` of those types
 * `java.util.HashMap` of those types
 * arrays of those types
+* "functional interfaces" (interfaces with a single method that does not override a method from `java.lang.Object`)
 
 When multiple generators can satisfy a given theory parameter based on its type (for example, `java.io.Serializable`),
 on a given generation one of the multiple generators will be chosen at random with equal probability.
@@ -87,6 +88,9 @@ If you wish to add a generator for a type without having to use `@From`, you can
 [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html) JAR file and place the JAR on
 the class path. junit-quickcheck will make those generators available for use. Any generators you supply in this manner
 for already-supported types complement the built-in generators, they do not override them.
+
+Custom generators for types that are functional interfaces override the built-in means of generation for such types.
+This is usually necessary for functional interfaces that involve generics.
 
 #### Configuring generators
 

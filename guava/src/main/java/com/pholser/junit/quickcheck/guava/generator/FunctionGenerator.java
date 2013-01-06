@@ -31,6 +31,12 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Lambdas;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Produces values for theory parameters of type {@code Function}.
+ *
+ * @param <F> parameter type of the generated functions
+ * @param <T> return type of the generated functions
+ */
 public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
     public FunctionGenerator() {
         super(Function.class);
