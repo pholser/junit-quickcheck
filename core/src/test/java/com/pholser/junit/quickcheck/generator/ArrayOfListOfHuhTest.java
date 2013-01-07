@@ -30,13 +30,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Arrays.*;
+
 import com.google.common.collect.Iterables;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ArrayOfListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

@@ -45,7 +45,7 @@ public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
         HashSet<Object> items = new HashSet<Object>();
 
         for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded)
-            items.add(componentGenerators.get(0).generate(random, status));
+            items.add(componentGenerators().get(0).generate(random, status));
 
         return items;
     }

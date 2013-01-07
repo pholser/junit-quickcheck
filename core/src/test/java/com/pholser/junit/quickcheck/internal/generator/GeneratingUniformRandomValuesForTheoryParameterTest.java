@@ -30,6 +30,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
@@ -43,7 +45,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.pholser.junit.quickcheck.Objects.*;
-import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

@@ -28,14 +28,13 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.ForAll;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
  * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with
- * {@link ForAll} with this annotation to constrain the values generated for the parameter to a given range.</p>
+ * {@link com.pholser.junit.quickcheck.ForAll} with this annotation to constrain the values generated for the parameter
+ * to a given range.</p>
  *
  * <p>Different generators may use different min/max attribute pairs. Generators that produce primitive values or
  * values of their wrapper types will likely want to use the attribute pairs of corresponding type. Otherwise, a

@@ -28,6 +28,10 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static java.lang.Long.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
@@ -35,9 +39,6 @@ import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
-import static java.lang.Long.*;
-import static java.util.Arrays.asList;
-import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 

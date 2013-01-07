@@ -29,12 +29,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Maps.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class MapOfIntegerToStringTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

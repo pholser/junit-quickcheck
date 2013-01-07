@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import static java.lang.Float.*;
 import static java.util.Arrays.*;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
  * Produces values for theory parameters of type {@code float} or {@link Float}.

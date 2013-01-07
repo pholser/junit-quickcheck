@@ -33,9 +33,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedDateTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

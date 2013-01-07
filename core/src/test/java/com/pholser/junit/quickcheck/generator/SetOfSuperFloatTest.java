@@ -29,6 +29,9 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Float.*;
+import static java.util.Arrays.asList;
+
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
@@ -37,8 +40,6 @@ import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
-import static java.lang.Float.*;
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

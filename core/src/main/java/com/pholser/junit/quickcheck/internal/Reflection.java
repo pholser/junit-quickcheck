@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.sun.source.tree.ModifiersTree;
 import org.javaruntype.type.Type;
 
 public class Reflection {

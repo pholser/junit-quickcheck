@@ -25,12 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
 
 public class VoidGenerator extends Generator<Void> {
     @SuppressWarnings("unchecked") public VoidGenerator() {

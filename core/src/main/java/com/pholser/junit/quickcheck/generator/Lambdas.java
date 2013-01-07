@@ -31,15 +31,15 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Random;
 
+import static java.lang.System.*;
+
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.System.*;
 
 /**
  * Helper class for creating instances of "functional interfaces".
  */
-public class Lambdas {
+public final class Lambdas {
     private Lambdas() {
         throw new UnsupportedOperationException();
     }
@@ -69,7 +69,9 @@ public class Lambdas {
 
         final Random forLambda = new Random();
 
-        return lambdaType.cast(Proxy.newProxyInstance(lambdaType.getClassLoader(), new Class<?>[] { lambdaType },
+        return lambdaType.cast(Proxy.newProxyInstance(
+            lambdaType.getClassLoader(),
+            new Class<?>[] { lambdaType },
             new LambdaInvocationHandler<T, U>(lambdaType, returnValueGenerator, status, forLambda)));
     }
 

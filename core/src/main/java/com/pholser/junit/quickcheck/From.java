@@ -28,10 +28,10 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
+
+import com.pholser.junit.quickcheck.generator.Generator;
 
 /**
  * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
@@ -47,5 +47,5 @@ public @interface From {
     /**
      * @return the choices of generators for the annotated theory parameter
      */
-    Class<? extends Generator>[] value() default {};
+    Class<? extends Generator>[] value();
 }

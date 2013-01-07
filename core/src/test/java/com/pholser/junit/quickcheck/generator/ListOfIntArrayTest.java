@@ -28,12 +28,13 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-
 import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
+
 import static org.mockito.Mockito.*;
 
 public class ListOfIntArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

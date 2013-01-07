@@ -28,11 +28,12 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ExplicitGeneratorsChosenWithEqualProbabilityTest

@@ -29,11 +29,6 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.ArrayGenerator;
-import com.pholser.junit.quickcheck.generator.ArrayListGenerator;
-import com.pholser.junit.quickcheck.generator.CallableGenerator;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;

@@ -32,12 +32,13 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
+import static java.math.BigDecimal.*;
+import static java.util.Arrays.*;
+
 import com.google.common.collect.ImmutableMap;
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.math.BigDecimal.*;
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest

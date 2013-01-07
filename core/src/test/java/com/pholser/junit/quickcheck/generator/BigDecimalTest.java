@@ -30,10 +30,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
-
 import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
+
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+
 import static org.mockito.Mockito.*;
 
 public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

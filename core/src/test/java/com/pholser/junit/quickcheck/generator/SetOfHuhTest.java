@@ -29,13 +29,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Integer.*;
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static com.google.common.collect.Sets.*;
-import static java.lang.Integer.*;
-import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
@@ -39,8 +41,6 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.Types;
-
-import static java.util.Collections.*;
 
 public class ParameterContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =

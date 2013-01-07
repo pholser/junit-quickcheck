@@ -37,7 +37,7 @@ import static java.util.Collections.*;
  * @param <T> type of theory parameter to apply this generator's values to
  */
 public abstract class ComponentizedGenerator<T> extends Generator<T> {
-    protected final List<Generator<?>> componentGenerators = new ArrayList<Generator<?>>();
+    private final List<Generator<?>> componentGenerators = new ArrayList<Generator<?>>();
 
     /**
      * @param type class token for type of theory parameter this generator is applicable to

@@ -45,8 +45,8 @@ public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
         HashMap<Object, Object> items = new HashMap<Object, Object>();
 
         for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded) {
-            Object key = componentGenerators.get(0).generate(random, status);
-            Object value = componentGenerators.get(1).generate(random, status);
+            Object key = componentGenerators().get(0).generate(random, status);
+            Object value = componentGenerators().get(1).generate(random, status);
             items.put(key, value);
         }
 

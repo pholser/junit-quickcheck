@@ -28,12 +28,13 @@ package com.pholser.junit.quickcheck.generator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import static java.lang.Math.*;
+import static java.math.BigDecimal.*;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.lang.Math.*;
-import static java.math.BigDecimal.*;
 
 /**
  * <p>Produces values for theory parameters of type {@link BigDecimal}.</p>
@@ -80,10 +81,10 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
      * <p>Otherwise, the scale of the generated values is set as {@code max(0, precision.scale, range.min.scale,
      * range.max.scale)}.</p>
      *
-     * @param precision annotation that gives the desired scale of the generated values
+     * @param configuration annotation that gives the desired scale of the generated values
      */
-    public void configure(Precision precision) {
-        this.precision = precision;
+    public void configure(Precision configuration) {
+        precision = configuration;
     }
 
     @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {

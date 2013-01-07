@@ -28,10 +28,11 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
-
 import static java.lang.Long.*;
 import static java.util.Arrays.*;
+
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+
 import static org.mockito.Mockito.*;
 
 public class PrimitiveLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {

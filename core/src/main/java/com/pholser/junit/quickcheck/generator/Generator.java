@@ -31,12 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
 
 /**
  * Produces values for theory parameters.
