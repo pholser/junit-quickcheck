@@ -69,8 +69,8 @@ public class ParameterContext {
     }
 
     public ParameterContext addConstraint(SuchThat expression) {
-        if (constraint != null)
-            this.constraint = expression.value();
+        if (expression != null)
+            constraint = expression.value();
 
         return this;
     }
