@@ -9,4 +9,4 @@
 -- Is @SuchThat with OGNL and Paranamer useful, or cute but not that helpful?
 
 -- site
--- tighten up checkstyle, reporting
+-- tighten up reporting
