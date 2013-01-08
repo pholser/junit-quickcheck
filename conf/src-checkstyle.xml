@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
+    <module name="SuppressionFilter">
+        <property name="file" value="conf/checkstyle-suppressions.xml"/>
+    </module>
+
     <module name="Header">
         <property name="headerFile" value="${checkstyle.header.file}"/>
         <property name="fileExtensions" value="java"/>
@@ -9,7 +13,7 @@
     <module name="FileLength"/>
     <module name="FileTabCharacter"/>
     <module name="StrictDuplicateCode">
-        <property name="min" value="8"/>
+        <property name="min" value="30"/>
     </module>
     <module name="NewlineAtEndOfFile"/>
     <module name="FileTabCharacter">
@@ -86,7 +90,7 @@
         <module name="PackageDeclaration"/>
         <!-- <module name="JUnitTestCase"/> -->
         <module name="ReturnCount">
-            <property name="max" value="3"/>
+            <property name="max" value="4"/>
         </module>
         <module name="IllegalType">
             <property name="tokens" value="PARAMETER_DEF,VARIABLE_DEF"/>

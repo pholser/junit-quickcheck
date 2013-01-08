@@ -68,9 +68,9 @@ public class ParameterContext {
         return this;
     }
 
-    public ParameterContext addConstraint(SuchThat constraint) {
+    public ParameterContext addConstraint(SuchThat expression) {
         if (constraint != null)
-            this.constraint = constraint.value();
+            this.constraint = expression.value();
 
         return this;
     }
@@ -85,8 +85,8 @@ public class ParameterContext {
         return this;
     }
 
-    public ParameterContext addConfigurations(List<Annotation> configurations) {
-        for (Annotation each : configurations)
+    public ParameterContext addConfigurations(List<Annotation> generatorConfigurations) {
+        for (Annotation each : generatorConfigurations)
             addConfiguration(each.annotationType(), each);
         return this;
     }

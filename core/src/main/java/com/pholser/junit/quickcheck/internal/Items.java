@@ -29,7 +29,7 @@ import java.util.Collection;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class Items {
+public final class Items {
     private Items() {
         throw new UnsupportedOperationException();
     }

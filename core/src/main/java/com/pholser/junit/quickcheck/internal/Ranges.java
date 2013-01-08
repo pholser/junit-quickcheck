@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck.internal;
 
 import static java.lang.String.*;
 
-public class Ranges {
+public final class Ranges {
     private Ranges() {
         throw new UnsupportedOperationException();
     }

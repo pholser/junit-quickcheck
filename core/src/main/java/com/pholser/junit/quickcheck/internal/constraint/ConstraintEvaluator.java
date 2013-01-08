@@ -33,16 +33,6 @@ public class ConstraintEvaluator {
     private final Object constraint;
     private final OgnlContext bindings;
 
-    public static class EvaluationException extends RuntimeException {
-        EvaluationException(String message) {
-            super(message);
-        }
-
-        EvaluationException(Throwable cause) {
-            super(cause);
-        }
-    }
-
     public ConstraintEvaluator(String constraint) {
         try {
             this.constraint = constraint == null ? null : Ognl.parseExpression(constraint);
@@ -68,5 +58,15 @@ public class ConstraintEvaluator {
 
     public void bind(String name, Object value) {
         bindings.put(name, value);
+    }
+
+    public static class EvaluationException extends RuntimeException {
+        EvaluationException(String message) {
+            super(message);
+        }
+
+        EvaluationException(Throwable cause) {
+            super(cause);
+        }
     }
 }

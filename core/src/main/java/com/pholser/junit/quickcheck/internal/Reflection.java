@@ -36,7 +36,7 @@ import java.util.Set;
 
 import org.javaruntype.type.Type;
 
-public class Reflection {
+public final class Reflection {
     private Reflection() {
         throw new UnsupportedOperationException();
     }

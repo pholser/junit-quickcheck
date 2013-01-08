@@ -120,7 +120,7 @@ public class GeneratorRepository {
             org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
             return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, true));
         }
-        
+
         if (typeToken.getRawClass().isEnum())
             return new EnumGenerator(typeToken.getRawClass());
 

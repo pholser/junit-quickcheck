@@ -31,8 +31,6 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
-import com.pholser.junit.quickcheck.ForAll;
-
 /**
  * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with
  * {@link com.pholser.junit.quickcheck.ForAll} with this annotation to generate all its values in turn, rather than

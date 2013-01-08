@@ -112,11 +112,11 @@ public class GenerationContext implements GenerationStatus {
     }
 
     public static class DiscardRatioExceededException extends RuntimeException {
-        private static final long serialVersionUID = Long.MIN_VALUE;
-
         static final String MESSAGE_TEMPLATE =
             "For parameter [%s] with discard ratio [%d], %d unsuccessful values and %d successes"
                 + " for a discard ratio of [%f]. Stopping.";
+
+        private static final long serialVersionUID = Long.MIN_VALUE;
 
         DiscardRatioExceededException(ParameterContext parameter, int discards, int successfulEvaluations) {
             super(String.format(MESSAGE_TEMPLATE, parameter.parameterName(), parameter.discardRatio(), discards,
