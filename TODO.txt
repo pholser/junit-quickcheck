@@ -1,12 +1,10 @@
 -- Do we need size control (e.g. maxSize on @ForAll)? Maybe size() gets computed on every generation, as with Haskell QuickCheck?
--- Do we need different random distributions?
--- Do we need @Frequency?
+-- Do we need different random distributions/@Frequency?
 -- What other basic generator configs would be useful?
 -- What other out-of-the-box generators would be useful?
 -- Is the behavior of the out-of-the-box generators sufficient? What should be changed, if anything?
--- Do we need Coarbitrary for things like Guava functions? What should be considered a functional type?
 -- nextLong(min, max) and nextDouble(min, max) -- getting them to span the entire range.
--- Is @SuchThat with OGNL and Paranamer useful, or cute but not that helpful?
+-- Is @SuchThat with OGNL and Paranamer useful, or cute but not that helpful? What about without Paranamer?
 
 -- site
 -- tighten up reporting
