@@ -37,8 +37,7 @@ public class LongGenerator extends Generator<Long> {
     private long min = MIN_VALUE;
     private long max = MAX_VALUE;
 
-    @SuppressWarnings("unchecked")
-    public LongGenerator() {
+    @SuppressWarnings("unchecked") public LongGenerator() {
         super(asList(long.class, Long.class));
     }
 
@@ -56,8 +55,7 @@ public class LongGenerator extends Generator<Long> {
         max = range.maxLong();
     }
 
-    @Override
-    public Long generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextLong(min, max);
     }
 }
