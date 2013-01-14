@@ -49,7 +49,7 @@ public class SupplyingCallableGeneratorWithComponentTest {
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
-        repo = new GeneratorRepository(random).add(Arrays.<Generator<?>> asList(
+        repo = new GeneratorRepository(random).register(Arrays.<Generator<?>>asList(
             new IntegerGenerator(),
             new CallableGenerator(),
             new ArrayListGenerator()));

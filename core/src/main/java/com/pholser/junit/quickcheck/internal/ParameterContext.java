@@ -79,7 +79,7 @@ public class ParameterContext {
         for (Class<? extends Generator> each : generators.value()) {
             Generator<?> generator = Reflection.instantiate(each);
             ensureCorrectType(generator);
-            repo.add(generator);
+            repo.register(generator);
         }
 
         return this;

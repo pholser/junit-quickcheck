@@ -45,7 +45,7 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
-        repo.add(new BasicGeneratorSource()).add(new ServiceLoaderGeneratorSource());
+        repo.register(new BasicGeneratorSource()).register(new ServiceLoaderGeneratorSource());
     }
 
     @Test public void bringsInTypesOtherThanBasicTypes() {

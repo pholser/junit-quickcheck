@@ -45,7 +45,7 @@ public class GenerationContextTest {
         parameter.addConstraint(constraint);
 
         GenerationContext generation =
-            new GenerationContext(parameter, new GeneratorRepository(random).add(generator));
+            new GenerationContext(parameter, new GeneratorRepository(random).register(generator));
 
         thrown.expect(GenerationContext.DiscardRatioExceededException.class);
         thrown.expectMessage(String.format(GenerationContext.DiscardRatioExceededException.MESSAGE_TEMPLATE,

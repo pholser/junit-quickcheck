@@ -51,8 +51,8 @@ public class RandomValueSupplier extends ParameterSupplier {
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new SourceOfRandomness(new SecureRandom()),
             new GeneratorRepository(new SourceOfRandomness(new SecureRandom()))
-                .add(new BasicGeneratorSource())
-                .add(new ServiceLoaderGeneratorSource())));
+                .register(new BasicGeneratorSource())
+                .register(new ServiceLoaderGeneratorSource())));
     }
 
     protected RandomValueSupplier(TheoryParameterGenerator generator) {

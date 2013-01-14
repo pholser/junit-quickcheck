@@ -69,10 +69,10 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         primeExplicitGenerators();
         primeConstraint();
 
-        repository = new GeneratorRepository(randomForGeneratorRepo).add(source);
+        repository = new GeneratorRepository(randomForGeneratorRepo).register(source);
         Iterable<Generator<?>> auxiliarySource = auxiliaryGeneratorSource();
         if (auxiliarySource != null)
-            repository.add(auxiliarySource);
+            repository.register(auxiliarySource);
 
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(randomForParameterGenerator, repository);

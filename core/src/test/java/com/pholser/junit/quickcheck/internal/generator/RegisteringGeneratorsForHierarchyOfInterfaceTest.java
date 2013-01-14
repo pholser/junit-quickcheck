@@ -55,7 +55,7 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
         generators.add(generator);
         generators.add(new IntegerGenerator());
 
-        repo.add(generators);
+        repo.register(generators);
     }
 
     @Test public void callable() {

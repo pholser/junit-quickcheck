@@ -48,7 +48,7 @@ public class FindingGeneratorInvolvingTypeVariableTest {
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
-        repo = new GeneratorRepository(random).add(new BasicGeneratorSource());
+        repo = new GeneratorRepository(random).register(new BasicGeneratorSource());
         typeVariable = new TypeVariableImpl<Class<?>>("E", List.class, new Type[] { Object.class });
     }
 

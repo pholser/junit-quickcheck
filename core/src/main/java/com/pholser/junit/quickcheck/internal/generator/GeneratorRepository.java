@@ -62,12 +62,12 @@ public class GeneratorRepository {
         return generators.isEmpty();
     }
 
-    public GeneratorRepository add(Generator<?> source) {
+    public GeneratorRepository register(Generator<?> source) {
         registerTypes(source);
         return this;
     }
 
-    public GeneratorRepository add(Iterable<Generator<?>> source) {
+    public GeneratorRepository register(Iterable<Generator<?>> source) {
         for (Generator<?> each : source)
             registerTypes(each);
 
@@ -80,7 +80,7 @@ public class GeneratorRepository {
     }
 
     private void registerHierarchy(Class<?> type, Generator<?> generator) {
-        addGenerator(type, generator);
+        registerGeneratorForType(type, generator);
 
         if (type.getSuperclass() != null)
             registerHierarchy(type.getSuperclass(), generator);
@@ -91,7 +91,7 @@ public class GeneratorRepository {
             registerHierarchy(each, generator);
     }
 
-    private void addGenerator(Class<?> type, Generator<?> generator) {
+    private void registerGeneratorForType(Class<?> type, Generator<?> generator) {
         // Do not feed Collections or Maps to things of type Object, including type parameters.
         if (Object.class.equals(type)) {
             Class<?> firstType = generator.types().get(0);
@@ -137,6 +137,7 @@ public class GeneratorRepository {
 
     private List<Generator<?>> findMatchingGenerators(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
         List<Generator<?>> matches = new ArrayList<Generator<?>>();
+
         if (!hasGeneratorsForRawClass(typeToken.getRawClass())) {
             Method singleAbstractMethod = Reflection.singleAbstractMethodOf(typeToken.getRawClass());
             if (singleAbstractMethod != null) {
