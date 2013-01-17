@@ -44,9 +44,8 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
     @Override public List<PotentialAssignment> generate(ParameterContext parameter) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
 
-        GenerationContext generation = new GenerationContext(parameter, repository);
-        while (generation.shouldContinue()) {
-            Object nextValue = generation.generate(random);
+        for (GenerationContext gen = new GenerationContext(parameter, repository); gen.shouldContinue();) {
+            Object nextValue = gen.generate(random);
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
         }
 
