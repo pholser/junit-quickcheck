@@ -42,8 +42,7 @@ public class LambdaGenerator<T, U> extends Generator<Object> {
         this.returnValueGenerator = returnValueGenerator;
     }
 
-    @Override
-    public T generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         return makeLambda(lambdaType, returnValueGenerator, status);
     }
 }

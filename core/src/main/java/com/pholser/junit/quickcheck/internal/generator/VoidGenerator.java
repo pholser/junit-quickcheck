@@ -36,8 +36,7 @@ public class VoidGenerator extends Generator<Void> {
         super(asList(void.class, Void.class));
     }
 
-    @Override
-    public Void generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Void generate(SourceOfRandomness random, GenerationStatus status) {
         return null;
     }
 }
