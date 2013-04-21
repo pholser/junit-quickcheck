@@ -71,7 +71,7 @@ public class GenerationContext implements GenerationStatus {
     }
 
     private boolean evaluate(Object value) {
-        evaluator.bind(parameter.parameterName(), value);
+        evaluator.bind("_", value);
         boolean result = evaluator.evaluate();
 
         if (result)
@@ -113,14 +113,14 @@ public class GenerationContext implements GenerationStatus {
 
     public static class DiscardRatioExceededException extends RuntimeException {
         static final String MESSAGE_TEMPLATE =
-            "For parameter [%s] with discard ratio [%d], %d unsuccessful values and %d successes"
+            "For parameter with discard ratio [%d], %d unsuccessful values and %d successes"
                 + " for a discard ratio of [%f]. Stopping.";
 
         private static final long serialVersionUID = Long.MIN_VALUE;
 
         DiscardRatioExceededException(ParameterContext parameter, int discards, int successfulEvaluations) {
-            super(String.format(MESSAGE_TEMPLATE, parameter.parameterName(), parameter.discardRatio(), discards,
-                successfulEvaluations, (double) discards / successfulEvaluations));
+            super(String.format(MESSAGE_TEMPLATE, parameter.discardRatio(), discards, successfulEvaluations,
+                (double) discards / successfulEvaluations));
         }
     }
 }

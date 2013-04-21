@@ -25,13 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Collections.*;
-
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
@@ -44,13 +37,17 @@ import org.junit.contrib.theories.PotentialAssignment;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
 import static com.pholser.junit.quickcheck.Objects.*;
+import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
-    protected static final String PARAMETER_NAME = "arg0";
-
     @Mock protected SourceOfRandomness randomForParameterGenerator;
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
     @Mock private ForAll quantifier;
@@ -77,7 +74,7 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(randomForParameterGenerator, repository);
 
-        ParameterContext context = new ParameterContext(parameterType(), PARAMETER_NAME);
+        ParameterContext context = new ParameterContext(parameterType());
         context.addQuantifier(quantifier);
         context.addConstraint(constraint);
         if (explicitGenerators.value() != null)

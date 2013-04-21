@@ -214,13 +214,13 @@ to decide whether a generated value will be given to the theory method.
     @RunWith(Theories.class)
     public class SingleDigitTheories {
         @Theory
-        public void hold(@ForAll @SuchThat("#digit >= 0 && #digit <= 9") int digit) {
+        public void hold(@ForAll @SuchThat("#_ >= 0 && #_ <= 9") int digit) {
             // ...
         }
     }
 
-You can refer to the name of the theory parameter as an OGNL variable reference in the constraint expression.
-Constraint expressions cannot refer to other theory parameters.
+A theory parameter is referred to as "_" in the constraint expression. Constraint expressions cannot refer to other
+theory parameters.
 
 junit-quickcheck generates values for a theory parameter with a constraint expression until `sampleSize` values pass
 the constraint, or until the ratio of constraint passes to constraint failures is greater than the `discardRatio`

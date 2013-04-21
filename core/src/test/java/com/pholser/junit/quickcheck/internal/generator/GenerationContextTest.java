@@ -36,11 +36,11 @@ public class GenerationContextTest {
         when(generator.generate(same(random), any(GenerationStatus.class))).thenReturn(10).thenReturn(9).thenReturn(8)
             .thenReturn(7).thenReturn(6).thenReturn(5).thenReturn(4).thenReturn(3).thenReturn(2).thenReturn(1)
             .thenReturn(0);
-        when(constraint.value()).thenReturn("#x > 0");
+        when(constraint.value()).thenReturn("#_ > 0");
     }
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() {
-        ParameterContext parameter = new ParameterContext(int.class, "x");
+        ParameterContext parameter = new ParameterContext(int.class);
         parameter.addQuantifier(quantifier);
         parameter.addConstraint(constraint);
 
@@ -49,7 +49,7 @@ public class GenerationContextTest {
 
         thrown.expect(GenerationContext.DiscardRatioExceededException.class);
         thrown.expectMessage(String.format(GenerationContext.DiscardRatioExceededException.MESSAGE_TEMPLATE,
-            parameter.parameterName(), parameter.discardRatio(), 30, 10, 3D));
+            parameter.discardRatio(), 30, 10, 3D));
 
         while (generation.shouldContinue())
             generation.generate(random);
