@@ -41,7 +41,7 @@ public @interface SuchThat {
     /**
      * @return an <a href="http://commons.apache.org/ognl/">OGNL</a> expression used to constrain the values fed to
      * the annotated theory parameter. The expression should evaluate to a {@code boolean} value. Within the
-     * expression, the theory parameter is referred to by its name in the theory method declaration.
+     * expression, the theory parameter is referred to as "_".
      */
     String value();
 }
