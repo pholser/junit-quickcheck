@@ -71,7 +71,7 @@ public class ForAllLambdaTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll Callable<? extends Long> task) throws Exception {
             ++iterations;
 
-            Long value = functionValue(new LongGenerator());
+            Long value = functionValue(new LongGenerator(), null);
             for (int i = 0; i < 10000; ++i)
                 assertEquals(value, task.call());
         }
@@ -103,13 +103,13 @@ public class ForAllLambdaTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll Comparator<String> c) {
             ++iterations;
 
-            int value = functionValue(new IntegerGenerator(), "foo", "bar");
+            int value = functionValue(new IntegerGenerator(), new Object[] { "foo", "bar" });
             for (int i = 0; i < 10000; ++i)
                 assertEquals(value, c.compare("foo", "bar"));
         }
     }
 
-    private static <T> T functionValue(Generator<T> generator, Object... args) {
+    private static <T> T functionValue(Generator<T> generator, Object[] args) {
         Random r = new Random();
         r.setSeed(java.util.Arrays.hashCode(args));
         return generator.generate(new SourceOfRandomness(r), null);

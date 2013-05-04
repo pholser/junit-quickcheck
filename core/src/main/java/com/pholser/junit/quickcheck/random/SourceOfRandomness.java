@@ -164,9 +164,20 @@ public class SourceOfRandomness {
      */
     public long nextLong(long min, long max) {
         checkRange("d", min, max);
+        if (min == max)
+            return min;
 
-        long range = max - min + 1;
-        return min + (long) (range * delegate.nextDouble());
+        BigInteger bigMin = BigInteger.valueOf(min);
+        BigInteger bigMax = BigInteger.valueOf(max);
+
+        BigInteger range = bigMax.subtract(bigMin).add(BigInteger.ONE);
+        BigInteger generated;
+
+        do {
+            generated = nextBigInteger(range.bitLength());
+        } while (generated.compareTo(range) >= 0);
+
+        return generated.add(bigMin).longValue();
     }
 
     /**

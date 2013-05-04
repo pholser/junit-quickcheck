@@ -25,19 +25,24 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SourceOfRandomness.class)
 public class GeneratingRandomValuesTest {
     private SourceOfRandomness source;
     @Mock private Random random;
@@ -111,31 +116,28 @@ public class GeneratingRandomValuesTest {
         assertEquals((byte) -2, source.nextByte((byte) -2, (byte) -2));
     }
 
-    @Test public void nextByteInRange() {
-        when(random.nextDouble()).thenReturn(0.23245);
+    @Test public void nextByteInRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(2, random).thenReturn(BigInteger.ONE);
 
         byte value = source.nextByte((byte) 3, (byte) 5);
 
-        verify(random).nextDouble();
         assertThat(value, lessThanOrEqualTo((byte) 5));
         assertThat(value, greaterThanOrEqualTo((byte) 3));
     }
 
-    @Test public void nextByteAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
+    @Test public void nextByteAtLowEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(9, random).thenReturn(BigInteger.ZERO);
 
         byte value = source.nextByte(Byte.MIN_VALUE, Byte.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Byte.MIN_VALUE, value);
     }
 
-    @Test public void nextByteAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
+    @Test public void nextByteAtHighEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(9, random).thenReturn(BigInteger.valueOf(255));
 
         byte value = source.nextByte(Byte.MIN_VALUE, Byte.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Byte.MAX_VALUE, value);
     }
 
@@ -149,30 +151,25 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextShortInRange() {
-        when(random.nextDouble()).thenReturn(0.971234);
-
         short value = source.nextShort((short) 3, (short) 5);
 
-        verify(random).nextDouble();
         assertThat(value, lessThanOrEqualTo((short) 5));
         assertThat(value, greaterThanOrEqualTo((short) 3));
     }
 
-    @Test public void nextShortAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
+    @Test public void nextShortAtLowEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.ZERO);
 
         short value = source.nextShort(Short.MIN_VALUE, Short.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Short.MIN_VALUE, value);
     }
 
-    @Test public void nextShortAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
+    @Test public void nextShortAtHighEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.valueOf(Character.MAX_VALUE));
 
         short value = source.nextShort(Short.MIN_VALUE, Short.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Short.MAX_VALUE, value);
     }
 
@@ -186,30 +183,25 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextCharInRange() {
-        when(random.nextDouble()).thenReturn(0.002341);
-
         char value = source.nextChar('d', 'f');
 
-        verify(random).nextDouble();
         assertThat(value, lessThanOrEqualTo('f'));
         assertThat(value, greaterThanOrEqualTo('d'));
     }
 
-    @Test public void nextCharAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
+    @Test public void nextCharAtLowEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.ZERO);
 
         char value = source.nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Character.MIN_VALUE, value);
     }
 
-    @Test public void nextCharAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
+    @Test public void nextCharAtHighEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.valueOf(Character.MAX_VALUE));
 
         char value = source.nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Character.MAX_VALUE, value);
     }
 
@@ -223,30 +215,25 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextIntInRange() {
-        when(random.nextDouble()).thenReturn(0.34);
-
         int value = source.nextInt(3, 5);
 
-        verify(random).nextDouble();
         assertThat(value, lessThanOrEqualTo(5));
         assertThat(value, greaterThanOrEqualTo(3));
     }
 
-    @Test public void nextIntAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
+    @Test public void nextIntAtLowEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(33, random).thenReturn(BigInteger.ZERO);
 
         int value = source.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Integer.MIN_VALUE, value);
     }
 
-    @Test public void nextIntAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
+    @Test public void nextIntAtHighEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(33, random).thenReturn(BigInteger.valueOf((1L << 32) - 1L));
 
         int value = source.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Integer.MAX_VALUE, value);
     }
 
@@ -260,30 +247,26 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextLongInRange() {
-        when(random.nextDouble()).thenReturn(0.654);
-
         long value = source.nextLong(3L, 5L);
 
-        verify(random).nextDouble();
         assertThat(value, lessThanOrEqualTo(5L));
         assertThat(value, greaterThanOrEqualTo(3L));
     }
 
-    @Test public void nextLongAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
+    @Test public void nextLongAtLowEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(65, random).thenReturn(BigInteger.ZERO);
 
         long value = source.nextLong(Long.MIN_VALUE, Long.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Long.MIN_VALUE, value);
     }
 
-    @Test public void nextLongAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
+    @Test public void nextLongAtHighEndOfRange() throws Exception {
+        whenNew(BigInteger.class).withArguments(65, random)
+                .thenReturn(BigInteger.valueOf(2).pow(64).subtract(BigInteger.ONE));
 
-        long value = source.nextLong(Long.MAX_VALUE - 1, Long.MAX_VALUE);
+        long value = source.nextLong(Long.MIN_VALUE, Long.MAX_VALUE);
 
-        verify(random).nextDouble();
         assertEquals(Long.MAX_VALUE, value);
     }
 
