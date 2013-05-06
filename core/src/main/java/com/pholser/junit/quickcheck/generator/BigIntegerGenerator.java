@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.math.BigInteger;
-
-import static java.math.BigInteger.*;
-
+import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import java.math.BigInteger;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.math.BigInteger.*;
 
 /**
  * <p>Produces values for theory parameters of type {@link java.math.BigInteger}.</p>
@@ -81,13 +81,6 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
         else if (maxToUse == null)
             maxToUse = minToUse.add(TEN.pow(numberOfBits));
 
-        BigInteger range = maxToUse.subtract(minToUse);
-        BigInteger generated;
-
-        do {
-            generated = random.nextBigInteger(range.bitLength());
-        } while (generated.compareTo(range) >= 0);
-
-        return generated.add(minToUse);
+        return Ranges.randomBigIntegerInRange(random, minToUse, maxToUse);
     }
 }

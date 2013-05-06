@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import com.pholser.junit.quickcheck.internal.Ranges;
+
 import java.math.BigInteger;
 import java.util.Random;
 
@@ -167,17 +169,7 @@ public class SourceOfRandomness {
         if (min == max)
             return min;
 
-        BigInteger bigMin = BigInteger.valueOf(min);
-        BigInteger bigMax = BigInteger.valueOf(max);
-
-        BigInteger range = bigMax.subtract(bigMin).add(BigInteger.ONE);
-        BigInteger generated;
-
-        do {
-            generated = nextBigInteger(range.bitLength());
-        } while (generated.compareTo(range) >= 0);
-
-        return generated.add(bigMin).longValue();
+        return Ranges.randomBigIntegerInRange(this, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
     }
 
     /**

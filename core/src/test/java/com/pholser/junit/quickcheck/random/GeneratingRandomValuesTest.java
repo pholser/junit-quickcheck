@@ -25,15 +25,16 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import java.math.BigInteger;
-import java.util.Random;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Random;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;

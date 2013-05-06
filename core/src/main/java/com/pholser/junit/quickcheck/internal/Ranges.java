@@ -25,6 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import java.math.BigInteger;
+
 import static java.lang.String.*;
 
 public final class Ranges {
@@ -37,5 +41,16 @@ public final class Ranges {
         if (comparison > 0)
             throw new IllegalArgumentException(format("bad range, %" + pattern + " > %" + pattern, min, max));
         return comparison;
+    }
+
+    public static BigInteger randomBigIntegerInRange(SourceOfRandomness random, BigInteger min, BigInteger max) {
+        BigInteger range = max.subtract(min).add(BigInteger.ONE);
+        BigInteger generated;
+
+        do {
+            generated = random.nextBigInteger(range.bitLength());
+        } while (generated.compareTo(range) >= 0);
+
+        return generated.add(min);
     }
 }
