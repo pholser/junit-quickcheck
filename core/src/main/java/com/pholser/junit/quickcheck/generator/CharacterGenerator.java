@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Character.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code char} or {@link Character}.
  */
 public class CharacterGenerator extends Generator<Character> {
-    private char min = MIN_VALUE;
-    private char max = MAX_VALUE;
+    private char min = (Character) defaultValueOf(InRange.class, "minChar");
+    private char max = (Character) defaultValueOf(InRange.class, "maxChar");
 
     @SuppressWarnings("unchecked") public CharacterGenerator() {
         super(asList(char.class, Character.class));

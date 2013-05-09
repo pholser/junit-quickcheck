@@ -165,15 +165,15 @@ public class SourceOfRandomness {
      * @return a random value
      */
     public long nextLong(long min, long max) {
-        checkRange("d", min, max);
-        if (min == max)
+        int comparison = checkRange("d", min, max);
+        if (comparison == 0)
             return min;
 
         return Ranges.randomBigIntegerInRange(this, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
     }
 
     /**
-     * Gives a random {@code float} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code float} value {@code v} such that {@code min <= v < max}.
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -184,7 +184,7 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code double} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code double} value {@code v} such that {@code min <= v < max}.
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range

@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Integer.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code int} or {@link Integer}.
  */
 public class IntegerGenerator extends Generator<Integer> {
-    private int min = MIN_VALUE;
-    private int max = MAX_VALUE;
+    private int min = (Integer) defaultValueOf(InRange.class, "minInt");
+    private int max = (Integer) defaultValueOf(InRange.class, "maxInt");
 
     @SuppressWarnings("unchecked") public IntegerGenerator() {
         super(asList(int.class, Integer.class));

@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Float.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code float} or {@link Float}.
  */
 public class FloatGenerator extends Generator<Float> {
-    private float min = -MAX_VALUE;
-    private float max = MAX_VALUE;
+    private float min = (Float) defaultValueOf(InRange.class, "minFloat");
+    private float max = (Float) defaultValueOf(InRange.class, "maxFloat");
 
     @SuppressWarnings("unchecked") public FloatGenerator() {
         super(asList(float.class, Float.class));

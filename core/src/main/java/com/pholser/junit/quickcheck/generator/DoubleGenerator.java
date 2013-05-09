@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Double.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code double} or {@link Double}.
  */
 public class DoubleGenerator extends Generator<Double> {
-    private double min = -MAX_VALUE;
-    private double max = MAX_VALUE;
+    private double min = (Double) defaultValueOf(InRange.class, "minDouble");
+    private double max = (Double) defaultValueOf(InRange.class, "maxDouble");
 
     @SuppressWarnings("unchecked") public DoubleGenerator() {
         super(asList(double.class, Double.class));

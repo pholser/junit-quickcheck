@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Byte.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code byte} or {@link Byte}.
  */
 public class ByteGenerator extends Generator<Byte> {
-    private byte min = MIN_VALUE;
-    private byte max = MAX_VALUE;
+    private byte min = (Byte) defaultValueOf(InRange.class, "minByte");
+    private byte max = (Byte) defaultValueOf(InRange.class, "maxByte");
 
     @SuppressWarnings("unchecked") public ByteGenerator() {
         super(asList(byte.class, Byte.class));

@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Short.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code short} or {@link Short}.
  */
 public class ShortGenerator extends Generator<Short> {
-    private short min = MIN_VALUE;
-    private short max = MAX_VALUE;
+    private short min = (Short) defaultValueOf(InRange.class, "minShort");
+    private short max = (Short) defaultValueOf(InRange.class, "maxShort");
 
     @SuppressWarnings("unchecked") public ShortGenerator() {
         super(asList(short.class, Short.class));
