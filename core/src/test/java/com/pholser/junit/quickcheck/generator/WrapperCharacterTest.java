@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Character.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
@@ -37,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 public class WrapperCharacterTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextChar(MIN_VALUE, MAX_VALUE)).thenReturn('Y').thenReturn('Z');
+        when(randomForParameterGenerator.nextChar(minChar(), maxChar())).thenReturn('Y').thenReturn('Z');
     }
 
     @Override protected Type parameterType() {
@@ -53,6 +52,6 @@ public class WrapperCharacterTest extends GeneratingUniformRandomValuesForTheory
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextChar(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(2)).nextChar(minChar(), maxChar());
     }
 }

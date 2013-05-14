@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.Byte.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
@@ -41,7 +40,7 @@ import static org.mockito.Mockito.*;
 
 public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextByte(MIN_VALUE, MAX_VALUE))
+        when(randomForParameterGenerator.nextByte(minByte(), maxByte()))
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
     }
@@ -60,6 +59,6 @@ public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheory
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextByte(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextByte(minByte(), maxByte());
     }
 }

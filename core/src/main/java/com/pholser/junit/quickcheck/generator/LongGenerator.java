@@ -25,28 +25,26 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import static java.lang.Long.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values for theory parameters of type {@code long} or {@link Long}.
  */
 public class LongGenerator extends Generator<Long> {
-    private long min = MIN_VALUE;
-    private long max = MAX_VALUE;
+    private long min = (Long) defaultValueOf(InRange.class, "minLong");
+    private long max = (Long) defaultValueOf(InRange.class, "maxLong");
 
     @SuppressWarnings("unchecked") public LongGenerator() {
         super(asList(long.class, Long.class));
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minLong() minimum} and/or
-     * {@linkplain InRange#maxLong()} maximum}, inclusive, with uniform distribution.</p>
-     *
-     * <p>If an endpoint of the range is not specified, the generator will use either {@link Long#MIN_VALUE} or
-     * {@link Long#MAX_VALUE} as appropriate.</p>
+     * Tells this generator to produce values within a specified {@linkplain InRange#minLong() minimum} and/or
+     * {@linkplain InRange#maxLong()} maximum}, inclusive, with uniform distribution.
      *
      * @param range annotation that gives the range's constraints
      */

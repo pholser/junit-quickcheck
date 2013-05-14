@@ -25,10 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code short} or {@link Short}.
@@ -42,11 +43,8 @@ public class ShortGenerator extends Generator<Short> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minShort() minimum} and/or
-     * {@linkplain InRange#maxShort()} maximum}, inclusive, with uniform distribution.</p>
-     *
-     * <p>If an endpoint of the range is not specified, the generator will use either {@link Short#MIN_VALUE} or
-     * {@link Short#MAX_VALUE} as appropriate.</p>
+     * Tells this generator to produce values within a specified {@linkplain InRange#minShort() minimum} and/or
+     * {@linkplain InRange#maxShort()} maximum}, inclusive, with uniform distribution.
      *
      * @param range annotation that gives the range's constraints
      */

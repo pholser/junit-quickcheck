@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
@@ -32,12 +37,8 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.number.OrderingComparison.*;
 import static org.junit.Assert.*;
@@ -272,6 +273,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class PrimitiveDouble {
         @Theory public void shouldHold(@ForAll double d) {
+            assertThat(d, greaterThanOrEqualTo((Double) defaultValueOf(InRange.class, "minDouble")));
+            assertThat(d, lessThan((Double) defaultValueOf(InRange.class, "maxDouble")));
         }
     }
 
@@ -286,30 +289,6 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
         }
     }
 
-    @Test public void leftOpenEndedRangedPrimitiveDouble() {
-        assertThat(testResult(LeftOpenEndedRangedPrimitiveDouble.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class LeftOpenEndedRangedPrimitiveDouble {
-        @Theory public void shouldHold(@ForAll @InRange(maxDouble = -1E40) double d) {
-            assertThat(d, greaterThanOrEqualTo((Double) defaultValueOf(InRange.class, "minDouble")));
-            assertThat(d, lessThan(-1E40));
-        }
-    }
-
-    @Test public void rightOpenEndedRangedPrimitiveDouble() {
-        assertThat(testResult(RightOpenEndedRangedPrimitiveDouble.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class RightOpenEndedRangedPrimitiveDouble {
-        @Theory public void shouldHold(@ForAll @InRange(minDouble = 1E300) double d) {
-            assertThat(d, greaterThanOrEqualTo(1E300));
-            assertThat(d, lessThan((Double) defaultValueOf(InRange.class, "maxDouble")));
-        }
-    }
-
     @Test public void wrapperDouble() {
         assertThat(testResult(WrapperDouble.class), isSuccessful());
     }
@@ -317,6 +296,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperDouble {
         @Theory public void shouldHold(@ForAll Double d) {
+            assertThat(d, greaterThanOrEqualTo((Double) defaultValueOf(InRange.class, "minDouble")));
+            assertThat(d, lessThan((Double) defaultValueOf(InRange.class, "maxDouble")));
         }
     }
 
@@ -338,8 +319,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class PrimitiveFloat {
         @Theory public void shouldHold(@ForAll float f) {
-            assertFalse(Float.isInfinite(f));
-            assertFalse(Float.isNaN(f));
+            assertThat(f, greaterThanOrEqualTo((Float) defaultValueOf(InRange.class, "minFloat")));
+            assertThat(f, lessThan((Float) defaultValueOf(InRange.class, "maxFloat")));
         }
     }
 
@@ -361,8 +342,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperFloat {
         @Theory public void shouldHold(@ForAll Float f) {
-            assertFalse(Float.isInfinite(f));
-            assertFalse(Float.isNaN(f));
+            assertThat(f, greaterThanOrEqualTo((Float) defaultValueOf(InRange.class, "minFloat")));
+            assertThat(f, lessThan((Float) defaultValueOf(InRange.class, "maxFloat")));
         }
     }
 

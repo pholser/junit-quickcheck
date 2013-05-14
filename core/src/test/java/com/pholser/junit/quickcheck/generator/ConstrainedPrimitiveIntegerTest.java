@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
@@ -37,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 public class ConstrainedPrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE))
+        when(randomForParameterGenerator.nextInt(minInt(), maxInt()))
             .thenReturn(0).thenReturn(1).thenReturn(-1);
     }
 
@@ -58,6 +57,6 @@ public class ConstrainedPrimitiveIntegerTest extends GeneratingUniformRandomValu
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextInt(minInt(), maxInt());
     }
 }

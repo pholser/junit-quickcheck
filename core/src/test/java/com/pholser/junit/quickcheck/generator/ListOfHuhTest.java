@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Integer.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.*;
 
 public class ListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(MIN_VALUE, MAX_VALUE))
+        when(randomForParameterGenerator.nextInt(minInt(), maxInt()))
             .thenReturn(1).thenReturn(2).thenReturn(-2);
     }
 
@@ -58,6 +57,6 @@ public class ListOfHuhTest extends GeneratingUniformRandomValuesForTheoryParamet
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextInt(minInt(), maxInt());
     }
 }

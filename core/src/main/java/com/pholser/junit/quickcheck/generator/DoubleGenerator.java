@@ -25,10 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code double} or {@link Double}.
@@ -42,11 +43,8 @@ public class DoubleGenerator extends Generator<Double> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minDouble()}  minimum}
-     * (inclusive) and/or {@linkplain InRange#maxDouble()}  maximum} (exclusive), with uniform distribution.</p>
-     *
-     * <p>If an endpoint of the range is not specified, the generator will use either -{@link Double#MAX_VALUE} or
-     * {@link Double#MAX_VALUE} as appropriate.</p>
+     * Tells this generator to produce values within a specified {@linkplain InRange#minDouble()}  minimum}
+     * (inclusive) and/or {@linkplain InRange#maxDouble()} maximum} (exclusive), with uniform distribution.
      *
      * @param range annotation that gives the range's constraints
      */

@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Float.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
@@ -37,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextFloat(-MAX_VALUE, MAX_VALUE)).thenReturn(7F).thenReturn(8F);
+        when(randomForParameterGenerator.nextFloat(minFloat(), maxFloat())).thenReturn(0.7F).thenReturn(0.8F);
     }
 
     @Override protected Type parameterType() {
@@ -49,10 +48,10 @@ public class PrimitiveFloatTest extends GeneratingUniformRandomValuesForTheoryPa
     }
 
     @Override protected List<?> randomValues() {
-        return asList(7F, 8F);
+        return asList(0.7F, 0.8F);
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextFloat(-MAX_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(2)).nextFloat(minFloat(), maxFloat());
     }
 }

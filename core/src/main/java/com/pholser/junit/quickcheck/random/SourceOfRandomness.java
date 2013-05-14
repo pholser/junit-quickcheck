@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import com.pholser.junit.quickcheck.internal.Ranges;
-
 import java.math.BigInteger;
 import java.util.Random;
+
+import com.pholser.junit.quickcheck.internal.Ranges;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
@@ -180,7 +180,8 @@ public class SourceOfRandomness {
      * @return a random value
      */
     public float nextFloat(float min, float max) {
-        return (float) nextDouble(min, max);
+        int comparison = checkRange("f", min, max);
+        return comparison == 0 ? min : min + (max - min) * delegate.nextFloat();
     }
 
     /**

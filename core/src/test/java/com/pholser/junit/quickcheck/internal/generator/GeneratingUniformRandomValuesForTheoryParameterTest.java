@@ -25,10 +25,18 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
@@ -37,13 +45,8 @@ import org.junit.contrib.theories.PotentialAssignment;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-
+import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.Objects.*;
-import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -56,10 +59,12 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     protected BasicGeneratorSource source;
     protected GeneratorRepository repository;
     private List<PotentialAssignment> theoryParameters;
+    private Map<String, Object> rangeAttributes;
 
     @Before public final void beforeEach() throws Exception {
         MockitoAnnotations.initMocks(this);
 
+        rangeAttributes = defaultValuesOf(InRange.class);
         source = new BasicGeneratorSource();
         primeSourceOfRandomness();
         primeSampleSize();
@@ -120,6 +125,66 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
     }
 
     protected abstract List<?> randomValues();
+
+    private <T> T rangeAttribute(String name, Class<T> type) {
+        return type.cast(rangeAttributes.get(name));
+    }
+
+    protected byte minByte() {
+        return rangeAttribute("minByte", Byte.class);
+    }
+
+    protected byte maxByte() {
+        return rangeAttribute("maxByte", Byte.class);
+    }
+
+    protected char minChar() {
+        return rangeAttribute("minChar", Character.class);
+    }
+
+    protected char maxChar() {
+        return rangeAttribute("maxChar", Character.class);
+    }
+
+    protected double minDouble() {
+        return rangeAttribute("minDouble", Double.class);
+    }
+
+    protected double maxDouble() {
+        return rangeAttribute("maxDouble", Double.class);
+    }
+
+    protected float minFloat() {
+        return rangeAttribute("minFloat", Float.class);
+    }
+
+    protected float maxFloat() {
+        return rangeAttribute("maxFloat", Float.class);
+    }
+
+    protected int minInt() {
+        return rangeAttribute("minInt", Integer.class);
+    }
+
+    protected int maxInt() {
+        return rangeAttribute("maxInt", Integer.class);
+    }
+
+    protected long minLong() {
+        return rangeAttribute("minLong", Long.class);
+    }
+
+    protected long maxLong() {
+        return rangeAttribute("maxLong", Long.class);
+    }
+
+    protected short minShort() {
+        return rangeAttribute("minShort", Short.class);
+    }
+
+    protected short maxShort() {
+        return rangeAttribute("maxShort", Short.class);
+    }
 
     @Test public final void respectsSampleSize() {
         assertEquals(quantifier.sampleSize(), theoryParameters.size());

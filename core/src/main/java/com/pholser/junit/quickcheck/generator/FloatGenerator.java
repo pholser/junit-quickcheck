@@ -25,10 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code float} or {@link Float}.
@@ -42,11 +43,8 @@ public class FloatGenerator extends Generator<Float> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#minFloat()}  minimum}
-     * (inclusive) and/or {@linkplain InRange#maxFloat()}  maximum} (exclusive), with uniform distribution.</p>
-     *
-     * <p>If an endpoint of the range is not specified, the generator will use either -{@link Float#MAX_VALUE} or
-     * {@link Float#MAX_VALUE} as appropriate.</p>
+     * Tells this generator to produce values within a specified {@linkplain InRange#minFloat()}  minimum}
+     * (inclusive) and/or {@linkplain InRange#maxFloat()}  maximum} (exclusive), with uniform distribution.
      *
      * @param range annotation that gives the range's constraints
      */

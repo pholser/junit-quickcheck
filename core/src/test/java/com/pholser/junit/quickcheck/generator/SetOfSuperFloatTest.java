@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.Float.*;
 import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
@@ -44,8 +43,8 @@ import static org.mockito.Mockito.*;
 
 public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextFloat(-MAX_VALUE, MAX_VALUE))
-            .thenReturn(2.2F).thenReturn(2.3F).thenReturn(2.4F);
+        when(randomForParameterGenerator.nextFloat(minFloat(), maxFloat()))
+            .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
         org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
@@ -67,10 +66,10 @@ public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryP
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(2.2F), newHashSet(2.3F, 2.4F));
+        return asList(newHashSet(), newHashSet(0.2F), newHashSet(0.3F, 0.4F));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextFloat(-MAX_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextFloat(minFloat(), maxFloat());
     }
 }

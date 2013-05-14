@@ -60,7 +60,7 @@ class Classes {
                 @Override public Class<?> apply(Object input) {
                     return input.getClass();
                 }
-            }).toImmutableList();
+            }).toList();
     }
 
     static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {

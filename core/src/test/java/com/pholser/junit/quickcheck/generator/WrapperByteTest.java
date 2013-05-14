@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Byte.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
@@ -37,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 public class WrapperByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextByte(MIN_VALUE, MAX_VALUE))
+        when(randomForParameterGenerator.nextByte(minByte(), maxByte()))
             .thenReturn((byte) -95).thenReturn((byte) -94).thenReturn((byte) -93).thenReturn((byte) -92);
     }
 
@@ -55,6 +54,6 @@ public class WrapperByteTest extends GeneratingUniformRandomValuesForTheoryParam
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(4)).nextByte(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(4)).nextByte(minByte(), maxByte());
     }
 }

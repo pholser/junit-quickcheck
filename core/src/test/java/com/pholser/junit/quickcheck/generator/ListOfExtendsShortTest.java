@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Short.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.*;
 
 public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextShort(MIN_VALUE, MAX_VALUE))
+        when(randomForParameterGenerator.nextShort(minShort(), maxShort()))
             .thenReturn((short) -1).thenReturn((short) -2).thenReturn((short) -3);
     }
 
@@ -58,6 +57,6 @@ public class ListOfExtendsShortTest extends GeneratingUniformRandomValuesForTheo
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextShort(MIN_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextShort(minShort(), maxShort());
     }
 }

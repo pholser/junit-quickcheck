@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.lang.Double.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
@@ -37,8 +36,8 @@ import static org.mockito.Mockito.*;
 
 public class PrimitiveDoubleTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextDouble(-MAX_VALUE, MAX_VALUE))
-            .thenReturn(2D).thenReturn(3D).thenReturn(4D);
+        when(randomForParameterGenerator.nextDouble(minDouble(), maxDouble()))
+            .thenReturn(0.2D).thenReturn(0.3D).thenReturn(0.4D);
     }
 
     @Override protected Type parameterType() {
@@ -50,10 +49,10 @@ public class PrimitiveDoubleTest extends GeneratingUniformRandomValuesForTheoryP
     }
 
     @Override protected List<?> randomValues() {
-        return asList(2D, 3D, 4D);
+        return asList(0.2D, 0.3D, 0.4D);
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextDouble(-MAX_VALUE, MAX_VALUE);
+        verify(randomForParameterGenerator, times(3)).nextDouble(minDouble(), maxDouble());
     }
 }

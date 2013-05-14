@@ -98,22 +98,22 @@ public @interface InRange {
     /**
      * @return a minimum {@code float} value
      */
-    float minFloat() default -Float.MAX_VALUE;
+    float minFloat() default 0F;
 
     /**
      * @return a maximum {@code float} value
      */
-    float maxFloat() default Float.MAX_VALUE;
+    float maxFloat() default 1F;
 
     /**
      * @return a minimum {@code double} value
      */
-    double minDouble() default -Double.MAX_VALUE;
+    double minDouble() default 0D;
 
     /**
      * @return a maximum {@code double} value
      */
-    double maxDouble() default Double.MAX_VALUE;
+    double maxDouble() default 1D;
 
     /**
      * @return a minimum value, represented in string form

@@ -25,16 +25,15 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import java.math.BigInteger;
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Random;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -281,31 +280,31 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextFloatInRange() {
-        when(random.nextDouble()).thenReturn(0.3343443);
+        when(random.nextFloat()).thenReturn(0.3343443F);
 
         float value = source.nextFloat(-4.56F, -1.234234F);
 
-        verify(random).nextDouble();
+        verify(random).nextFloat();
         assertThat(value, lessThanOrEqualTo(-1.234234F));
         assertThat(value, greaterThanOrEqualTo(-4.56F));
     }
 
     @Test public void nextFloatAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
+        when(random.nextFloat()).thenReturn(0F);
 
         float value = source.nextFloat(Float.MIN_VALUE, Float.MAX_VALUE);
 
-        verify(random).nextDouble();
+        verify(random).nextFloat();
         assertEquals(Float.MIN_VALUE, value, 0F);
     }
 
     @Test public void nextFloatAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
+        when(random.nextFloat()).thenReturn(Math.nextAfter(1F, Float.NEGATIVE_INFINITY));
 
         float value = source.nextFloat(Float.MIN_VALUE, Float.MAX_VALUE);
 
-        verify(random).nextDouble();
-        assertEquals(Float.MAX_VALUE, value, 0F);
+        verify(random).nextFloat();
+        assertEquals(Math.nextAfter(Float.MAX_VALUE, Float.NEGATIVE_INFINITY), value, 0F);
     }
 
     @Test(expected = IllegalArgumentException.class)

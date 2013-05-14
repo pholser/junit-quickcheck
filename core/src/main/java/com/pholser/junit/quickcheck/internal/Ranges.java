@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import java.math.BigInteger;
 
 import static java.lang.String.*;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public final class Ranges {
     private Ranges() {
