@@ -112,7 +112,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code byte} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code byte} value {@code v} such that {@code min <= v <= max}, uniformly distributed across
+     * the interval [min, max].
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -123,7 +124,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code short} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code short} value {@code v} such that {@code min <= v <= max}, uniformly distributed across
+     * the interval [min, max].
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -134,7 +136,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code char} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code char} value {@code v} such that {@code min <= v <= max}, uniformly distributed across
+     * the interval [min, max].
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -147,7 +150,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code int} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code int} value {@code v} such that {@code min <= v <= max}, uniformly distributed across
+     * the interval [min, max].
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -158,7 +162,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code long} value {@code v} such that {@code min <= v <= max}.
+     * Gives a random {@code long} value {@code v} such that {@code min <= v <= max}, uniformly distributed across
+     * the interval [min, max].
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -173,7 +178,10 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code float} value {@code v} such that {@code min <= v < max}.
+     * <p>Gives a random {@code float} value {@code v} such that {@code min <= v < max}.</p>
+     *
+     * <p>This naive implementation takes a random {@code float} value from {@link Random#nextFloat()} and
+     * scales/shifts the value into the desired range. This may give surprising results for large ranges.</p>
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -181,11 +189,14 @@ public class SourceOfRandomness {
      */
     public float nextFloat(float min, float max) {
         int comparison = checkRange("f", min, max);
-        return comparison == 0 ? min : min + (max - min) * delegate.nextFloat();
+        return comparison == 0 ? min : min + (max - min) * nextFloat();
     }
 
     /**
-     * Gives a random {@code double} value {@code v} such that {@code min <= v < max}.
+     * <p>Gives a random {@code double} value {@code v} such that {@code min <= v < max}.</p>
+     *
+     * <p>This naive implementation takes a random {@code double} value from {@link Random#nextDouble()} and
+     * scales/shifts the value into the desired range. This may give surprising results for large ranges.</p>
      *
      * @param min lower bound of the desired range
      * @param max upper bound of the desired range
@@ -193,7 +204,7 @@ public class SourceOfRandomness {
      */
     public double nextDouble(double min, double max) {
         int comparison = checkRange("f", min, max);
-        return comparison == 0 ? min : min + (max - min) * delegate.nextDouble();
+        return comparison == 0 ? min : min + (max - min) * nextDouble();
     }
 
     /**
