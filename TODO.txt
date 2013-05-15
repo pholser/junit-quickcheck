@@ -3,7 +3,6 @@
 -- What other basic generator configs would be useful?
 -- What other out-of-the-box generators would be useful?
 -- Is the behavior of the out-of-the-box generators sufficient? What should be changed, if anything?
--- nextLong(min, max) and nextDouble(min, max) -- getting them to span the entire range.
 -- Is @SuchThat with OGNL and Paranamer useful, or cute but not that helpful? What about without Paranamer?
 
 -- site
