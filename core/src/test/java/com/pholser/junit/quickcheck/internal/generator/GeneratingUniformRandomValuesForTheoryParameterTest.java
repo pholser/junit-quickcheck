@@ -41,7 +41,7 @@ import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.contrib.theories.PotentialAssignment;
+import org.junit.experimental.theories.PotentialAssignment;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 

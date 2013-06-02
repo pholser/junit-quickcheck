@@ -22,11 +22,6 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.junit.contrib</groupId>
-            <artifactId>junit-theories</artifactId>
-            <version>4.11-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.javaruntype</groupId>
             <artifactId>javaruntype</artifactId>
             <version>1.2</version>

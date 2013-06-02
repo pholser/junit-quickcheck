@@ -30,8 +30,8 @@ import java.util.Date;
 
 import com.pholser.junit.quickcheck.generator.InRange;
 import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.Matchers.*;

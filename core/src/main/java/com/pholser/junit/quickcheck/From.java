@@ -34,7 +34,7 @@ import static java.lang.annotation.RetentionPolicy.*;
 import com.pholser.junit.quickcheck.generator.Generator;
 
 /**
- * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
+ * <p>Mark a parameter of a {@link org.junit.experimental.theories.Theory Theory} method already marked with {@link ForAll}
  * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
  * random with equal probability.</p>
  *

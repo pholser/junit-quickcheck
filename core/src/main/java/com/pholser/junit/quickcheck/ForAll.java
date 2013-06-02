@@ -32,10 +32,10 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 import com.pholser.junit.quickcheck.internal.RandomValueSupplier;
-import org.junit.contrib.theories.ParametersSuppliedBy;
+import org.junit.experimental.theories.ParametersSuppliedBy;
 
 /**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method with this annotation to have
+ * Mark a parameter of a {@link org.junit.experimental.theories.Theory Theory} method with this annotation to have
  * random values supplied to it.
  */
 @Target(PARAMETER)

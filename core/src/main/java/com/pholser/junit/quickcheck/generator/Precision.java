@@ -32,7 +32,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with
+ * <p>Mark a parameter of a {@link org.junit.experimental.theories.Theory Theory} method already marked with
  * {@link com.pholser.junit.quickcheck.ForAll} with this annotation to constrain the values generated for the parameter
  * to a given precision.</p>
  */

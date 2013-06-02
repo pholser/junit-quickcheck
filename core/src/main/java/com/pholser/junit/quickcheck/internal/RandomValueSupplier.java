@@ -38,9 +38,9 @@ import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGene
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.internal.generator.TheoryParameterGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.junit.contrib.theories.ParameterSignature;
-import org.junit.contrib.theories.ParameterSupplier;
-import org.junit.contrib.theories.PotentialAssignment;
+import org.junit.experimental.theories.ParameterSignature;
+import org.junit.experimental.theories.ParameterSupplier;
+import org.junit.experimental.theories.PotentialAssignment;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
