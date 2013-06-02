@@ -19,8 +19,8 @@ theories, run using a special test runner:
     public class Accounts {
         @Theory
         public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
-            assumeThat(originalBalance, greaterThan(0));
-            assumeThat(withdrawalAmount, allOf(greaterThan(0), lessThan(originalBalance));
+            assumeThat(originalBalance, greaterThan(Money.NONE));
+            assumeThat(withdrawalAmount, allOf(greaterThan(Money.NONE), lessThan(originalBalance)));
 
             Account account = new Account(originalBalance);
 
@@ -42,13 +42,15 @@ generated inputs.
 Create theories as you normally would with JUnit. If you want JUnit to exercise the theory with lots of randomly
 generated values for a theory parameter, mark the theory parameter with `@ForAll`:
 
+    import com.pholser.junit.quickcheck.ForAll;
+
     @RunWith(Theories.class)
     public class SymmetricKeyCryptography {
         @Theory
         public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
             Crypto crypto = new Crypto();
 
-            byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII", key));
+            byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
 
             assertEquals(plaintext, new String(crypto.decrypt(ciphertext, key)));
         }
@@ -137,8 +139,9 @@ Theories often use _assumptions_ to declare conditions under which the theories 
         public void factorsPassPrimalityTest(@ForAll int n) {
             assumeThat(n, greaterThan(0));
 
-            for (int each : PrimeFactors.of(n))
+            for (int each : PrimeFactors.of(n)) {
                 assertTrue(BigInteger.valueOf(each).isProbablePrime(1000));
+            }
         }
 
         @Theory
@@ -146,8 +149,9 @@ Theories often use _assumptions_ to declare conditions under which the theories 
             assumeThat(n, greaterThan(0));
 
             int product = 1;
-            for (int each : PrimeFactors.of(n))
+            for (int each : PrimeFactors.of(n)) {
                 product *= each;
+            }
 
             assertEquals(n, product);
         }
