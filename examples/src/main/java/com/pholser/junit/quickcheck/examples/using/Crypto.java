@@ -1,4 +1,4 @@
-package using;
+package com.pholser.junit.quickcheck.examples.using;
 
 import java.security.Key;
 

@@ -1,7 +1,8 @@
-package theories;
+package com.pholser.junit.quickcheck.examples.theories;
+
+import com.pholser.junit.quickcheck.examples.theories.Money;
 
 public class Account {
-
     private Money balance;
 
     public Account(Money balance) {
@@ -14,7 +15,5 @@ public class Account {
 
     public Money balance() {
         return balance;
-
     }
-
 }

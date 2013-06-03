@@ -13,6 +13,7 @@
     <modules>
         <module>core</module>
         <module>guava</module>
+        <module>examples</module>
     </modules>
 
     <licenses>
