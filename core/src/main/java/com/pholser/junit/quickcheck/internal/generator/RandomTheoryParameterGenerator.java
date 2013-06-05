@@ -30,7 +30,7 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.junit.contrib.theories.PotentialAssignment;
+import org.junit.experimental.theories.PotentialAssignment;
 
 public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
     private final SourceOfRandomness random;

@@ -139,8 +139,9 @@ Theories often use _assumptions_ to declare conditions under which the theories 
         public void factorsPassPrimalityTest(@ForAll int n) {
             assumeThat(n, greaterThan(0));
 
-            for (int each : PrimeFactors.of(n))
+            for (int each : PrimeFactors.of(n)) {
                 assertTrue(BigInteger.valueOf(each).isProbablePrime(1000));
+            }
         }
 
         @Theory
@@ -148,8 +149,9 @@ Theories often use _assumptions_ to declare conditions under which the theories 
             assumeThat(n, greaterThan(0));
 
             int product = 1;
-            for (int each : PrimeFactors.of(n))
+            for (int each : PrimeFactors.of(n)) {
                 product *= each;
+            }
 
             assertEquals(n, product);
         }

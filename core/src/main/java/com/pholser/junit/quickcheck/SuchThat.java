@@ -32,7 +32,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
+ * Mark a parameter of a {@link org.junit.experimental.theories.Theory Theory} method already marked with {@link ForAll}
  * with this annotation to constrain the values generated for it.
  */
 @Target(PARAMETER)

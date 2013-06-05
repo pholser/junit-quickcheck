@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.ParameterContext;
-import org.junit.contrib.theories.PotentialAssignment;
+import org.junit.experimental.theories.PotentialAssignment;
 
 public interface TheoryParameterGenerator {
     List<PotentialAssignment> generate(ParameterContext context);
