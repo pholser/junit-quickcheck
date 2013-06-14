@@ -10,11 +10,11 @@
     <description>QuickCheck-style parameter suppliers for JUnit theories</description>
     <url>http://github.com/pholser/junit-quickcheck</url>
 
-    <modules>
-        <module>core</module>
-        <module>guava</module>
-        <module>examples</module>
-    </modules>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <licenses>
         <license>
@@ -40,6 +40,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <modules>
+        <module>core</module>
+        <module>guava</module>
+        <module>examples</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
