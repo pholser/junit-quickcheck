@@ -1,7 +1,5 @@
 package com.pholser.junit.quickcheck.examples.theories;
 
-import com.pholser.junit.quickcheck.examples.theories.Money;
-
 public class Account {
     private Money balance;
 

@@ -17,8 +17,7 @@ theories, run using a special test runner:
 
     @RunWith(Theories.class)
     public class Accounts {
-        @Theory
-        public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
+        @Theory public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
             assumeThat(originalBalance, greaterThan(Money.NONE));
             assumeThat(withdrawalAmount, allOf(greaterThan(Money.NONE), lessThan(originalBalance)));
 
@@ -46,8 +45,7 @@ generated values for a theory parameter, mark the theory parameter with `@ForAll
 
     @RunWith(Theories.class)
     public class SymmetricKeyCryptography {
-        @Theory
-        public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
+        @Theory public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
             Crypto crypto = new Crypto();
 
             byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
@@ -70,11 +68,11 @@ Out of the box, junit-quickcheck can generate random values for theory parameter
 * `java.util.Date`
 * any `enum`
 * `String`
-* `java.util.ArrayList` of those types
-* `java.util.HashSet` of those types
-* `java.util.HashMap` of those types
-* arrays of those types
 * "functional interfaces" (interfaces with a single method that does not override a method from `java.lang.Object`)
+* `java.util.ArrayList` of supported types
+* `java.util.HashSet` of supported types
+* `java.util.HashMap` of supported types
+* arrays of supported types
 
 When multiple generators can satisfy a given theory parameter based on its type (for example, `java.io.Serializable`),
 on a given generation one of the multiple generators will be chosen at random with equal probability.
@@ -119,8 +117,7 @@ public method named `configure` that accepts a single parameter of the annotatio
 
     @RunWith(Theories.class)
     public class FooTheories {
-        @Theory
-        public void holds(@ForAll @Stuff Foo f) {
+        @Theory public void holds(@ForAll @Stuff Foo f) {
             // ...
         }
     }
@@ -135,16 +132,14 @@ Theories often use _assumptions_ to declare conditions under which the theories 
 
     @RunWith(Theories.class)
     public class PrimeFactorsTheories {
-        @Theory
-        public void factorsPassPrimalityTest(@ForAll int n) {
+        @Theory public void factorsPassPrimalityTest(@ForAll int n) {
             assumeThat(n, greaterThan(0));
 
             for (int each : PrimeFactors.of(n))
                 assertTrue(BigInteger.valueOf(each).isProbablePrime(1000));
         }
 
-        @Theory
-        public void factorsMultiplyToOriginal(@ForAll int n) {
+        @Theory public void factorsMultiplyToOriginal(@ForAll int n) {
             assumeThat(n, greaterThan(0));
 
             int product = 1;
@@ -154,8 +149,7 @@ Theories often use _assumptions_ to declare conditions under which the theories 
             assertEquals(n, product);
         }
 
-        @Theory
-        public void factorizationsAreUnique(@ForAll int m, @ForAll int n) {
+        @Theory public void factorizationsAreUnique(@ForAll int m, @ForAll int n) {
             assumeThat(m, greaterThan(0));
             assumeThat(n, greaterThan(0));
             assumeThat(m, not(equalTo(n)));
@@ -169,8 +163,7 @@ criteria:
 
     @RunWith(Theories.class)
     public class SingleDigitTheories {
-        @Theory
-        public void hold(@ForAll int digit) {
+        @Theory public void hold(@ForAll int digit) {
             // hope we get enough single digits
             assumeThat(digit, greaterThanOrEqualTo(0));
             assumeThat(digit, lessThanOrEqualTo(9));
@@ -190,8 +183,7 @@ those types to emit values that fall within a configured minimum/maximum:
 
     @RunWith(Theories.class)
     public class SingleDigitTheories {
-        @Theory
-        public void hold(@ForAll @InRange(minInt = 0, maxInt = 9) int digit) {
+        @Theory public void hold(@ForAll @InRange(minInt = 0, maxInt = 9) int digit) {
             // ...
         }
     }
@@ -215,8 +207,7 @@ to decide whether a generated value will be given to the theory method.
 
     @RunWith(Theories.class)
     public class SingleDigitTheories {
-        @Theory
-        public void hold(@ForAll @SuchThat("#_ >= 0 && #_ <= 9") int digit) {
+        @Theory public void hold(@ForAll @SuchThat("#_ >= 0 && #_ <= 9") int digit) {
             // ...
         }
     }

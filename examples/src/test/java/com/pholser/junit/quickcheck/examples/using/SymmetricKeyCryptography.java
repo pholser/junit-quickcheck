@@ -11,8 +11,7 @@ import static org.junit.Assert.*;
 
 @RunWith(Theories.class)
 public class SymmetricKeyCryptography {
-    @Theory
-    public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
+    @Theory public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
         Crypto crypto = new Crypto();
 
         byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
