@@ -12,7 +12,7 @@ import static org.junit.Assume.*;
 
 @RunWith(Theories.class)
 public class Accounts {
-    @DataPoints public static Money[] BALANCES = { Money.NONE, new Money(10), new Money(100), new Money(1000) };
+    @DataPoints public static final Money[] BALANCES = { Money.NONE, new Money(10), new Money(100), new Money(1000) };
 
     @Theory public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
         assumeThat(originalBalance, greaterThan(Money.NONE));
