@@ -78,7 +78,7 @@ public abstract class Generator<T> {
      * generation -- for example, if a generator honored {@link InRange} and its {@link InRange#minInt()} were
      * greater than {@link InRange#maxInt()}.</p>
      *
-     * @param random a source of randomness to be used when generating the value.
+     * @param random a source of randomness to be used when generating the value
      * @param status an object that the generator can use to influence the value it produces. For example, a generator
      * for lists can use the {@link GenerationStatus#size() size} method to generate lists with a given number of
      * elements.

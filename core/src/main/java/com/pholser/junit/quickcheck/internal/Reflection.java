@@ -64,8 +64,7 @@ public final class Reflection {
         }
     }
 
-    public static List<Annotation> markedAnnotations(List<Annotation> annotations,
-                                                     Class<? extends Annotation> marker) {
+    public static List<Annotation> markedAnnotations(List<Annotation> annotations, Class<? extends Annotation> marker) {
         List<Annotation> marked = new ArrayList<Annotation>();
 
         for (Annotation each : annotations) {

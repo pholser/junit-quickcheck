@@ -38,8 +38,8 @@ import com.pholser.junit.quickcheck.generator.Generator;
  * with this annotation to have random values supplied to it via one of the specified {@link Generator}s, chosen at
  * random with equal probability.</p>
  *
- * <p>If any of the generators so specified produce values of a type incompatible with the type of the marked theory
- * parameter, {@link IllegalArgumentException} is raised.</p>
+ * <p>If any such generator produces values of a type incompatible with the type of the marked theory parameter,
+ * {@link IllegalArgumentException} is raised.</p>
  */
 @Target(PARAMETER)
 @Retention(RUNTIME)

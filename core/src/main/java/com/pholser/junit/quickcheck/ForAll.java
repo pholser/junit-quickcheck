@@ -43,7 +43,7 @@ import org.junit.contrib.theories.ParametersSuppliedBy;
 @ParametersSuppliedBy(RandomValueSupplier.class)
 public @interface ForAll {
     /**
-     * @return the number of different values to give the annotated theory parameter
+     * @return the number of generated values to give the annotated theory parameter
      */
     int sampleSize() default 100;
 
