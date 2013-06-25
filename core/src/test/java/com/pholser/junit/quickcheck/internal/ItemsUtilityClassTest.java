@@ -27,8 +27,8 @@ package com.pholser.junit.quickcheck.internal;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
 
-public class ItemsUninstantiabilityTest extends UtilityClassesUninstantiabilityHarness {
-    public ItemsUninstantiabilityTest() {
+public class ItemsUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
+    public ItemsUtilityClassTest() {
         super(Items.class);
     }
 }

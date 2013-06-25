@@ -1,15 +1,15 @@
 package com.pholser.junit.quickcheck.examples.theories;
 
-public class Money implements Comparable<Money> {
+class Money implements Comparable<Money> {
     static final Money NONE = new Money(0);
 
     private final int value;
 
-    public Money(int val) {
+    Money(int val) {
         value = val;
     }
 
-    public Money minus(Money amount) {
+    Money minus(Money amount) {
         return new Money(value - amount.value);
     }
 
