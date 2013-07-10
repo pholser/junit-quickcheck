@@ -4,6 +4,29 @@ junit-quickcheck is a library that supplies [JUnit](http://junit.org)
 [theories](http://groups.csail.mit.edu/pag/pubs/test-theory-demo-oopsla2007.pdf) with random values with which to test
 the validity of the theories.
 
+**PLEASE NOTE**: junit-quickcheck uses a
+[version of the JUnit theories runner](https://github.com/junit-team/junit.contrib/tree/master/theories) that has been
+modified to respect generics on theory parameter types, as described
+[here](http://github.com/junit-team/junit/issues/64). The classes that comprise this rendition of the JUnit theories
+runner are packaged as `org.junit.contrib.theories.*`, rather than `org.junit.experimental.theories.*`.
+Be sure to use the `contrib` version of the runner, annotations, etc. with junit-quickcheck.
+
+### Downloading
+
+Releases are synced to the central Maven repository. Declare a dependency element in your POM like so:
+
+    ...
+    <dependencies>
+      ...
+      <dependency>
+        <groupId>com.pholser</groupId>
+        <artifactId>junit-quickcheck-core</artifactId>
+        <version>0.1</version>
+      </dependency>
+      ...
+    </dependencies>
+    ...
+
 ### Background
 
 The [Haskell](http://haskell.org) library [QuickCheck](http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html)
@@ -87,7 +110,7 @@ generation with equal probability.
 If you wish to add a generator for a type without having to use `@From`, you can package your `Generator` in a
 [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html) JAR file and place the JAR on
 the class path. junit-quickcheck will make those generators available for use. Any generators you supply in this manner
-for already-supported types complement the built-in generators, they do not override them.
+for already-supported types complement the built-in generators; they do not override them.
 
 Custom generators for types that are functional interfaces override the built-in means of generation for such types.
 This is usually necessary for functional interfaces that involve generics.
@@ -199,6 +222,20 @@ Using generator configurations, assumptions aren't very important, if needed at 
 theory parameter counts against the sample size, but will meet some expectations that assumptions would otherwise have
 tested.
 
+`boolean` and `enum` theory parameters can be annotated with `@ValuesOf` to force the generation to run through
+every value in the type's domain, instead of choosing an element from the domain at random every time. This also
+effectively dictates the sample size for the parameter.
+
+    enum Ternary { YES, NO, MAYBE }
+
+    @RunWith(Theories.class)
+    public class TheoriesOfSmallDomains {
+        @Theory public void hold(@ForAll @ValuesOf boolean b, @ForAll @ValuesOf Ternary t) {
+            // sample sizes of 2 and 3, respectively. Each combination of potential values will be generated.
+        }
+    }
+
+
 ##### Constraint expressions
 
 Constraint expressions enable you to filter the values that reach a theory parameter. Mark a theory parameter already
@@ -221,24 +258,17 @@ specified by `@ForAll`, if any. Exceeding the discard ratio raises an exception 
 
 ### How it works
 
-junit-quickcheck leverages the
-[`ParameterSupplier`](http://kentbeck.github.com/junit/javadoc/latest/org/junit/experimental/theories/ParameterSupplier.html)
-feature of JUnit.
+junit-quickcheck leverages the `ParameterSupplier` feature of the JUnit theories machinery.
 
 By default, when the `Theories` runner executes a theory, it attempts to scrape _data points_ off the theory class to
 feed to the theories. Data points come from static fields or methods annotated with `@DataPoint` (single value) or
 `@DataPoints` (array of values). The `Theories` runner arranges for all combinations of data points of types matching a
 theory parameter to be fed to the theory for execution.
 
-Marking a theory parameter with an annotation that is itself annotated with
-[`@ParametersSuppliedBy`](http://kentbeck.github.com/junit/javadoc/latest/org/junit/experimental/theories/ParametersSuppliedBy.html)
+Marking a theory parameter with an annotation that is itself annotated with `@ParametersSuppliedBy`
 tells the `Theories` runner to ask a `ParameterSupplier` for values for the theory parameter instead. This is how
 junit-quickcheck interacts with the `Theories` runner -- `@ForAll` tells the runner to use junit-quickcheck's
 `ParameterSupplier` rather than the `DataPoint`-oriented one.
-
-In order for junit-quickcheck (or any `ParameterSupplier`, for that matter) to be able to leverage generics info on a
-theory parameter (e.g. to distinguish between a parameter of type `List<String>` and a parameter of type
-`List<Integer>`), [this issue](https://github.com/KentBeck/junit/issues#issue/64) will need to be resolved.
 
 ### Similar projects
 
