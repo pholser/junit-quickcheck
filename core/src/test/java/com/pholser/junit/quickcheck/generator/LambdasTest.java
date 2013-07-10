@@ -26,6 +26,8 @@
 package com.pholser.junit.quickcheck.generator;
 
 import com.google.common.base.Predicate;
+import com.pholser.junit.quickcheck.generator.java.lang.BooleanGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

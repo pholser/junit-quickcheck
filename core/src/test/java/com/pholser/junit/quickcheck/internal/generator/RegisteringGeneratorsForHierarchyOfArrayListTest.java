@@ -32,9 +32,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
 
-import com.pholser.junit.quickcheck.generator.ArrayListGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.ArrayListGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;

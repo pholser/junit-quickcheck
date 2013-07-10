@@ -23,9 +23,37 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.test.generator;
+package com.pholser.junit.quickcheck.generator.java.lang;
 
-import com.pholser.junit.quickcheck.generator.java.lang.ShortGenerator;
+import java.lang.reflect.Type;
+import java.util.List;
 
-public class AnotherShortGenerator extends ShortGenerator {
+import static java.util.Arrays.*;
+
+import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+
+import static org.mockito.Mockito.*;
+
+public class PrimitiveByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    @Override protected void primeSourceOfRandomness() {
+        when(randomForParameterGenerator.nextByte(minByte(), maxByte()))
+            .thenReturn((byte) -12).thenReturn((byte) -11).thenReturn((byte) -10);
+    }
+
+    @Override protected Type parameterType() {
+        return byte.class;
+    }
+
+    @Override protected int sampleSize() {
+        return 3;
+    }
+
+    @Override protected List<?> randomValues() {
+        byte b = (byte) 0xF4;
+        return asList(b++, b++, b);
+    }
+
+    @Override public void verifyInteractionWithRandomness() {
+        verify(randomForParameterGenerator, times(3)).nextByte(minByte(), maxByte());
+    }
 }

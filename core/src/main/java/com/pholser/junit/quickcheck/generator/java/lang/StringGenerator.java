@@ -23,9 +23,31 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.test.generator;
+package com.pholser.junit.quickcheck.generator.java.lang;
 
-import com.pholser.junit.quickcheck.generator.java.lang.ShortGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class AnotherShortGenerator extends ShortGenerator {
+/**
+ * <p>Produces values for theory parameters of type {@link String}.</p>
+ *
+ * <p>The generated values will have {@linkplain String#length()} decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+ */
+public class StringGenerator extends Generator<String> {
+    private final CharacterGenerator charGenerator = new CharacterGenerator();
+
+    public StringGenerator() {
+        super(String.class);
+    }
+
+    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        StringBuilder buffer = new StringBuilder(status.size());
+
+        for (int i = 0; i < status.size(); ++i)
+            buffer.append(charGenerator.generate(random, status));
+
+        return buffer.toString();
+    }
 }

@@ -28,9 +28,9 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import com.pholser.junit.quickcheck.generator.CallableGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.concurrent.CallableGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;

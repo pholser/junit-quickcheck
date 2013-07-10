@@ -23,9 +23,32 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.test.generator;
+package com.pholser.junit.quickcheck.generator.java.util.concurrent;
 
-import com.pholser.junit.quickcheck.generator.java.lang.ShortGenerator;
+import java.util.concurrent.Callable;
 
-public class AnotherShortGenerator extends ShortGenerator {
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.generator.Lambdas.*;
+
+/**
+ * Produces values for theory parameters of type {@code Callable}.
+ *
+ * @param <V> the type of the values produced by the generated instances
+ */
+public class CallableGenerator<V> extends ComponentizedGenerator<Callable> {
+    public CallableGenerator() {
+        super(Callable.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override public Callable<V> generate(SourceOfRandomness random, GenerationStatus status) {
+        return (Callable<V>) makeLambda(Callable.class, componentGenerators().get(0), status);
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 1;
+    }
 }

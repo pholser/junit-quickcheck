@@ -31,8 +31,8 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
-import com.pholser.junit.quickcheck.generator.LongGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.LongGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;

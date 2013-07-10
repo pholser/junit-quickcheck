@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.pholser.junit.quickcheck.generator.ArrayGenerator;
-import com.pholser.junit.quickcheck.generator.EnumGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Reflection;

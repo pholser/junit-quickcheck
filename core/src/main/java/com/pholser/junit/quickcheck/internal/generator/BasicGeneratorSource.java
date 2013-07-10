@@ -29,23 +29,23 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.ArrayListGenerator;
-import com.pholser.junit.quickcheck.generator.BigDecimalGenerator;
-import com.pholser.junit.quickcheck.generator.BigIntegerGenerator;
-import com.pholser.junit.quickcheck.generator.BooleanGenerator;
-import com.pholser.junit.quickcheck.generator.ByteGenerator;
-import com.pholser.junit.quickcheck.generator.CallableGenerator;
-import com.pholser.junit.quickcheck.generator.CharacterGenerator;
-import com.pholser.junit.quickcheck.generator.DateGenerator;
-import com.pholser.junit.quickcheck.generator.DoubleGenerator;
-import com.pholser.junit.quickcheck.generator.FloatGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.ArrayListGenerator;
+import com.pholser.junit.quickcheck.generator.java.math.BigDecimalGenerator;
+import com.pholser.junit.quickcheck.generator.java.math.BigIntegerGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.BooleanGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.ByteGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.concurrent.CallableGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.CharacterGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.DateGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.FloatGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.HashMapGenerator;
-import com.pholser.junit.quickcheck.generator.HashSetGenerator;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
-import com.pholser.junit.quickcheck.generator.LongGenerator;
-import com.pholser.junit.quickcheck.generator.ShortGenerator;
-import com.pholser.junit.quickcheck.generator.StringGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.HashMapGenerator;
+import com.pholser.junit.quickcheck.generator.java.util.HashSetGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.LongGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.ShortGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
 
 public class BasicGeneratorSource implements Iterable<Generator<?>> {
     @Override public Iterator<Generator<?>> iterator() {

@@ -29,9 +29,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.BigDecimalGenerator;
+import com.pholser.junit.quickcheck.generator.java.math.BigDecimalGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.IntegerGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
