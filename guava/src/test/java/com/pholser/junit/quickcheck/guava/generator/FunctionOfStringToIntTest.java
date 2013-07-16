@@ -32,7 +32,7 @@ import java.util.Random;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
@@ -40,7 +40,7 @@ import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import static com.google.common.collect.Lists.*;
 import static org.junit.Assert.*;
 
-public class FunctionOfStringToIntTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() throws Exception {
     }
 

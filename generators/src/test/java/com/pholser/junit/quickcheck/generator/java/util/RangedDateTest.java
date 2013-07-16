@@ -36,11 +36,11 @@ import java.util.Map;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class RangedDateTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
     private final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
     private Date first;
     private Date second;

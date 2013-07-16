@@ -25,7 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -35,7 +35,7 @@ import static java.lang.Long.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class PrimitiveLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextLong(minLong(), maxLong())).thenReturn(MIN_VALUE);
     }

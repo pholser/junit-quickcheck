@@ -30,11 +30,11 @@ import java.util.List;
 
 import static java.util.Arrays.*;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class PrimitiveIntegerArrayTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class PrimitiveIntegerArrayTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt()).thenReturn(-1).thenReturn(-2).thenReturn(2);
     }

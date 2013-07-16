@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -45,7 +46,7 @@ public class ForAllSampleSizeTest {
     public static class ForDefaultNumberOfValues {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll int i) {
+        @Theory public void shouldHold(@ForAll Foo f) {
             ++iterations;
         }
     }
@@ -59,7 +60,7 @@ public class ForAllSampleSizeTest {
     public static class ForSpecifiedNumberOfValues {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll(sampleSize = 5) int i) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) Foo f) {
             ++iterations;
         }
     }
@@ -73,7 +74,7 @@ public class ForAllSampleSizeTest {
     public static class ForValuesOfMultipleParameters {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll(sampleSize = 3) int i, @ForAll(sampleSize = 7) int j) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 3) Foo f, @ForAll(sampleSize = 7) Foo g) {
             ++iterations;
         }
     }

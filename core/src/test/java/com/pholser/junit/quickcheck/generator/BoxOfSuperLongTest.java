@@ -26,7 +26,7 @@
 package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
@@ -40,7 +40,7 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 
-public class BoxOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextLong()).thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);

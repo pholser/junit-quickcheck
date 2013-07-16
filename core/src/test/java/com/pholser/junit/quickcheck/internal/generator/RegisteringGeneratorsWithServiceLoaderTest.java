@@ -26,10 +26,12 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.AnotherShortGenerator;
+import com.pholser.junit.quickcheck.test.generator.AnotherBoxGenerator;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.FooGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestShortGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +47,7 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
-        repo.register(new ServiceLoaderGeneratorSource());
+        repo.register(new TestGeneratorSource()).register(new ServiceLoaderGeneratorSource());
     }
 
     @Test public void bringsInTypesForWhichASingleGeneratorExists() {
@@ -53,6 +55,6 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
     }
 
     @Test public void bringsInTypesForWhichMultipleGeneratorsMayExist() {
-        assertGenerators(repo.generatorFor(short.class), TestShortGenerator.class, AnotherShortGenerator.class);
+        assertGenerators(repo.generatorFor(Box.class), BoxGenerator.class, AnotherBoxGenerator.class);
     }
 }

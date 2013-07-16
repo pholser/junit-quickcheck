@@ -54,6 +54,7 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
         List<Generator<?>> generators = newArrayList();
         generators.add(generator);
         generators.add(new TestIntegerGenerator());
+        generators.add(new ZilchGenerator());
 
         repo.register(generators);
     }

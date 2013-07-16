@@ -25,19 +25,19 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.awt.event.ActionListener;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestLongGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
+import com.pholser.junit.quickcheck.test.generator.Foo;
+import com.pholser.junit.quickcheck.test.generator.FooGenerator;
+import com.pholser.junit.quickcheck.test.generator.FooUnboxer;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
+
+import java.util.Random;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static org.junit.Assert.*;
@@ -45,21 +45,22 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllLambdaTheoryParameterTypesTest {
-    @Test public void comparatorOfString() throws Exception {
-        assertThat(testResult(ComparatorOfString.class), isSuccessful());
-        assertEquals(defaultSampleSize(), ComparatorOfString.iterations);
+    @Test public void unboxingAFoo() throws Exception {
+        assertThat(testResult(UnboxingAFoo.class), isSuccessful());
+        assertEquals(defaultSampleSize(), UnboxingAFoo.iterations);
     }
 
     @RunWith(Theories.class)
-    public static class ComparatorOfString {
+    public static class UnboxingAFoo {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll Comparator<String> c) {
+        @Theory public void shouldHold(@ForAll FooUnboxer b) {
             ++iterations;
 
-            int value = functionValue(new TestIntegerGenerator(), new Object[] { "foo", "bar" });
+            @SuppressWarnings("unchecked")
+            Foo value = functionValue(new FooGenerator(), new Object[] { new Box<Foo>(new Foo(2)) });
             for (int i = 0; i < 10000; ++i)
-                assertEquals(value, c.compare("foo", "bar"));
+                assertEquals(value, b.unbox(new Box<Foo>(new Foo(2))));
         }
     }
 

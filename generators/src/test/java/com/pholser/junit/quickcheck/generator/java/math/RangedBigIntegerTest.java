@@ -36,11 +36,11 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class RangedBigIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class RangedBigIntegerTest extends BasicGeneratorTheoryParameterTest {
     private final BigInteger min = new BigInteger("-12345678123456781234567812345678");
     private final BigInteger max = new BigInteger("987654321987654321");
 

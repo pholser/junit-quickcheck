@@ -25,7 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
@@ -38,9 +39,9 @@ import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(minInt(), maxInt())).thenReturn(1).thenReturn(-2).thenReturn(2);
+        // nothing to do here
     }
 
     @Override protected Type parameterType() {
@@ -53,10 +54,10 @@ public class SetOfHuhTest extends GeneratingUniformRandomValuesForTheoryParamete
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(1), newHashSet(-2, 2));
+        return asList(newHashSet(), newHashSet(Zilch.INSTANCE), newHashSet(Zilch.INSTANCE, Zilch.INSTANCE));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(minInt(), maxInt());
+        // nothing to do here
     }
 }

@@ -37,7 +37,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static org.mockito.Mockito.*;
 
 public class ExplicitGeneratorsChosenWithEqualProbabilityTest
-    extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    extends CoreTheoryParameterTest {
 
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2);

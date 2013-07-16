@@ -33,11 +33,11 @@ import java.util.List;
 import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class BigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class BigDecimalTest extends BasicGeneratorTheoryParameterTest {
     private BigDecimal first;
     private BigDecimal second;
     private BigDecimal third;

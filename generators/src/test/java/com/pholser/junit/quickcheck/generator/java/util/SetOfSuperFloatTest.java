@@ -26,7 +26,7 @@
 package com.pholser.junit.quickcheck.generator.java.util;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
@@ -41,7 +41,7 @@ import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
-public class SetOfSuperFloatTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextFloat(minFloat(), maxFloat()))
             .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);

@@ -31,13 +31,13 @@ import java.util.Set;
 
 import static java.util.Arrays.*;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Sets.*;
 import static org.mockito.Mockito.*;
 
-public class SetOfWrapperBooleanTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class SetOfWrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBoolean()).thenReturn(false).thenReturn(true).thenReturn(false)
             .thenReturn(true).thenReturn(false).thenReturn(true);

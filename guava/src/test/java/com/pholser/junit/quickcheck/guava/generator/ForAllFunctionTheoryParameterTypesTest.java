@@ -27,6 +27,9 @@ package com.pholser.junit.quickcheck.guava.generator;
 
 import com.google.common.base.Function;
 import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.internal.Zilch;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -38,21 +41,23 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllFunctionTheoryParameterTypesTest {
-    @Test public void stringToInteger() throws Exception {
-        assertThat(testResult(StringToInteger.class), isSuccessful());
-        assertEquals(defaultSampleSize(), StringToInteger.iterations);
+    @Test public void fooToZilch() throws Exception {
+        assertThat(testResult(FooToZilch.class), isSuccessful());
+        assertEquals(defaultSampleSize(), FooToZilch.iterations);
     }
 
     @RunWith(Theories.class)
-    public static class StringToInteger {
+    public static class FooToZilch {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll Function<String, Integer> f) {
+        @Theory public void shouldHold(@ForAll Function<Foo, Zilch> f) {
             ++iterations;
 
-            Integer result = f.apply("foo");
+            Foo foo = new Foo(2);
+            Zilch result = f.apply(foo);
+
             for (int i = 0; i < 10000; ++i)
-                assertEquals(result, f.apply("foo"));
+                assertEquals(result, f.apply(foo));
         }
     }
 
@@ -65,12 +70,14 @@ public class ForAllFunctionTheoryParameterTypesTest {
     public static class SuperShortToExtendsInteger {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll Function<? super Short, ? extends Integer> f) {
+        @Theory public void shouldHold(@ForAll Function<? super Foo, ? extends Zilch> f) {
             ++iterations;
 
-            Integer result = f.apply((short) 4);
+            Foo foo = new Foo(2);
+            Zilch result = f.apply(foo);
+
             for (int i = 0; i < 10000; ++i)
-                assertEquals(result, f.apply((short) 4));
+                assertEquals(result, f.apply(foo));
         }
     }
 
@@ -87,8 +94,10 @@ public class ForAllFunctionTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll Function<?, ?>[] functions) {
             ++iterations;
 
+            Box<Zilch> box = new Box<Zilch>(Zilch.INSTANCE);
+
             for (Function each : functions) {
-                each.apply("foo");
+                each.apply(box);
             }
         }
     }

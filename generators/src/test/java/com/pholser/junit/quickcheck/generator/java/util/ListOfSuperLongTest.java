@@ -26,7 +26,7 @@
 package com.pholser.junit.quickcheck.generator.java.util;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
@@ -41,7 +41,7 @@ import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 
-public class ListOfSuperLongTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 100)).thenReturn(2).thenReturn(1);
         when(randomForParameterGenerator.nextLong(minLong(), maxLong()))

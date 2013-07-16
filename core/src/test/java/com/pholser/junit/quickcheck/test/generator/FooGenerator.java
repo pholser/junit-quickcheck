@@ -35,6 +35,6 @@ public class FooGenerator extends Generator<Foo> {
     }
 
     @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Foo(status.size());
+        return new Foo(random.nextInt());
     }
 }

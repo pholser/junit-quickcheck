@@ -34,11 +34,11 @@ import java.util.Map;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class RangedPrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(-4, 5)).thenReturn(-2).thenReturn(3);
     }

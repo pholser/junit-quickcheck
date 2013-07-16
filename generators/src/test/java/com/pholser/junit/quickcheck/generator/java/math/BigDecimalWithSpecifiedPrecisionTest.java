@@ -37,11 +37,11 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.generator.Precision;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class BigDecimalWithSpecifiedPrecisionTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class BigDecimalWithSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
     private BigDecimal first;
     private BigDecimal second;
     private BigDecimal third;

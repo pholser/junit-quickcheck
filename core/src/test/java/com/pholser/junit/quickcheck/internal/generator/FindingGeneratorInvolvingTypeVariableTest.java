@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.TypeVariableImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.javaruntype.exceptions.TypeValidationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class FindingGeneratorInvolvingTypeVariableTest {
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
-        repo = new GeneratorRepository(random).register(new ServiceLoaderGeneratorSource());
+        repo = new GeneratorRepository(random).register(new TestGeneratorSource());
         typeVariable = new TypeVariableImpl<Class<?>>("E", List.class, new Type[] { Object.class });
     }
 

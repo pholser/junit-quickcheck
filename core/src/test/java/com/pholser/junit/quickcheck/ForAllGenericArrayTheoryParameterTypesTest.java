@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -43,6 +44,16 @@ public class ForAllGenericArrayTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ArrayOfBoxOfHuh {
         @Theory public void shouldHold(@ForAll(sampleSize = 5) Box<?>[] items) {
+        }
+    }
+
+    @Test public void arrayOfBoxOfZilch() {
+        assertThat(testResult(ArrayOfBoxOfZilch.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ArrayOfBoxOfZilch {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) Box<Zilch>[] items) {
         }
     }
 }

@@ -26,7 +26,7 @@
 package com.pholser.junit.quickcheck.generator;
 
 import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
@@ -38,9 +38,9 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class ArrayOfBoxOfHuhTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        int longIndex = 12;
+        int longIndex = 10;
         when(randomForParameterGenerator.nextLong()).thenReturn(1L).thenReturn(7L).thenReturn(63L);
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
         when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 3)).thenReturn(longIndex);

@@ -25,7 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
@@ -38,7 +38,7 @@ import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class SetOfExtendsByteTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextByte(minByte(), maxByte()))
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);

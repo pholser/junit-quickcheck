@@ -38,13 +38,13 @@ import static java.util.Arrays.*;
 import com.google.common.collect.ImmutableMap;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static org.mockito.Mockito.*;
 
 public class RangedBigDecimalNoMinWithLesserSpecifiedPrecisionTest
-    extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    extends BasicGeneratorTheoryParameterTest {
 
     private final BigDecimal max = new BigDecimal("987654321987654321.09876");
     private final BigInteger maxBigInt = max.movePointRight(5).toBigInteger();

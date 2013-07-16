@@ -32,11 +32,11 @@ import java.util.List;
 import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class BigIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class BigIntegerTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(1)).thenReturn(ONE);
         when(randomForParameterGenerator.nextBigInteger(2)).thenReturn(new BigInteger("3"));

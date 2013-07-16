@@ -35,4 +35,13 @@ public class Foo {
     public int getI() {
         return i;
     }
+
+    @Override public int hashCode() {
+        return i;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Foo && ((Foo) o).getI() == i;
+    }
 }

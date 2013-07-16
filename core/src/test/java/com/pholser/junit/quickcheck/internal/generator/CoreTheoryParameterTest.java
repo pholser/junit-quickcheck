@@ -38,6 +38,7 @@ import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.contrib.theories.PotentialAssignment;
@@ -48,20 +49,20 @@ import static com.pholser.junit.quickcheck.Objects.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
+public abstract class CoreTheoryParameterTest {
     @Mock protected SourceOfRandomness randomForParameterGenerator;
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
     @Mock private ForAll quantifier;
     @Mock private From explicitGenerators;
     @Mock private SuchThat constraint;
-    protected ServiceLoaderGeneratorSource source;
+    protected Iterable<Generator<?>> source;
     protected GeneratorRepository repository;
     private List<PotentialAssignment> theoryParameters;
 
     @Before public final void beforeEach() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        source = new ServiceLoaderGeneratorSource();
+        source = generatorSource();
         primeSourceOfRandomness();
         primeSampleSize();
         primeExplicitGenerators();
@@ -84,6 +85,10 @@ public abstract class GeneratingUniformRandomValuesForTheoryParameterTest {
             context.addConfiguration(each.getKey(), each.getValue());
 
         theoryParameters = generator.generate(context);
+    }
+
+    protected Iterable<Generator<?>> generatorSource() {
+        return new TestGeneratorSource();
     }
 
     private void primeSampleSize() {

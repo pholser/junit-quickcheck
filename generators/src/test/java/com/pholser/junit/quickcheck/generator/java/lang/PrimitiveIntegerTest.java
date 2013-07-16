@@ -31,11 +31,11 @@ import java.util.List;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.util.Arrays.*;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class PrimitiveIntegerTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class PrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(minInt(), maxInt())).thenReturn(0).thenReturn(-1);
     }

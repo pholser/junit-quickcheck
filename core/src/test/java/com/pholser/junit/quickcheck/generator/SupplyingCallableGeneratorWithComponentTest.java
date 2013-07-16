@@ -30,6 +30,7 @@ import java.util.Arrays;
 
 import com.pholser.junit.quickcheck.internal.generator.ArrayGenerator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
@@ -54,7 +55,7 @@ public class SupplyingCallableGeneratorWithComponentTest {
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random).register(Arrays.<Generator<?>> asList(
-            new TestIntegerGenerator(),
+            new ZilchGenerator(),
             new TestCallableGenerator(),
             new BoxGenerator()));
         when(random.nextInt(0, 2)).thenReturn(1);
@@ -71,6 +72,6 @@ public class SupplyingCallableGeneratorWithComponentTest {
         assertGenerators(listElementGenerator, TestCallableGenerator.class);
         TestCallableGenerator<?> callableGenerator = (TestCallableGenerator<?>) componentOf(listElementGenerator, 0);
         Generator<?> callableResultGenerator = callableGenerator.componentGenerators().get(0);
-        assertGenerators(callableResultGenerator, TestIntegerGenerator.class);
+        assertGenerators(callableResultGenerator, ZilchGenerator.class);
     }
 }

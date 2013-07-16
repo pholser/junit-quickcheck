@@ -37,11 +37,11 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
-public class RangedBigDecimalTest extends GeneratingUniformRandomValuesForTheoryParameterTest {
+public class RangedBigDecimalTest extends BasicGeneratorTheoryParameterTest {
     private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;

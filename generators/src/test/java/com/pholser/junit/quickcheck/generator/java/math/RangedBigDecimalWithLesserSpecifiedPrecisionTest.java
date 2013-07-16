@@ -38,12 +38,12 @@ import static java.util.Arrays.*;
 import com.google.common.collect.ImmutableMap;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
-import com.pholser.junit.quickcheck.internal.generator.GeneratingUniformRandomValuesForTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static org.mockito.Mockito.*;
 
 public class RangedBigDecimalWithLesserSpecifiedPrecisionTest
-    extends GeneratingUniformRandomValuesForTheoryParameterTest {
+    extends BasicGeneratorTheoryParameterTest {
 
     private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");

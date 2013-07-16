@@ -25,8 +25,9 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.internal.generator.GenerationContext;
+import com.pholser.junit.quickcheck.test.generator.Between;
+import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -46,7 +47,7 @@ public class DiscardRatioTest {
     public static class NegativeDiscardRatio {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll(discardRatio = -1) int i) {
+        @Theory public void shouldHold(@ForAll(discardRatio = -1) Foo f) {
             ++iterations;
         }
     }
@@ -62,7 +63,7 @@ public class DiscardRatioTest {
         static int iterations;
 
         @Theory
-        public void shouldHold(@ForAll(discardRatio = 3) @Between(min = 3, max = 4) @SuchThat("#_ < 3") int i) {
+        public void shouldHold(@ForAll(discardRatio = 3) @SuchThat("false") Foo f) {
             ++iterations;
         }
     }
@@ -77,7 +78,7 @@ public class DiscardRatioTest {
     public static class ZeroDiscardRatio {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll @Between(min = 3, max = 4) @SuchThat("#_ < 3") int i) {
+        @Theory public void shouldHold(@ForAll @SuchThat("false") Foo f) {
             ++iterations;
         }
     }
