@@ -25,8 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.List;
-
+import com.pholser.junit.quickcheck.test.generator.Box;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -37,13 +36,13 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllGenericArrayTheoryParameterTypesTest {
-    @Test public void arrayOfListOfHuh() {
-        assertThat(testResult(ArrayOfListOfHuh.class), isSuccessful());
+    @Test public void arrayOfBoxOfHuh() {
+        assertThat(testResult(ArrayOfBoxOfHuh.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class ArrayOfListOfHuh {
-        @Theory public void shouldHold(@ForAll(sampleSize = 5) List<?>[] items) {
+    public static class ArrayOfBoxOfHuh {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) Box<?>[] items) {
         }
     }
 }

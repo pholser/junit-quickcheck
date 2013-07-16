@@ -32,7 +32,6 @@ import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
-import com.pholser.junit.quickcheck.internal.generator.BasicGeneratorSource;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
@@ -51,7 +50,6 @@ public class RandomValueSupplier extends ParameterSupplier {
     public RandomValueSupplier() {
         this(new RandomTheoryParameterGenerator(new SourceOfRandomness(new SecureRandom()),
             new GeneratorRepository(new SourceOfRandomness(new SecureRandom()))
-                .register(new BasicGeneratorSource())
                 .register(new ServiceLoaderGeneratorSource())));
     }
 

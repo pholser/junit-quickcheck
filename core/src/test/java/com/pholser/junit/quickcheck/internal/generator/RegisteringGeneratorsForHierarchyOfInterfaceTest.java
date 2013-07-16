@@ -28,10 +28,10 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import com.pholser.junit.quickcheck.generator.java.util.concurrent.CallableGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,16 +44,16 @@ import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     private GeneratorRepository repo;
-    private CallableGenerator<?> generator;
+    private TestCallableGenerator<?> generator;
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new CallableGenerator<Object>();
+        generator = new TestCallableGenerator<Object>();
         List<Generator<?>> generators = newArrayList();
         generators.add(generator);
-        generators.add(new IntegerGenerator());
+        generators.add(new TestIntegerGenerator());
 
         repo.register(generators);
     }
@@ -67,6 +67,6 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     @Test public void object() {
         Generator<?> result = repo.generatorFor(Object.class);
 
-        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 }

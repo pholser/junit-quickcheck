@@ -27,8 +27,8 @@ package com.pholser.junit.quickcheck;
 
 import java.util.Formatter;
 
-import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
+import com.pholser.junit.quickcheck.test.generator.Between;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -48,8 +48,7 @@ public class MarkedWithSpuriousConfigurationTest {
     public static class WithSpuriousConfiguration {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll @ValuesOf
-                                       @InRange(min = "3", max = "6") Formatter.BigDecimalLayoutForm f) {
+        @Theory public void shouldHold(@ForAll @ValuesOf @Between(min = 3, max = 6) Formatter.BigDecimalLayoutForm f) {
             ++iterations;
         }
     }

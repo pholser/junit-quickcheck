@@ -27,17 +27,17 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
-import com.pholser.junit.quickcheck.generator.java.util.ArrayListGenerator;
-import com.pholser.junit.quickcheck.generator.java.util.concurrent.CallableGenerator;
 import com.pholser.junit.quickcheck.internal.generator.ArrayGenerator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,24 +53,24 @@ public class SupplyingCallableGeneratorWithComponentTest {
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
-        repo = new GeneratorRepository(random).register(Arrays.<Generator<?>>asList(
-            new IntegerGenerator(),
-            new CallableGenerator(),
-            new ArrayListGenerator()));
-        when(random.nextInt(0, 1)).thenReturn(1);
+        repo = new GeneratorRepository(random).register(Arrays.<Generator<?>> asList(
+            new TestIntegerGenerator(),
+            new TestCallableGenerator(),
+            new BoxGenerator()));
+        when(random.nextInt(0, 2)).thenReturn(1);
     }
 
     @Test public void coaxingGeneratorToSupplyComponentForCallable() {
         ArrayGenerator generator = (ArrayGenerator) repo.generatorFor(new GenericArrayTypeImpl(
-            new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0]))));
+            new ParameterizedTypeImpl(Box.class, new WildcardTypeImpl(new Type[] { Object.class }, new Type[0]))));
 
         Generator<?> arrayElementGenerator = generator.componentGenerator();
-        assertGenerators(arrayElementGenerator, ArrayListGenerator.class);
-        ArrayListGenerator listGenerator = (ArrayListGenerator) componentOf(arrayElementGenerator, 0);
-        Generator<?> listElementGenerator = listGenerator.componentGenerators().get(0);
-        assertGenerators(listElementGenerator, CallableGenerator.class);
-        CallableGenerator<?> callableGenerator = (CallableGenerator<?>) componentOf(listElementGenerator, 0);
+        assertGenerators(arrayElementGenerator, BoxGenerator.class);
+        BoxGenerator boxGenerator = (BoxGenerator) componentOf(arrayElementGenerator, 0);
+        Generator<?> listElementGenerator = boxGenerator.componentGenerators().get(0);
+        assertGenerators(listElementGenerator, TestCallableGenerator.class);
+        TestCallableGenerator<?> callableGenerator = (TestCallableGenerator<?>) componentOf(listElementGenerator, 0);
         Generator<?> callableResultGenerator = callableGenerator.componentGenerators().get(0);
-        assertGenerators(callableResultGenerator, IntegerGenerator.class);
+        assertGenerators(callableResultGenerator, TestIntegerGenerator.class);
     }
 }

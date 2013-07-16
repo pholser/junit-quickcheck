@@ -37,12 +37,12 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-class Classes {
+public class Classes {
     private Classes() {
         throw new UnsupportedOperationException();
     }
 
-    static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
+    public static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
         return new TypeSafeMatcher<Class<?>>() {
             @Override protected boolean matchesSafely(Class<?> item) {
                 return item.isAssignableFrom(other);
@@ -54,7 +54,7 @@ class Classes {
         };
     }
 
-    static List<Class<?>> classesOf(Iterable<?> items) {
+    public static List<Class<?>> classesOf(Iterable<?> items) {
         return FluentIterable.from(items)
             .transform(new Function<Object, Class<?>>() {
                 @Override public Class<?> apply(Object input) {
@@ -63,11 +63,11 @@ class Classes {
             }).toList();
     }
 
-    static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
+    public static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
         return commonSuperclassesOf(classes).get(0);
     }
 
-    static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
+    private static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
         // start off with set from first hierarchy
         Set<Class<?>> rollingIntersect = new LinkedHashSet<Class<?>>(getClassesBreadthFirst(classes.get(0)));
 
@@ -80,7 +80,7 @@ class Classes {
         return new ArrayList<Class<?>>(rollingIntersect);
     }
 
-    static Set<Class<?>> getClassesBreadthFirst(Class<?> clazz) {
+    private static Set<Class<?>> getClassesBreadthFirst(Class<?> clazz) {
         Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
         Set<Class<?>> nextLevel = new LinkedHashSet<Class<?>>();
         nextLevel.add(clazz);

@@ -42,6 +42,7 @@
 
     <modules>
         <module>core</module>
+        <module>generators</module>
         <module>guava</module>
     </modules>
 
@@ -119,7 +120,7 @@
                             <lineRate>100</lineRate>
                             <branchRate>96</branchRate>
                             <totalLineRate>100</totalLineRate>
-                            <totalBranchRate>99</totalBranchRate>
+                            <totalBranchRate>98</totalBranchRate>
                         </check>
                     </configuration>
                     <executions>

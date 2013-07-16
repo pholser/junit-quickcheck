@@ -29,10 +29,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.java.math.BigDecimalGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.TestBigDecimalGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,16 +45,16 @@ import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     private GeneratorRepository repo;
-    private BigDecimalGenerator generator;
+    private TestBigDecimalGenerator generator;
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new BigDecimalGenerator();
+        generator = new TestBigDecimalGenerator();
         List<Generator<?>> generators = newArrayList();
         generators.add(generator);
-        generators.add(new IntegerGenerator());
+        generators.add(new TestIntegerGenerator());
 
         repo.register(generators);
     }
@@ -68,24 +68,24 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     @Test public void comparable() {
         Generator<?> result = repo.generatorFor(Comparable.class);
 
-        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
     @Test public void serializable() {
         Generator<?> result = repo.generatorFor(Serializable.class);
 
-        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
     @Test public void number() {
         Generator<?> result = repo.generatorFor(Number.class);
 
-        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
     @Test public void object() {
         Generator<?> result = repo.generatorFor(Object.class);
 
-        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 }

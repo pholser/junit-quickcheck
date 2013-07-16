@@ -25,7 +25,5 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import com.pholser.junit.quickcheck.generator.java.lang.ShortGenerator;
-
-public class AnotherShortGenerator extends ShortGenerator {
+public class AnotherShortGenerator extends TestShortGenerator {
 }

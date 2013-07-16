@@ -27,6 +27,9 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 
+import java.util.Set;
+
+import static com.google.common.collect.Sets.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -40,8 +43,12 @@ public class Generators {
         assumeThat(result, instanceOf(CompositeGenerator.class));
 
         CompositeGenerator composite = (CompositeGenerator) result;
-        for (int i = 0; i < expectedTypes.length; ++i)
-            assertThat("generators[" + i + ']', composite.componentGenerator(i), instanceOf(expectedTypes[i]));
+        Set<Class<?>> compositeTypes = newHashSet();
+        for (int i = 0; i < composite.numberOfComponentGenerators(); ++i)
+            compositeTypes.add(composite.componentGenerator(i).getClass());
+
+        for (Class<? extends Generator> each : expectedTypes)
+            assertThat(compositeTypes, hasItem(each));
     }
 
     public static Generator<?> componentOf(Generator<?> generator, int index) {

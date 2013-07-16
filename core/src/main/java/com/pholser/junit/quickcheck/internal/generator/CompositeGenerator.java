@@ -55,6 +55,10 @@ public class CompositeGenerator extends Generator<Object> {
         return componentGenerators.get(index);
     }
 
+    public int numberOfComponentGenerators() {
+        return componentGenerators.size();
+    }
+
     @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
         for (Generator<?> each : componentGenerators)
             each.configure(configurationsByType);

@@ -31,8 +31,8 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
-import com.pholser.junit.quickcheck.generator.java.lang.LongGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestLongGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -45,52 +45,6 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllLambdaTheoryParameterTypesTest {
-    @Test public void runnable() throws Exception {
-        assertThat(testResult(RunnableParameter.class), isSuccessful());
-        assertEquals(defaultSampleSize(), RunnableParameter.iterations);
-    }
-
-    @RunWith(Theories.class)
-    public static class RunnableParameter {
-        static int iterations;
-
-        @Theory public void shouldHold(@ForAll Runnable task) {
-            ++iterations;
-        }
-    }
-
-    @Test public void callable() throws Exception {
-        assertThat(testResult(CallableParameter.class), isSuccessful());
-        assertEquals(defaultSampleSize(), CallableParameter.iterations);
-    }
-
-    @RunWith(Theories.class)
-    public static class CallableParameter {
-        static int iterations;
-
-        @Theory public void shouldHold(@ForAll Callable<? extends Long> task) throws Exception {
-            ++iterations;
-
-            Long value = functionValue(new LongGenerator(), null);
-            for (int i = 0; i < 10000; ++i)
-                assertEquals(value, task.call());
-        }
-    }
-
-    @Test public void actionListener() throws Exception {
-        assertThat(testResult(ActionListenerParameter.class), isSuccessful());
-        assertEquals(defaultSampleSize(), ActionListenerParameter.iterations);
-    }
-
-    @RunWith(Theories.class)
-    public static class ActionListenerParameter {
-        static int iterations;
-
-        @Theory public void shouldHold(@ForAll ActionListener listener) {
-            ++iterations;
-        }
-    }
-
     @Test public void comparatorOfString() throws Exception {
         assertThat(testResult(ComparatorOfString.class), isSuccessful());
         assertEquals(defaultSampleSize(), ComparatorOfString.iterations);
@@ -103,7 +57,7 @@ public class ForAllLambdaTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll Comparator<String> c) {
             ++iterations;
 
-            int value = functionValue(new IntegerGenerator(), new Object[] { "foo", "bar" });
+            int value = functionValue(new TestIntegerGenerator(), new Object[] { "foo", "bar" });
             for (int i = 0; i < 10000; ++i)
                 assertEquals(value, c.compare("foo", "bar"));
         }

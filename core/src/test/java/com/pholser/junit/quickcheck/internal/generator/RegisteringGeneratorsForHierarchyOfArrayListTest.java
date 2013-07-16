@@ -32,10 +32,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
 
-import com.pholser.junit.quickcheck.generator.java.util.ArrayListGenerator;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,16 +48,16 @@ import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     private GeneratorRepository repo;
-    private ArrayListGenerator generator;
+    private TestArrayListGenerator generator;
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new ArrayListGenerator();
+        generator = new TestArrayListGenerator();
         List<Generator<?>> generators = newArrayList();
         generators.add(generator);
-        generators.add(new IntegerGenerator());
+        generators.add(new TestIntegerGenerator());
 
         repo.register(generators);
     }
@@ -89,7 +89,7 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     @Test public void serializable() {
         Generator<?> result = repo.generatorFor(Serializable.class);
 
-        assertGenerators(result, generator.getClass(), IntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
     @Test public void abstractCollection() {
@@ -108,5 +108,11 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
         Generator<?> result = repo.generatorFor(Iterable.class);
 
         assertGenerators(result, generator.getClass());
+    }
+
+    @Test public void collectionsDoNotGetRetrievedForObjectType() {
+        Generator<?> result = repo.generatorFor(Object.class);
+
+        assertGenerators(result, TestIntegerGenerator.class);
     }
 }

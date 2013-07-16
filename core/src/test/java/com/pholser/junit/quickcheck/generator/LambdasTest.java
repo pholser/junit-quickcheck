@@ -26,8 +26,8 @@
 package com.pholser.junit.quickcheck.generator;
 
 import com.google.common.base.Predicate;
-import com.pholser.junit.quickcheck.generator.java.lang.BooleanGenerator;
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestBooleanGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,11 +40,11 @@ import static org.junit.rules.ExpectedException.*;
 public class LambdasTest {
     @Rule public final ExpectedException thrown = none();
 
-    private BooleanGenerator returnValueGenerator;
+    private TestBooleanGenerator returnValueGenerator;
     private Predicate<?> predicate;
 
     @Before public void setUp() {
-        returnValueGenerator = new BooleanGenerator();
+        returnValueGenerator = new TestBooleanGenerator();
         predicate = makeLambda(Predicate.class, returnValueGenerator, null);
     }
 
@@ -69,6 +69,6 @@ public class LambdasTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(Cloneable.class + " is not a functional interface");
 
-        makeLambda(Cloneable.class, new IntegerGenerator(), null);
+        makeLambda(Cloneable.class, new TestIntegerGenerator(), null);
     }
 }
