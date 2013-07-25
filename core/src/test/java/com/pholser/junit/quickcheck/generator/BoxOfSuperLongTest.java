@@ -25,6 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
@@ -32,13 +35,9 @@ import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import org.javaruntype.type.Types;
 
-import java.lang.reflect.Type;
-import java.util.List;
-
 import static com.google.common.collect.Lists.*;
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.eq;
 
 public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {

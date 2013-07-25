@@ -29,10 +29,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
-import static java.lang.System.*;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+
+import static java.lang.System.*;
 
 public class ParameterizedTypeImpl implements ParameterizedType {
     private final Type raw;

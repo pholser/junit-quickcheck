@@ -25,8 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -41,6 +39,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static java.util.Arrays.*;
 import static org.junit.rules.ExpectedException.*;
 import static org.mockito.Mockito.*;
 

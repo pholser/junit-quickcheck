@@ -25,9 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.io.Serializable;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
+
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestHashMapGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
@@ -35,15 +39,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.io.Serializable;
-import java.util.AbstractCollection;
-import java.util.AbstractList;
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.RandomAccess;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;

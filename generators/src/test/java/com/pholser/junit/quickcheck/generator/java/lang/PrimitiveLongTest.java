@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
 import java.lang.reflect.Type;
 import java.util.List;
+
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.lang.Long.*;

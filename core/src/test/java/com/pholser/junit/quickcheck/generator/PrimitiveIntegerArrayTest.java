@@ -28,10 +28,9 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveIntegerArrayTest extends CoreTheoryParameterTest {

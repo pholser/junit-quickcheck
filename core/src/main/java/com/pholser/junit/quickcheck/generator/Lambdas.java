@@ -31,10 +31,10 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Random;
 
-import static java.lang.System.*;
-
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.System.*;
 
 /**
  * Helper class for creating instances of "functional interfaces".

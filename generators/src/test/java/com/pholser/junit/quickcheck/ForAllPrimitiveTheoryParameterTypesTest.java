@@ -25,6 +25,9 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.internal.Reflection;
@@ -33,9 +36,6 @@ import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.*;

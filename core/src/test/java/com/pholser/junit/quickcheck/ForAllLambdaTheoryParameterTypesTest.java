@@ -25,10 +25,11 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.Random;
+
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.Box;
-import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.FooGenerator;
 import com.pholser.junit.quickcheck.test.generator.FooUnboxer;
@@ -36,8 +37,6 @@ import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
-
-import java.util.Random;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static org.junit.Assert.*;

@@ -38,7 +38,6 @@ import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

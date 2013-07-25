@@ -27,8 +27,6 @@ package com.pholser.junit.quickcheck.generator.java.math;
 
 import java.math.BigInteger;
 
-import static java.math.BigInteger.*;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -37,6 +35,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.math.BigInteger.*;
 
 /**
  * <p>Produces values for theory parameters of type {@link java.math.BigInteger}.</p>

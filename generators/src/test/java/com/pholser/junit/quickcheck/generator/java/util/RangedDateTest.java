@@ -33,11 +33,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.InRange;
 
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedDateTest extends BasicGeneratorTheoryParameterTest {

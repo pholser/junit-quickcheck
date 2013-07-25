@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.internal.generator.GenerationContext;
-import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;

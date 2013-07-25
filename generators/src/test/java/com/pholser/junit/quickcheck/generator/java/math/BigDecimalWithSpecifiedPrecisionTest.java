@@ -33,12 +33,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.Precision;
+
 import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.Precision;
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
 import static org.mockito.Mockito.*;
 
 public class BigDecimalWithSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {

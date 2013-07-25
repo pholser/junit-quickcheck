@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.nio.charset.Charset;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import java.nio.charset.Charset;
 
 public class TestStringGenerator extends Generator<String> {
     public TestStringGenerator() {

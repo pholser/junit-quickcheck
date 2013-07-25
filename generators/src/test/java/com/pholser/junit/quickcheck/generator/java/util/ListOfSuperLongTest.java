@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.internal.Reflection;
+import java.lang.reflect.Type;
+import java.util.List;
+
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
-
-import java.lang.reflect.Type;
-import java.util.List;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;

@@ -28,11 +28,10 @@ package com.pholser.junit.quickcheck.generator.java.lang;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
+import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {

@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Maps.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;

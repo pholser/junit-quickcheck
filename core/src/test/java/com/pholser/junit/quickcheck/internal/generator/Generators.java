@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-
 import java.util.Set;
+
+import com.pholser.junit.quickcheck.generator.Generator;
 
 import static com.google.common.collect.Sets.*;
 import static org.hamcrest.CoreMatchers.*;

@@ -31,13 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 /**
  * Produces values for theory parameters.
@@ -75,8 +74,7 @@ public abstract class Generator<T> {
      * <p>Produces a value for a theory parameter.</p>
      *
      * <p>A generator may raise an unchecked exception if some condition exists which would lead to a confusing
-     * generation -- for example, if a generator honored {@link InRange} and its {@link InRange#minInt()} were
-     * greater than {@link InRange#maxInt()}.</p>
+     * generation -- for example, if a generator honored a range configuration, and the endpoints were transposed.</p>
      *
      * @param random a source of randomness to be used when generating the value
      * @param status an object that the generator can use to influence the value it produces. For example, a generator

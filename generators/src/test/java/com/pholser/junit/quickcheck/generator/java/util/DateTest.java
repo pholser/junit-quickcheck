@@ -29,10 +29,9 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class DateTest extends BasicGeneratorTheoryParameterTest {

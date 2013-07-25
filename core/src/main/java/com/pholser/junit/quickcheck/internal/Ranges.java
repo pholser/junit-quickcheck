@@ -27,9 +27,9 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.math.BigInteger;
 
-import static java.lang.String.*;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.String.*;
 
 public final class Ranges {
     private Ranges() {

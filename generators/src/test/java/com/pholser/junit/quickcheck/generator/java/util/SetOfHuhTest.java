@@ -25,19 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Set;
+
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Set;
-
 import static com.google.common.collect.Sets.*;
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
 
 public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {

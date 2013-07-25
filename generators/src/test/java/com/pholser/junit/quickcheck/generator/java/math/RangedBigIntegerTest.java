@@ -32,12 +32,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.InRange;
+
 import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
 import static org.mockito.Mockito.*;
 
 public class RangedBigIntegerTest extends BasicGeneratorTheoryParameterTest {

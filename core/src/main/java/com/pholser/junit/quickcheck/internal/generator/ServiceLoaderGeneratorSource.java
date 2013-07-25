@@ -30,9 +30,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import static java.util.Collections.*;
-
 import com.pholser.junit.quickcheck.generator.Generator;
+
+import static java.util.Collections.*;
 
 public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
     @SuppressWarnings("rawtypes") private final ServiceLoader<Generator> loader;

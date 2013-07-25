@@ -28,8 +28,6 @@ package com.pholser.junit.quickcheck;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -38,6 +36,7 @@ import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest.TestEnum.*;
+import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;

@@ -30,11 +30,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import static java.math.BigDecimal.*;
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
+import static java.math.BigDecimal.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BigDecimalTest extends BasicGeneratorTheoryParameterTest {

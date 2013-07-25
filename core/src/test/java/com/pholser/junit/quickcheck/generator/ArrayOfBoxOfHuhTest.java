@@ -25,16 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.collect.Iterables;
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 

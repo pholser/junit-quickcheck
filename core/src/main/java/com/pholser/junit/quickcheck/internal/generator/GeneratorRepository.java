@@ -25,17 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.Items;
-import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.internal.Zilch;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.ExtendsTypeParameter;
-import org.javaruntype.type.StandardTypeParameter;
-import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
-import org.javaruntype.type.WildcardTypeParameter;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -46,6 +35,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Reflection;
+import com.pholser.junit.quickcheck.internal.Zilch;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
 
 import static org.javaruntype.type.Types.*;
 
