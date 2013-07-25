@@ -13,7 +13,14 @@ Be sure to use the `contrib` version of the runner, annotations, etc. with junit
 
 ### Downloading
 
-Releases are synced to the central Maven repository. Declare a dependency element in your POM like so:
+junit-quickcheck's framework is contained in the JAR file for the module `junit-quickcheck-core`. You will
+want to start out also with the JAR file for the module `junit-quickcheck-generators`, which consists of generators
+for theory parameters of basic Java types, such as primitives, arrays, and collections.
+
+There is also a module `junit-quickcheck-guava`, containing generators for
+[Guava](https://code.google.com/p/guava-libraries/) types.
+
+Releases are synced to the central Maven repository. Declare `<dependency>` elements in your POM like so:
 
     ...
     <dependencies>
@@ -21,6 +28,11 @@ Releases are synced to the central Maven repository. Declare a dependency elemen
       <dependency>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck-core</artifactId>
+        <version>0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pholser</groupId>
+        <artifactId>junit-quickcheck-generators</artifactId>
         <version>0.1</version>
       </dependency>
       ...
@@ -84,7 +96,8 @@ By default, 100 random values will be generated for a parameter marked `@ForAll`
 
 #### Supported types
 
-Out of the box, junit-quickcheck can generate random values for theory parameters of the following types:
+Out of the box (core + generators), junit-quickcheck can generate random values for theory parameters of the following
+types:
 
 * all Java primitives and primitive wrappers
 * `java.math.Big(Decimal|Integer)`
@@ -109,8 +122,9 @@ generation with equal probability.
 
 If you wish to add a generator for a type without having to use `@From`, you can package your `Generator` in a
 [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html) JAR file and place the JAR on
-the class path. junit-quickcheck will make those generators available for use. Any generators you supply in this manner
-for already-supported types complement the built-in generators; they do not override them.
+the class path. junit-quickcheck will make those generators available for use. The generators in the module
+`junit-quickcheck-generators` are loaded via this mechanism also; any generators you supply and make available to
+the `ServiceLoader` complement these generators rather than override them.
 
 Custom generators for types that are functional interfaces override the built-in means of generation for such types.
 This is usually necessary for functional interfaces that involve generics.
