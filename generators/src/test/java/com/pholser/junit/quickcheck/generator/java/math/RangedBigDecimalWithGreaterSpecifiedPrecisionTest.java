@@ -41,9 +41,7 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RangedBigDecimalWithGreaterSpecifiedPrecisionTest
-    extends BasicGeneratorTheoryParameterTest {
-
+public class RangedBigDecimalWithGreaterSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
     private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;

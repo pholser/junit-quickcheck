@@ -36,8 +36,7 @@ import static org.mockito.Mockito.*;
 
 public class PrimitiveCharTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextChar(minChar(), maxChar()))
-            .thenReturn('t');
+        when(randomForParameterGenerator.nextChar(minChar(), maxChar())).thenReturn('t');
     }
 
     @Override protected Type parameterType() {

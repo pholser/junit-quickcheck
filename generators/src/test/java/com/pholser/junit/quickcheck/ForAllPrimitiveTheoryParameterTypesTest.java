@@ -485,7 +485,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
 
     @Test public void valuesOfHasNoEffectOnNonBooleanNonEnum() throws Exception {
         assertThat(testResult(ValuesOfOnInt.class), isSuccessful());
-        Assert.assertEquals(Annotations.defaultSampleSize(), ValuesOfOnInt.iterations);
+        assertEquals(Annotations.defaultSampleSize(), ValuesOfOnInt.iterations);
     }
 
     @RunWith(Theories.class)

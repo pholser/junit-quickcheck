@@ -42,17 +42,17 @@ public class ConstraintEvaluatorTest {
     private ConstraintEvaluator evaluator;
 
     @Before public void beforeEach() {
-        evaluator = new ConstraintEvaluator("#x > 0");
+        evaluator = new ConstraintEvaluator("#_ > 0");
     }
 
     @Test public void whenExpressionEvaluatesTrue() {
-        evaluator.bind("x", 1);
+        evaluator.bind(1);
 
         assertTrue(evaluator.evaluate());
     }
 
     @Test public void whenExpressionEvaluatesFalse() {
-        evaluator.bind("x", -2);
+        evaluator.bind(-2);
 
         assertFalse(evaluator.evaluate());
     }
@@ -61,12 +61,12 @@ public class ConstraintEvaluatorTest {
         thrown.expect(EvaluationException.class);
         thrown.expectMessage("Malformed");
 
-        evaluator = new ConstraintEvaluator("#x !*@&#^*");
+        evaluator = new ConstraintEvaluator("#_ !*@&#^*");
     }
 
     @Test public void whenExpressionCannotBeEvaluatedCorrectly() {
-        evaluator = new ConstraintEvaluator("#x.foo == 'bar'");
-        evaluator.bind("x", 4);
+        evaluator = new ConstraintEvaluator("#_.foo == 'bar'");
+        evaluator.bind(4);
 
         thrown.expect(EvaluationException.class);
         thrown.expectCause(isA(NoSuchPropertyException.class));
@@ -76,7 +76,7 @@ public class ConstraintEvaluatorTest {
 
     @Test public void whenExpressionContainsAnUndefinedVariable() {
         evaluator = new ConstraintEvaluator("#x == -3");
-        evaluator.bind("y", -3);
+        evaluator.bind(-3);
 
         thrown.expect(EvaluationException.class);
         thrown.expectMessage("Referring to undefined variable");

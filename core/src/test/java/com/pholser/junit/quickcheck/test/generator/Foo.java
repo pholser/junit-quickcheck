@@ -40,8 +40,7 @@ public class Foo {
         return i;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         return o instanceof Foo && ((Foo) o).getI() == i;
     }
 }

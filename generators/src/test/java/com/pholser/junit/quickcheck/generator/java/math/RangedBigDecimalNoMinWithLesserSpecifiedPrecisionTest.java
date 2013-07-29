@@ -42,9 +42,7 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RangedBigDecimalNoMinWithLesserSpecifiedPrecisionTest
-    extends BasicGeneratorTheoryParameterTest {
-
+public class RangedBigDecimalNoMinWithLesserSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
     private final BigDecimal max = new BigDecimal("987654321987654321.09876");
     private final BigInteger maxBigInt = max.movePointRight(5).toBigInteger();
 

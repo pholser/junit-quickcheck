@@ -50,8 +50,8 @@ public class ConstraintEvaluator {
         }
     }
 
-    public void bind(String name, Object value) {
-        bindings.put(name, value);
+    public void bind(Object value) {
+        bindings.put("_", value);
     }
 
     public static class EvaluationException extends RuntimeException {

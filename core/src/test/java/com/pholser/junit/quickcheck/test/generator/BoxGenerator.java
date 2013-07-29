@@ -38,8 +38,7 @@ public class BoxGenerator extends ComponentizedGenerator<Box> {
         return new Box<Object>(componentGenerators().get(0).generate(random, status));
     }
 
-    @Override
-    public int numberOfNeededComponents() {
+    @Override public int numberOfNeededComponents() {
         return 1;
     }
 }

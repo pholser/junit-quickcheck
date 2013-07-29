@@ -96,9 +96,8 @@ public class ForAllFunctionTheoryParameterTypesTest {
 
             Box<Zilch> box = new Box<Zilch>(Zilch.INSTANCE);
 
-            for (Function each : functions) {
+            for (Function each : functions)
                 each.apply(box);
-            }
         }
     }
 }

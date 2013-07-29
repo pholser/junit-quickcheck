@@ -41,7 +41,8 @@ import static com.google.common.collect.Lists.*;
 import static org.junit.Assert.*;
 
 public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
-    @Override protected void primeSourceOfRandomness() throws Exception {
+    @Override protected void primeSourceOfRandomness() {
+        // nothing to do here
     }
 
     @Override protected Type parameterType() {
