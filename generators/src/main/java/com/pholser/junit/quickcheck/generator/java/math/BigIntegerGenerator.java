@@ -38,7 +38,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.math.BigInteger.*;
 
 /**
- * <p>Produces values for theory parameters of type {@link java.math.BigInteger}.</p>
+ * <p>Produces values for theory parameters of type {@link BigInteger}.</p>
  *
  * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>

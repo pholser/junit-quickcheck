@@ -25,21 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.ArrayList;
-
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Stack;
 
 /**
- * Produces values for theory parameters of type {@link ArrayList}.
+ * Produces values for theory parameters of type {@link Stack}.
  */
-public class ArrayListGenerator extends CollectionGenerator<ArrayList> {
-    public ArrayListGenerator() {
-        super(ArrayList.class);
+public class StackGenerator extends CollectionGenerator<Stack> {
+    public StackGenerator() {
+        super(Stack.class);
     }
 
-    @Override protected ArrayList<Object> emptyCollection() {
-        return new ArrayList<Object>();
+    @Override protected Stack<Object> emptyCollection() {
+        return new Stack<Object>();
     }
 }

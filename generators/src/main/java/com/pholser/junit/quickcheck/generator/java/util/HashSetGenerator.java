@@ -32,27 +32,14 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * <p>Produces values for theory parameters of type {@link java.util.HashSet}.</p>
- *
- * <p>The generated list has a number of elements decided by
- * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}. The individual elements will have a type
- * corresponding to the theory parameter's type argument.</p>
+ * Produces values for theory parameters of type {@link HashSet}.
  */
-public class HashSetGenerator extends ComponentizedGenerator<HashSet> {
+public class HashSetGenerator extends CollectionGenerator<HashSet> {
     public HashSetGenerator() {
         super(HashSet.class);
     }
 
-    @Override public HashSet<?> generate(SourceOfRandomness random, GenerationStatus status) {
-        HashSet<Object> items = new HashSet<Object>();
-
-        for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded)
-            items.add(componentGenerators().get(0).generate(random, status));
-
-        return items;
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 1;
+    @Override protected HashSet<Object> emptyCollection() {
+        return new HashSet<Object>();
     }
 }

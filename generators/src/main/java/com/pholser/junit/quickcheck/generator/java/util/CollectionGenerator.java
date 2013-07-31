@@ -26,20 +26,37 @@
 package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * Produces values for theory parameters of type {@link ArrayList}.
+ * <p>Base class for generators of {@link Collection}s, such as {@link java.util.List}s and {@link java.util.Set}.</p>
+ *
+ * <p>The generated collection has a number of elements limited by
+ * {@link GenerationStatus#size()}. The individual elements will have a type corresponding to the theory parameter's
+ * type argument.</p>
  */
-public class ArrayListGenerator extends CollectionGenerator<ArrayList> {
-    public ArrayListGenerator() {
-        super(ArrayList.class);
+public abstract class CollectionGenerator<T extends Collection> extends ComponentizedGenerator<T> {
+    protected CollectionGenerator(Class<T> type) {
+        super(type);
     }
 
-    @Override protected ArrayList<Object> emptyCollection() {
-        return new ArrayList<Object>();
+    @SuppressWarnings("unchecked")
+    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
+        T items = emptyCollection();
+
+        for (int i = 0; i < status.size(); ++i)
+            items.add(componentGenerators().get(0).generate(random, status));
+
+        return items;
     }
+
+    @Override public int numberOfNeededComponents() {
+        return 1;
+    }
+
+    protected abstract T emptyCollection();
 }

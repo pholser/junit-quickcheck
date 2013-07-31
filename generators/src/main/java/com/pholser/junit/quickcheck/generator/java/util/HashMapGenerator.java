@@ -32,9 +32,9 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * <p>Produces values for theory parameters of type {@link java.util.HashMap}.</p>
+ * <p>Produces values for theory parameters of type {@link HashMap}.</p>
  *
- * <p>The generated map has a number of entries decided by
+ * <p>The generated map has a number of entries no larger than
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}. The individual keys and values will have
  * types corresponding to the theory parameter's type arguments.</p>
  */
@@ -46,7 +46,7 @@ public class HashMapGenerator extends ComponentizedGenerator<HashMap> {
     @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
         HashMap<Object, Object> items = new HashMap<Object, Object>();
 
-        for (int itemsAdded = 0; itemsAdded < status.size(); ++itemsAdded) {
+        for (int i = 0; i < status.size(); ++i) {
             Object key = componentGenerators().get(0).generate(random, status);
             Object value = componentGenerators().get(1).generate(random, status);
             items.put(key, value);
