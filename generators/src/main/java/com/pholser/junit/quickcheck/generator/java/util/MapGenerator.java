@@ -25,37 +25,44 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.Collection;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * <p>Base class for generators of {@link Collection}s, such as {@link java.util.List}s and {@link java.util.Set}.</p>
+ * <p>Base class for generators of {@link Map}s.</p>
  *
- * <p>The generated collection has a number of elements limited by
- * {@link GenerationStatus#size()}. The individual elements will have a type corresponding to the theory parameter's
- * type argument.</p>
+ * <p>The generated map has a number of entries no larger than {@link GenerationStatus#size()}. The individual keys
+ * and values will have types corresponding to the theory parameter's type arguments.</p>
  */
-public abstract class CollectionGenerator<T extends Collection> extends ComponentizedGenerator<T> {
-    protected CollectionGenerator(Class<T> type) {
+public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator<T> {
+    protected MapGenerator(Class<T> type) {
         super(type);
     }
 
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        T items = emptyCollection();
+        T items = emptyMap();
 
-        for (int i = 0; i < status.size(); ++i)
-            items.add(componentGenerators().get(0).generate(random, status));
+        for (int i = 0; i < status.size(); ++i) {
+            Object key = componentGenerators().get(0).generate(random, status);
+            Object value = componentGenerators().get(1).generate(random, status);
+            if (okToAdd(key, value))
+                items.put(key, value);
+        }
 
         return items;
     }
 
     @Override public int numberOfNeededComponents() {
-        return 1;
+        return 2;
     }
 
-    protected abstract T emptyCollection();
+    protected abstract T emptyMap();
+
+    protected boolean okToAdd(Object key, Object value) {
+        return true;
+    }
 }

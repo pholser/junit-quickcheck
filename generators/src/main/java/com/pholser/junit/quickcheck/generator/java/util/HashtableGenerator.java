@@ -25,17 +25,23 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 
 /**
- * Produces values for theory parameters of type {@link HashMap}.
+ * Produces values for theory parameters of type {@link Hashtable}.
  */
-public class HashMapGenerator extends MapGenerator<HashMap> {
-    public HashMapGenerator() {
-        super(HashMap.class);
+public class HashtableGenerator extends MapGenerator<Hashtable> {
+    public HashtableGenerator() {
+        super(Hashtable.class);
     }
 
-    @Override protected HashMap<Object, Object> emptyMap() {
-        return new HashMap<Object, Object>();
+    // TODO: Disallow Void as an Object generator.
+    @Override protected Hashtable<Object, Object> emptyMap() {
+        return new Hashtable<Object, Object>();
+    }
+
+    @Override
+    protected boolean okToAdd(Object key, Object value) {
+        return key != null && value != null;
     }
 }

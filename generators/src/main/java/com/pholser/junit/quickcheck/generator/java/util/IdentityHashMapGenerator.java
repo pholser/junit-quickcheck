@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 
 /**
- * Produces values for theory parameters of type {@link HashMap}.
+ * Produces values for theory parameters of type {@link IdentityHashMap}.
  */
-public class HashMapGenerator extends MapGenerator<HashMap> {
-    public HashMapGenerator() {
-        super(HashMap.class);
+public class IdentityHashMapGenerator extends MapGenerator<IdentityHashMap> {
+    public IdentityHashMapGenerator() {
+        super(IdentityHashMap.class);
     }
 
-    @Override protected HashMap<Object, Object> emptyMap() {
-        return new HashMap<Object, Object>();
+    @Override protected IdentityHashMap<Object, Object> emptyMap() {
+        return new IdentityHashMap<Object, Object>();
     }
 }

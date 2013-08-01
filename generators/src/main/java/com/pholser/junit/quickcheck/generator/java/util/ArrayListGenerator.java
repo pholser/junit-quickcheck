@@ -27,10 +27,6 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 /**
  * Produces values for theory parameters of type {@link ArrayList}.
  */

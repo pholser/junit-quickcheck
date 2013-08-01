@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 /**
- * Produces values for theory parameters of type {@link HashMap}.
+ * Produces values for theory parameters of type {@link LinkedHashSet}.
  */
-public class HashMapGenerator extends MapGenerator<HashMap> {
-    public HashMapGenerator() {
-        super(HashMap.class);
+public class LinkedHashSetGenerator extends CollectionGenerator<LinkedHashSet> {
+    public LinkedHashSetGenerator() {
+        super(LinkedHashSet.class);
     }
 
-    @Override protected HashMap<Object, Object> emptyMap() {
-        return new HashMap<Object, Object>();
+    @Override protected LinkedHashSet<Object> emptyCollection() {
+        return new LinkedHashSet<Object>();
     }
 }

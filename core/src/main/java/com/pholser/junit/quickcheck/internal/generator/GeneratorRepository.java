@@ -79,7 +79,7 @@ public class GeneratorRepository {
     }
 
     private void registerHierarchy(Class<?> type, Generator<?> generator) {
-        registerGeneratorForType(type, generator);
+        maybeRegisterGeneratorForType(type, generator);
 
         if (type.getSuperclass() != null)
             registerHierarchy(type.getSuperclass(), generator);
@@ -90,13 +90,9 @@ public class GeneratorRepository {
             registerHierarchy(each, generator);
     }
 
-    private void registerGeneratorForType(Class<?> type, Generator<?> generator) {
-        // Do not feed Collections or Maps to things of type Object, including type parameters.
-        if (Object.class.equals(type)) {
-            Class<?> firstType = generator.types().get(0);
-            if (Collection.class.isAssignableFrom(firstType) || Map.class.isAssignableFrom(firstType))
-                return;
-        }
+    private void maybeRegisterGeneratorForType(Class<?> type, Generator<?> generator) {
+        if (shouldSkipRegisteringGeneratorWithType(type, generator))
+            return;
 
         Set<Generator<?>> forType = generators.get(type);
         if (forType == null) {
@@ -105,6 +101,14 @@ public class GeneratorRepository {
         }
 
         forType.add(generator);
+    }
+
+    private boolean shouldSkipRegisteringGeneratorWithType(Class<?> type, Generator<?> generator) {
+        if (!Object.class.equals(type))
+            return false;
+
+        Class<?> firstType = generator.types().get(0);
+        return Collection.class.isAssignableFrom(firstType) || Map.class.isAssignableFrom(firstType);
     }
 
     public Generator<?> generatorFor(Type type) {
