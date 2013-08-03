@@ -33,24 +33,24 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
-    private final Generator<?> componentGenerator;
+    private final Generator<?> component;
 
-    public ArrayGenerator(Class<?> componentType, Generator<?> componentGenerator) {
+    public ArrayGenerator(Class<?> componentType, Generator<?> component) {
         super(Object.class);
 
         this.componentType = componentType;
-        this.componentGenerator = componentGenerator;
+        this.component = component;
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
         Object array = Array.newInstance(componentType, status.size());
         for (int i = 0; i < Array.getLength(array); ++i)
-            Array.set(array, i, componentGenerator.generate(random, status));
+            Array.set(array, i, component.generate(random, status));
 
         return array;
     }
 
     public Generator<?> componentGenerator() {
-        return componentGenerator;
+        return component;
     }
 }

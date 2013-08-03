@@ -35,32 +35,32 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class CompositeGenerator extends Generator<Object> {
-    private final List<Generator<?>> componentGenerators;
+    private final List<Generator<?>> components;
 
-    public CompositeGenerator(List<Generator<?>> componentGenerators) {
+    public CompositeGenerator(List<Generator<?>> components) {
         super(Object.class);
 
-        this.componentGenerators = new ArrayList<Generator<?>>(componentGenerators);
+        this.components = new ArrayList<Generator<?>>(components);
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
-        Generator<?> generator = componentGenerators.size() == 1
-            ? componentGenerators.get(0)
-            : componentGenerators.get(random.nextInt(0, componentGenerators.size() - 1));
+        Generator<?> generator = components.size() == 1
+            ? components.get(0)
+            : components.get(random.nextInt(0, components.size() - 1));
 
         return generator.generate(random, status);
     }
 
     public Generator<?> componentGenerator(int index) {
-        return componentGenerators.get(index);
+        return components.get(index);
     }
 
     public int numberOfComponentGenerators() {
-        return componentGenerators.size();
+        return components.size();
     }
 
     @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
-        for (Generator<?> each : componentGenerators)
+        for (Generator<?> each : components)
             each.configure(configurationsByType);
     }
 }

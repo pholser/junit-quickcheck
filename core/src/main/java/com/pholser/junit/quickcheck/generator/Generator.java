@@ -107,9 +107,9 @@ public abstract class Generator<T> {
      * <p>Some generators need component generators to create proper values. For example, lists require a single
      * component generator in order to generate elements that have the type of the list parameter's type argument.</p>
      *
-     * @param componentGenerators component generators to add
+     * @param components component generators to add
      */
-    public void addComponentGenerators(List<Generator<?>> componentGenerators) {
+    public void addComponentGenerators(List<Generator<?>> components) {
         // do nothing by default
     }
 
@@ -132,8 +132,8 @@ public abstract class Generator<T> {
      * @param configurationsByType a map of configuration annotations, keyed by annotation type
      */
     public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
-        for (Map.Entry<Class<? extends Annotation>, Annotation> eachEntry : configurationsByType.entrySet())
-            configure(eachEntry.getKey(), eachEntry.getValue());
+        for (Map.Entry<Class<? extends Annotation>, Annotation> each : configurationsByType.entrySet())
+            configure(each.getKey(), each.getValue());
     }
 
     private void configure(Class<? extends Annotation> annotationType, Annotation configuration) {

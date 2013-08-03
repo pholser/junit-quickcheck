@@ -37,7 +37,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -47,6 +46,8 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
+import static com.pholser.junit.quickcheck.internal.Items.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static org.javaruntype.type.Types.*;
 
 public class GeneratorRepository {
@@ -142,12 +143,12 @@ public class GeneratorRepository {
         List<Generator<?>> matches = new ArrayList<Generator<?>>();
 
         if (!hasGeneratorsForRawClass(typeToken.getRawClass())) {
-            Method singleAbstractMethod = Reflection.singleAbstractMethodOf(typeToken.getRawClass());
-            if (singleAbstractMethod != null) {
+            Method method = singleAbstractMethodOf(typeToken.getRawClass());
+            if (method != null) {
                 @SuppressWarnings("unchecked")
-                LambdaGenerator lambdaGenerator = new LambdaGenerator(typeToken.getRawClass(),
-                    generatorFor(singleAbstractMethod.getGenericReturnType()));
-                matches.add(lambdaGenerator);
+                LambdaGenerator lambda = new LambdaGenerator(typeToken.getRawClass(),
+                    generatorFor(method.getGenericReturnType()));
+                matches.add(lambda);
             }
         } else
             matches = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
@@ -180,7 +181,7 @@ public class GeneratorRepository {
 
         // must be "? super X"
         Set<org.javaruntype.type.Type<?>> supertypes = Reflection.supertypes(parameter.getType());
-        org.javaruntype.type.Type<?> chosen = Items.randomElementFrom(supertypes, random);
+        org.javaruntype.type.Type<?> chosen = randomElementFrom(supertypes, random);
         return generatorForTypeToken(chosen, false);
     }
 
@@ -188,9 +189,9 @@ public class GeneratorRepository {
         Set<Generator<?>> matches = generators.get(clazz);
 
         if (!allowMixedTypes) {
-            Generator<?> singleMatch = Items.randomElementFrom(matches, random);
+            Generator<?> match = randomElementFrom(matches, random);
             matches = new HashSet<Generator<?>>();
-            matches.add(singleMatch);
+            matches.add(match);
         }
 
         List<Generator<?>> copies = new ArrayList<Generator<?>>();

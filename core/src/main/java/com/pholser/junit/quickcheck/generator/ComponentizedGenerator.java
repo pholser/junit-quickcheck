@@ -37,7 +37,7 @@ import static java.util.Collections.*;
  * @param <T> type of theory parameter to apply this generator's values to
  */
 public abstract class ComponentizedGenerator<T> extends Generator<T> {
-    private final List<Generator<?>> componentGenerators = new ArrayList<Generator<?>>();
+    private final List<Generator<?>> components = new ArrayList<Generator<?>>();
 
     /**
      * @param type class token for type of theory parameter this generator is applicable to
@@ -50,12 +50,12 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         return true;
     }
 
-    @Override public void addComponentGenerators(List<Generator<?>> generators) {
-        componentGenerators.clear();
-        componentGenerators.addAll(generators);
+    @Override public void addComponentGenerators(List<Generator<?>> components) {
+        this.components.clear();
+        this.components.addAll(components);
     }
 
     public List<Generator<?>> componentGenerators() {
-        return unmodifiableList(componentGenerators);
+        return unmodifiableList(components);
     }
 }
