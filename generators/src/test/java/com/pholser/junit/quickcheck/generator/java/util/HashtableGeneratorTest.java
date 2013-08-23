@@ -23,18 +23,37 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.generator.java.util;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class VoidGeneratorTest {
-    @Test public void canOnlyGenerateNull() {
-        VoidGenerator generator = new VoidGenerator();
+public class HashtableGeneratorTest {
+    private HashtableGenerator generator;
 
-        Void value = generator.generate(null, null);
+    @Before public void setUp() {
+        generator = new HashtableGenerator();
+    }
 
-        assertNull(value);
+    @Test public void startsOutWithAnEmptyMap() {
+        assertTrue(generator.emptyMap().isEmpty());
+    }
+
+    @Test public void disallowsNullKeyAndNullValue() {
+        assertFalse(generator.okToAdd(null, null));
+    }
+
+    @Test public void disallowsNullKey() {
+        assertFalse(generator.okToAdd(null, new Object()));
+    }
+
+    @Test public void disallowsNullValue() {
+        assertFalse(generator.okToAdd(new Object(), null));
+    }
+
+    @Test public void allowsKeyAndValueWhenNeitherIsNull() {
+        assertTrue(generator.okToAdd(new Object(), new Object()));
     }
 }

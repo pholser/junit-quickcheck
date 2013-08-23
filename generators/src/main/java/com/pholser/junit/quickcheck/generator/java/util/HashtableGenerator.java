@@ -40,8 +40,7 @@ public class HashtableGenerator extends MapGenerator<Hashtable> {
         return new Hashtable<Object, Object>();
     }
 
-    @Override
-    protected boolean okToAdd(Object key, Object value) {
+    @Override protected boolean okToAdd(Object key, Object value) {
         return key != null && value != null;
     }
 }
