@@ -92,24 +92,15 @@ public class GeneratorRepository {
     }
 
     private void maybeRegisterGeneratorForType(Class<?> type, Generator<?> generator) {
-        if (shouldSkipRegisteringGeneratorWithType(type, generator))
-            return;
+        if (generator.canRegisterAsType(type)) {
+            Set<Generator<?>> forType = generators.get(type);
+            if (forType == null) {
+                forType = new LinkedHashSet<Generator<?>>();
+                generators.put(type, forType);
+            }
 
-        Set<Generator<?>> forType = generators.get(type);
-        if (forType == null) {
-            forType = new LinkedHashSet<Generator<?>>();
-            generators.put(type, forType);
+            forType.add(generator);
         }
-
-        forType.add(generator);
-    }
-
-    private boolean shouldSkipRegisteringGeneratorWithType(Class<?> type, Generator<?> generator) {
-        if (!Object.class.equals(type))
-            return false;
-
-        Class<?> firstType = generator.types().get(0);
-        return Collection.class.isAssignableFrom(firstType) || Map.class.isAssignableFrom(firstType);
     }
 
     public Generator<?> generatorFor(Type type) {

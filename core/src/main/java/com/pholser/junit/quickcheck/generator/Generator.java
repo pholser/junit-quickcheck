@@ -71,6 +71,17 @@ public abstract class Generator<T> {
     }
 
     /**
+     * Tells whether this generator is allowed to be used for theory parameters of the given type.
+     *
+     * @param type type against which to test this generator
+     * @return {@code} true if the generator is allowed to participate in generating values for theory parameters
+     * of {@code type}.
+     */
+    public boolean canRegisterAsType(Class<?> type) {
+        return true;
+    }
+
+    /**
      * <p>Produces a value for a theory parameter.</p>
      *
      * <p>A generator may raise an unchecked exception if some condition exists which would lead to a confusing

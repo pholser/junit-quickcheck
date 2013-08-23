@@ -60,6 +60,10 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         return 2;
     }
 
+    @Override public boolean canRegisterAsType(Class<?> type) {
+        return !Object.class.equals(type);
+    }
+
     protected abstract T emptyMap();
 
     protected boolean okToAdd(Object key, Object value) {

@@ -57,5 +57,9 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
         return 1;
     }
 
+    @Override public boolean canRegisterAsType(Class<?> type) {
+        return !Object.class.equals(type);
+    }
+
     protected abstract T emptyCollection();
 }

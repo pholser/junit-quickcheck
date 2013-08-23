@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 
 public class TestGeneratorSource implements Iterable<Generator<?>> {
     @Override public Iterator<Generator<?>> iterator() {
@@ -48,7 +49,8 @@ public class TestGeneratorSource implements Iterable<Generator<?>> {
                 new TestIntegerGenerator(),
                 new TestLongGenerator(),
                 new TestShortGenerator(),
-                new TestStringGenerator());
+                new TestStringGenerator(),
+                new ZilchGenerator());
 
         return generators.iterator();
     }

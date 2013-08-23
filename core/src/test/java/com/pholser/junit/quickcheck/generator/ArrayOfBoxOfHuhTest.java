@@ -40,10 +40,9 @@ import static org.mockito.Mockito.*;
 
 public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        int longIndex = 10;
+        int longIndex = 12;
         when(randomForParameterGenerator.nextLong()).thenReturn(1L).thenReturn(7L).thenReturn(63L);
-        when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
-        when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 3)).thenReturn(longIndex);
+        when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 1)).thenReturn(longIndex);
     }
 
     @Override protected Type parameterType() {
@@ -66,7 +65,7 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong();
         verifyNoMoreInteractions(randomForParameterGenerator);
-        verify(randomForGeneratorRepo, times(3)).nextInt(0, Iterables.size(source) - 3);
+        verify(randomForGeneratorRepo, times(3)).nextInt(0, Iterables.size(source) - 1);
         verifyNoMoreInteractions(randomForGeneratorRepo);
     }
 }

@@ -57,6 +57,7 @@ public class GenerationContextTest {
         when(quantifier.sampleSize()).thenReturn(20);
         when(quantifier.discardRatio()).thenReturn(3);
         when(generator.types()).thenReturn(asList(int.class));
+        when(generator.canRegisterAsType(any(Class.class))).thenReturn(true);
         when(generator.generate(same(random), any(GenerationStatus.class))).thenReturn(10).thenReturn(9).thenReturn(8)
             .thenReturn(7).thenReturn(6).thenReturn(5).thenReturn(4).thenReturn(3).thenReturn(2).thenReturn(1)
             .thenReturn(0);
