@@ -93,14 +93,18 @@ public class GeneratorRepository {
 
     private void maybeRegisterGeneratorForType(Class<?> type, Generator<?> generator) {
         if (generator.canRegisterAsType(type)) {
-            Set<Generator<?>> forType = generators.get(type);
-            if (forType == null) {
-                forType = new LinkedHashSet<Generator<?>>();
-                generators.put(type, forType);
-            }
-
-            forType.add(generator);
+            registerGeneratorForType(type, generator);
         }
+    }
+
+    private void registerGeneratorForType(Class<?> type, Generator<?> generator) {
+        Set<Generator<?>> forType = generators.get(type);
+        if (forType == null) {
+            forType = new LinkedHashSet<Generator<?>>();
+            generators.put(type, forType);
+        }
+
+        forType.add(generator);
     }
 
     public Generator<?> generatorFor(Type type) {
