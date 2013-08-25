@@ -33,7 +33,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.reflect.TypeVariableImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.javaruntype.exceptions.TypeValidationException;
 import org.junit.Before;
@@ -41,6 +40,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindingGeneratorInvolvingTypeVariableTest {
@@ -65,8 +66,7 @@ public class FindingGeneratorInvolvingTypeVariableTest {
 
     @Test(expected = TypeValidationException.class)
     public void withTypeVariableInBoundsOfParameterizedType() {
-        repo.generatorFor(new ParameterizedTypeImpl(List.class,
-            new WildcardTypeImpl(new Type[] { typeVariable }, new Type[0])));
+        repo.generatorFor(new ParameterizedTypeImpl(List.class, extendsOf(typeVariable)));
     }
 
     @Test(expected = TypeValidationException.class)

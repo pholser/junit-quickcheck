@@ -32,9 +32,9 @@ import java.util.Set;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static com.google.common.collect.Sets.*;
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.*;
 
 public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
@@ -43,7 +43,7 @@ public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, new WildcardTypeImpl(new Type[0], new Type[0]));
+        return new ParameterizedTypeImpl(Set.class, huh());
     }
 
     @Override protected int sampleSize() {

@@ -47,8 +47,9 @@ public class Generators {
         for (int i = 0; i < composite.numberOfComponentGenerators(); ++i)
             compositeTypes.add(composite.componentGenerator(i).getClass());
 
-        for (Class<? extends Generator> each : expectedTypes)
-            assertThat(compositeTypes, hasItem(each));
+        assertEquals(newHashSet(expectedTypes), compositeTypes);
+//        for (Class<? extends Generator> each : expectedTypes)
+//            assertThat(compositeTypes, hasItem(each));
     }
 
     public static Generator<?> componentOf(Generator<?> generator, int index) {

@@ -111,9 +111,9 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
         assertGenerators(result, generator.getClass());
     }
 
-    @Test public void collectionsDoNotGetRetrievedForObjectType() {
+    @Test public void objectType() {
         Generator<?> result = repo.generatorFor(Object.class);
 
-        assertGenerators(result, TestIntegerGenerator.class);
+        assertGenerators(result, TestIntegerGenerator.class, ZilchGenerator.class, TestArrayListGenerator.class);
     }
 }

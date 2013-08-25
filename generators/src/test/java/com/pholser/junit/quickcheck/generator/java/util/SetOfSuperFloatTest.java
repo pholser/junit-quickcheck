@@ -32,12 +32,12 @@ import java.util.Set;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
@@ -57,7 +57,7 @@ public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, new WildcardTypeImpl(new Type[0], new Type[] { Float.class }));
+        return new ParameterizedTypeImpl(Set.class, superOf(Float.class));
     }
 
     @Override protected int sampleSize() {

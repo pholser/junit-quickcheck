@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -112,46 +111,57 @@ public class GeneratorRepository {
     }
 
     private Generator<?> generatorForTypeToken(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
-        if (typeToken.isArray()) {
-            @SuppressWarnings("unchecked")
-            org.javaruntype.type.Type<Object[]> arrayTypeToken = (org.javaruntype.type.Type<Object[]>) typeToken;
-
-            org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
-            return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, true));
-        }
-
+        if (typeToken.isArray())
+            return generatorForArrayType(typeToken);
         if (typeToken.getRawClass().isEnum())
             return new EnumGenerator(typeToken.getRawClass());
 
-        List<Generator<?>> matches = findMatchingGenerators(typeToken, allowMixedTypes);
+        // Find generators for the type parameters, and then for every candidate for the root generator,
+        // if that generator can use component generators that produce values compatible with the type
+        // parameters, consider the candidate a match for root generators.
 
         List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));
+
+        List<Generator<?>> matches = findMatchingGenerators(typeToken, allowMixedTypes);
+
         for (Generator<?> each : matches)
             applyComponentGenerators(each, forComponents);
 
         return new CompositeGenerator(matches);
     }
 
+    private Generator<?> generatorForArrayType(org.javaruntype.type.Type<?> typeToken) {
+        @SuppressWarnings("unchecked")
+        org.javaruntype.type.Type<Object[]> arrayTypeToken = (org.javaruntype.type.Type<Object[]>) typeToken;
+
+        org.javaruntype.type.Type<?> component = arrayComponentOf(arrayTypeToken);
+        return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, true));
+    }
+
     private List<Generator<?>> findMatchingGenerators(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
         List<Generator<?>> matches = new ArrayList<Generator<?>>();
 
-        if (!hasGeneratorsForRawClass(typeToken.getRawClass())) {
-            Method method = singleAbstractMethodOf(typeToken.getRawClass());
-            if (method != null) {
-                @SuppressWarnings("unchecked")
-                LambdaGenerator lambda = new LambdaGenerator(typeToken.getRawClass(),
-                    generatorFor(method.getGenericReturnType()));
-                matches.add(lambda);
-            }
-        } else
-            matches = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
+        if (!hasGeneratorsForRawClass(typeToken.getRawClass()))
+            maybeAddLambdaGenerator(typeToken, matches);
+        else
+            matches.addAll(generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes));
 
         if (matches.isEmpty())
             throw new IllegalArgumentException("Cannot find generator for " + typeToken.getRawClass());
 
         return matches;
+    }
+
+    private void maybeAddLambdaGenerator(org.javaruntype.type.Type<?> typeToken, List<Generator<?>> matches) {
+        Method method = singleAbstractMethodOf(typeToken.getRawClass());
+        if (method != null) {
+            @SuppressWarnings("unchecked")
+            LambdaGenerator lambda = new LambdaGenerator(typeToken.getRawClass(),
+                generatorFor(method.getGenericReturnType()));
+            matches.add(lambda);
+        }
     }
 
     private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {

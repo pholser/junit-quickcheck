@@ -31,10 +31,10 @@ import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +46,7 @@ public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, new WildcardTypeImpl(new Type[] { Byte.class }, new Type[0]));
+        return new ParameterizedTypeImpl(Set.class, extendsOf(Byte.class));
     }
 
     @Override protected int sampleSize() {

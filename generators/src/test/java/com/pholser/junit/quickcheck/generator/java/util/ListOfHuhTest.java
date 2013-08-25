@@ -31,8 +31,8 @@ import java.util.List;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
@@ -42,7 +42,7 @@ public class ListOfHuhTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[0]));
+        return new ParameterizedTypeImpl(List.class, huh());
     }
 
     @Override protected int sampleSize() {

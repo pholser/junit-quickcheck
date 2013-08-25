@@ -68,6 +68,6 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     @Test public void object() {
         Generator<?> result = repo.generatorFor(Object.class);
 
-        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class, ZilchGenerator.class);
     }
 }

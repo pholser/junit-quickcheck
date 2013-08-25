@@ -1,0 +1,12 @@
+class Foo<V> implements Map<String, V>
+class FooGenerator<V> implements MapGenerator<String, V>
+
+-- Therefore, FooGenerator should be considered a match only for theory parameters of Map types where the first type parameter is compatible with String.
+
+class Properties extends Hashtable<Object, Object>
+      Hashtable<K, V> extends Dictionary<K, V> implements Map<K, V>,
+          Cloneable, Serializable
+class PropertiesGenerator extends Generator<Properties>
+
+-- However, Properties was intended to contain only String keys and values.
+-- Therefore, PropertiesGenerator should be considered a match only for theory parameters of Map and Dictionary types where both the first and second parameters are compatible with String.

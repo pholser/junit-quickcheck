@@ -31,11 +31,11 @@ import java.util.List;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
@@ -58,7 +58,7 @@ public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[0], new Type[] { Long.class }));
+        return new ParameterizedTypeImpl(List.class, superOf(Long.class));
     }
 
     @Override protected int sampleSize() {

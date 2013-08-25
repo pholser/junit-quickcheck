@@ -31,11 +31,11 @@ import java.util.List;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
@@ -54,7 +54,7 @@ public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Box.class, new WildcardTypeImpl(new Type[0], new Type[] { Long.class }));
+        return new ParameterizedTypeImpl(Box.class, superOf(Long.class));
     }
 
     @Override protected int sampleSize() {

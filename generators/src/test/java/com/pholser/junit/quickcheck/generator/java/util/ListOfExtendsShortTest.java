@@ -30,9 +30,9 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-import com.pholser.junit.quickcheck.reflect.WildcardTypeImpl;
 
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
@@ -44,7 +44,7 @@ public class ListOfExtendsShortTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, new WildcardTypeImpl(new Type[] { Short.class }, new Type[0]));
+        return new ParameterizedTypeImpl(List.class, extendsOf(Short.class));
     }
 
     @Override protected int sampleSize() {
