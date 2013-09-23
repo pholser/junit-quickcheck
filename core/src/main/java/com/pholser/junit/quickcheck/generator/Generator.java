@@ -129,10 +129,21 @@ public abstract class Generator<T> {
         // do nothing by default
     }
 
+    /**
+     * @param typeParameters a list of generic type parameters
+     * @return whether this generator can be considered for generating values for theory parameters that have the
+     * given type parameters in their signatures
+     */
     public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
         return true;
     }
 
+    /**
+     * @param parameter a generic type parameter
+     * @param clazz a type
+     * @return whether the type is compatible with the generic type parameter
+     * @see #canGenerateForParametersOfTypes(List)
+     */
     public static boolean compatibleWithTypeParameter(TypeParameter<?> parameter, Class<?> clazz) {
         if (parameter instanceof WildcardTypeParameter)
             return true;
