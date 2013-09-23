@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.reflect;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
-import java.util.List;
 
 import com.google.common.base.Joiner;
 
@@ -41,15 +40,15 @@ public class WildcardTypeImpl implements WildcardType {
         this.lowerBounds = lowerBounds.clone();
     }
 
-    public static WildcardTypeImpl huh() {
+    public static WildcardType huh() {
         return extendsOf();
     }
 
-    public static WildcardTypeImpl extendsOf(Type... extensions) {
+    public static WildcardType extendsOf(Type... extensions) {
         return new WildcardTypeImpl(extensions, new Type[0]);
     }
 
-    public static WildcardTypeImpl superOf(Type... extensions) {
+    public static WildcardType superOf(Type... extensions) {
         return new WildcardTypeImpl(new Type[0], extensions);
     }
 

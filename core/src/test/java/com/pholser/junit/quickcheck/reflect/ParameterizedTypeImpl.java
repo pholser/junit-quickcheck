@@ -29,19 +29,24 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
+import static java.lang.System.*;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
-
-import static java.lang.System.*;
 
 public class ParameterizedTypeImpl implements ParameterizedType {
     private final Type raw;
     private final Type[] actualTypeArguments;
 
-    public ParameterizedTypeImpl(Type raw, Type... actualTypeArguments) {
+    private ParameterizedTypeImpl(Type raw, Type firstActualTypeArgument, Type... rest) {
         this.raw = raw;
-        this.actualTypeArguments = new Type[actualTypeArguments.length];
-        arraycopy(actualTypeArguments, 0, this.actualTypeArguments, 0, actualTypeArguments.length);
+        actualTypeArguments = new Type[rest.length + 1];
+        actualTypeArguments[0] = firstActualTypeArgument;
+        arraycopy(rest, 0, actualTypeArguments, 1, rest.length);
+    }
+
+    public static ParameterizedTypeBuilder parameterized(Type raw) {
+        return new ParameterizedTypeBuilder(raw);
     }
 
     @Override public Type[] getActualTypeArguments() {
@@ -76,5 +81,17 @@ public class ParameterizedTypeImpl implements ParameterizedType {
 
     @Override public String toString() {
         return raw.toString() + '<' + Joiner.on(", ").join(actualTypeArguments) + '>';
+    }
+
+    public static class ParameterizedTypeBuilder {
+        private final Type raw;
+
+        ParameterizedTypeBuilder(Type raw) {
+            this.raw = raw;
+        }
+
+        public ParameterizedType on(Type first, Type... rest) {
+            return new ParameterizedTypeImpl(raw, first, rest);
+        }
     }
 }

@@ -29,11 +29,12 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Sets.*;
-import static java.util.Arrays.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
@@ -47,7 +48,7 @@ public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, Ternary.class);
+        return parameterized(Set.class).on(Ternary.class);
     }
 
     @Override protected int sampleSize() {

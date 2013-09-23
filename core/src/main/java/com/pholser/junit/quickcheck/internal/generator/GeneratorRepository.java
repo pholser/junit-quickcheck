@@ -146,7 +146,7 @@ public class GeneratorRepository {
         if (!hasGeneratorsForRawClass(typeToken.getRawClass()))
             maybeAddLambdaGenerator(typeToken, matches);
         else
-            matches.addAll(generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes));
+            maybeAddGeneratorsForRawClass(typeToken, allowMixedTypes, matches);
 
         if (matches.isEmpty())
             throw new IllegalArgumentException("Cannot find generator for " + typeToken.getRawClass());
@@ -161,6 +161,22 @@ public class GeneratorRepository {
             LambdaGenerator lambda = new LambdaGenerator(typeToken.getRawClass(),
                 generatorFor(method.getGenericReturnType()));
             matches.add(lambda);
+        }
+    }
+
+    private void maybeAddGeneratorsForRawClass(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes,
+        List<Generator<?>> matches) {
+
+        List<Generator<?>> candidates = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
+        List<TypeParameter<?>> typeParameters = typeToken.getTypeParameters();
+
+        if (typeParameters.isEmpty())
+            matches.addAll(candidates);
+        else {
+            for (Generator<?> each : candidates) {
+                if (each.canGenerateForParametersOfTypes(typeParameters))
+                    matches.add(each);
+            }
         }
     }
 

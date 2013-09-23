@@ -43,7 +43,7 @@ public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Set.class, huh());
+        return ParameterizedTypeImpl.parameterized(Set.class).on(huh());
     }
 
     @Override protected int sampleSize() {

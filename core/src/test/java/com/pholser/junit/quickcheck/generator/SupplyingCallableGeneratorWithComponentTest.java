@@ -32,7 +32,6 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
@@ -43,6 +42,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static org.mockito.Mockito.*;
 
@@ -61,7 +61,7 @@ public class SupplyingCallableGeneratorWithComponentTest {
 
     @Test public void coaxingGeneratorToSupplyComponentForCallable() {
         ArrayGenerator generator = (ArrayGenerator) repo.generatorFor(
-            new GenericArrayTypeImpl(new ParameterizedTypeImpl(Box.class, extendsOf(Object.class))));
+            new GenericArrayTypeImpl(parameterized(Box.class).on(extendsOf(Object.class))));
 
         Generator<?> arrayElementGenerator = generator.componentGenerator();
         assertGenerators(arrayElementGenerator, BoxGenerator.class);

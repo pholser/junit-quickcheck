@@ -29,13 +29,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Maps.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 public class MapOfIntegerToStringTest extends BasicGeneratorTheoryParameterTest {
@@ -47,7 +48,7 @@ public class MapOfIntegerToStringTest extends BasicGeneratorTheoryParameterTest 
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Map.class, Integer.class, String.class);
+        return parameterized(Map.class).on(Integer.class, String.class);
     }
 
     @Override protected int sampleSize() {

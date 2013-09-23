@@ -33,6 +33,11 @@ import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
@@ -122,6 +127,26 @@ public abstract class Generator<T> {
      */
     public void addComponentGenerators(List<Generator<?>> components) {
         // do nothing by default
+    }
+
+    public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+        return true;
+    }
+
+    public static boolean compatibleWithTypeParameter(TypeParameter<?> parameter, Class<?> clazz) {
+        if (parameter instanceof WildcardTypeParameter)
+            return true;
+        if (parameter instanceof StandardTypeParameter<?>) {
+            return ((StandardTypeParameter<?>) parameter).getType().isAssignableFrom(
+                    Types.forJavaLangReflectType(clazz));
+        }
+        if (parameter instanceof ExtendsTypeParameter<?>) {
+            return Types.forJavaLangReflectType(clazz).isAssignableFrom(
+                    ((ExtendsTypeParameter<?>) parameter).getType());
+        }
+
+        // must be "? super X"
+        return parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
     }
 
     /**

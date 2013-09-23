@@ -28,12 +28,13 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
+import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfIntArrayTest extends BasicGeneratorTheoryParameterTest {
@@ -43,7 +44,7 @@ public class ListOfIntArrayTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, int[].class);
+        return parameterized(List.class).on(int[].class);
     }
 
     @Override protected int sampleSize() {

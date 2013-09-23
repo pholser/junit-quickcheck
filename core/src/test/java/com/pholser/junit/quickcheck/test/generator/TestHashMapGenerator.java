@@ -27,16 +27,21 @@ package com.pholser.junit.quickcheck.test.generator;
 
 import java.util.HashMap;
 
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestHashMapGenerator extends Generator<HashMap> {
+public class TestHashMapGenerator extends ComponentizedGenerator<HashMap> {
     public TestHashMapGenerator() {
         super(HashMap.class);
     }
 
     @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
         return new HashMap<Object, Object>(status.size());
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 2;
     }
 }

@@ -35,9 +35,9 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Lists.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.junit.Assert.*;
 
 public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
@@ -46,7 +46,7 @@ public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(Function.class, String.class, Integer.class);
+        return parameterized(Function.class).on(String.class, Integer.class);
     }
 
     @Override protected int sampleSize() {

@@ -28,6 +28,8 @@ package com.pholser.junit.quickcheck.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.javaruntype.type.TypeParameter;
+
 import static java.util.Collections.*;
 
 /**
@@ -57,5 +59,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
 
     public List<Generator<?>> componentGenerators() {
         return unmodifiableList(components);
+    }
+
+    @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+        return numberOfNeededComponents() == typeParameters.size();
     }
 }

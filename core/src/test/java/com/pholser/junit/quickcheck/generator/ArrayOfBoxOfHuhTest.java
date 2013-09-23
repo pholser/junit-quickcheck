@@ -32,9 +32,9 @@ import java.util.List;
 import com.google.common.collect.Iterables;
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
 
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +46,7 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new GenericArrayTypeImpl(new ParameterizedTypeImpl(Box.class, extendsOf(Object.class)));
+        return new GenericArrayTypeImpl(parameterized(Box.class).on(extendsOf(Object.class)));
     }
 
     @Override protected int sampleSize() {

@@ -28,18 +28,18 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
-import static java.util.Arrays.asList;
-import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
@@ -58,7 +58,7 @@ public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected Type parameterType() {
-        return new ParameterizedTypeImpl(List.class, superOf(Long.class));
+        return parameterized(List.class).on(superOf(Long.class));
     }
 
     @Override protected int sampleSize() {
