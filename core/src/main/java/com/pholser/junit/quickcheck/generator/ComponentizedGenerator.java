@@ -25,8 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.javaruntype.type.TypeParameter;
 
@@ -63,5 +65,10 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
 
     @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
         return numberOfNeededComponents() == typeParameters.size();
+    }
+
+    @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
+        for (Generator<?> each : components)
+            each.configure(configurationsByType);
     }
 }

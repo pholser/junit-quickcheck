@@ -116,10 +116,6 @@ public class GeneratorRepository {
         if (typeToken.getRawClass().isEnum())
             return new EnumGenerator(typeToken.getRawClass());
 
-        // Find generators for the type parameters, and then for every candidate for the root generator,
-        // if that generator can use component generators that produce values compatible with the type
-        // parameters, consider the candidate a match for root generators.
-
         List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));

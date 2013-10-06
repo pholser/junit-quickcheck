@@ -34,6 +34,10 @@ public class Box<T> {
         this.contents = contents;
     }
 
+    public T contents() {
+        return contents;
+    }
+
     @Override public int hashCode() {
         return Objects.hashCode(contents);
     }

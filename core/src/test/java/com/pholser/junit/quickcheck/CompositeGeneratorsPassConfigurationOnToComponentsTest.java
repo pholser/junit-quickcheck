@@ -23,38 +23,35 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.test.generator;
+package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.Foo;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static com.pholser.junit.quickcheck.Annotations.*;
+import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-public class FooGenerator extends Generator<Foo> {
-    private Same value;
-
-    @Target(PARAMETER)
-    @Retention(RUNTIME)
-    @GeneratorConfiguration
-    public @interface Same {
-        int value();
+public class CompositeGeneratorsPassConfigurationOnToComponentsTest {
+    @Test public void foo() throws Exception {
+        assertThat(testResult(BoxOfFoo.class), isSuccessful());
+        assertEquals(defaultSampleSize(), BoxOfFoo.iterations);
     }
 
-    public FooGenerator() {
-        super(Foo.class);
-    }
+    @RunWith(Theories.class)
+    public static class BoxOfFoo {
+        static int iterations;
 
-    public void configure(Same value) {
-        this.value = value;
-    }
+        @Theory public void holds(@ForAll @Same(5) Box<Foo> b) {
+            ++iterations;
 
-    @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Foo(value == null ? random.nextInt() : value.value());
+            assertEquals(5, b.contents().getI());
+        }
     }
 }
