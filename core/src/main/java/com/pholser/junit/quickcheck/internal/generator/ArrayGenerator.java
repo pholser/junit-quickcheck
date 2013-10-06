@@ -25,7 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -48,6 +50,10 @@ public class ArrayGenerator extends Generator<Object> {
             Array.set(array, i, component.generate(random, status));
 
         return array;
+    }
+
+    @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
+        component.configure(configurationsByType);
     }
 
     public Generator<?> componentGenerator() {

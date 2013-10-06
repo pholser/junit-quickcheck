@@ -128,4 +128,64 @@ public class ConfigurationIsolationTest {
             assertNotEquals(2, second.getI());
         }
     }
+
+    @Test public void acrossParametersOfSameArrayType() throws Exception {
+        assertThat(testResult(ParametersOfSameArrayType.class), isSuccessful());
+        assertEquals(defaultSampleSize() * defaultSampleSize(), ParametersOfSameArrayType.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ParametersOfSameArrayType {
+        static int iterations;
+
+        @Theory public void holds(@ForAll @Same(2) Foo[] first, @ForAll @Same(3) Foo[][] second) {
+            ++iterations;
+
+            for (Foo f : first)
+                assertEquals(2, f.getI());
+            for (Foo[] f : second) {
+                for (Foo g : f)
+                    assertEquals(3, g.getI());
+            }
+        }
+    }
+
+    @Test public void acrossParametersOfSameArrayTypeWithOneConstant() throws Exception {
+        assertThat(testResult(ParametersOfSameArrayTypeWithOneConstant.class), isSuccessful());
+        assertEquals(defaultSampleSize() * defaultSampleSize(),
+                ParametersOfSameArrayTypeWithOneConstant.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ParametersOfSameArrayTypeWithOneConstant {
+        static int iterations;
+
+        @Theory public void holds(@ForAll @Same(2) Foo[] first, @ForAll Foo[] second) {
+            ++iterations;
+
+            for (Foo f : first)
+                assertEquals(2, f.getI());
+            for (Foo f : second)
+                assertNotEquals(2, f.getI());
+        }
+    }
+
+    @Test public void acrossParametersOfParametersOfArrayTypeAndTypeWithOneConstant() throws Exception {
+        assertThat(testResult(ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.class), isSuccessful());
+        assertEquals(defaultSampleSize() * defaultSampleSize(),
+                ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class ParametersOfParametersOfArrayTypeAndTypeWithOneConstant {
+        static int iterations;
+
+        @Theory public void holds(@ForAll @Same(2) Foo[] first, @ForAll Foo second) {
+            ++iterations;
+
+            for (Foo f : first)
+                assertEquals(2, f.getI());
+            assertNotEquals(2, second.getI());
+        }
+    }
 }

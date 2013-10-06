@@ -161,6 +161,9 @@ public method named `configure` that accepts a single parameter of the annotatio
 
 A `Generator` can have many such `configure` methods.
 
+Generators of "componentized" types such as arrays and lists pass configurations on parameters of their type to
+generators of the component types.
+
 #### Constraining generated values
 
 ##### Assumptions
