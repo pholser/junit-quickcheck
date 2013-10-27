@@ -1,0 +1,157 @@
+/*
+ The MIT License
+
+ Copyright (c) 2010-2013 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.util;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.Namespaces.*;
+
+public class RFC4122 {
+    private RFC4122() {
+        throw new UnsupportedOperationException();
+    }
+
+    public @interface Namespace {
+        Namespaces value() default URL;
+    }
+
+    private abstract static class AbstractUUIDGenerator extends Generator<UUID> {
+        protected AbstractUUIDGenerator() {
+            super(UUID.class);
+        }
+
+        protected final void setVersion(byte[] bytes, byte mask) {
+            bytes[6] &= 0x0F;
+            bytes[6] &= mask;
+        }
+
+        protected final void setVariant(byte[] bytes) {
+            bytes[8] &= 0x3F;
+            bytes[8] |= 0x80;
+        }
+
+        protected final UUID newUUID(byte[] bytes) {
+            ByteBuffer bytesIn = ByteBuffer.wrap(bytes);
+            return new UUID(bytesIn.getLong(), bytesIn.getLong());
+        }
+    }
+
+    private abstract static class NameBasedUUIDGenerator extends AbstractUUIDGenerator {
+        private final StringGenerator stringGenerator = new StringGenerator();
+        private final int versionMask;
+        private final MessageDigest digest;
+        private Namespace namespace;
+
+        protected NameBasedUUIDGenerator(String hashAlgorithmName, int versionMask) {
+            this.versionMask = versionMask;
+            digest = MessageDigests.get(hashAlgorithmName);
+        }
+
+        @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
+            digest.reset();
+            digest.update((namespace == null ? Namespaces.URL : namespace.value()).bytes);
+            digest.update(stringGenerator.generate(random, status).getBytes(Charset.forName("UTF-8")));
+
+            byte[] hash = digest.digest();
+            setVersion(hash, (byte) versionMask);
+            setVariant(hash);
+            return newUUID(hash);
+        }
+
+        protected void setNamespace(Namespace namespace) {
+            this.namespace = namespace;
+        }
+    }
+
+    static class MessageDigests {
+        private MessageDigests() {
+            throw new UnsupportedOperationException();
+        }
+
+        static MessageDigest get(String algorithmName) {
+            try {
+                return MessageDigest.getInstance(algorithmName);
+            } catch (NoSuchAlgorithmException shouldNeverHappen) {
+                throw new AssertionError(shouldNeverHappen);
+            }
+        }
+    }
+
+    public static class Version3 extends NameBasedUUIDGenerator {
+        public Version3() {
+            super("MD5", 0x30);
+        }
+
+        public void configure(Namespace namespace) {
+            setNamespace(namespace);
+        }
+    }
+
+    public static class Version4 extends AbstractUUIDGenerator {
+        @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
+            byte[] bytes = random.nextBytes(16);
+            setVersion(bytes, (byte) 0x40);
+            setVariant(bytes);
+            return newUUID(bytes);
+        }
+    }
+
+    public static class Version5 extends NameBasedUUIDGenerator {
+        public Version5() {
+            super("SHA-1", 0x50);
+        }
+
+        public void configure(Namespace namespace) {
+            setNamespace(namespace);
+        }
+    }
+
+    public enum Namespaces {
+        DNS(0x10),
+        URL(0x11),
+        ISO_OID(0x12),
+        X500_DN(0x14);
+
+        final byte[] bytes;
+
+        private Namespaces(int difference) {
+            this.bytes = new byte[] { 0x6b, (byte) 0xa7, (byte) 0xb8, (byte) difference,
+                    (byte) 0x9d, (byte) 0xad,
+                    0x11, (byte) 0xd1,
+                    (byte) 0x80, (byte) 0xb4,
+                    0x00, (byte) 0xc0, 0x4f, (byte) 0xd4, 0x30, (byte) 0xc8 };
+        }
+    }
+}
