@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -33,18 +35,20 @@ import java.util.UUID;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.Namespaces.*;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
+/**
+ * Home for machinery to produce {@link UUID}s according to <a href="http://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>.
+ */
 public class RFC4122 {
     private RFC4122() {
         throw new UnsupportedOperationException();
-    }
-
-    public @interface Namespace {
-        Namespaces value() default URL;
     }
 
     private abstract static class AbstractUUIDGenerator extends Generator<UUID> {
@@ -109,16 +113,27 @@ public class RFC4122 {
         }
     }
 
+    /**
+     * Produces values for theory parameters of type {@link UUID} that are RFC 4122 Version 3 identifiers.
+     */
     public static class Version3 extends NameBasedUUIDGenerator {
         public Version3() {
             super("MD5", 0x30);
         }
 
+        /**
+         * Tells this generator to prepend the given "namespace" UUID to the names it generates for UUID production.
+         *
+         * @param namespace a handle for a "namespace" UUID
+         */
         public void configure(Namespace namespace) {
             setNamespace(namespace);
         }
     }
 
+    /**
+     * Produces values for theory parameters of type {@link UUID} that are RFC 4122 Version 4 identifiers.
+     */
     public static class Version4 extends AbstractUUIDGenerator {
         @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
             byte[] bytes = random.nextBytes(16);
@@ -128,20 +143,51 @@ public class RFC4122 {
         }
     }
 
+    /**
+     * Produces values for theory parameters of type {@link UUID} that are RFC 4122 Version 5 identifiers.
+     */
     public static class Version5 extends NameBasedUUIDGenerator {
         public Version5() {
             super("SHA-1", 0x50);
         }
 
+        /**
+         * Tells this generator to prepend the given "namespace" UUID to the names it generates for UUID production.
+         *
+         * @param namespace a handle for a "namespace" UUID
+         */
         public void configure(Namespace namespace) {
             setNamespace(namespace);
         }
     }
 
+    /**
+     * Used in version 3 and version 5 UUID generation to specify a "namespace" UUID for use in generation.
+     */
+    @Target(PARAMETER)
+    @Retention(RUNTIME)
+    @GeneratorConfiguration
+    public @interface Namespace {
+        /**
+         * @return a handle on a "namespace" UUID to use in generation
+         */
+        Namespaces value() default URL;
+    }
+
+    /**
+     * Well-known "namespace" UUIDs.
+     */
     public enum Namespaces {
+        /** Fully-qualified DNS name. */
         DNS(0x10),
+
+        /** URL */
         URL(0x11),
+
+        /** ISO object identifier */
         ISO_OID(0x12),
+
+        /** X.500 distinguished name */
         X500_DN(0x14);
 
         final byte[] bytes;
