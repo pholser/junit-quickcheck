@@ -33,7 +33,7 @@ Releases are synced to the central Maven repository. Declare `<dependency>` elem
       <dependency>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck-generators</artifactId>
-        <version>0.2</version>
+        <version>0.3</version>
       </dependency>
       ...
     </dependencies>
