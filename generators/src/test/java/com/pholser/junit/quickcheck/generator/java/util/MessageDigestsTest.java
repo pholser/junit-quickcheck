@@ -48,12 +48,12 @@ public class MessageDigestsTest {
         PowerMockito.mockStatic(MessageDigest.class);
     }
 
-    @Test public void treatsNoSuchAlgorithmAsError() throws Exception {
+    @Test public void treatsNoSuchAlgorithmAsIllegalState() throws Exception {
         when(MessageDigest.getInstance(any(String.class))).thenThrow(new NoSuchAlgorithmException(""));
 
         try {
             MessageDigests.get("foobar");
-        } catch (AssertionError expected) {
+        } catch (IllegalStateException expected) {
             assertThat(expected.getCause(), instanceOf(NoSuchAlgorithmException.class));
         }
     }

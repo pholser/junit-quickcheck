@@ -108,7 +108,7 @@ public class RFC4122 {
             try {
                 return MessageDigest.getInstance(algorithmName);
             } catch (NoSuchAlgorithmException shouldNeverHappen) {
-                throw new AssertionError(shouldNeverHappen);
+                throw new IllegalStateException(shouldNeverHappen);
             }
         }
     }
