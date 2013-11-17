@@ -58,7 +58,7 @@ public class RFC4122 {
 
         protected final void setVersion(byte[] bytes, byte mask) {
             bytes[6] &= 0x0F;
-            bytes[6] &= mask;
+            bytes[6] |= mask;
         }
 
         protected final void setVariant(byte[] bytes) {

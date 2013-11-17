@@ -42,10 +42,10 @@ public class RFC4122Version3Test extends CoreTheoryParameterTest {
     }
 
     @Override protected List<?> randomValues() {
-        return asList(UUID.fromString("c87ee674-4ddc-00fe-a74e-dfe25da5d7b3"),
-            UUID.fromString("4c104dd0-4821-00d5-9ce3-0e7a1f8b7c0d"),
-            UUID.fromString("64e53c89-a376-0078-b06b-659a3cb12c7e"),
-            UUID.fromString("6328f051-6873-0041-b344-350089a65da0"));
+        return asList(UUID.fromString("c87ee674-4ddc-3efe-a74e-dfe25da5d7b3"),
+            UUID.fromString("4c104dd0-4821-30d5-9ce3-0e7a1f8b7c0d"),
+            UUID.fromString("64e53c89-a376-3b78-b06b-659a3cb12c7e"),
+            UUID.fromString("6328f051-6873-3241-b344-350089a65da0"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
