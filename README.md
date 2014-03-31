@@ -22,6 +22,7 @@ There is also a module `junit-quickcheck-guava`, containing generators for
 
 Releases are synced to the central Maven repository. Declare `<dependency>` elements in your POM like so:
 
+```xml
     ...
     <dependencies>
       ...
@@ -38,6 +39,7 @@ Releases are synced to the central Maven repository. Declare `<dependency>` elem
       ...
     </dependencies>
     ...
+```    
 
 ### Background
 
@@ -50,6 +52,7 @@ to the function, then executes the function using lots of random arguments to se
 JUnit's answer to function properties is the notion of _theories_. Programmers write parameterized tests marked as
 theories, run using a special test runner:
 
+```java
     @RunWith(Theories.class)
     public class Accounts {
         @Theory public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
@@ -63,6 +66,7 @@ theories, run using a special test runner:
             assertEquals(originalBalance.minus(withdrawalAmount), account.balance());
         }
     }
+```
 
 #### So?
 
@@ -76,6 +80,7 @@ generated inputs.
 Create theories as you normally would with JUnit. If you want JUnit to exercise the theory with lots of randomly
 generated values for a theory parameter, mark the theory parameter with `@ForAll`:
 
+```java
     import com.pholser.junit.quickcheck.ForAll;
 
     @RunWith(Theories.class)
@@ -88,6 +93,7 @@ generated values for a theory parameter, mark the theory parameter with `@ForAll
             assertEquals(plaintext, new String(crypto.decrypt(ciphertext, key)));
         }
     }
+```
 
 #### Sample size
 
@@ -137,6 +143,7 @@ annotation that is itself marked as `@GeneratorConfiguration`, then if the `Gene
 public method named `configure` that accepts a single parameter of the annotation type, junit-quickcheck will call the
 `configure` method reflectively, passing it the annotation:
 
+```java
     @Target(PARAMETER)
     @Retention(RUNTIME)
     @GeneratorConfiguration
@@ -158,6 +165,7 @@ public method named `configure` that accepts a single parameter of the annotatio
             // ...
         }
     }
+```
 
 A `Generator` can have many such `configure` methods.
 
@@ -170,6 +178,7 @@ generators of the component types.
 
 Theories often use _assumptions_ to declare conditions under which the theories hold:
 
+```java
     @RunWith(Theories.class)
     public class PrimeFactorsTheories {
         @Theory public void factorsPassPrimalityTest(@ForAll int n) {
@@ -197,10 +206,12 @@ Theories often use _assumptions_ to declare conditions under which the theories 
             assertThat(PrimeFactors.of(m), not(equalTo(PrimeFactors.of(n))));
         }
     }
+```
 
 There are times when using assumptions with junit-quickcheck may yield too few values that meet the desired
 criteria:
 
+```java
     @RunWith(Theories.class)
     public class SingleDigitTheories {
         @Theory public void hold(@ForAll int digit) {
@@ -211,6 +222,7 @@ criteria:
             // ...
         }
     }
+```
 
 Here, junit-quickcheck will generate 100 values, but there's not much guarantee that we'll get very many, if any,
 values to test out the theory.
@@ -221,12 +233,14 @@ Generator configuration methods and annotations can serve to constrain the value
 the `@InRange` annotation on theory parameters of integral, floating-point, and `Date` types causes the generators for
 those types to emit values that fall within a configured minimum/maximum:
 
+```java
     @RunWith(Theories.class)
     public class SingleDigitTheories {
         @Theory public void hold(@ForAll @InRange(minInt = 0, maxInt = 9) int digit) {
             // ...
         }
     }
+```
 
 Now, the generator will be configured to ensure that every value generated meets the desired criteria -- no need to
 couch the desired range of values as an assumption.
@@ -243,6 +257,7 @@ tested.
 every value in the type's domain, instead of choosing an element from the domain at random every time. This also
 effectively dictates the sample size for the parameter.
 
+```java
     enum Ternary { YES, NO, MAYBE }
 
     @RunWith(Theories.class)
@@ -251,7 +266,7 @@ effectively dictates the sample size for the parameter.
             // sample sizes of 2 and 3, respectively. Each combination of potential values will be generated.
         }
     }
-
+```
 
 ##### Constraint expressions
 
@@ -259,12 +274,14 @@ Constraint expressions enable you to filter the values that reach a theory param
 marked as `@ForAll` with `@SuchThat`, supplying an [OGNL](http://commons.apache.org/ognl) expression that will be used
 to decide whether a generated value will be given to the theory method.
 
+```java
     @RunWith(Theories.class)
     public class SingleDigitTheories {
         @Theory public void hold(@ForAll @SuchThat("#_ >= 0 && #_ <= 9") int digit) {
             // ...
         }
     }
+```
 
 A theory parameter is referred to as "_" in the constraint expression. Constraint expressions cannot refer to other
 theory parameters.
