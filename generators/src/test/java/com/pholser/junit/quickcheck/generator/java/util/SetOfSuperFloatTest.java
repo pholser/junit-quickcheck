@@ -25,28 +25,26 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Set;
-
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Set;
+
 import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
 public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextFloat(minFloat(), maxFloat()))
-            .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
+        when(Generating.floats(randomForParameterGenerator)).thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
         org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
@@ -72,6 +70,6 @@ public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextFloat(minFloat(), maxFloat());
+        verifyFloats(randomForParameterGenerator, times(3));
     }
 }

@@ -25,19 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextLong(minLong(), maxLong()))
-            .thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
+        when(Generating.longs(randomForParameterGenerator)).thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
     }
 
     @Override protected Type parameterType() {
@@ -53,6 +53,6 @@ public class WrapperLongTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextLong(minLong(), maxLong());
+        verifyLongs(randomForParameterGenerator, times(3));
     }
 }

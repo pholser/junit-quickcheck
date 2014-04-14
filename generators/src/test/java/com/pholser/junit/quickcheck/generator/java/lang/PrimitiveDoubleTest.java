@@ -25,19 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveDoubleTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextDouble(minDouble(), maxDouble()))
-            .thenReturn(0.2D).thenReturn(0.3D).thenReturn(0.4D);
+        when(Generating.doubles(randomForParameterGenerator)).thenReturn(0.2D).thenReturn(0.3D).thenReturn(0.4D);
     }
 
     @Override protected Type parameterType() {
@@ -53,6 +53,6 @@ public class PrimitiveDoubleTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextDouble(minDouble(), maxDouble());
+        verifyDoubles(randomForParameterGenerator, times(3));
     }
 }

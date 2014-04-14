@@ -25,6 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.InRange;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -33,9 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.generator.InRange;
-
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +55,7 @@ public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
         third = formatter.parse("8/26/2008");
         min = formatter.parse("1/1/500");
         max = formatter.parse("12/31/2020");
-        when(randomForParameterGenerator.nextLong(min.getTime(), max.getTime()))
+        when(Generating.longs(randomForParameterGenerator, min.getTime(), max.getTime()))
             .thenReturn(first.getTime()).thenReturn(second.getTime()).thenReturn(third.getTime());
     }
 
@@ -78,6 +80,6 @@ public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextLong(min.getTime(), max.getTime());
+        verifyLongs(randomForParameterGenerator, times(3), min.getTime(), max.getTime());
     }
 }

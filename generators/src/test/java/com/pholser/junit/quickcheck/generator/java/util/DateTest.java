@@ -29,14 +29,16 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
+import static com.pholser.junit.quickcheck.Generating.verifyLongs;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class DateTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextLong(Integer.MIN_VALUE, Long.MAX_VALUE))
+        when(Generating.longs(randomForParameterGenerator, Integer.MIN_VALUE, Long.MAX_VALUE))
             .thenReturn(0L).thenReturn(60000L).thenReturn(100000000L).thenReturn(300000000000L);
     }
 
@@ -53,6 +55,6 @@ public class DateTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(4)).nextLong(Integer.MIN_VALUE, Long.MAX_VALUE);
+        verifyLongs(randomForParameterGenerator, times(4), Integer.MIN_VALUE, Long.MAX_VALUE);
     }
 }

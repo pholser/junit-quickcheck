@@ -25,28 +25,27 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.lang.reflect.Type;
-import java.util.List;
-
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import static com.google.common.collect.Lists.*;
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, 0, 100)).thenReturn(2).thenReturn(1);
-        when(randomForParameterGenerator.nextLong(minLong(), maxLong()))
-            .thenReturn(3L).thenReturn(4L).thenReturn(5L);
+        when(Generating.longs(randomForParameterGenerator)).thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
@@ -72,6 +71,6 @@ public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextLong(minLong(), maxLong());
+        verifyLongs(randomForParameterGenerator, times(3));
     }
 }
