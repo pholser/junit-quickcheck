@@ -25,26 +25,26 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.Maps.*;
+import static com.pholser.junit.quickcheck.Generating.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
-import static com.google.common.collect.Maps.*;
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 public class MapOfIntegerToStringTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(minInt(), maxInt()))
+        when(Generating.ints(randomForParameterGenerator))
             .thenReturn(1).thenReturn(-2).thenReturn(2);
-        when(randomForParameterGenerator.nextChar(minChar(), maxChar()))
-            .thenReturn('a').thenReturn('b').thenReturn('c').thenReturn('d').thenReturn('e');
+        when(Generating.charsForString(randomForParameterGenerator))
+            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65);
     }
 
     @Override protected Type parameterType() {
@@ -64,7 +64,7 @@ public class MapOfIntegerToStringTest extends BasicGeneratorTheoryParameterTest 
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(minInt(), maxInt());
-        verify(randomForParameterGenerator, times(5)).nextChar(minChar(), maxChar());
+        verifyInts(randomForParameterGenerator, times(3));
+        verifyCharsForString(randomForParameterGenerator, times(5));
     }
 }

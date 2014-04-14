@@ -25,13 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
+import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.TimeZone;
+
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
@@ -39,7 +40,8 @@ public class TimeZoneGeneratorTest extends BasicGeneratorTheoryParameterTest {
     private static final String[] ZONES = TimeZone.getAvailableIDs();
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(0, ZONES.length - 1)).thenReturn(1).thenReturn(0).thenReturn(2);
+        when(Generating.ints(randomForParameterGenerator, 0, ZONES.length - 1))
+            .thenReturn(1).thenReturn(0).thenReturn(2);
     }
 
     @Override protected Type parameterType() {
@@ -55,6 +57,6 @@ public class TimeZoneGeneratorTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(0, ZONES.length - 1);
+        verifyInts(randomForParameterGenerator, times(3), 0, ZONES.length - 1);
     }
 }

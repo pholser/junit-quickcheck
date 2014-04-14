@@ -25,22 +25,22 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Properties;
 
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static org.mockito.Mockito.*;
 
 public class PropertiesTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextChar(minChar(), maxChar()))
-            .thenReturn('a').thenReturn('b').thenReturn('c').thenReturn('d').thenReturn('e').thenReturn('f')
-            .thenReturn('g').thenReturn('h').thenReturn('i').thenReturn('j');
+        when(Generating.charsForString(randomForParameterGenerator))
+            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65).thenReturn(0x66)
+            .thenReturn(0x67).thenReturn(0x68).thenReturn(0x69).thenReturn(0x6a);
     }
 
     @Override protected Type parameterType() {
@@ -51,7 +51,6 @@ public class PropertiesTest extends BasicGeneratorTheoryParameterTest {
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
         Properties singleton = new Properties();
         singleton.setProperty("a", "b");
@@ -62,6 +61,6 @@ public class PropertiesTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(10)).nextChar(minChar(), maxChar());
+        verifyCharsForString(randomForParameterGenerator, times(10));
     }
 }

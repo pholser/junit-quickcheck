@@ -25,21 +25,23 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.pholser.junit.quickcheck.generator.InRange;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.generator.InRange;
-
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(-4, 5)).thenReturn(-2).thenReturn(3);
+        when(Generating.ints(randomForParameterGenerator, -4, 5)).thenReturn(-2).thenReturn(3);
     }
 
     @Override protected Type parameterType() {
@@ -62,6 +64,6 @@ public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTes
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextInt(-4, 5);
+        verifyInts(randomForParameterGenerator, times(2), -4, 5);
     }
 }

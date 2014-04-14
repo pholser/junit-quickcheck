@@ -31,6 +31,7 @@ import java.util.Set;
 
 import static java.util.Arrays.*;
 
+import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
@@ -48,7 +49,7 @@ public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
         org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
-        when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
+        when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(supertypes.indexOf(floatType))
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(floatType))

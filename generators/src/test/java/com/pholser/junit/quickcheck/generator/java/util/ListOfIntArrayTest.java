@@ -25,21 +25,21 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static com.pholser.junit.quickcheck.Generating.*;
+import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfIntArrayTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(minInt(), maxInt()))
+        when(Generating.ints(randomForParameterGenerator))
             .thenReturn(-1).thenReturn(-2).thenReturn(2).thenReturn(0).thenReturn(1);
     }
 
@@ -57,6 +57,6 @@ public class ListOfIntArrayTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(5)).nextInt(minInt(), maxInt());
+        verifyInts(randomForParameterGenerator, times(5));
     }
 }

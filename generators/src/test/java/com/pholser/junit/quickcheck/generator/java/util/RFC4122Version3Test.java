@@ -1,5 +1,9 @@
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -7,13 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RFC4122Version3Test extends CoreTheoryParameterTest {
@@ -29,8 +29,8 @@ public class RFC4122Version3Test extends CoreTheoryParameterTest {
     }
 
     @Override protected void primeSourceOfRandomness() throws Exception {
-        when(randomForParameterGenerator.nextChar(minChar(), maxChar()))
-            .thenReturn('a').thenReturn('b').thenReturn('c').thenReturn('d').thenReturn('e').thenReturn('f');
+        when(Generating.charsForString(randomForParameterGenerator))
+            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
     }
 
     @Override protected Type parameterType() {
@@ -49,6 +49,6 @@ public class RFC4122Version3Test extends CoreTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(6)).nextChar(minChar(), maxChar());
+        verifyCharsForString(randomForParameterGenerator, times(6));
     }
 }

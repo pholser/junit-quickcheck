@@ -25,16 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
 import static com.google.common.collect.Sets.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
@@ -43,8 +44,8 @@ public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2).thenReturn(0)
-            .thenReturn(1).thenReturn(2);
+        when(Generating.ints(randomForParameterGenerator, 0, 2)).thenReturn(0).thenReturn(1).thenReturn(2)
+            .thenReturn(0).thenReturn(1).thenReturn(2);
     }
 
     @Override protected Type parameterType() {
@@ -62,6 +63,6 @@ public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(6)).nextInt(0, 2);
+        verifyInts(randomForParameterGenerator, times(6), 0, 2);
     }
 }

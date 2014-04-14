@@ -31,6 +31,7 @@ import java.util.List;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
+import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
@@ -43,12 +44,12 @@ import static org.mockito.Mockito.*;
 
 public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(0, 100)).thenReturn(2).thenReturn(1);
+        when(Generating.ints(randomForParameterGenerator, 0, 100)).thenReturn(2).thenReturn(1);
         when(randomForParameterGenerator.nextLong(minLong(), maxLong()))
             .thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
-        when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
+        when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(supertypes.indexOf(longType))
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(longType))

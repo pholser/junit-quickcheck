@@ -25,20 +25,20 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Properties;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BitSetTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBoolean()).thenReturn(true).thenReturn(false).thenReturn(true);
+        when(Generating.booleans(randomForParameterGenerator)).thenReturn(true).thenReturn(false).thenReturn(true);
     }
 
     @Override protected Type parameterType() {
@@ -49,7 +49,6 @@ public class BitSetTest extends BasicGeneratorTheoryParameterTest {
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
         BitSet singleton = new BitSet(1);
         singleton.set(0, true);
@@ -60,6 +59,6 @@ public class BitSetTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextBoolean();
+        verifyBooleans(randomForParameterGenerator, times(3));
     }
 }

@@ -25,21 +25,22 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
 import static com.google.common.collect.Sets.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfWrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBoolean()).thenReturn(false).thenReturn(true).thenReturn(false)
+        when(Generating.booleans(randomForParameterGenerator)).thenReturn(false).thenReturn(true).thenReturn(false)
             .thenReturn(true).thenReturn(false).thenReturn(true);
         verifyNoMoreInteractions(randomForParameterGenerator);
     }
@@ -58,6 +59,6 @@ public class SetOfWrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(6)).nextBoolean();
+        verifyBooleans(randomForParameterGenerator, times(6));
     }
 }

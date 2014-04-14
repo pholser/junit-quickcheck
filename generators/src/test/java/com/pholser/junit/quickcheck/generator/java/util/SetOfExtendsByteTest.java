@@ -25,25 +25,25 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import static java.util.Arrays.*;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-
 import static com.google.common.collect.Sets.*;
-import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextByte(minByte(), maxByte()))
+        when(Generating.bytes(randomForParameterGenerator))
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
-        when(randomForGeneratorRepo.nextInt(eq(0), anyInt())).thenReturn(0);
+        when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt())).thenReturn(0);
     }
 
     @Override protected Type parameterType() {
@@ -60,6 +60,6 @@ public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextByte(minByte(), maxByte());
+        verifyBytes(randomForParameterGenerator, times(3));
     }
 }

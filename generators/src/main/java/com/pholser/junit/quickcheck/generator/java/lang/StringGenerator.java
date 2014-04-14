@@ -32,22 +32,22 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 /**
  * <p>Produces values for theory parameters of type {@link String}.</p>
  *
+ * <p>This implementation produces strings whose characters are in the interval [0x0000, 0xD7FF].</p>
+ *
  * <p>The generated values will have {@linkplain String#length()} decided by
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
  */
 public class StringGenerator extends Generator<String> {
-    private final CharacterGenerator charGenerator = new CharacterGenerator();
-
     public StringGenerator() {
         super(String.class);
     }
 
     @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
-        StringBuilder buffer = new StringBuilder(status.size());
+        int[] codePoints = new int[status.size()];
 
-        for (int i = 0; i < status.size(); ++i)
-            buffer.append(charGenerator.generate(random, status));
+        for (int i = 0; i < codePoints.length; ++i)
+            codePoints[i] = random.nextInt(0, 0xD7FF);
 
-        return buffer.toString();
+        return new String(codePoints, 0, codePoints.length);
     }
 }

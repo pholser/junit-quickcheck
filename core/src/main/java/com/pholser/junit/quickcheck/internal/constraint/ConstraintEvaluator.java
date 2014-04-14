@@ -55,6 +55,8 @@ public class ConstraintEvaluator {
     }
 
     public static class EvaluationException extends RuntimeException {
+        private static final long serialVersionUID = Integer.MIN_VALUE;
+
         EvaluationException(String message) {
             super(message);
         }
