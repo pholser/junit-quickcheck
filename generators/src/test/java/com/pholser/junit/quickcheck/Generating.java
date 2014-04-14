@@ -90,4 +90,12 @@ public class Generating {
     public static void verifyLongs(SourceOfRandomness random, VerificationMode mode, long min, long max) {
         verify(random, mode).nextLong(min, max);
     }
+
+    public static short shorts(SourceOfRandomness random) {
+        return random.nextShort(minShort(), maxShort());
+    }
+
+    public static void verifyShorts(SourceOfRandomness random, VerificationMode mode) {
+        verify(random, mode).nextShort(minShort(), maxShort());
+    }
 }
