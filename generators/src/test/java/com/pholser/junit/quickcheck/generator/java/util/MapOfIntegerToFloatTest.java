@@ -39,16 +39,16 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class MapOfIntegerToStringTest extends BasicGeneratorTheoryParameterTest {
+public class MapOfIntegerToFloatTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator))
             .thenReturn(1).thenReturn(-2).thenReturn(2);
-        when(Generating.charsForString(randomForParameterGenerator))
-            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65);
+        when(Generating.floats(randomForParameterGenerator))
+            .thenReturn(0.1F).thenReturn(0.2F).thenReturn(0.3F);
     }
 
     @Override protected Type parameterType() {
-        return parameterized(Map.class).on(Integer.class, String.class);
+        return parameterized(Map.class).on(Integer.class, Float.class);
     }
 
     @Override protected int sampleSize() {
@@ -57,14 +57,14 @@ public class MapOfIntegerToStringTest extends BasicGeneratorTheoryParameterTest 
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        Map<Integer, String> doubleton = newHashMap();
-        doubleton.put(-2, "bc");
-        doubleton.put(2, "de");
-        return asList(newHashMap(), singletonMap(1, "a"), doubleton);
+        Map<Integer, Float> doubleton = newHashMap();
+        doubleton.put(-2, 0.2F);
+        doubleton.put(2, 0.3F);
+        return asList(newHashMap(), singletonMap(1, 0.1F), doubleton);
     }
 
     @Override public void verifyInteractionWithRandomness() {
         verifyInts(randomForParameterGenerator, times(3));
-        verifyCharsForString(randomForParameterGenerator, times(5));
+        verifyFloats(randomForParameterGenerator, times(3));
     }
 }

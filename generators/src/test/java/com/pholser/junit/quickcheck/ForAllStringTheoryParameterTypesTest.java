@@ -25,34 +25,40 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.test.generator.Foo;
+import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.nio.charset.Charset;
+
+import static com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
+import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ForAllReferenceArrayTheoryParameterTypesTest {
-    @Test public void stringArray() {
-        assertThat(testResult(FooArray.class), isSuccessful());
+public class ForAllStringTheoryParameterTypesTest {
+    @Test public void inDefaultCharset() {
+        assertThat(testResult(DefaultCharset.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class FooArray {
-        @Theory public void shouldHold(@ForAll Foo[] f) {
+    public static class DefaultCharset {
+        @Theory public void shouldHold(@ForAll @From(Encoded.class) String s) {
+            assertTrue(defaultCharset().newEncoder().canEncode(s));
         }
     }
 
-    @Test public void twoDLongArray() {
-        assertThat(testResult(TwoDLongArray.class), isSuccessful());
+    @Test public void inSomeOther() {
+        assertThat(testResult(SomeOtherCharset.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class TwoDLongArray {
-        @Theory public void shouldHold(@ForAll(sampleSize = 5) Long[][] ell) {
+    public static class SomeOtherCharset {
+        @Theory public void shouldHold(@ForAll @From(Encoded.class) @InCharset("UTF-8") String s) {
+            assertTrue(Charset.forName("UTF-8").newEncoder().canEncode(s));
         }
     }
 }

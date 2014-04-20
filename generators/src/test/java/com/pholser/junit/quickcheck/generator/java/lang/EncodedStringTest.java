@@ -29,16 +29,20 @@ import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.Generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import static com.pholser.junit.quickcheck.Generating.verifyCharsForString;
+import static com.pholser.junit.quickcheck.Generating.*;
+import static com.pholser.junit.quickcheck.generator.java.lang.Encoded.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class StringTest extends BasicGeneratorTheoryParameterTest {
+public class EncodedStringTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.charsForString(randomForParameterGenerator))
+        when(Generating.ints(randomForParameterGenerator, 0, 127))
             .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
     }
 
@@ -48,7 +52,13 @@ public class StringTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected Class<? extends Generator>[] explicitGenerators() {
-        return (Class<? extends Generator>[]) new Class<?>[] { StringGenerator.class };
+        return (Class<? extends Generator>[]) new Class<?>[] { Encoded.class };
+    }
+
+    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
+        InCharset charset = mock(InCharset.class);
+        when(charset.value()).thenReturn("US-ASCII");
+        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InCharset.class, charset);
     }
 
     @Override protected int sampleSize() {
@@ -60,6 +70,6 @@ public class StringTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyCharsForString(randomForParameterGenerator, times(6));
+        verifyInts(randomForParameterGenerator, times(6), 0, 127);
     }
 }

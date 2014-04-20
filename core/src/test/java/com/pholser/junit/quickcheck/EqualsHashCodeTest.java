@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck;
 import org.junit.Ignore;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -37,7 +38,7 @@ import static org.junit.Assume.*;
 /**
  * Swiped from <a href="http://stackoverflow.com/questions/837484/junit-theory-for-hashcode-equals-contract">here</a>.
  */
-@Ignore("turn on when testing lots of permutations")
+@Category(LongRunning.class)
 @RunWith(Theories.class)
 public class EqualsHashCodeTest {
     @Theory public void equalsIsReflexive(@ForAll Object o) {

@@ -23,36 +23,27 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
-import com.pholser.junit.quickcheck.test.generator.Foo;
-import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
-import org.junit.runner.RunWith;
+class CodePointRange {
+    final int low;
+    final int high;
+    final int previousCount;
 
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
+    CodePointRange(int low, int high, int previousCount) {
+        if (low > high)
+            throw new IllegalArgumentException(String.format("%d > %d", low, high));
 
-public class ForAllReferenceArrayTheoryParameterTypesTest {
-    @Test public void stringArray() {
-        assertThat(testResult(FooArray.class), isSuccessful());
+        this.low = low;
+        this.high = high;
+        this.previousCount = previousCount;
     }
 
-    @RunWith(Theories.class)
-    public static class FooArray {
-        @Theory public void shouldHold(@ForAll Foo[] f) {
-        }
+    boolean contains(int codePoint) {
+        return codePoint >= low && codePoint <= high;
     }
 
-    @Test public void twoDLongArray() {
-        assertThat(testResult(TwoDLongArray.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class TwoDLongArray {
-        @Theory public void shouldHold(@ForAll(sampleSize = 5) Long[][] ell) {
-        }
+    int size() {
+        return high - low + 1;
     }
 }

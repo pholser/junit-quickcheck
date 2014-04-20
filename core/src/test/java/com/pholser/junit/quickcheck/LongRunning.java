@@ -25,34 +25,5 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.test.generator.Foo;
-import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-
-public class ForAllReferenceArrayTheoryParameterTypesTest {
-    @Test public void stringArray() {
-        assertThat(testResult(FooArray.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class FooArray {
-        @Theory public void shouldHold(@ForAll Foo[] f) {
-        }
-    }
-
-    @Test public void twoDLongArray() {
-        assertThat(testResult(TwoDLongArray.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class TwoDLongArray {
-        @Theory public void shouldHold(@ForAll(sampleSize = 5) Long[][] ell) {
-        }
-    }
+public class LongRunning {
 }

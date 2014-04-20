@@ -1,0 +1,123 @@
+/*
+ The MIT License
+
+ Copyright (c) 2010-2013 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.lang.strings;
+
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class CodePoints {
+    private static final Map<Charset, CodePoints> encodables = new HashMap<Charset, CodePoints>();
+
+    private final List<CodePointRange> ranges;
+
+    CodePoints() {
+        ranges = new ArrayList<CodePointRange>();
+    }
+
+    void add(CodePointRange range) {
+        ranges.add(range);
+    }
+
+    public int at(int index) {
+        if (index < 0)
+            throw new IndexOutOfBoundsException("illegal negative index: " + index);
+
+        int min = 0;
+        int max = ranges.size() - 1;
+
+        while (min <= max) {
+            int midpoint = min + ((max - min) / 2);
+            CodePointRange current = ranges.get(midpoint);
+
+            if (index >= current.previousCount && index < current.previousCount + current.size())
+                return current.low + index - current.previousCount;
+            else if (index < current.previousCount)
+                max = midpoint - 1;
+            else
+                min = midpoint + 1;
+        }
+
+        throw new IndexOutOfBoundsException(String.valueOf(index));
+    }
+
+    public int size() {
+        if (ranges.isEmpty())
+            return 0;
+        CodePointRange last = ranges.get(ranges.size() - 1);
+        return last.previousCount + last.size();
+    }
+
+    public static CodePoints forCharset(Charset c) {
+        if (encodables.containsKey(c))
+            return encodables.get(c);
+
+        CodePoints points = load(c);
+        encodables.put(c, points);
+        return points;
+    }
+
+    private static CodePoints load(Charset c) {
+        if (!c.canEncode())
+            throw new IllegalArgumentException("Charset " + c.name() + " does not support encoding");
+
+        return encodableCodePoints(c.newEncoder());
+    }
+
+    private static CodePoints encodableCodePoints(CharsetEncoder encoder) {
+        CodePoints points = new CodePoints();
+
+        int start = 0;
+        boolean inRange = false;
+        int current = 0;
+        int previousCount = 0;
+
+        for (; current <= 0x10FFFF; ++current) {
+            encoder.reset();
+
+            String s = new String(new int[] { current }, 0, 1);
+            if (encoder.canEncode(s)) {
+                if (!inRange) {
+                    inRange = true;
+                    start = current;
+                }
+            } else if (inRange) {
+                inRange = false;
+                CodePointRange range = new CodePointRange(start, current - 1, previousCount);
+                points.add(range);
+                previousCount += range.size();
+            }
+        }
+
+        if (inRange)
+            points.add(new CodePointRange(start, current - 1, previousCount));
+
+        return points;
+    }
+}

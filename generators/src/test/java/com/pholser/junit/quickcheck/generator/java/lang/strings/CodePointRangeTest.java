@@ -23,36 +23,36 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
-import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ForAllReferenceArrayTheoryParameterTypesTest {
-    @Test public void stringArray() {
-        assertThat(testResult(FooArray.class), isSuccessful());
+public class CodePointRangeTest {
+    @Test(expected = IllegalArgumentException.class)
+    public void illegalRange() {
+        new CodePointRange(54, 53, 0);
     }
 
-    @RunWith(Theories.class)
-    public static class FooArray {
-        @Theory public void shouldHold(@ForAll Foo[] f) {
-        }
+    @Test public void rangeOfOne() {
+        CodePointRange range = new CodePointRange(55, 55, 0);
+
+        assertEquals(1, range.size());
+        assertFalse(range.contains(54));
+        assertTrue(range.contains(55));
+        assertFalse(range.contains(56));
     }
 
-    @Test public void twoDLongArray() {
-        assertThat(testResult(TwoDLongArray.class), isSuccessful());
-    }
+    @Test public void largerRange() {
+        CodePointRange range = new CodePointRange(55, 58, 0);
 
-    @RunWith(Theories.class)
-    public static class TwoDLongArray {
-        @Theory public void shouldHold(@ForAll(sampleSize = 5) Long[][] ell) {
-        }
+        assertEquals(4, range.size());
+        assertFalse(range.contains(54));
+        assertTrue(range.contains(55));
+        assertTrue(range.contains(56));
+        assertTrue(range.contains(57));
+        assertTrue(range.contains(58));
+        assertFalse(range.contains(59));
     }
 }
