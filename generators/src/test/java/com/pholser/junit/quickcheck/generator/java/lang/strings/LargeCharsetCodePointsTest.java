@@ -61,8 +61,11 @@ public class LargeCharsetCodePointsTest {
 
     @Test public void nthElement() {
         CharsetEncoder encoder = charset.newEncoder();
+        int[] buffer = new int[1];
+
         for (int index = 0, i = 0; i < 0x10FFFF; ++i) {
-            if (encoder.canEncode(new String(new int[] { i }, 0, 1))) {
+            buffer[0] = i;
+            if (encoder.canEncode(new String(buffer, 0, 1))) {
                 String message = String.format("The %d'th character in %s should be %06x", index, charset.name(), i);
                 assertEquals(message, i, points.at(index));
                 ++index;

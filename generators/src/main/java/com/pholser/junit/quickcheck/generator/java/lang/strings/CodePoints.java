@@ -97,11 +97,13 @@ public class CodePoints {
         boolean inRange = false;
         int current = 0;
         int previousCount = 0;
+        int[] buffer = new int[1];
 
         for (; current <= 0x10FFFF; ++current) {
             encoder.reset();
+            buffer[0] = current;
 
-            String s = new String(new int[] { current }, 0, 1);
+            String s = new String(buffer, 0, 1);
             if (encoder.canEncode(s)) {
                 if (!inRange) {
                     inRange = true;
