@@ -40,6 +40,7 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.Types;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.maybeWrap;
 import static java.util.Collections.*;
 
 public class ParameterContext {
@@ -97,9 +98,7 @@ public class ParameterContext {
         org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(parameterType);
 
         for (Class<?> each : generator.types()) {
-            org.javaruntype.type.Type<?> generatorTypeToken = Types.forJavaLangReflectType(each);
-
-            if (!parameterTypeToken.isAssignableFrom(generatorTypeToken)) {
+            if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
                 throw new IllegalArgumentException(String.format(EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE, each,
                     From.class.getName(), parameterType));
             }

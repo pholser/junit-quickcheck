@@ -30,15 +30,35 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.javaruntype.type.Type;
 
 public final class Reflection {
+    private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<Class<?>, Class<?>>(16);
+
+    static {
+        PRIMITIVES.put(Boolean.TYPE, Boolean.class);
+        PRIMITIVES.put(Byte.TYPE, Byte.class);
+        PRIMITIVES.put(Character.TYPE, Character.class);
+        PRIMITIVES.put(Double.TYPE, Double.class);
+        PRIMITIVES.put(Float.TYPE, Float.class);
+        PRIMITIVES.put(Integer.TYPE, Integer.class);
+        PRIMITIVES.put(Long.TYPE, Long.class);
+        PRIMITIVES.put(Short.TYPE, Short.class);
+    }
+
     private Reflection() {
         throw new UnsupportedOperationException();
+    }
+
+    public static Class<?> maybeWrap(Class<?> clazz) {
+        Class<?> wrapped = PRIMITIVES.get(clazz);
+        return wrapped == null ? clazz : wrapped;
     }
 
     public static <T> T instantiate(Class<T> clazz) {

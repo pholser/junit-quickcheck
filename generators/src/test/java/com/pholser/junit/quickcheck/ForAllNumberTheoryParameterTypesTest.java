@@ -35,7 +35,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ForAllNumberTheoryParameterTypesTest {
-    @Test public void huh() {
+    @Test public void numbers() {
         assertThat(testResult(NumberSuperclass.class), isSuccessful());
     }
 
