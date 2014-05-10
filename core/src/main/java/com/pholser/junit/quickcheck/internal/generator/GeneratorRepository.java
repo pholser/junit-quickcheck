@@ -25,6 +25,17 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.Reflection;
+import com.pholser.junit.quickcheck.internal.Zilch;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -34,16 +45,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.internal.Zilch;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.ExtendsTypeParameter;
-import org.javaruntype.type.StandardTypeParameter;
-import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
-import org.javaruntype.type.WildcardTypeParameter;
 
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -55,10 +56,6 @@ public class GeneratorRepository {
 
     public GeneratorRepository(SourceOfRandomness random) {
         this.random = random;
-    }
-
-    public boolean isEmpty() {
-        return generators.isEmpty();
     }
 
     public GeneratorRepository register(Generator<?> source) {
@@ -106,6 +103,18 @@ public class GeneratorRepository {
         forType.add(generator);
     }
 
+    public Generator<?> generatorFor(ParameterContext parameter) {
+        Generator<?> generator;
+        if (!parameter.explicitGenerators().isEmpty()) {
+            generator = composite(Types.forJavaLangReflectType(parameter.parameterType()),
+                    parameter.explicitGenerators());
+        } else
+            generator = generatorFor(parameter.parameterType());
+
+        generator.configure(parameter.configurations());
+        return generator;
+    }
+
     public Generator<?> generatorFor(Type type) {
         return generatorForTypeToken(Types.forJavaLangReflectType(type), true);
     }
@@ -116,16 +125,8 @@ public class GeneratorRepository {
         if (typeToken.getRawClass().isEnum())
             return new EnumGenerator(typeToken.getRawClass());
 
-        List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
-        for (TypeParameter<?> each : typeToken.getTypeParameters())
-            forComponents.add(generatorForTypeParameter(each));
-
         List<Generator<?>> matches = findMatchingGenerators(typeToken, allowMixedTypes);
-
-        for (Generator<?> each : matches)
-            applyComponentGenerators(each, forComponents);
-
-        return new CompositeGenerator(matches);
+        return composite(typeToken, matches);
     }
 
     private Generator<?> generatorForArrayType(org.javaruntype.type.Type<?> typeToken) {
@@ -174,6 +175,17 @@ public class GeneratorRepository {
                     matches.add(each);
             }
         }
+    }
+
+    private Generator<?> composite(org.javaruntype.type.Type<?> typeToken, List<Generator<?>> matches) {
+        List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
+        for (TypeParameter<?> each : typeToken.getTypeParameters())
+            forComponents.add(generatorForTypeParameter(each));
+
+        for (Generator<?> each : matches)
+            applyComponentGenerators(each, forComponents);
+
+        return new CompositeGenerator(matches);
     }
 
     private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {

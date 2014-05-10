@@ -25,22 +25,20 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.Types;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.maybeWrap;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Collections.*;
 
 public class ParameterContext {
@@ -48,7 +46,7 @@ public class ParameterContext {
         "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
 
     private final Type parameterType;
-    private final GeneratorRepository repo = new GeneratorRepository(new SourceOfRandomness(new SecureRandom()));
+    private final List<Generator<?>> explicits = new ArrayList<Generator<?>>();
 
     private int configuredSampleSize;
     private SampleSizer sampleSizer;
@@ -78,7 +76,7 @@ public class ParameterContext {
         for (Class<? extends Generator> each : generators.value()) {
             Generator<?> generator = Reflection.instantiate(each);
             ensureCorrectType(generator);
-            repo.register(generator);
+            explicits.add(generator);
         }
 
         return this;
@@ -124,8 +122,8 @@ public class ParameterContext {
         return constraint;
     }
 
-    public Generator<?> explicitGenerator() {
-        return repo.isEmpty() ? null : repo.generatorFor(parameterType);
+    public List<Generator<?>> explicitGenerators() {
+        return unmodifiableList(explicits);
     }
 
     public Map<Class<? extends Annotation>, Annotation> configurations() {

@@ -1,5 +1,7 @@
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.test.generator.Foo;
+import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestBooleanGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestByteGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestCharacterGenerator;
@@ -13,13 +15,14 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class FromTest {
-    @Test
-    public void explicitPrimitiveBoolean() {
+    @Test public void explicitPrimitiveBoolean() {
         assertThat(testResult(ExplicitPrimitiveBoolean.class), isSuccessful());
     }
 
@@ -29,8 +32,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperBoolean() {
+    @Test public void explicitWrapperBoolean() {
         assertThat(testResult(ExplicitWrapperBoolean.class), isSuccessful());
     }
 
@@ -40,8 +42,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveByte() {
+    @Test public void explicitPrimitiveByte() {
         assertThat(testResult(ExplicitPrimitiveByte.class), isSuccessful());
     }
 
@@ -51,8 +52,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperByte() {
+    @Test public void explicitWrapperByte() {
         assertThat(testResult(ExplicitWrapperByte.class), isSuccessful());
     }
 
@@ -62,8 +62,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveChar() {
+    @Test public void explicitPrimitiveChar() {
         assertThat(testResult(ExplicitPrimitiveChar.class), isSuccessful());
     }
 
@@ -73,8 +72,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperChar() {
+    @Test public void explicitWrapperChar() {
         assertThat(testResult(ExplicitWrapperChar.class), isSuccessful());
     }
 
@@ -84,8 +82,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveDouble() {
+    @Test public void explicitPrimitiveDouble() {
         assertThat(testResult(ExplicitPrimitiveDouble.class), isSuccessful());
     }
 
@@ -95,8 +92,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperDouble() {
+    @Test public void explicitWrapperDouble() {
         assertThat(testResult(ExplicitWrapperDouble.class), isSuccessful());
     }
 
@@ -106,8 +102,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveFloat() {
+    @Test public void explicitPrimitiveFloat() {
         assertThat(testResult(ExplicitPrimitiveFloat.class), isSuccessful());
     }
 
@@ -117,8 +112,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperFloat() {
+    @Test public void explicitWrapperFloat() {
         assertThat(testResult(ExplicitWrapperFloat.class), isSuccessful());
     }
 
@@ -128,8 +122,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveInt() {
+    @Test public void explicitPrimitiveInt() {
         assertThat(testResult(ExplicitPrimitiveInt.class), isSuccessful());
     }
 
@@ -139,8 +132,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperInt() {
+    @Test public void explicitWrapperInt() {
         assertThat(testResult(ExplicitWrapperInt.class), isSuccessful());
     }
 
@@ -150,8 +142,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveLong() {
+    @Test public void explicitPrimitiveLong() {
         assertThat(testResult(ExplicitPrimitiveLong.class), isSuccessful());
     }
 
@@ -161,8 +152,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperLong() {
+    @Test public void explicitWrapperLong() {
         assertThat(testResult(ExplicitWrapperLong.class), isSuccessful());
     }
 
@@ -172,8 +162,7 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitPrimitiveShort() {
+    @Test public void explicitPrimitiveShort() {
         assertThat(testResult(ExplicitPrimitiveShort.class), isSuccessful());
     }
 
@@ -183,14 +172,26 @@ public class FromTest {
         }
     }
 
-    @Test
-    public void explicitWrapperShort() {
+    @Test public void explicitWrapperShort() {
         assertThat(testResult(ExplicitWrapperShort.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperShort {
         @Theory public void shouldHold(@ForAll @From(TestShortGenerator.class) short sh) {
+        }
+    }
+
+    @Test public void explicitWithParameterizedType() {
+        assertThat(testResult(ExplicitWithParameterizedType.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ExplicitWithParameterizedType {
+        @Theory public void shouldHold(@ForAll @From(TestArrayListGenerator.class) List<Foo> list) {
+            for (Foo each : list) {
+                // ensure the cast works
+            }
         }
     }
 }

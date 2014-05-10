@@ -61,13 +61,7 @@ public class GenerationContext implements GenerationStatus {
     }
 
     private Generator<?> decideGenerator() {
-        Generator<?> generator = parameter.explicitGenerator();
-        if (generator == null)
-            generator = repository.generatorFor(parameter.parameterType());
-
-        generator.configure(parameter.configurations());
-
-        return generator;
+        return repository.generatorFor(parameter);
     }
 
     private boolean evaluate(Object value) {
