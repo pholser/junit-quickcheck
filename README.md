@@ -97,8 +97,13 @@ generated values for a theory parameter, mark the theory parameter with `@ForAll
 
 #### Sample size
 
-By default, 100 random values will be generated for a parameter marked `@ForAll`. Use the `sampleSize` attribute of
-`@ForAll` to change the number of generated values.
+By default, 100 random values will be generated for a parameter marked `@ForAll`.
+
+**NOTE**: Because junit-quickcheck uses the `Theories` runner, a given theory method will be executed for every
+combination of values for theory parameters. This means that for a two-parameter theory method, where each parameter
+is marked with `@ForAll`, the theory will be executed 10,000 times (100 * 100). Use the `sampleSize` attribute of
+`@ForAll` to change the number of generated values for a given theory parameter.
+
 
 #### Supported types
 
