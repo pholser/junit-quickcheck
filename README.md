@@ -95,16 +95,6 @@ generated values for a theory parameter, mark the theory parameter with `@ForAll
     }
 ```
 
-#### Sample size
-
-By default, 100 random values will be generated for a parameter marked `@ForAll`.
-
-**NOTE**: Because junit-quickcheck uses the `Theories` runner, a given theory method will be executed for every
-combination of values for theory parameters. This means that for a two-parameter theory method, where each parameter
-is marked with `@ForAll`, the theory will be executed 10,000 times (100 * 100). Use the `sampleSize` attribute of
-`@ForAll` to change the number of generated values for a given theory parameter.
-
-
 #### Supported types
 
 Out of the box (core + generators), junit-quickcheck can generate random values for theory parameters of the following
@@ -116,10 +106,11 @@ types:
 * any `enum`
 * `String`
 * "functional interfaces" (interfaces with a single method that does not override a method from `java.lang.Object`)
-* `java.util.ArrayList` of supported types
-* `java.util.HashSet` of supported types
-* `java.util.HashMap` of supported types
+* `java.util.ArrayList` and `java.util.LinkedList` of supported types
+* `java.util.HashSet` and `java.util.LinkedHashSet` of supported types
+* `java.util.HashMap` and `java.util.LinkedHashMap` of supported types
 * arrays of supported types
+* others...
 
 When multiple generators can satisfy a given theory parameter based on its type (for example, `java.io.Serializable`),
 on a given generation one of the multiple generators will be chosen at random with equal probability.
@@ -177,6 +168,7 @@ A `Generator` can have many such `configure` methods.
 Generators of "componentized" types such as arrays and lists pass configurations on parameters of their type to
 generators of the component types.
 
+
 #### Constraining generated values
 
 ##### Assumptions
@@ -229,8 +221,7 @@ criteria:
     }
 ```
 
-Here, junit-quickcheck will generate 100 values, but there's not much guarantee that we'll get very many, if any,
-values to test out the theory.
+Here, there's not much guarantee that we'll get very many, if any, values to test out the theory.
 
 ##### Generator configuration methods
 
@@ -294,6 +285,83 @@ theory parameters.
 junit-quickcheck generates values for a theory parameter with a constraint expression until `sampleSize` values pass
 the constraint, or until the ratio of constraint passes to constraint failures is greater than the `discardRatio`
 specified by `@ForAll`, if any. Exceeding the discard ratio raises an exception and thus fails the theory.
+
+
+#### Sample size
+
+By default, 100 random values will be generated for a parameter marked `@ForAll`.
+
+**NOTE**: Because junit-quickcheck uses the `Theories` runner, a given theory method will be executed for every
+combination of values for theory parameters. This means that for a two-parameter theory method, where each parameter
+is marked with `@ForAll`, the theory will be executed 10,000 times (100 * 100).
+
+```java
+    @RunWith(Theories.class)
+    public class GeographyTheories {
+        @Theory public void northernHemisphere(
+            @ForAll(minDouble = -90, maxDouble = 90) double latitude,
+            @ForAll(minDouble = -180, maxDouble = 180 double longitude) {
+
+            assumeThat(latitude, greaterThan(0D));
+
+            assertTrue(Earth.isInNorthernHemisphere(latitude, longitude);
+        }
+    }
+```
+
+If you don't want to take on that many invocations, here are some mitigation strategies you can use:
+
+1. Use the `sampleSize` attribute of `@ForAll` to change the number of generated values for a given theory parameter:
+
+```java
+    @RunWith(Theories.class)
+    public class GeographyTheories {
+        @Theory public void northernHemisphere(
+            @ForAll(sampleSize = 20, minDouble = -90, maxDouble = 90) double latitude,
+            @ForAll(sampleSize = 20, minDouble = -180, maxDouble = 180 double longitude) {
+
+            assumeThat(latitude, greaterThan(0D));
+
+            assertTrue(Earth.isInNorthernHemisphere(latitude, longitude);
+        }
+    }
+```
+
+2. Collapse the parameters into a class, and use a generator for the class. Sometimes, this approach can exert
+positive pressure on your designs:
+
+```java
+    public class Coordinate {
+        private final double latitude;
+        private final double longitude;
+
+        public Coordinate(double latitude, double longitude) {
+            // argument checks here...
+
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+
+        public double latitude() { return latitude; }
+        public double longitude() { return longitude; }
+        public boolean inNorthernHemisphere() { return latitude > 0; }
+    }
+
+    public class Coordinates extends Generator<Coordinate> {
+        @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
+            return new Coordinate(random.nextDouble(-90, 90), random.nextDouble(-180, 180));
+        }
+    }
+
+    @RunWith(Theories.class)
+    public class GeographyTheories {
+        @Theory public void northernHemisphere(@ForAll @From(Coordinates.class) Coordinate c) {
+            assumeThat(c.latitude(), greaterThan(0D));
+
+            assertTrue(c.inNorthernHemisphere());
+        }
+    }
+```
 
 ### How it works
 
