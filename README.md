@@ -311,7 +311,7 @@ is marked with `@ForAll`, the theory will be executed 10,000 times (100 * 100).
 
 If you don't want to take on that many invocations, here are some mitigation strategies you can use:
 
-1. Use the `sampleSize` attribute of `@ForAll` to change the number of generated values for a given theory parameter:
+- Use the `sampleSize` attribute of `@ForAll` to change the number of generated values for a given theory parameter:
 
 ```java
     @RunWith(Theories.class)
@@ -327,7 +327,7 @@ If you don't want to take on that many invocations, here are some mitigation str
     }
 ```
 
-2. Collapse the parameters into a class, and use a generator for the class. Sometimes, this approach can exert
+- Collapse the parameters into a class, and use a generator for the class. Sometimes, this approach can exert
 positive pressure on your designs:
 
 ```java
