@@ -38,14 +38,14 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class MarkedWithSpuriousConfigurationTest {
+public class MarkedWithSuperfluousConfigurationTest {
     @Test public void okIfParameterMarkedWithUnexpectedConfiguration() {
-        assertThat(testResult(WithSpuriousConfiguration.class), isSuccessful());
-        assertEquals(Formatter.BigDecimalLayoutForm.values().length, WithSpuriousConfiguration.iterations);
+        assertThat(testResult(WithSuperfluousConfiguration.class), isSuccessful());
+        assertEquals(Formatter.BigDecimalLayoutForm.values().length, WithSuperfluousConfiguration.iterations);
     }
 
     @RunWith(Theories.class)
-    public static class WithSpuriousConfiguration {
+    public static class WithSuperfluousConfiguration {
         static int iterations;
 
         @Theory public void shouldHold(@ForAll @ValuesOf @Between(min = 3, max = 6) Formatter.BigDecimalLayoutForm f) {
