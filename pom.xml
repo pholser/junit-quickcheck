@@ -211,7 +211,7 @@
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>2.7.1</version>
                     <configuration>
-                        <minimumTokens>50</minimumTokens>
+                        <minimumTokens>100</minimumTokens>
                         <targetJdk>1.5</targetJdk>
                     </configuration>
                     <executions>

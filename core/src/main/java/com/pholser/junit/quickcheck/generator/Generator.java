@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.ExtendsTypeParameter;
 import org.javaruntype.type.StandardTypeParameter;
@@ -50,6 +52,7 @@ import static java.util.Collections.*;
  */
 public abstract class Generator<T> {
     private final List<Class<T>> types = new ArrayList<Class<T>>();
+    private GeneratorRepository repo;
 
     /**
      * @param type class token for type of theory parameter this generator is applicable to
@@ -193,5 +196,13 @@ public abstract class Generator<T> {
         }
 
         invokeQuietly(configurer, this, configuration);
+    }
+
+    public void provideRepository(GeneratorRepository repo) {
+        this.repo = repo;
+    }
+
+    public Generator<?> generatorFor(ParameterContext parameter) {
+        return repo.generatorFor(parameter);
     }
 }

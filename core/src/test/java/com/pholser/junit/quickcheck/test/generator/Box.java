@@ -53,6 +53,6 @@ public class Box<T> {
     }
 
     @Override public String toString() {
-        return String.valueOf(contents);
+        return "Box[[" + String.valueOf(contents) + "]]";
     }
 }

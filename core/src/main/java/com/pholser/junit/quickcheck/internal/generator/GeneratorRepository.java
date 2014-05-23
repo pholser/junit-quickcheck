@@ -107,11 +107,12 @@ public class GeneratorRepository {
         Generator<?> generator;
         if (!parameter.explicitGenerators().isEmpty()) {
             generator = composite(Types.forJavaLangReflectType(parameter.parameterType()),
-                    parameter.explicitGenerators());
+                parameter.explicitGenerators());
         } else
             generator = generatorFor(parameter.parameterType());
 
         generator.configure(parameter.configurations());
+        generator.provideRepository(this);
         return generator;
     }
 

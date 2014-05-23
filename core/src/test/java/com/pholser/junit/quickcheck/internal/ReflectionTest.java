@@ -25,15 +25,18 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Comparator;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Comparator;
+import java.util.List;
+
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 
@@ -205,5 +208,54 @@ public class ReflectionTest {
 
     interface OverloadingToString {
         String toString(Object o);
+    }
+
+    @Test public void settingFieldWithoutBypassingProtection() throws Exception {
+        WithAccessibleField target = new WithAccessibleField();
+
+        setField(target.getClass().getField("i"), target, 2, false);
+
+        assertEquals(2, target.i);
+    }
+
+    public static class WithAccessibleField {
+        public int i;
+    }
+
+    @Test public void settingInaccessibleFieldBypassingProtection() throws Exception {
+        WithInaccessibleField target = new WithInaccessibleField();
+
+        setField(target.getClass().getDeclaredField("i"), target, 3, true);
+
+        assertEquals(3, target.i);
+    }
+
+    public static class WithInaccessibleField {
+        private int i;
+    }
+
+    @Test public void settingInaccessibleFieldWithoutBypassingProtection() throws Exception {
+        WithInaccessibleField target = new WithInaccessibleField();
+
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(IllegalAccessException.class.getName());
+
+        setField(target.getClass().getDeclaredField("i"), target, 4, false);
+    }
+
+    @Test public void findingAllDeclaredFieldsOnAClass() throws Exception {
+        List<Field> fields = allDeclaredFieldsOf(Child.class);
+
+        assertEquals(2, fields.size());
+        assertThat(fields, hasItem(Child.class.getDeclaredField("s")));
+        assertThat(fields, hasItem(Parent.class.getDeclaredField("i")));
+    }
+
+    public static class Parent {
+        private int i;
+    }
+
+    public static class Child extends Parent {
+        private String s;
     }
 }

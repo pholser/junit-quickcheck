@@ -25,18 +25,22 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import org.javaruntype.type.Type;
+
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.javaruntype.type.Type;
 
 public final class Reflection {
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<Class<?>, Class<?>>(16);
@@ -115,6 +119,30 @@ public final class Reflection {
     public static Object invokeQuietly(Method method, Object target, Object... args) {
         try {
             return method.invoke(target, args);
+        } catch (Exception ex) {
+            throw reflectionException(ex);
+        }
+    }
+
+    public static List<Field> allDeclaredFieldsOf(Class<?> type) {
+        List<Field> allFields = new ArrayList<Field>();
+
+        for (Class<?> c = type; c != null; c = c.getSuperclass())
+            Collections.addAll(allFields, c.getDeclaredFields());
+
+        return allFields;
+    }
+
+    public static void setField(final Field field, Object target, Object value, final boolean suppressProtection) {
+        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            @Override public Void run() {
+                field.setAccessible(suppressProtection);
+                return null;
+            }
+        });
+
+        try {
+            field.set(target, value);
         } catch (Exception ex) {
             throw reflectionException(ex);
         }

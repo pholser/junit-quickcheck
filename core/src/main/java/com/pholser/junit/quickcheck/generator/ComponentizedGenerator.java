@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.javaruntype.type.TypeParameter;
 
 import static java.util.Collections.*;
@@ -70,5 +71,11 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
         for (Generator<?> each : components)
             each.configure(configurationsByType);
+    }
+
+    @Override public void provideRepository(GeneratorRepository repo) {
+        super.provideRepository(repo);
+        for (Generator<?> each : components)
+            each.provideRepository(repo);
     }
 }

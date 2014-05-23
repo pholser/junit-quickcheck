@@ -23,12 +23,34 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck.generator;
 
-public class ReflectionException extends RuntimeException {
-    private static final long serialVersionUID = Long.MIN_VALUE;
+import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.Reflection;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-    public ReflectionException(Throwable cause) {
-        super(cause.toString());
+import java.lang.reflect.Field;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
+public class Fields<T> extends Generator<T> {
+    public Fields(Class<T> type) {
+        super(type);
+    }
+
+    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
+        Class<T> type = types().get(0);
+        Object generated = Reflection.instantiate(type);
+
+        for (Field each : allDeclaredFieldsOf(type)) {
+            ParameterContext parameter = new ParameterContext(each.getGenericType()).annotate(each);
+            setField(each, generated, generatorFor(parameter).generate(random, status), true);
+        }
+
+        return type.cast(generated);
+    }
+
+    @Override public boolean canRegisterAsType(Class<?> type) {
+        return false;
     }
 }

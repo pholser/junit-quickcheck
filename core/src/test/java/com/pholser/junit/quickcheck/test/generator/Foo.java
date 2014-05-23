@@ -43,4 +43,8 @@ public class Foo {
     @Override public boolean equals(Object o) {
         return o instanceof Foo && ((Foo) o).getI() == i;
     }
+
+    @Override public String toString() {
+        return "Foo[" + i + ']';
+    }
 }

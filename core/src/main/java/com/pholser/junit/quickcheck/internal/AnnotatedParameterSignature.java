@@ -25,10 +25,31 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-public class ReflectionException extends RuntimeException {
-    private static final long serialVersionUID = Long.MIN_VALUE;
+import org.junit.contrib.theories.ParameterSignature;
 
-    public ReflectionException(Throwable cause) {
-        super(cause.toString());
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+
+class AnnotatedParameterSignature implements AnnotatedElement {
+    private final ParameterSignature signature;
+
+    AnnotatedParameterSignature(ParameterSignature signature) {
+        this.signature = signature;
+    }
+
+    @Override public boolean isAnnotationPresent(Class<? extends Annotation> c) {
+        return signature.hasAnnotation(c);
+    }
+
+    @Override public <T extends Annotation> T getAnnotation(Class<T> c) {
+        return signature.getAnnotation(c);
+    }
+
+    @Override public Annotation[] getAnnotations() {
+        return signature.getAnnotations().toArray(new Annotation[signature.getAnnotations().size()]);
+    }
+
+    @Override public Annotation[] getDeclaredAnnotations() {
+        return getAnnotations();
     }
 }

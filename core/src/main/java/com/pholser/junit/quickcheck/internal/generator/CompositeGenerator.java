@@ -63,4 +63,10 @@ public class CompositeGenerator extends Generator<Object> {
         for (Generator<?> each : components)
             each.configure(configurationsByType);
     }
+
+    @Override public void provideRepository(GeneratorRepository repo) {
+        super.provideRepository(repo);
+        for (Generator<?> each : components)
+            each.provideRepository(repo);
+    }
 }

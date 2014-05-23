@@ -28,10 +28,6 @@ package com.pholser.junit.quickcheck.internal;
 import java.security.SecureRandom;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.ForAll;
-import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.SuchThat;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
@@ -40,8 +36,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
 import org.junit.contrib.theories.PotentialAssignment;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class RandomValueSupplier extends ParameterSupplier {
     private final TheoryParameterGenerator generator;
@@ -59,14 +53,7 @@ public class RandomValueSupplier extends ParameterSupplier {
 
     @Override public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
         ParameterContext parameter = new ParameterContext(signature.getType());
-        parameter.addQuantifier(signature.getAnnotation(ForAll.class));
-        parameter.addConstraint(signature.getAnnotation(SuchThat.class));
-
-        From explicitGenerators = signature.getAnnotation(From.class);
-        if (explicitGenerators != null)
-            parameter.addGenerators(explicitGenerators);
-
-        parameter.addConfigurations(markedAnnotations(signature.getAnnotations(), GeneratorConfiguration.class));
+        parameter.annotate(new AnnotatedParameterSignature(signature));
 
         return generator.generate(parameter);
     }

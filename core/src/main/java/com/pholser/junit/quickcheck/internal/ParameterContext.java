@@ -28,12 +28,17 @@ package com.pholser.junit.quickcheck.internal;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
+import com.pholser.junit.quickcheck.generator.Fields;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import org.javaruntype.type.Types;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,9 +64,25 @@ public class ParameterContext {
         this.parameterType = parameterType;
     }
 
+    public ParameterContext annotate(AnnotatedElement element) {
+        addQuantifier(element.getAnnotation(ForAll.class));
+        addConstraint(element.getAnnotation(SuchThat.class));
+
+        From explicitGenerators = element.getAnnotation(From.class);
+        if (explicitGenerators != null)
+            addGenerators(explicitGenerators);
+
+        addConfigurations(markedAnnotations(Arrays.asList(element.getAnnotations()), GeneratorConfiguration.class));
+
+        return this;
+    }
+
     public ParameterContext addQuantifier(ForAll quantifier) {
-        this.configuredSampleSize = quantifier.sampleSize();
-        this.discardRatio = quantifier.discardRatio();
+        if (quantifier != null) {
+            this.configuredSampleSize = quantifier.sampleSize();
+            this.discardRatio = quantifier.discardRatio();
+        }
+
         return this;
     }
 
@@ -74,12 +95,27 @@ public class ParameterContext {
 
     public ParameterContext addGenerators(From generators) {
         for (Class<? extends Generator> each : generators.value()) {
-            Generator<?> generator = Reflection.instantiate(each);
+            Generator<?> generator = makeGenerator(each);
             ensureCorrectType(generator);
             explicits.add(generator);
         }
 
         return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
+        if (Fields.class.equals(generatorType)) {
+            return new Fields(rawParameterType());
+        }
+
+        return Reflection.instantiate(generatorType);
+    }
+
+    private Class<?> rawParameterType() {
+        if (parameterType instanceof ParameterizedType)
+            return (Class<?>) ((ParameterizedType) parameterType).getRawType();
+        return (Class<?>) parameterType;
     }
 
     public ParameterContext addConfigurations(List<Annotation> generatorConfigurations) {
