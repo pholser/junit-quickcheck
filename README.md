@@ -140,7 +140,7 @@ public method named `configure` that accepts a single parameter of the annotatio
 `configure` method reflectively, passing it the annotation:
 
 ```java
-    @Target(PARAMETER)
+    @Target({PARAMETER, FIELD})
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface Stuff {

@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.generator.Generator;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import com.pholser.junit.quickcheck.generator.Generator;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * <p>If any such generator produces values of a type incompatible with the type of the marked theory parameter,
  * {@link IllegalArgumentException} is raised.</p>
  */
-@Target(PARAMETER)
+@Target({PARAMETER, FIELD})
 @Retention(RUNTIME)
 public @interface From {
     /**

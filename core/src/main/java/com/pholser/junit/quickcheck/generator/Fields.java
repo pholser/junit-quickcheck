@@ -33,6 +33,19 @@ import java.lang.reflect.Field;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
+/**
+ * <p>A generator that produces instances of a class by introspecting the class's fields and generating random
+ * values for them.</p>
+ *
+ * <p>All fields of the class and its class hierarchy are auto-generated.</p>
+ *
+ * <p>In order for this generator to work, the type it is given must have an accessible zero-arg constructor.</p>
+ *
+ * <p>If a field is marked with an annotation that influences the generation of a given kind of value, it will
+ * be applied to the generation of values for that field.</p>
+ *
+ * @param <T> the type of objects generated
+ */
 public class Fields<T> extends Generator<T> {
     public Fields(Class<T> type) {
         super(type);

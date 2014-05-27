@@ -68,7 +68,7 @@ public class Encoded extends Generator<String> {
         return new String(codePoints, 0, codePoints.length);
     }
 
-    @Target(PARAMETER)
+    @Target({PARAMETER, FIELD})
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface InCharset {

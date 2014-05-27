@@ -26,20 +26,22 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.generator.Fields;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
+import org.junit.experimental.results.PrintableResult;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -84,5 +86,44 @@ public class AutoGenerationByFields {
 
         thrown.expect(IllegalArgumentException.class);
         repo.generatorFor(Object.class);
+    }
+
+    @Test public void autoGenerationOnPrimitiveType() {
+        PrintableResult result = testResult(WithAutoGenerationOnPrimitiveType.class);
+        assertThat(result, hasSingleFailureContaining(ReflectionException.class.getName()));
+        assertThat(result, hasSingleFailureContaining(InstantiationException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationOnPrimitiveType {
+        @Theory public void shouldHold(@ForAll @From(Fields.class) int i) {
+        }
+    }
+
+    @Test public void autoGenerationOnPrimitiveWrapperType() {
+        PrintableResult result = testResult(WithAutoGenerationOnPrimitiveWrapperType.class);
+        assertThat(result, hasSingleFailureContaining(ReflectionException.class.getName()));
+        assertThat(result, hasSingleFailureContaining(InstantiationException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationOnPrimitiveWrapperType {
+        @Theory public void shouldHold(@ForAll @From(Fields.class) Float f) {
+        }
+    }
+
+    @Test public void autoGenerationWithAnnotations() {
+        assertThat(testResult(WithAutoGenerationWithAnnotations.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAnnotations {
+        public static class P {
+            @From(TestIntegerGenerator.class) @Between(min = 2, max = 4) public int i;
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Fields.class) P p) {
+            assertThat(p.i, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
+        }
     }
 }
