@@ -53,7 +53,7 @@ public class Fields<T> extends Generator<T> {
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         Class<T> type = types().get(0);
-        Object generated = Reflection.instantiate(type);
+        Object generated = Reflection.instantiateQuietly(type);
 
         for (Field each : allDeclaredFieldsOf(type)) {
             ParameterContext parameter = new ParameterContext(each.getGenericType()).annotate(each);

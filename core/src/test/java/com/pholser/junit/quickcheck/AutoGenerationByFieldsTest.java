@@ -47,7 +47,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 import static org.junit.rules.ExpectedException.*;
 
-public class AutoGenerationByFields {
+public class AutoGenerationByFieldsTest {
     @Rule public final ExpectedException thrown = none();
 
     @Test public void autoGeneration() {

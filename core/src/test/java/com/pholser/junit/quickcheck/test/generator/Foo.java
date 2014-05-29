@@ -32,7 +32,7 @@ public class Foo {
         this.i = i;
     }
 
-    public int getI() {
+    public int i() {
         return i;
     }
 
@@ -41,7 +41,7 @@ public class Foo {
     }
 
     @Override public boolean equals(Object o) {
-        return o instanceof Foo && ((Foo) o).getI() == i;
+        return o instanceof Foo && ((Foo) o).i() == i;
     }
 
     @Override public String toString() {

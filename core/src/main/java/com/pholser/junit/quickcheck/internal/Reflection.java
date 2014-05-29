@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal;
 import org.javaruntype.type.Type;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -65,9 +66,25 @@ public final class Reflection {
         return wrapped == null ? clazz : wrapped;
     }
 
-    public static <T> T instantiate(Class<T> clazz) {
+    public static <T> Constructor<T> findConstructorQuietly(Class<T> type, Class<?> parameterTypes) {
+        try {
+            return type.getConstructor(parameterTypes);
+        } catch (NoSuchMethodException ex) {
+            return null;
+        }
+    }
+
+    public static <T> T instantiateQuietly(Class<T> clazz) {
         try {
             return clazz.newInstance();
+        } catch (Exception ex) {
+            throw reflectionException(ex);
+        }
+    }
+
+    public static <T> T instantiateQuietly(Constructor<T> ctor, Object... args) {
+        try {
+            return ctor.newInstance(args);
         } catch (Exception ex) {
             throw reflectionException(ex);
         }

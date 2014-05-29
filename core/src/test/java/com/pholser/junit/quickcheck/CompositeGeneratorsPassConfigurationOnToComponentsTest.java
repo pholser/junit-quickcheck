@@ -51,7 +51,7 @@ public class CompositeGeneratorsPassConfigurationOnToComponentsTest {
         @Theory public void holds(@ForAll @Same(5) Box<Foo> b) {
             ++iterations;
 
-            assertEquals(5, b.contents().getI());
+            assertEquals(5, b.contents().i());
         }
     }
 
@@ -68,7 +68,7 @@ public class CompositeGeneratorsPassConfigurationOnToComponentsTest {
             ++iterations;
 
             for (Foo each : f)
-                assertEquals(6, each.getI());
+                assertEquals(6, each.i());
         }
     }
 }

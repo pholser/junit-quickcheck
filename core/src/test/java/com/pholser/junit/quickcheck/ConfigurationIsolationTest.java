@@ -51,8 +51,8 @@ public class ConfigurationIsolationTest {
         @Theory public void holds(@ForAll @Same(2) Foo first, @ForAll @Same(3) Foo second) {
             ++iterations;
 
-            assertEquals(2, first.getI());
-            assertEquals(3, second.getI());
+            assertEquals(2, first.i());
+            assertEquals(3, second.i());
         }
     }
 
@@ -68,8 +68,8 @@ public class ConfigurationIsolationTest {
         @Theory public void holds(@ForAll @Same(2) Foo first, @ForAll Foo second) {
             ++iterations;
 
-            assertEquals(2, first.getI());
-            assertNotEquals(2, second.getI());
+            assertEquals(2, first.i());
+            assertNotEquals(2, second.i());
         }
     }
 
@@ -85,8 +85,8 @@ public class ConfigurationIsolationTest {
         @Theory public void holds(@ForAll @Same(2) Box<Foo> first, @ForAll @Same(3) Box<Foo> second) {
             ++iterations;
 
-            assertEquals(2, first.contents().getI());
-            assertEquals(3, second.contents().getI());
+            assertEquals(2, first.contents().i());
+            assertEquals(3, second.contents().i());
         }
     }
 
@@ -103,8 +103,8 @@ public class ConfigurationIsolationTest {
         @Theory public void holds(@ForAll @Same(2) Box<Foo> first, @ForAll Box<Foo> second) {
             ++iterations;
 
-            assertEquals(2, first.contents().getI());
-            assertNotEquals(2, second.contents().getI());
+            assertEquals(2, first.contents().i());
+            assertNotEquals(2, second.contents().i());
         }
     }
 
@@ -124,8 +124,8 @@ public class ConfigurationIsolationTest {
         @Theory public void holds(@ForAll @Same(2) Box<Foo> first, @ForAll Foo second) {
             ++iterations;
 
-            assertEquals(2, first.contents().getI());
-            assertNotEquals(2, second.getI());
+            assertEquals(2, first.contents().i());
+            assertNotEquals(2, second.i());
         }
     }
 
@@ -142,10 +142,10 @@ public class ConfigurationIsolationTest {
             ++iterations;
 
             for (Foo f : first)
-                assertEquals(2, f.getI());
+                assertEquals(2, f.i());
             for (Foo[] f : second) {
                 for (Foo g : f)
-                    assertEquals(3, g.getI());
+                    assertEquals(3, g.i());
             }
         }
     }
@@ -164,9 +164,9 @@ public class ConfigurationIsolationTest {
             ++iterations;
 
             for (Foo f : first)
-                assertEquals(2, f.getI());
+                assertEquals(2, f.i());
             for (Foo f : second)
-                assertNotEquals(2, f.getI());
+                assertNotEquals(2, f.i());
         }
     }
 
@@ -184,8 +184,8 @@ public class ConfigurationIsolationTest {
             ++iterations;
 
             for (Foo f : first)
-                assertEquals(2, f.getI());
-            assertNotEquals(2, second.getI());
+                assertEquals(2, f.i());
+            assertNotEquals(2, second.i());
         }
     }
 }

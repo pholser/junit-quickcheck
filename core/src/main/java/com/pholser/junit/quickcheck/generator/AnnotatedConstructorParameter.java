@@ -23,16 +23,36 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck.generator;
 
-public class ReflectionException extends RuntimeException {
-    private static final long serialVersionUID = Long.MIN_VALUE;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 
-    public ReflectionException(String message) {
-        super(message);
+class AnnotatedConstructorParameter implements AnnotatedElement {
+    private final Annotation[] annotations;
+
+    AnnotatedConstructorParameter(Annotation[] annotations) {
+        this.annotations = annotations.clone();
     }
 
-    public ReflectionException(Throwable cause) {
-        super(cause.toString());
+    @Override public boolean isAnnotationPresent(Class<? extends Annotation> c) {
+        return getAnnotation(c) != null;
+    }
+
+    @Override public <T extends Annotation> T getAnnotation(Class<T> c) {
+        for (Annotation each : annotations) {
+            if (c.isInstance(each))
+                return c.cast(each);
+        }
+
+        return null;
+    }
+
+    @Override public Annotation[] getAnnotations() {
+        return annotations.clone();
+    }
+
+    @Override public Annotation[] getDeclaredAnnotations() {
+        return getAnnotations();
     }
 }

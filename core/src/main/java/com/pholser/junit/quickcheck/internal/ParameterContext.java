@@ -28,13 +28,13 @@ package com.pholser.junit.quickcheck.internal;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
-import com.pholser.junit.quickcheck.generator.Fields;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import org.javaruntype.type.Types;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -105,11 +105,11 @@ public class ParameterContext {
 
     @SuppressWarnings("unchecked")
     private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
-        if (Fields.class.equals(generatorType)) {
-            return new Fields(rawParameterType());
-        }
+        Constructor<? extends Generator> constructor = findConstructorQuietly(generatorType, Class.class);
+        if (constructor != null)
+            return instantiateQuietly(constructor, rawParameterType());
 
-        return Reflection.instantiate(generatorType);
+        return instantiateQuietly(generatorType);
     }
 
     private Class<?> rawParameterType() {

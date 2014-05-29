@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2014 Paul R. Holser, Jr.
+ Copyright (c) 2004-2011 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,14 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-public class ReflectionException extends RuntimeException {
-    private static final long serialVersionUID = Long.MIN_VALUE;
-
-    public ReflectionException(String message) {
-        super(message);
-    }
-
-    public ReflectionException(Throwable cause) {
-        super(cause.toString());
+class MultiArgIllegalAccessProblematic {
+    private MultiArgIllegalAccessProblematic(int i) {
     }
 }

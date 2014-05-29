@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-class IllegalAccessProblematic {
-    private IllegalAccessProblematic() {
+class ZeroArgIllegalAccessProblematic {
+    private ZeroArgIllegalAccessProblematic() {
         // no-op
     }
 
-    IllegalAccessProblematic(int i) {
+    ZeroArgIllegalAccessProblematic(int i) {
     }
 
     private void foo() {

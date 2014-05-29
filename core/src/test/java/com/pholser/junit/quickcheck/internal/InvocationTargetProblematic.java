@@ -29,4 +29,8 @@ public class InvocationTargetProblematic {
     public InvocationTargetProblematic() {
         throw new IllegalStateException();
     }
+
+    public InvocationTargetProblematic(int i) {
+        throw new IndexOutOfBoundsException();
+    }
 }

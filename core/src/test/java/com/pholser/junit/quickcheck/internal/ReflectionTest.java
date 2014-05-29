@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Comparator;
@@ -43,28 +44,71 @@ import static org.junit.rules.ExpectedException.*;
 public class ReflectionTest {
     @Rule public final ExpectedException thrown = none();
 
-    @Test public void invokingConstructorQuietlyWrapsInstantiationException() {
+    @Test public void findingConstructorQuietly() {
+        Constructor<Integer> ctor = findConstructorQuietly(Integer.class, int.class);
+
+        assertEquals(int.class, ctor.getParameterTypes()[0]);
+    }
+
+    @Test public void findingConstructorQuietlyGivesNullIfNoSuchConstructor() {
+        assertNull(findConstructorQuietly(Integer.class, Object.class));
+    }
+
+    @Test public void invokingZeroArgConstructorQuietlyWrapsInstantiationException() {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(InstantiationException.class.getName());
 
-        instantiate(InstantiationProblematic.class);
+        instantiateQuietly(ZeroArgInstantiationProblematic.class);
     }
 
-    @Test public void invokingConstructorQuietlyWrapsIllegalAccessException() {
+    @Test public void invokingZeroArgConstructorQuietlyWrapsIllegalAccessException() {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(IllegalAccessException.class.getName());
 
-        instantiate(IllegalAccessProblematic.class);
+        instantiateQuietly(ZeroArgIllegalAccessProblematic.class);
     }
 
-    @Test public void invokingConstructorPropagatesExceptionsRaisedByConstructor() {
+    @Test public void invokingZeroArgConstructorPropagatesExceptionsRaisedByConstructor() {
         thrown.expect(IllegalStateException.class);
 
-        instantiate(InvocationTargetProblematic.class);
+        instantiateQuietly(InvocationTargetProblematic.class);
     }
 
-    private abstract static class InstantiationProblematic {
-        protected InstantiationProblematic() {
+    private abstract static class MultiArgInstantiationProblematic {
+        public MultiArgInstantiationProblematic(int i) {
+            // no-op
+        }
+    }
+
+    @Test public void invokingNonZeroArgConstructorQuietlyWrapsInstantiationException() throws Exception {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(InstantiationException.class.getName());
+
+        instantiateQuietly(MultiArgInstantiationProblematic.class.getConstructor(int.class), 2);
+    }
+
+    @Test public void invokingNonZeroArgConstructorQuietlyWrapsIllegalAccessException() throws Exception {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(IllegalAccessException.class.getName());
+
+        instantiateQuietly(MultiArgIllegalAccessProblematic.class.getDeclaredConstructor(int.class), 2);
+    }
+
+    @Test public void invokingNonZeroArgConstructorQuietlyPropagatesIllegalArgumentException() throws Exception {
+        thrown.expect(IllegalArgumentException.class);
+
+        instantiateQuietly(Integer.class.getDeclaredConstructor(int.class), "2");
+    }
+
+    @Test public void invokingNonZeroArgConstructorWrapsExceptionsRaisedByConstructor() throws Exception {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(IndexOutOfBoundsException.class.getName());
+
+        instantiateQuietly(InvocationTargetProblematic.class.getConstructor(int.class), 2);
+    }
+
+    private abstract static class ZeroArgInstantiationProblematic {
+        protected ZeroArgInstantiationProblematic() {
             // no-op
         }
     }
@@ -77,12 +121,12 @@ public class ReflectionTest {
     }
 
     @Test public void invokingMethodQuietlyWrapsIllegalAccessException() throws Exception {
-        Method method = IllegalAccessProblematic.class.getDeclaredMethod("foo");
+        Method method = ZeroArgIllegalAccessProblematic.class.getDeclaredMethod("foo");
 
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(IllegalAccessException.class.getName());
 
-        invokeQuietly(method, new IllegalAccessProblematic(0));
+        invokeQuietly(method, new ZeroArgIllegalAccessProblematic(0));
     }
 
     @Test public void invokingMethodQuietlyPropagatesExceptionRaisedByMethod() {
