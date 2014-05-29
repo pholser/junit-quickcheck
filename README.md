@@ -55,9 +55,14 @@ theories, run using a special test runner:
 ```java
     @RunWith(Theories.class)
     public class Accounts {
-        @Theory public void withdrawingReducesBalance(Money originalBalance, Money withdrawalAmount) {
+        @Theory public void withdrawingReducesBalance(
+            Money originalBalance,
+            Money withdrawalAmount) {
+
             assumeThat(originalBalance, greaterThan(Money.NONE));
-            assumeThat(withdrawalAmount, allOf(greaterThan(Money.NONE), lessThan(originalBalance)));
+            assumeThat(
+                withdrawalAmount,
+                allOf(greaterThan(Money.NONE), lessThan(originalBalance)));
 
             Account account = new Account(originalBalance);
 
@@ -85,7 +90,10 @@ generated values for a theory parameter, mark the theory parameter with `@ForAll
 
     @RunWith(Theories.class)
     public class SymmetricKeyCryptography {
-        @Theory public void decryptReversesEncrypt(@ForAll String plaintext, @ForAll Key key) throws Exception {
+        @Theory public void decryptReversesEncrypt(
+            @ForAll String plaintext,
+            @ForAll Key key) throws Exception {
+
             Crypto crypto = new Crypto();
 
             byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
@@ -258,8 +266,12 @@ effectively dictates the sample size for the parameter.
 
     @RunWith(Theories.class)
     public class TheoriesOfSmallDomains {
-        @Theory public void hold(@ForAll @ValuesOf boolean b, @ForAll @ValuesOf Ternary t) {
-            // sample sizes of 2 and 3, respectively. Each combination of potential values will be generated.
+        @Theory public void hold(
+            @ForAll @ValuesOf boolean b,
+            @ForAll @ValuesOf Ternary t) {
+
+            // Sample sizes of 2 and 3, respectively.
+            // Each combination of potential values will be generated.
         }
     }
 ```
@@ -344,20 +356,29 @@ positive pressure on your designs:
 
         public BigDecimal latitude() { return latitude; }
         public BigDecimal longitude() { return longitude; }
-        public boolean inNorthernHemisphere() { return latitude.compareTo(BigDecimal.ZERO) > 0; }
+        public boolean inNorthernHemisphere() {
+            return latitude.compareTo(BigDecimal.ZERO) > 0;
+        }
     }
 
     public class Coordinates extends Generator<Coordinate> {
-        @Override public Coordinate generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Coordinate generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return new Coordinate(
-                BigDecimal.valueOf(random.nextDouble(-90, 90)).setScale(6, RoundingMode.CEILING),
-                BigDecimal.valueOf(random.nextDouble(-180, 180)).setScale(6, RoundingMode.CEILING));
+                BigDecimal.valueOf(random.nextDouble(-90, 90))
+                    .setScale(6, RoundingMode.CEILING),
+                BigDecimal.valueOf(random.nextDouble(-180, 180))
+                    .setScale(6, RoundingMode.CEILING));
         }
     }
 
     @RunWith(Theories.class)
     public class GeographyTheories {
-        @Theory public void northernHemisphere(@ForAll @From(Coordinates.class) Coordinate c) {
+        @Theory public void northernHemisphere(
+            @ForAll @From(Coordinates.class) Coordinate c) {
+
             assumeThat(c.latitude(), greaterThan(BigDecimal.ZERO));
 
             assertTrue(c.inNorthernHemisphere());
@@ -404,7 +425,9 @@ or the `Ctor` generator, like so:
 
             public BigDecimal latitude() { return latitude; }
             public BigDecimal longitude() { return longitude; }
-            public boolean inNorthernHemisphere() { return latitude.compareTo(BigDecimal.ZERO) > 0; }
+            public boolean inNorthernHemisphere() {
+                return latitude.compareTo(BigDecimal.ZERO) > 0;
+            }
         }
 
         @Theory public void northernHemisphere(@ForAll @From(Ctor.class) Coordinate c) {
