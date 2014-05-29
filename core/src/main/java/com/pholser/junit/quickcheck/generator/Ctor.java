@@ -9,7 +9,19 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 
+/**
+ * <p>A generator that produces instances of a class by introspecting the class for a single accessible constructor,
+ * generating values for the constructor's parameters, and invoking the constructor.</p>
+ *
+ * <p>If a constructor parameter is marked with an annotation that influences the generation of a given kind of
+ * value, it will be applied to the generation of values for that parameter.</p>
+ *
+ * @param <T> the type of objects generated
+ */
 public class Ctor<T> extends Generator<T> {
+    /**
+     * @param type the type of objects to be generated
+     */
     public Ctor(Class<T> type) {
         super(type);
     }

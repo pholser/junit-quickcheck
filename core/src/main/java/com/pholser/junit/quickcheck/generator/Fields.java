@@ -47,6 +47,9 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * @param <T> the type of objects generated
  */
 public class Fields<T> extends Generator<T> {
+    /**
+     * @param type the type of objects to be generated
+     */
     public Fields(Class<T> type) {
         super(type);
     }

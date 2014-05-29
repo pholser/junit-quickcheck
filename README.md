@@ -299,10 +299,10 @@ is marked with `@ForAll`, the theory will be executed 10,000 times (100 * 100).
     @RunWith(Theories.class)
     public class GeographyTheories {
         @Theory public void northernHemisphere(
-            @ForAll(minDouble = -90, maxDouble = 90) double latitude,
-            @ForAll(minDouble = -180, maxDouble = 180 double longitude) {
+            @ForAll @InRange(min = "-90", max = "90") BigDecimal latitude,
+            @ForAll @InRange(min = "-180", max = "180") BigDecimal longitude) {
 
-            assumeThat(latitude, greaterThan(0D));
+            assumeThat(latitude, greaterThan(BigDecimal.ZERO));
 
             assertTrue(Earth.isInNorthernHemisphere(latitude, longitude);
         }
@@ -317,10 +317,10 @@ If you don't want to take on that many invocations, here are some mitigation str
     @RunWith(Theories.class)
     public class GeographyTheories {
         @Theory public void northernHemisphere(
-            @ForAll(sampleSize = 20, minDouble = -90, maxDouble = 90) double latitude,
-            @ForAll(sampleSize = 20, minDouble = -180, maxDouble = 180 double longitude) {
+            @ForAll(sampleSize = 20) @InRange(min = "-90", max = "90") BigDecimal latitude,
+            @ForAll(sampleSize = 20) @InRange(min = "-180", max = "180") BigDecimal longitude) {
 
-            assumeThat(latitude, greaterThan(0D));
+            assumeThat(latitude, greaterThan(BigDecimal.ZERO));
 
             assertTrue(Earth.isInNorthernHemisphere(latitude, longitude);
         }
@@ -332,36 +332,92 @@ positive pressure on your designs:
 
 ```java
     public class Coordinate {
-        private final double latitude;
-        private final double longitude;
+        private final BigDecimal latitude;
+        private final BigDecimal longitude;
 
-        public Coordinate(double latitude, double longitude) {
+        public Coordinate(BigDecimal latitude, BigDecimal longitude) {
             // argument checks here...
 
             this.latitude = latitude;
             this.longitude = longitude;
         }
 
-        public double latitude() { return latitude; }
-        public double longitude() { return longitude; }
-        public boolean inNorthernHemisphere() { return latitude > 0; }
+        public BigDecimal latitude() { return latitude; }
+        public BigDecimal longitude() { return longitude; }
+        public boolean inNorthernHemisphere() { return latitude.compareTo(BigDecimal.ZERO) > 0; }
     }
 
     public class Coordinates extends Generator<Coordinate> {
-        @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
-            return new Coordinate(random.nextDouble(-90, 90), random.nextDouble(-180, 180));
+        @Override public Coordinate generate(SourceOfRandomness random, GenerationStatus status) {
+            return new Coordinate(
+                BigDecimal.valueOf(random.nextDouble(-90, 90)).setScale(6, RoundingMode.CEILING),
+                BigDecimal.valueOf(random.nextDouble(-180, 180)).setScale(6, RoundingMode.CEILING));
         }
     }
 
     @RunWith(Theories.class)
     public class GeographyTheories {
         @Theory public void northernHemisphere(@ForAll @From(Coordinates.class) Coordinate c) {
-            assumeThat(c.latitude(), greaterThan(0D));
+            assumeThat(c.latitude(), greaterThan(BigDecimal.ZERO));
 
             assertTrue(c.inNorthernHemisphere());
         }
     }
 ```
+
+- If you opt for artificially collapsing theory parameters into a class (that is, not introducing a
+new concept into your domain), you can avoid writing a custom generator by using either the `Fields`
+or the `Ctor` generator, like so:
+
+```java
+    @RunWith(Theories.class)
+    public class ThreeDimensionalSpaceTheories {
+        public static class Point {
+            public double x;
+            public double y;
+            public double z;
+        }
+
+        @Theory public void originDistance(@ForAll @From(Fields.class) Point p) {
+            assertEquals(
+                Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z),
+                Space.distanceFromOrigin(p.x, p.y, p.z));
+        }
+    }
+   
+```
+
+```java
+    @RunWith(Theories.class)
+    public class GeographyTheories {
+        public static class Coordinate {
+            private final BigDecimal latitude;
+            private final BigDecimal longitude;
+
+            public Coordinate(
+                @InRange(min = "-90", max = "90") BigDecimal latitude,
+                @InRange(min = "-180", max = "180") BigDecimal longitude) {
+
+                this.latitude = latitude;
+                this.longitude = longitude;
+            }
+
+            public BigDecimal latitude() { return latitude; }
+            public BigDecimal longitude() { return longitude; }
+            public boolean inNorthernHemisphere() { return latitude.compareTo(BigDecimal.ZERO) > 0; }
+        }
+
+        @Theory public void northernHemisphere(@ForAll @From(Ctor.class) Coordinate c) {
+            assumeThat(c.latitude(), greaterThan(BigDecimal.ZERO));
+
+            assertTrue(c.inNorthernHemisphere());
+        }
+    }
+```
+
+Any generation-influencing annotations applied to either fields (when using the `Fields` generator) or
+constructor parameters (with using the `Ctor` generator) will be respected when the respective generators
+create values for the fields or constructor parameters.
 
 ### How it works
 
