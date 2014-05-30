@@ -130,6 +130,15 @@ generation for a supported type, mark the theory parameter already marked as `@F
 class(es) of the `Generator` to be used. If you give multiple classes in `@From`, one will be chosen on every
 generation with equal probability.
 
+```java
+    @RunWith(Theories.class)
+    public class IdentificationTheories {
+        @Theory public void shouldHold(@ForAll @From(Version5.class) UUID u) {
+            // ...
+        }
+    }
+```
+
 If you wish to add a generator for a type without having to use `@From`, you can package your `Generator` in a
 [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html) JAR file and place the JAR on
 the class path. junit-quickcheck will make those generators available for use. The generators in the module
