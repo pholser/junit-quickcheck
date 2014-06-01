@@ -53,6 +53,11 @@ JUnit's answer to function properties is the notion of _theories_. Programmers w
 theories, run using a special test runner:
 
 ```java
+    import org.junit.contrib.theories.*;
+    import static org.hamcrest.Matchers.*;
+    import static org.junit.Assert.*;
+    import static org.junit.Assume.*;
+    
     @RunWith(Theories.class)
     public class Accounts {
         @Theory public void withdrawingReducesBalance(
