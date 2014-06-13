@@ -25,36 +25,27 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import java.math.BigInteger;
-import java.util.Random;
-
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.Random;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.junit.runners.MethodSorters.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(SourceOfRandomness.class)
+@FixMethodOrder(NAME_ASCENDING)
 public class GeneratingRandomValuesTest {
     private SourceOfRandomness source;
-    @Mock private Random random;
 
     @Before public void beforeEach() {
-        source = new SourceOfRandomness(random);
+        source = new SourceOfRandomness(new Random());
+        source.setSeed(1L);
     }
 
     @Test public void delegatesToJDKForNextBoolean() {
-        source.nextBoolean();
-
-        verify(random).nextBoolean();
+        assertTrue(source.nextBoolean());
     }
 
     @Test public void delegatesToJDKForNextBytes() {
@@ -62,49 +53,31 @@ public class GeneratingRandomValuesTest {
 
         source.nextBytes(bytes);
 
-        verify(random).nextBytes(bytes);
+        assertEquals(115, bytes[0]);
     }
 
     @Test public void delegatesToJDKForNextDouble() {
-        source.nextDouble();
-
-        verify(random).nextDouble();
+        assertEquals(0.7308781907032909, source.nextDouble(), 0D);
     }
 
     @Test public void delegatesToJDKForNextFloat() {
-        source.nextFloat();
-
-        verify(random).nextFloat();
+        assertEquals(0.7308782F, source.nextFloat(), 0F);
     }
 
     @Test public void delegatesToJDKForNextGaussian() {
-        source.nextGaussian();
-
-        verify(random).nextGaussian();
+        assertEquals(1.561581040188955, source.nextGaussian(), 0D);
     }
 
     @Test public void delegatesToJDKForNextInt() {
-        source.nextInt();
-
-        verify(random).nextInt();
+        assertEquals(-1155869325, source.nextInt());
     }
 
     @Test public void delegatesToJDKForNextIntFromZeroToN() {
-        source.nextInt(2);
-
-        verify(random).nextInt(2);
+        assertEquals(1, source.nextInt(2));
     }
 
     @Test public void delegatesToJDKForNextLong() {
-        source.nextLong();
-
-        verify(random).nextLong();
-    }
-
-    @Test public void delegatesToJDKForSetSeed() {
-        source.setSeed(2L);
-
-        verify(random).setSeed(2L);
+        assertEquals(-4964420948893066024L, source.nextLong());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -116,29 +89,11 @@ public class GeneratingRandomValuesTest {
         assertEquals((byte) -2, source.nextByte((byte) -2, (byte) -2));
     }
 
-    @Test public void nextByteInRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(2, random).thenReturn(BigInteger.ONE);
-
+    @Test public void nextByteInRange() {
         byte value = source.nextByte((byte) 3, (byte) 5);
 
         assertThat(value, lessThanOrEqualTo((byte) 5));
         assertThat(value, greaterThanOrEqualTo((byte) 3));
-    }
-
-    @Test public void nextByteAtLowEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(9, random).thenReturn(BigInteger.ZERO);
-
-        byte value = source.nextByte(Byte.MIN_VALUE, Byte.MAX_VALUE);
-
-        assertEquals(Byte.MIN_VALUE, value);
-    }
-
-    @Test public void nextByteAtHighEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(9, random).thenReturn(BigInteger.valueOf(255));
-
-        byte value = source.nextByte(Byte.MIN_VALUE, Byte.MAX_VALUE);
-
-        assertEquals(Byte.MAX_VALUE, value);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -157,22 +112,6 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo((short) 3));
     }
 
-    @Test public void nextShortAtLowEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.ZERO);
-
-        short value = source.nextShort(Short.MIN_VALUE, Short.MAX_VALUE);
-
-        assertEquals(Short.MIN_VALUE, value);
-    }
-
-    @Test public void nextShortAtHighEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.valueOf(Character.MAX_VALUE));
-
-        short value = source.nextShort(Short.MIN_VALUE, Short.MAX_VALUE);
-
-        assertEquals(Short.MAX_VALUE, value);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void nextCharWithBackwardsRange() {
         source.nextChar('b', 'a');
@@ -187,22 +126,6 @@ public class GeneratingRandomValuesTest {
 
         assertThat(value, lessThanOrEqualTo('f'));
         assertThat(value, greaterThanOrEqualTo('d'));
-    }
-
-    @Test public void nextCharAtLowEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.ZERO);
-
-        char value = source.nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
-
-        assertEquals(Character.MIN_VALUE, value);
-    }
-
-    @Test public void nextCharAtHighEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(17, random).thenReturn(BigInteger.valueOf(Character.MAX_VALUE));
-
-        char value = source.nextChar(Character.MIN_VALUE, Character.MAX_VALUE);
-
-        assertEquals(Character.MAX_VALUE, value);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -221,22 +144,6 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo(3));
     }
 
-    @Test public void nextIntAtLowEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(33, random).thenReturn(BigInteger.ZERO);
-
-        int value = source.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
-
-        assertEquals(Integer.MIN_VALUE, value);
-    }
-
-    @Test public void nextIntAtHighEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(33, random).thenReturn(BigInteger.valueOf((1L << 32) - 1L));
-
-        int value = source.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
-
-        assertEquals(Integer.MAX_VALUE, value);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void nextLongWithBackwardsRange() {
         source.nextLong(0L, -1L);
@@ -253,23 +160,6 @@ public class GeneratingRandomValuesTest {
         assertThat(value, greaterThanOrEqualTo(3L));
     }
 
-    @Test public void nextLongAtLowEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(65, random).thenReturn(BigInteger.ZERO);
-
-        long value = source.nextLong(Long.MIN_VALUE, Long.MAX_VALUE);
-
-        assertEquals(Long.MIN_VALUE, value);
-    }
-
-    @Test public void nextLongAtHighEndOfRange() throws Exception {
-        whenNew(BigInteger.class).withArguments(65, random)
-                .thenReturn(BigInteger.valueOf(2).pow(64).subtract(BigInteger.ONE));
-
-        long value = source.nextLong(Long.MIN_VALUE, Long.MAX_VALUE);
-
-        assertEquals(Long.MAX_VALUE, value);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void nextFloatWithBackwardsRange() {
         source.nextFloat(0.2F, 0.1F);
@@ -280,31 +170,10 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextFloatInRange() {
-        when(random.nextFloat()).thenReturn(0.3343443F);
-
         float value = source.nextFloat(-4.56F, -1.234234F);
 
-        verify(random).nextFloat();
         assertThat(value, lessThanOrEqualTo(-1.234234F));
         assertThat(value, greaterThanOrEqualTo(-4.56F));
-    }
-
-    @Test public void nextFloatAtLowEndOfRange() {
-        when(random.nextFloat()).thenReturn(0F);
-
-        float value = source.nextFloat(Float.MIN_VALUE, Float.MAX_VALUE);
-
-        verify(random).nextFloat();
-        assertEquals(Float.MIN_VALUE, value, 0F);
-    }
-
-    @Test public void nextFloatAtHighEndOfRange() {
-        when(random.nextFloat()).thenReturn(Math.nextAfter(1F, Float.NEGATIVE_INFINITY));
-
-        float value = source.nextFloat(Float.MIN_VALUE, Float.MAX_VALUE);
-
-        verify(random).nextFloat();
-        assertEquals(Math.nextAfter(Float.MAX_VALUE, Float.NEGATIVE_INFINITY), value, 0F);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -317,36 +186,13 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void nextDoubleInRange() {
-        when(random.nextDouble()).thenReturn(0.45);
-
         double value = source.nextDouble(-4.56, -1.234234);
 
-        verify(random).nextDouble();
         assertThat(value, lessThanOrEqualTo(-1.234234));
         assertThat(value, greaterThanOrEqualTo(-4.56));
     }
 
-    @Test public void nextDoubleAtLowEndOfRange() {
-        when(random.nextDouble()).thenReturn(0D);
-
-        double value = source.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE);
-
-        verify(random).nextDouble();
-        assertEquals(Double.MIN_VALUE, value, 0D);
-    }
-
-    @Test public void nextDoubleAtHighEndOfRange() {
-        when(random.nextDouble()).thenReturn(0.9999999999999999);
-
-        double value = source.nextDouble(Double.MAX_VALUE - 1E292, Double.MAX_VALUE);
-
-        verify(random).nextDouble();
-        assertEquals(Double.MAX_VALUE, value, 0D);
-    }
-
     @Test public void nextBytes() {
-        source.nextBytes(1);
-
-        verify(random).nextBytes(new byte[1]);
+        assertArrayEquals(new byte[] { 115 }, source.nextBytes(1));
     }
 }

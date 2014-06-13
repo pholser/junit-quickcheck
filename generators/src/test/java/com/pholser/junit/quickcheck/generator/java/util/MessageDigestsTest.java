@@ -25,32 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.security.NoSuchAlgorithmException;
 
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.powermock.api.mockito.PowerMockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(MessageDigest.class)
 public class MessageDigestsTest {
-    @Before public void setUp() {
-        PowerMockito.mockStatic(MessageDigest.class);
-    }
-
-    @Test public void treatsNoSuchAlgorithmAsIllegalState() throws Exception {
-        when(MessageDigest.getInstance(any(String.class))).thenThrow(new NoSuchAlgorithmException(""));
-
+    @Test public void treatsNoSuchAlgorithmAsIllegalState() {
         try {
             MessageDigests.get("foobar");
         } catch (IllegalStateException expected) {
