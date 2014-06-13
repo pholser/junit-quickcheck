@@ -25,30 +25,26 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.security.SecureRandom;
-import java.util.List;
-
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
-import com.pholser.junit.quickcheck.internal.generator.TheoryParameterGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
 import org.junit.contrib.theories.PotentialAssignment;
 
+import java.security.SecureRandom;
+import java.util.List;
+
 public class RandomValueSupplier extends ParameterSupplier {
-    private final TheoryParameterGenerator generator;
+    private final RandomTheoryParameterGenerator generator;
 
     /* Called by JUnit reflectively. */
     public RandomValueSupplier() {
-        this(new RandomTheoryParameterGenerator(new SourceOfRandomness(new SecureRandom()),
+        generator = new RandomTheoryParameterGenerator(
+            new SourceOfRandomness(new SecureRandom()),
             new GeneratorRepository(new SourceOfRandomness(new SecureRandom()))
-                .register(new ServiceLoaderGeneratorSource())));
-    }
-
-    protected RandomValueSupplier(TheoryParameterGenerator generator) {
-        this.generator = generator;
+                .register(new ServiceLoaderGeneratorSource()));
     }
 
     @Override public List<PotentialAssignment> getValueSources(ParameterSignature signature) {

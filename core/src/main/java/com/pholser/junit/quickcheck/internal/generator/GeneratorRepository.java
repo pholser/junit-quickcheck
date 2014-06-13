@@ -120,7 +120,10 @@ public class GeneratorRepository {
         return generatorForTypeToken(Types.forJavaLangReflectType(type), true);
     }
 
-    private Generator<?> generatorForTypeToken(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
+    private Generator<?> generatorForTypeToken(
+        org.javaruntype.type.Type<?> typeToken,
+        boolean allowMixedTypes) {
+
         if (typeToken.isArray())
             return generatorForArrayType(typeToken);
         if (typeToken.getRawClass().isEnum())
@@ -138,7 +141,10 @@ public class GeneratorRepository {
         return new ArrayGenerator(component.getRawClass(), generatorForTypeToken(component, true));
     }
 
-    private List<Generator<?>> findMatchingGenerators(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes) {
+    private List<Generator<?>> findMatchingGenerators(
+        org.javaruntype.type.Type<?> typeToken,
+        boolean allowMixedTypes) {
+
         List<Generator<?>> matches = new ArrayList<Generator<?>>();
 
         if (!hasGeneratorsForRawClass(typeToken.getRawClass()))
@@ -152,17 +158,22 @@ public class GeneratorRepository {
         return matches;
     }
 
-    private void maybeAddLambdaGenerator(org.javaruntype.type.Type<?> typeToken, List<Generator<?>> matches) {
+    private void maybeAddLambdaGenerator(
+        org.javaruntype.type.Type<?> typeToken,
+        List<Generator<?>> matches) {
+
         Method method = singleAbstractMethodOf(typeToken.getRawClass());
         if (method != null) {
             @SuppressWarnings("unchecked")
-            LambdaGenerator lambda = new LambdaGenerator(typeToken.getRawClass(),
-                generatorFor(method.getGenericReturnType()));
+            LambdaGenerator lambda =
+                new LambdaGenerator(typeToken.getRawClass(), generatorFor(method.getGenericReturnType()));
             matches.add(lambda);
         }
     }
 
-    private void maybeAddGeneratorsForRawClass(org.javaruntype.type.Type<?> typeToken, boolean allowMixedTypes,
+    private void maybeAddGeneratorsForRawClass(
+        org.javaruntype.type.Type<?> typeToken,
+        boolean allowMixedTypes,
         List<Generator<?>> matches) {
 
         List<Generator<?>> candidates = generatorsForRawClass(typeToken.getRawClass(), allowMixedTypes);
@@ -211,7 +222,7 @@ public class GeneratorRepository {
 
         // must be "? super X"
         Set<org.javaruntype.type.Type<?>> supertypes = Reflection.supertypes(parameter.getType());
-        org.javaruntype.type.Type<?> chosen = randomElementFrom(supertypes, random);
+        org.javaruntype.type.Type<?> chosen = choose(supertypes, random);
         return generatorForTypeToken(chosen, false);
     }
 
@@ -219,7 +230,7 @@ public class GeneratorRepository {
         Set<Generator<?>> matches = generators.get(clazz);
 
         if (!allowMixedTypes) {
-            Generator<?> match = randomElementFrom(matches, random);
+            Generator<?> match = choose(matches, random);
             matches = new HashSet<Generator<?>>();
             matches.add(match);
         }

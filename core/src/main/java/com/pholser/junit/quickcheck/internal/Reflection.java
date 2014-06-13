@@ -105,7 +105,10 @@ public final class Reflection {
         }
     }
 
-    public static List<Annotation> markedAnnotations(List<Annotation> annotations, Class<? extends Annotation> marker) {
+    public static List<Annotation> markedAnnotations(
+        List<Annotation> annotations,
+        Class<? extends Annotation> marker) {
+
         List<Annotation> marked = new ArrayList<Annotation>();
 
         for (Annotation each : annotations) {
@@ -150,7 +153,12 @@ public final class Reflection {
         return allFields;
     }
 
-    public static void setField(final Field field, Object target, Object value, final boolean suppressProtection) {
+    public static void setField(
+        final Field field,
+        Object target,
+        Object value,
+        final boolean suppressProtection) {
+
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override public Void run() {
                 field.setAccessible(suppressProtection);

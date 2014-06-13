@@ -92,6 +92,7 @@ public class GenerationContext implements GenerationStatus {
             return true;
         if (parameter.discardRatio() == 0)
             return discards > parameter.sampleSize();
+
         return successfulEvaluations == 0
             ? discards > parameter.discardRatio()
             : (discards / successfulEvaluations) >= parameter.discardRatio();

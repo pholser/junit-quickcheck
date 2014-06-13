@@ -43,6 +43,6 @@ public class CharsetGenerator extends Generator<Charset> {
     }
 
     @Override public Charset generate(SourceOfRandomness random, GenerationStatus status) {
-        return Charset.forName(randomElementFrom(availableCharsets().keySet(), random));
+        return Charset.forName(choose(availableCharsets().keySet(), random));
     }
 }

@@ -62,7 +62,11 @@ public final class Lambdas {
      * @return an instance of the functional interface type, whose single method will return a generated value
      * @throws IllegalArgumentException if {@code lambdaType} is not a functional interface type
      */
-    public static <T, U> T makeLambda(Class<T> lambdaType, Generator<U> returnValueGenerator, GenerationStatus status) {
+    public static <T, U> T makeLambda(
+        Class<T> lambdaType,
+        Generator<U> returnValueGenerator,
+        GenerationStatus status) {
+
         if (Reflection.singleAbstractMethodOf(lambdaType) == null)
             throw new IllegalArgumentException(lambdaType + " is not a functional interface type");
 
@@ -78,8 +82,12 @@ public final class Lambdas {
         private final GenerationStatus status;
         private final Class<T> lambdaType;
 
-        LambdaInvocationHandler(Class<T> lambdaType, Generator<U> returnValueGenerator, GenerationStatus status,
-                                Random random) {
+        LambdaInvocationHandler(
+            Class<T> lambdaType,
+            Generator<U> returnValueGenerator,
+            GenerationStatus status,
+            Random random) {
+
             this.lambdaType = lambdaType;
             this.returnValueGenerator = returnValueGenerator;
             this.status = status;

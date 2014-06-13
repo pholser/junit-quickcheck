@@ -44,6 +44,6 @@ public class TimeZoneGenerator extends Generator<TimeZone> {
     }
 
     @Override public TimeZone generate(SourceOfRandomness random, GenerationStatus status) {
-        return TimeZone.getTimeZone(randomElementFrom(asList(TimeZone.getAvailableIDs()), random));
+        return TimeZone.getTimeZone(choose(asList(TimeZone.getAvailableIDs()), random));
     }
 }

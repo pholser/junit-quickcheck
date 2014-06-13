@@ -43,7 +43,7 @@ public final class Ranges {
         return comparison;
     }
 
-    public static BigInteger randomBigIntegerInRange(SourceOfRandomness random, BigInteger min, BigInteger max) {
+    public static BigInteger choose(SourceOfRandomness random, BigInteger min, BigInteger max) {
         BigInteger range = max.subtract(min).add(BigInteger.ONE);
         BigInteger generated;
 

@@ -55,7 +55,8 @@ public class Classes {
     }
 
     public static List<Class<?>> classesOf(Iterable<?> items) {
-        return FluentIterable.from(items)
+        return FluentIterable
+            .from(items)
             .transform(new Function<Object, Class<?>>() {
                 @Override public Class<?> apply(Object input) {
                     return input.getClass();
@@ -68,16 +69,14 @@ public class Classes {
     }
 
     private static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
-        // start off with set from first hierarchy
-        Set<Class<?>> rollingIntersect = new LinkedHashSet<Class<?>>(getClassesBreadthFirst(classes.get(0)));
+        Set<Class<?>> intersection = new LinkedHashSet<Class<?>>(getClassesBreadthFirst(classes.get(0)));
 
-        // intersect with next
         if (classes.size() > 1) {
             for (Class<?> each : classes.subList(1, classes.size()))
-                rollingIntersect.retainAll(getClassesBreadthFirst(each));
+                intersection.retainAll(getClassesBreadthFirst(each));
         }
 
-        return new ArrayList<Class<?>>(rollingIntersect);
+        return new ArrayList<Class<?>>(intersection);
     }
 
     private static Set<Class<?>> getClassesBreadthFirst(Class<?> clazz) {
@@ -87,8 +86,10 @@ public class Classes {
 
         do {
             classes.addAll(nextLevel);
+
             Set<Class<?>> thisLevel = new LinkedHashSet<Class<?>>(nextLevel);
             nextLevel.clear();
+
             for (Class<?> each : thisLevel) {
                 Class<?> superClass = each.getSuperclass();
                 if (superClass != null && superClass != Object.class)

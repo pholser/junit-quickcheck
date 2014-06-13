@@ -92,7 +92,8 @@ public class ConfigurationIsolationTest {
 
     @Test public void acrossParametersOfSameParameterizedTypeWithOneConstant() throws Exception {
         assertThat(testResult(ParametersOfSameParameterizedTypeWithOneConstant.class), isSuccessful());
-        assertEquals(defaultSampleSize() * defaultSampleSize(),
+        assertEquals(
+            defaultSampleSize() * defaultSampleSize(),
             ParametersOfSameParameterizedTypeWithOneConstant.iterations);
     }
 
@@ -111,9 +112,11 @@ public class ConfigurationIsolationTest {
     @Test public void acrossParametersOfParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant()
         throws Exception {
 
-        assertThat(testResult(ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant.class),
+        assertThat(
+            testResult(ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant.class),
             isSuccessful());
-        assertEquals(defaultSampleSize() * defaultSampleSize(),
+        assertEquals(
+            defaultSampleSize() * defaultSampleSize(),
             ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant.iterations);
     }
 
@@ -152,8 +155,9 @@ public class ConfigurationIsolationTest {
 
     @Test public void acrossParametersOfSameArrayTypeWithOneConstant() throws Exception {
         assertThat(testResult(ParametersOfSameArrayTypeWithOneConstant.class), isSuccessful());
-        assertEquals(defaultSampleSize() * defaultSampleSize(),
-                ParametersOfSameArrayTypeWithOneConstant.iterations);
+        assertEquals(
+            defaultSampleSize() * defaultSampleSize(),
+            ParametersOfSameArrayTypeWithOneConstant.iterations);
     }
 
     @RunWith(Theories.class)
@@ -172,8 +176,9 @@ public class ConfigurationIsolationTest {
 
     @Test public void acrossParametersOfParametersOfArrayTypeAndTypeWithOneConstant() throws Exception {
         assertThat(testResult(ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.class), isSuccessful());
-        assertEquals(defaultSampleSize() * defaultSampleSize(),
-                ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.iterations);
+        assertEquals(
+            defaultSampleSize() * defaultSampleSize(),
+            ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.iterations);
     }
 
     @RunWith(Theories.class)

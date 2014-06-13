@@ -114,11 +114,11 @@ public class Objects {
         if (first.size() != second.size())
             return false;
 
-        for (Object o1 : first) {
+        for (Object x : first) {
             boolean found = false;
 
-            for (Object o2 : second) {
-                if (deepEquals(o1, o2)) {
+            for (Object y : second) {
+                if (deepEquals(x, y)) {
                     found = true;
                     break;
                 }

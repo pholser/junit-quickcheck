@@ -58,8 +58,9 @@ public class GenerationContextTest {
         when(quantifier.discardRatio()).thenReturn(3);
         when(generator.types()).thenReturn(asList(int.class));
         when(generator.canRegisterAsType(any(Class.class))).thenReturn(true);
-        when(generator.generate(same(random), any(GenerationStatus.class))).thenReturn(10).thenReturn(9).thenReturn(8)
-            .thenReturn(7).thenReturn(6).thenReturn(5).thenReturn(4).thenReturn(3).thenReturn(2).thenReturn(1)
+        when(generator.generate(same(random), any(GenerationStatus.class)))
+            .thenReturn(10).thenReturn(9).thenReturn(8).thenReturn(7).thenReturn(6)
+            .thenReturn(5).thenReturn(4).thenReturn(3).thenReturn(2).thenReturn(1)
             .thenReturn(0);
         when(constraint.value()).thenReturn("#_ > 0");
     }
@@ -73,8 +74,12 @@ public class GenerationContextTest {
             new GenerationContext(parameter, new GeneratorRepository(random).register(generator));
 
         thrown.expect(GenerationContext.DiscardRatioExceededException.class);
-        thrown.expectMessage(String.format(GenerationContext.DiscardRatioExceededException.MESSAGE_TEMPLATE,
-            parameter.discardRatio(), 30, 10, 3D));
+        thrown.expectMessage(String.format(
+            GenerationContext.DiscardRatioExceededException.MESSAGE_TEMPLATE,
+            parameter.discardRatio(),
+            30,
+            10,
+            3D));
 
         while (generation.shouldContinue())
             generation.generate(random);

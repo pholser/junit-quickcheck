@@ -151,12 +151,12 @@ public abstract class Generator<T> {
         if (parameter instanceof WildcardTypeParameter)
             return true;
         if (parameter instanceof StandardTypeParameter<?>) {
-            return ((StandardTypeParameter<?>) parameter).getType().isAssignableFrom(
-                    Types.forJavaLangReflectType(clazz));
+            return ((StandardTypeParameter<?>) parameter).getType()
+                .isAssignableFrom(Types.forJavaLangReflectType(clazz));
         }
         if (parameter instanceof ExtendsTypeParameter<?>) {
-            return Types.forJavaLangReflectType(clazz).isAssignableFrom(
-                    ((ExtendsTypeParameter<?>) parameter).getType());
+            return Types.forJavaLangReflectType(clazz)
+                .isAssignableFrom(((ExtendsTypeParameter<?>) parameter).getType());
         }
 
         // must be "? super X"

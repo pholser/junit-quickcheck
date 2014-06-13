@@ -174,7 +174,7 @@ public class SourceOfRandomness {
         if (comparison == 0)
             return min;
 
-        return Ranges.randomBigIntegerInRange(this, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
+        return Ranges.choose(this, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
     }
 
     /**

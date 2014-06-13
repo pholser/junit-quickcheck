@@ -64,7 +64,8 @@ public class TypeVariableImpl<D extends GenericDeclaration> implements TypeVaria
             return false;
 
         TypeVariable<?> other = (TypeVariable<?>) that;
-        return Objects.equal(getName(), other.getName()) && Arrays.equals(getBounds(), other.getBounds())
+        return Objects.equal(getName(), other.getName())
+            && Arrays.equals(getBounds(), other.getBounds())
             && Objects.equal(getGenericDeclaration(), other.getGenericDeclaration());
     }
 

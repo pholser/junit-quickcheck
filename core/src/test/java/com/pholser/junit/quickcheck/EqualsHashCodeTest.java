@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck;
 
-import org.junit.Ignore;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.experimental.categories.Category;

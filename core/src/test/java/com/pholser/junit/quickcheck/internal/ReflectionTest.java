@@ -176,7 +176,8 @@ public class ReflectionTest {
     }
 
     @Test public void anInterfaceWithASingleAbstractMethodIsASingleAbstractMethodType() throws Exception {
-        assertEquals(Comparator.class.getMethod("compare", Object.class, Object.class),
+        assertEquals(
+            Comparator.class.getMethod("compare", Object.class, Object.class),
             singleAbstractMethodOf(Comparator.class));
     }
 
@@ -189,7 +190,8 @@ public class ReflectionTest {
     }
 
     @Test public void anInterfaceThatOverloadsEqualsCanBeASingleAbstractMethodType() throws Exception {
-        assertEquals(OverloadingEquals.class.getMethod("equals", String.class),
+        assertEquals(
+            OverloadingEquals.class.getMethod("equals", String.class),
             singleAbstractMethodOf(OverloadingEquals.class));
     }
 
@@ -200,7 +202,8 @@ public class ReflectionTest {
     @Test public void anInterfaceThatOverloadsEqualsWithMoreThanOneParameterCanBeASingleAbstractMethodType()
         throws Exception {
 
-        assertEquals(OverloadingEqualsWithMoreParameters.class.getMethod("equals", Object.class, Object.class),
+        assertEquals(
+            OverloadingEqualsWithMoreParameters.class.getMethod("equals", Object.class, Object.class),
             singleAbstractMethodOf(OverloadingEqualsWithMoreParameters.class));
     }
 
@@ -229,7 +232,8 @@ public class ReflectionTest {
     }
 
     @Test public void anInterfaceThatOverloadsHashCodeCanBeASingleAbstractMethodType() throws Exception {
-        assertEquals(OverloadingHashCode.class.getMethod("hashCode", Object.class),
+        assertEquals(
+            OverloadingHashCode.class.getMethod("hashCode", Object.class),
             singleAbstractMethodOf(OverloadingHashCode.class));
     }
 
@@ -246,7 +250,8 @@ public class ReflectionTest {
     }
 
     @Test public void anInterfaceThatOverloadsToStringCanBeASingleAbstractMethodType() throws Exception {
-        assertEquals(OverloadingToString.class.getMethod("toString", Object.class),
+        assertEquals(
+            OverloadingToString.class.getMethod("toString", Object.class),
             singleAbstractMethodOf(OverloadingToString.class));
     }
 

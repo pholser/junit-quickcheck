@@ -133,7 +133,7 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
 
         @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
             return super.canGenerateForParametersOfTypes(typeParameters)
-                    && compatibleWithTypeParameter(typeParameters.get(0), String.class);
+                && compatibleWithTypeParameter(typeParameters.get(0), String.class);
         }
 
         @Override public int numberOfNeededComponents() {

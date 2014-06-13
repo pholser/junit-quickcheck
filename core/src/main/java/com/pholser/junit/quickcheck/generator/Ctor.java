@@ -35,8 +35,11 @@ public class Ctor<T> extends Generator<T> {
         @SuppressWarnings("unchecked")
         Constructor<T> single = (Constructor<T>) constructors[0];
 
-        Object[] arguments =
-            arguments(single.getGenericParameterTypes(), single.getParameterAnnotations(), random, status);
+        Object[] arguments = arguments(
+            single.getGenericParameterTypes(),
+            single.getParameterAnnotations(),
+            random,
+            status);
 
         return Reflection.instantiateQuietly(single, arguments);
     }
@@ -45,7 +48,10 @@ public class Ctor<T> extends Generator<T> {
         return false;
     }
 
-    private Object[] arguments(Type[] parameterTypes, Annotation[][] parameterAnnotations, SourceOfRandomness random,
+    private Object[] arguments(
+        Type[] parameterTypes,
+        Annotation[][] parameterAnnotations,
+        SourceOfRandomness random,
         GenerationStatus status) {
 
         Object[] args = new Object[parameterTypes.length];

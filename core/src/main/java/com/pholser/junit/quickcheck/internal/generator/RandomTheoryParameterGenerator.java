@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.PotentialAssignment;
 
-public class RandomTheoryParameterGenerator implements TheoryParameterGenerator {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RandomTheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final GeneratorRepository repository;
 
@@ -41,7 +41,7 @@ public class RandomTheoryParameterGenerator implements TheoryParameterGenerator 
         this.repository = repository;
     }
 
-    @Override public List<PotentialAssignment> generate(ParameterContext parameter) {
+    public List<PotentialAssignment> generate(ParameterContext parameter) {
         List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
 
         for (GenerationContext gen = new GenerationContext(parameter, repository); gen.shouldContinue();) {

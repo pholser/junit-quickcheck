@@ -47,6 +47,6 @@ public class RandomElementFromItemsTest {
         Set<String> names = newLinkedHashSet(asList("alpha", "bravo", "charlie", "delta"));
         when(random.nextInt(0, names.size() - 1)).thenReturn(2);
 
-        assertEquals("charlie", Items.randomElementFrom(names, random));
+        assertEquals("charlie", Items.choose(names, random));
     }
 }

@@ -40,8 +40,7 @@ public class AnnotatedParameterSignatureTest {
     private AnnotatedParameterSignature signature;
 
     @Before public void setUp() throws Exception {
-        List<ParameterSignature> sigs =
-                ParameterSignature.signatures(Annotated.class.getConstructor(int.class));
+        List<ParameterSignature> sigs = ParameterSignature.signatures(Annotated.class.getConstructor(int.class));
         signature = new AnnotatedParameterSignature(sigs.get(0));
     }
 

@@ -52,7 +52,8 @@ public class DiscardRatioTest {
     }
 
     @Test public void willStopGeneratingValuesAfterDiscardRatioExceeded() {
-        assertThat(testResult(ExceededDiscardRatio.class),
+        assertThat(
+            testResult(ExceededDiscardRatio.class),
             hasFailureContaining(GenerationContext.DiscardRatioExceededException.class.getName()));
         assertEquals(0, ExceededDiscardRatio.iterations);
     }
@@ -68,7 +69,8 @@ public class DiscardRatioTest {
     }
 
     @Test public void zeroRatioStopsAfterDiscardsExceedSampleSize() {
-        assertThat(testResult(ZeroDiscardRatio.class),
+        assertThat(
+            testResult(ZeroDiscardRatio.class),
             hasFailureContaining(GenerationContext.DiscardRatioExceededException.class.getName()));
         assertEquals(0, ZeroDiscardRatio.iterations);
     }

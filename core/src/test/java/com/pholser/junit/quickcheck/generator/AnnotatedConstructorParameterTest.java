@@ -39,8 +39,8 @@ public class AnnotatedConstructorParameterTest {
     private AnnotatedConstructorParameter parameter;
 
     @Before public void setUp() throws Exception {
-        parameter =
-            new AnnotatedConstructorParameter(Annotated.class.getConstructor(int.class).getParameterAnnotations()[0]);
+        parameter = new AnnotatedConstructorParameter(
+            Annotated.class.getConstructor(int.class).getParameterAnnotations()[0]);
     }
 
     @Test public void getAnnotations() {

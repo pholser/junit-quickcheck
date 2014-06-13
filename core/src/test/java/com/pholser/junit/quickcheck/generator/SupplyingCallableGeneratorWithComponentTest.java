@@ -52,16 +52,18 @@ public class SupplyingCallableGeneratorWithComponentTest {
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
-        repo = new GeneratorRepository(random).register(Arrays.<Generator<?>> asList(
-            new ZilchGenerator(),
-            new TestCallableGenerator(),
-            new BoxGenerator()));
+        repo = new GeneratorRepository(random)
+            .register(Arrays.<Generator<?>> asList(
+                new ZilchGenerator(),
+                new TestCallableGenerator(),
+                new BoxGenerator()));
         when(random.nextInt(0, 2)).thenReturn(1);
     }
 
     @Test public void coaxingGeneratorToSupplyComponentForCallable() {
-        ArrayGenerator generator = (ArrayGenerator) repo.generatorFor(
-            new GenericArrayTypeImpl(parameterized(Box.class).on(extendsOf(Object.class))));
+        ArrayGenerator generator =
+            (ArrayGenerator) repo.generatorFor(
+                new GenericArrayTypeImpl(parameterized(Box.class).on(extendsOf(Object.class))));
 
         Generator<?> arrayElementGenerator = generator.componentGenerator();
         assertGenerators(arrayElementGenerator, BoxGenerator.class);
