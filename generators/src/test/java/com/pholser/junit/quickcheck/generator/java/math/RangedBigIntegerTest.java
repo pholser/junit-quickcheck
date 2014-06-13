@@ -46,8 +46,11 @@ public class RangedBigIntegerTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         int numberOfBits = max.subtract(min).bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
-            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE)).thenReturn(ONE).thenReturn(TEN)
-            .thenReturn(ZERO).thenReturn(new BigInteger("234234234234"));
+            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE))
+            .thenReturn(ONE)
+            .thenReturn(TEN)
+            .thenReturn(ZERO)
+            .thenReturn(new BigInteger("234234234234"));
     }
 
     @Override protected Type parameterType() {

@@ -37,7 +37,8 @@ import static org.mockito.Mockito.*;
 
 public class PrimitiveDoubleTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.doubles(randomForParameterGenerator)).thenReturn(0.2D).thenReturn(0.3D).thenReturn(0.4D);
+        when(Generating.doubles(randomForParameterGenerator))
+            .thenReturn(0.2D).thenReturn(0.3D).thenReturn(0.4D);
     }
 
     @Override protected Type parameterType() {

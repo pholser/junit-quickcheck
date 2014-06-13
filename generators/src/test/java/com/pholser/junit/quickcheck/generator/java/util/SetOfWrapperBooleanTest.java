@@ -40,7 +40,8 @@ import static org.mockito.Mockito.*;
 
 public class SetOfWrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.booleans(randomForParameterGenerator)).thenReturn(false).thenReturn(true).thenReturn(false)
+        when(Generating.booleans(randomForParameterGenerator))
+            .thenReturn(false).thenReturn(true).thenReturn(false)
             .thenReturn(true).thenReturn(false).thenReturn(true);
         verifyNoMoreInteractions(randomForParameterGenerator);
     }

@@ -194,10 +194,10 @@ public class RFC4122 {
 
         private Namespaces(int difference) {
             this.bytes = new byte[] { 0x6b, (byte) 0xa7, (byte) 0xb8, (byte) difference,
-                    (byte) 0x9d, (byte) 0xad,
-                    0x11, (byte) 0xd1,
-                    (byte) 0x80, (byte) 0xb4,
-                    0x00, (byte) 0xc0, 0x4f, (byte) 0xd4, 0x30, (byte) 0xc8 };
+                (byte) 0x9d, (byte) 0xad,
+                0x11, (byte) 0xd1,
+                (byte) 0x80, (byte) 0xb4,
+                0x00, (byte) 0xc0, 0x4f, (byte) 0xd4, 0x30, (byte) 0xc8 };
         }
     }
 }

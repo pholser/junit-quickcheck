@@ -46,7 +46,8 @@ public class BigDecimalTest extends BasicGeneratorTheoryParameterTest {
         second = TEN.pow(2).subtract(TEN.pow(2).negate());
         third = TEN.pow(3).subtract(TEN.pow(3).negate());
         when(randomForParameterGenerator.nextBigInteger(first.toBigInteger().bitLength()))
-            .thenReturn(new BigInteger("999999999999")).thenReturn(BigInteger.ONE);
+            .thenReturn(new BigInteger("999999999999"))
+            .thenReturn(BigInteger.ONE);
         when(randomForParameterGenerator.nextBigInteger(second.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("136"));
         when(randomForParameterGenerator.nextBigInteger(third.toBigInteger().bitLength()))

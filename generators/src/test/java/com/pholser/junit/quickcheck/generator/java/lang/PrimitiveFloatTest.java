@@ -37,7 +37,8 @@ import static org.mockito.Mockito.*;
 
 public class PrimitiveFloatTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.floats(randomForParameterGenerator)).thenReturn(0.7F).thenReturn(0.8F);
+        when(Generating.floats(randomForParameterGenerator))
+            .thenReturn(0.7F).thenReturn(0.8F);
     }
 
     @Override protected Type parameterType() {

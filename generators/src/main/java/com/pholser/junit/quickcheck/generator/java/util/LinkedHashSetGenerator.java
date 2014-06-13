@@ -35,7 +35,7 @@ public class LinkedHashSetGenerator extends CollectionGenerator<LinkedHashSet> {
         super(LinkedHashSet.class);
     }
 
-    @Override protected LinkedHashSet<Object> emptyCollection() {
+    @Override protected LinkedHashSet<Object> empty() {
         return new LinkedHashSet<Object>();
     }
 }

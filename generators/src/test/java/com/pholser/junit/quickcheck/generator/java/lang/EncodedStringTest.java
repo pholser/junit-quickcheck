@@ -43,7 +43,8 @@ import static org.mockito.Mockito.*;
 public class EncodedStringTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, 0, 127))
-            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
+            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63)
+            .thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
     }
 
     @Override protected Type parameterType() {

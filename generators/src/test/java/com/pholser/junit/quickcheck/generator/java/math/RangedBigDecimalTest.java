@@ -48,8 +48,11 @@ public class RangedBigDecimalTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         numberOfBits = max.movePointRight(3).subtract(min.movePointRight(3)).toBigInteger().bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
-            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE)).thenReturn(ONE).thenReturn(TEN)
-            .thenReturn(ZERO).thenReturn(new BigInteger("234234234234"));
+            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE))
+            .thenReturn(ONE)
+            .thenReturn(TEN)
+            .thenReturn(ZERO)
+            .thenReturn(new BigInteger("234234234234"));
     }
 
     @Override protected Type parameterType() {
@@ -61,7 +64,8 @@ public class RangedBigDecimalTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigDecimal("-12345678123456781234567812345.677"),
+        return asList(
+            new BigDecimal("-12345678123456781234567812345.677"),
             new BigDecimal("-12345678123456781234567812345.668"),
             min,
             new BigDecimal("-12345678123456781234333578111.444"));

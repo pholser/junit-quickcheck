@@ -49,8 +49,11 @@ public class RangedBigDecimalWithGreaterSpecifiedPrecisionTest extends BasicGene
     @Override protected void primeSourceOfRandomness() {
         numberOfBits = max.movePointRight(6).subtract(min.movePointRight(6)).toBigInteger().bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
-            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE)).thenReturn(ONE).thenReturn(TEN)
-            .thenReturn(ZERO).thenReturn(new BigInteger("234234234234"));
+            .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE))
+            .thenReturn(ONE)
+            .thenReturn(TEN)
+            .thenReturn(ZERO)
+            .thenReturn(new BigInteger("234234234234"));
     }
 
     @Override protected Type parameterType() {
@@ -62,7 +65,8 @@ public class RangedBigDecimalWithGreaterSpecifiedPrecisionTest extends BasicGene
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigDecimal("-12345678123456781234567812345.677999"),
+        return asList(
+            new BigDecimal("-12345678123456781234567812345.677999"),
             new BigDecimal("-12345678123456781234567812345.677990"),
             min.setScale(6),
             new BigDecimal("-12345678123456781234567578111.443766"));

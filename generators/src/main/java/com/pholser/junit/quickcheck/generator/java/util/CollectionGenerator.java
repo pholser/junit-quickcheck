@@ -45,7 +45,7 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
 
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        T items = emptyCollection();
+        T items = empty();
 
         for (int i = 0; i < status.size(); ++i)
             items.add(componentGenerators().get(0).generate(random, status));
@@ -61,5 +61,5 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
         return !Object.class.equals(type);
     }
 
-    protected abstract T emptyCollection();
+    protected abstract T empty();
 }

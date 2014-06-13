@@ -38,7 +38,8 @@ import static org.mockito.Mockito.*;
 public class WrapperShortTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.shorts(randomForParameterGenerator))
-            .thenReturn((short) -9).thenReturn((short) -8).thenReturn((short) -7).thenReturn((short) -6)
+            .thenReturn((short) -9).thenReturn((short) -8)
+            .thenReturn((short) -7).thenReturn((short) -6)
             .thenReturn((short) -5);
     }
 

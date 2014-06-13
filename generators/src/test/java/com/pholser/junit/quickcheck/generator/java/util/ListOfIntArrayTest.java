@@ -53,7 +53,10 @@ public class ListOfIntArrayTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), singletonList(new int[] { -1 }), asList(new int[] { -2, 2 }, new int[] { 0, 1 }));
+        return asList(
+            emptyList(),
+            singletonList(new int[] { -1 }),
+            asList(new int[] { -2, 2 }, new int[] { 0, 1 }));
     }
 
     @Override public void verifyInteractionWithRandomness() {

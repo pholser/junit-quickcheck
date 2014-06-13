@@ -44,7 +44,8 @@ import static org.mockito.Mockito.*;
 
 public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.floats(randomForParameterGenerator)).thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
+        when(Generating.floats(randomForParameterGenerator))
+            .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
         org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))

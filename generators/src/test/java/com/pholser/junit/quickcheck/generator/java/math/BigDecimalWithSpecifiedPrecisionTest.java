@@ -50,7 +50,8 @@ public class BigDecimalWithSpecifiedPrecisionTest extends BasicGeneratorTheoryPa
         second = TEN.pow(2).subtract(TEN.pow(2).negate()).movePointRight(5);
         third = TEN.pow(3).subtract(TEN.pow(3).negate()).movePointRight(5);
         when(randomForParameterGenerator.nextBigInteger(first.toBigInteger().bitLength()))
-            .thenReturn(new BigInteger("999999999999")).thenReturn(BigInteger.ONE);
+            .thenReturn(new BigInteger("999999999999"))
+            .thenReturn(BigInteger.ONE);
         when(randomForParameterGenerator.nextBigInteger(second.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("136"));
         when(randomForParameterGenerator.nextBigInteger(third.toBigInteger().bitLength()))

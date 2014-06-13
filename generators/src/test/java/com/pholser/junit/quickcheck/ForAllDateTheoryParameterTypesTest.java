@@ -61,14 +61,17 @@ public class ForAllDateTheoryParameterTypesTest {
             throws Exception {
 
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-            assertThat(d,
-                allOf(greaterThanOrEqualTo(formatter.parse("01/01/2012")),
+            assertThat(
+                d,
+                allOf(
+                    greaterThanOrEqualTo(formatter.parse("01/01/2012")),
                     lessThanOrEqualTo(formatter.parse("12/31/2012"))));
         }
     }
 
     @Test public void malformedMin() {
-        assertThat(testResult(MalformedMinDateTheory.class),
+        assertThat(
+            testResult(MalformedMinDateTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
@@ -80,7 +83,8 @@ public class ForAllDateTheoryParameterTypesTest {
     }
 
     @Test public void malformedMax() {
-        assertThat(testResult(MalformedMaxDateTheory.class),
+        assertThat(
+            testResult(MalformedMaxDateTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
@@ -92,7 +96,8 @@ public class ForAllDateTheoryParameterTypesTest {
     }
 
     @Test public void malformedFormat() {
-        assertThat(testResult(MalformedFormatDateTheory.class),
+        assertThat(
+            testResult(MalformedFormatDateTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
@@ -132,7 +137,8 @@ public class ForAllDateTheoryParameterTypesTest {
     }
 
     @Test public void backwardsRange() {
-        assertThat(testResult(BackwardsRangeTheory.class),
+        assertThat(
+            testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 

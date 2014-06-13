@@ -38,7 +38,8 @@ import static org.mockito.Mockito.*;
 public class WrapperByteTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))
-            .thenReturn((byte) -95).thenReturn((byte) -94).thenReturn((byte) -93).thenReturn((byte) -92);
+            .thenReturn((byte) -95).thenReturn((byte) -94)
+            .thenReturn((byte) -93).thenReturn((byte) -92);
     }
 
     @Override protected Type parameterType() {

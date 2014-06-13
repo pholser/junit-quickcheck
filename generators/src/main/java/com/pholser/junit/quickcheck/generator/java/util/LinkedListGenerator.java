@@ -35,7 +35,7 @@ public class LinkedListGenerator extends CollectionGenerator<LinkedList> {
         super(LinkedList.class);
     }
 
-    @Override protected LinkedList<Object> emptyCollection() {
+    @Override protected LinkedList<Object> empty() {
         return new LinkedList<Object>();
     }
 }

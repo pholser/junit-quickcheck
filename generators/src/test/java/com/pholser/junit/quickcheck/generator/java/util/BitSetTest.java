@@ -38,7 +38,8 @@ import static org.mockito.Mockito.*;
 
 public class BitSetTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.booleans(randomForParameterGenerator)).thenReturn(true).thenReturn(false).thenReturn(true);
+        when(Generating.booleans(randomForParameterGenerator))
+            .thenReturn(true).thenReturn(false).thenReturn(true);
     }
 
     @Override protected Type parameterType() {

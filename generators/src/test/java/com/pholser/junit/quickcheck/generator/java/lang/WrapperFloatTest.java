@@ -37,7 +37,8 @@ import static org.mockito.Mockito.*;
 
 public class WrapperFloatTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.floats(randomForParameterGenerator)).thenReturn(0.06F).thenReturn(0.05F).thenReturn(0.044F);
+        when(Generating.floats(randomForParameterGenerator))
+            .thenReturn(0.06F).thenReturn(0.05F).thenReturn(0.044F);
     }
 
     @Override protected Type parameterType() {

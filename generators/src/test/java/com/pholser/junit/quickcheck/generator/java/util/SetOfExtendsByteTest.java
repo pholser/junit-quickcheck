@@ -43,7 +43,8 @@ public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
-        when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt())).thenReturn(0);
+        when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
+            .thenReturn(0);
     }
 
     @Override protected Type parameterType() {

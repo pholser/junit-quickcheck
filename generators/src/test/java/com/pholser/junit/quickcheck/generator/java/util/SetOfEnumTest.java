@@ -44,7 +44,8 @@ public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, 0, 2)).thenReturn(0).thenReturn(1).thenReturn(2)
+        when(Generating.ints(randomForParameterGenerator, 0, 2))
+            .thenReturn(0).thenReturn(1).thenReturn(2)
             .thenReturn(0).thenReturn(1).thenReturn(2);
     }
 
@@ -58,7 +59,10 @@ public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(Ternary.YES), newHashSet(Ternary.NO, Ternary.MAYBE),
+        return asList(
+            newHashSet(),
+            newHashSet(Ternary.YES),
+            newHashSet(Ternary.NO, Ternary.MAYBE),
             newHashSet(Ternary.YES, Ternary.NO, Ternary.MAYBE));
     }
 

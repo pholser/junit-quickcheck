@@ -70,6 +70,7 @@ public class CodePoints {
     public int size() {
         if (ranges.isEmpty())
             return 0;
+
         CodePointRange last = ranges.get(ranges.size() - 1);
         return last.previousCount + last.size();
     }

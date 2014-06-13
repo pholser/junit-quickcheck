@@ -35,7 +35,7 @@ public class StackGenerator extends CollectionGenerator<Stack> {
         super(Stack.class);
     }
 
-    @Override protected Stack<Object> emptyCollection() {
+    @Override protected Stack<Object> empty() {
         return new Stack<Object>();
     }
 }

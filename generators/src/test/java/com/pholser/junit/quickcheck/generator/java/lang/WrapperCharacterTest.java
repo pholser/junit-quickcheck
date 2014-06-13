@@ -37,7 +37,8 @@ import static org.mockito.Mockito.*;
 
 public class WrapperCharacterTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.chars(randomForParameterGenerator)).thenReturn('Y').thenReturn('Z');
+        when(Generating.chars(randomForParameterGenerator))
+            .thenReturn('Y').thenReturn('Z');
     }
 
     @Override protected Type parameterType() {

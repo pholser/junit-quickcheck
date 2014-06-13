@@ -35,7 +35,6 @@ public class HashtableGenerator extends MapGenerator<Hashtable> {
         super(Hashtable.class);
     }
 
-    // TODO: Disallow Void as an Object generator.
     @Override protected Hashtable<Object, Object> emptyMap() {
         return new Hashtable<Object, Object>();
     }

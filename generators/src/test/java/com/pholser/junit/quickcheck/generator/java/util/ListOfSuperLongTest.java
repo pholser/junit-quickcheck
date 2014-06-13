@@ -44,8 +44,10 @@ import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, 0, 100)).thenReturn(2).thenReturn(1);
-        when(Generating.longs(randomForParameterGenerator)).thenReturn(3L).thenReturn(4L).thenReturn(5L);
+        when(Generating.ints(randomForParameterGenerator, 0, 100))
+            .thenReturn(2).thenReturn(1);
+        when(Generating.longs(randomForParameterGenerator))
+            .thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
         List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))

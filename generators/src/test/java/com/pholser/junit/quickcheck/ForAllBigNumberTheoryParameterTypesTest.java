@@ -52,7 +52,8 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     }
 
     @Test public void rangedBigIntegerWithBackwardsRange() {
-        assertThat(testResult(RangedBigIntegerWithBackwardsRange.class),
+        assertThat(
+            testResult(RangedBigIntegerWithBackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
@@ -63,7 +64,8 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     }
 
     @Test public void rangedBigIntegerWithMalformedMin() {
-        assertThat(testResult(RangedBigIntegerWithMalformedMin.class),
+        assertThat(
+            testResult(RangedBigIntegerWithMalformedMin.class),
             hasSingleFailureContaining(NumberFormatException.class.getName()));
     }
 
@@ -74,7 +76,8 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     }
 
     @Test public void rangedBigIntegerWithMalformedMax() {
-        assertThat(testResult(RangedBigIntegerWithMalformedMax.class),
+        assertThat(
+            testResult(RangedBigIntegerWithMalformedMax.class),
             hasSingleFailureContaining(NumberFormatException.class.getName()));
     }
 
@@ -113,7 +116,11 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class RangedBigIntegerWithMinAndMax {
         @Theory public void shouldHold(@ForAll @InRange(min = "1", max = "10000000") BigInteger i) {
-            assertThat(i, allOf(greaterThanOrEqualTo(BigInteger.ONE), lessThanOrEqualTo(new BigInteger("10000000"))));
+            assertThat(
+                i,
+                allOf(
+                    greaterThanOrEqualTo(BigInteger.ONE),
+                    lessThanOrEqualTo(new BigInteger("10000000"))));
         }
     }
 
@@ -139,7 +146,8 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     }
 
     @Test public void rangedBigDecimalWithBackwardsRange() {
-        assertThat(testResult(RangedBigDecimalWithBackwardsRange.class),
+        assertThat(
+            testResult(RangedBigDecimalWithBackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
@@ -150,7 +158,8 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     }
 
     @Test public void rangedBigDecimalWithMalformedMin() {
-        assertThat(testResult(RangedBigDecimalWithMalformedMin.class),
+        assertThat(
+            testResult(RangedBigDecimalWithMalformedMin.class),
             hasSingleFailureContaining(NumberFormatException.class.getName()));
     }
 
@@ -161,7 +170,8 @@ public class ForAllBigNumberTheoryParameterTypesTest {
     }
 
     @Test public void rangedBigDecimalWithMalformedMax() {
-        assertThat(testResult(RangedBigDecimalWithMalformedMax.class),
+        assertThat(
+            testResult(RangedBigDecimalWithMalformedMax.class),
             hasSingleFailureContaining(NumberFormatException.class.getName()));
     }
 
@@ -252,9 +262,11 @@ public class ForAllBigNumberTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll
                                        @InRange(min = "-123456789.0123", max = "99999999.87654321") BigDecimal d) {
             assertEquals(8, d.scale());
-            assertThat(d, allOf(
-                greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
-                lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
+            assertThat(
+                d,
+                allOf(
+                    greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
+                    lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
         }
     }
 
@@ -268,9 +280,11 @@ public class ForAllBigNumberTheoryParameterTypesTest {
                                        @InRange(min = "-123456789.0123", max = "99999999.87654321")
                                        @Precision(scale = 7) BigDecimal d) {
             assertEquals(8, d.scale());
-            assertThat(d, allOf(
-                greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
-                lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
+            assertThat(
+                d,
+                allOf(
+                    greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
+                    lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
         }
     }
 
@@ -283,9 +297,11 @@ public class ForAllBigNumberTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321")
                                        @Precision(scale = 11) BigDecimal d) {
             assertEquals(11, d.scale());
-            assertThat(d, allOf(
-                greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
-                lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
+            assertThat(
+                d,
+                allOf(
+                    greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
+                    lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
         }
     }
 }

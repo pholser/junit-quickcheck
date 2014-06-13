@@ -35,7 +35,7 @@ public class HashSetGenerator extends CollectionGenerator<HashSet> {
         super(HashSet.class);
     }
 
-    @Override protected HashSet<Object> emptyCollection() {
+    @Override protected HashSet<Object> empty() {
         return new HashSet<Object>();
     }
 }

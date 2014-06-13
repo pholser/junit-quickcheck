@@ -56,7 +56,9 @@ public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
         min = formatter.parse("1/1/500");
         max = formatter.parse("12/31/2020");
         when(Generating.longs(randomForParameterGenerator, min.getTime(), max.getTime()))
-            .thenReturn(first.getTime()).thenReturn(second.getTime()).thenReturn(third.getTime());
+            .thenReturn(first.getTime())
+            .thenReturn(second.getTime())
+            .thenReturn(third.getTime());
     }
 
     @Override protected Type parameterType() {

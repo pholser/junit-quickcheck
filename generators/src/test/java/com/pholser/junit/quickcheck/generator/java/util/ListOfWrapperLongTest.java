@@ -39,7 +39,8 @@ import static org.mockito.Mockito.*;
 
 public class ListOfWrapperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.longs(randomForParameterGenerator)).thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
+        when(Generating.longs(randomForParameterGenerator))
+            .thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
     }
 
     @Override protected Type parameterType() {

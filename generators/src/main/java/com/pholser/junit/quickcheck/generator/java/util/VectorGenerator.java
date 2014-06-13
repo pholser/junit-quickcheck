@@ -35,7 +35,7 @@ public class VectorGenerator extends CollectionGenerator<Vector> {
         super(Vector.class);
     }
 
-    @Override protected Vector<Object> emptyCollection() {
+    @Override protected Vector<Object> empty() {
         return new Vector<Object>();
     }
 }

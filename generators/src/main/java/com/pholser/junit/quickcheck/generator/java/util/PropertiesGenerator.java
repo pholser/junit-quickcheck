@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import static java.util.Arrays.*;
 
@@ -51,14 +52,18 @@ public class PropertiesGenerator extends Generator<Properties> {
     @Override public Properties generate(SourceOfRandomness random, GenerationStatus status) {
         Properties properties = new Properties();
 
-        for (int i = 0; i < status.size(); ++i)
-            properties.setProperty(stringGenerator.generate(random, status), stringGenerator.generate(random, status));
+        for (int i = 0; i < status.size(); ++i) {
+            properties.setProperty(
+                stringGenerator.generate(random, status),
+                stringGenerator.generate(random, status));
+        }
 
         return properties;
     }
 
     @SuppressWarnings("unchecked")
     @Override public boolean canRegisterAsType(Class<?> type) {
-        return !new HashSet<Class<?>>(asList(Hashtable.class, Map.class, Dictionary.class)).contains(type);
+        Set<Class<?>> excludes = new HashSet<Class<?>>(asList(Hashtable.class, Map.class, Dictionary.class));
+        return !excludes.contains(type);
     }
 }

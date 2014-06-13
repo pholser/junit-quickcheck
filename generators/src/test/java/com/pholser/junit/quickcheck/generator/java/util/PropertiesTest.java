@@ -39,8 +39,9 @@ import static org.mockito.Mockito.*;
 public class PropertiesTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.charsForString(randomForParameterGenerator))
-            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64).thenReturn(0x65).thenReturn(0x66)
-            .thenReturn(0x67).thenReturn(0x68).thenReturn(0x69).thenReturn(0x6a);
+            .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64)
+            .thenReturn(0x65).thenReturn(0x66).thenReturn(0x67).thenReturn(0x68)
+            .thenReturn(0x69).thenReturn(0x6a);
     }
 
     @Override protected Type parameterType() {

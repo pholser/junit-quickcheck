@@ -41,7 +41,8 @@ import static org.mockito.Mockito.*;
 
 public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, -4, 5)).thenReturn(-2).thenReturn(3);
+        when(Generating.ints(randomForParameterGenerator, -4, 5))
+            .thenReturn(-2).thenReturn(3);
     }
 
     @Override protected Type parameterType() {
