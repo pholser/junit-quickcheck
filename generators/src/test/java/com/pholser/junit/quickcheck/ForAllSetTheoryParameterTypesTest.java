@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Set;
-
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
+
+import java.util.Set;
 
 import static com.pholser.junit.quickcheck.Classes.*;
 import static org.junit.Assert.*;
@@ -56,8 +56,9 @@ public class ForAllSetTheoryParameterTypesTest {
     public static class SetOfLowerBound {
         @Theory public void shouldHold(@ForAll(sampleSize = 15) Set<? extends Integer> items) {
             if (!items.isEmpty()) {
-                Class<?> superclass = nearestCommonSuperclassOf(classesOf(items));
-                assertThat(Integer.class, isAssignableFrom(superclass));
+                assertThat(
+                    Integer.class,
+                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items))));
             }
         }
     }
@@ -120,8 +121,9 @@ public class ForAllSetTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll Set<Set<? extends Number>> items) {
             for (Set<? extends Number> each : items) {
                 if (!items.isEmpty()) {
-                    Class<?> superclass = nearestCommonSuperclassOf(classesOf(each));
-                    assertThat(Number.class, isAssignableFrom(superclass));
+                    assertThat(
+                        Number.class,
+                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
                 }
             }
         }

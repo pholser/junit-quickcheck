@@ -25,13 +25,14 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
+import static com.pholser.junit.quickcheck.Classes.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -55,8 +56,9 @@ public class ForAllListTheoryParameterTypesTest {
     public static class ListOfUpperBound {
         @Theory public void shouldHold(@ForAll List<? extends Integer> items) {
             if (!items.isEmpty()) {
-                Class<?> superclass = Classes.nearestCommonSuperclassOf(Classes.classesOf(items));
-                assertThat(Integer.class, Classes.isAssignableFrom(superclass));
+                assertThat(
+                    Integer.class,
+                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items))));
             }
         }
     }
@@ -124,8 +126,9 @@ public class ForAllListTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll(sampleSize = 7) List<List<? extends Number>> items) {
             for (List<? extends Number> each : items) {
                 if (!each.isEmpty()) {
-                    Class<?> superclass = Classes.nearestCommonSuperclassOf(Classes.classesOf(each));
-                    assertThat(Number.class, Classes.isAssignableFrom(superclass));
+                    assertThat(
+                        Number.class,
+                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
                 }
             }
         }

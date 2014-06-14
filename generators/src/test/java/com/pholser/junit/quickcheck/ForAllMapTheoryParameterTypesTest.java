@@ -25,6 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.google.common.collect.Iterables;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -33,13 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Iterables;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
-import org.junit.runner.RunWith;
-
+import static com.pholser.junit.quickcheck.Classes.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -63,8 +63,9 @@ public class ForAllMapTheoryParameterTypesTest {
     public static class MapOfHuhToUpperBound {
         @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, ? extends Short> items) {
             if (!items.isEmpty()) {
-                Class<?> superclass = Classes.nearestCommonSuperclassOf(Classes.classesOf(items.values()));
-                assertThat(Short.class, Classes.isAssignableFrom(superclass));
+                assertThat(
+                    Short.class,
+                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items.values()))));
             }
         }
     }
@@ -133,8 +134,9 @@ public class ForAllMapTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<?, List<? extends Serializable>> items) {
             for (List<? extends Serializable> each : items.values()) {
                 if (!each.isEmpty()) {
-                    Class<?> superclass = Classes.nearestCommonSuperclassOf(Classes.classesOf(each));
-                    assertThat(Serializable.class, Classes.isAssignableFrom(superclass));
+                    assertThat(
+                        Serializable.class,
+                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
                 }
             }
         }
@@ -162,8 +164,9 @@ public class ForAllMapTheoryParameterTypesTest {
     public static class MapOfUpperBoundToHuh {
         @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<? extends Number, ?> items) {
             if (!items.isEmpty()) {
-                Class<?> superclass = Classes.nearestCommonSuperclassOf(Classes.classesOf(items.keySet()));
-                assertThat(Number.class, Classes.isAssignableFrom(superclass));
+                assertThat(
+                    Number.class,
+                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items.keySet()))));
             }
         }
     }
@@ -239,8 +242,9 @@ public class ForAllMapTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Iterable<? extends Number>, ?> items) {
             for (Iterable<? extends Number> each : items.keySet()) {
                 if (!Iterables.isEmpty(each)) {
-                    Class<?> superclass = Classes.nearestCommonSuperclassOf(Classes.classesOf(each));
-                    assertThat(Number.class, Classes.isAssignableFrom(superclass));
+                    assertThat(
+                        Number.class,
+                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
                 }
             }
         }
@@ -254,7 +258,7 @@ public class ForAllMapTheoryParameterTypesTest {
     public static class CollectionOfLowerBoundToHuh {
         @Theory public void shouldHold(@ForAll(sampleSize = 20) Map<Collection<? super List<?>>, ?> items) {
             for (Collection<? super List<?>> each : items.keySet()) {
-                for (Object eachItem : each) {
+                for (Object item : each) {
                 }
             }
         }
