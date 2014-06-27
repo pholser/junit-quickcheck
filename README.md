@@ -364,7 +364,7 @@ fails the theory.
 
 #### Sample size
 
-By default, 100 random values are be generated for a parameter
+By default, 100 random values are generated for a parameter
 marked `@ForAll`.
 
 **NOTE**: Because junit-quickcheck uses the `Theories` runner,
