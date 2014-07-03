@@ -41,8 +41,10 @@ public class BitSetGenerator extends Generator<BitSet> {
 
     @Override public BitSet generate(SourceOfRandomness random, GenerationStatus status) {
         BitSet bits = new BitSet(status.size());
+
         for (int i = 0; i < status.size(); ++i)
             bits.set(i, random.nextBoolean());
+
         return bits;
     }
 }

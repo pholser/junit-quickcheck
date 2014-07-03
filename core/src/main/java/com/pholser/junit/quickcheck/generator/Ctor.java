@@ -35,13 +35,13 @@ public class Ctor<T> extends Generator<T> {
         @SuppressWarnings("unchecked")
         Constructor<T> single = (Constructor<T>) constructors[0];
 
-        Object[] arguments = arguments(
+        Object[] args = arguments(
             single.getGenericParameterTypes(),
             single.getParameterAnnotations(),
             random,
             status);
 
-        return Reflection.instantiateQuietly(single, arguments);
+        return Reflection.instantiateQuietly(single, args);
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {

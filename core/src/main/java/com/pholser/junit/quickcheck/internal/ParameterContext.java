@@ -105,9 +105,9 @@ public class ParameterContext {
 
     @SuppressWarnings("unchecked")
     private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
-        Constructor<? extends Generator> constructor = findConstructorQuietly(generatorType, Class.class);
-        if (constructor != null)
-            return instantiateQuietly(constructor, rawParameterType());
+        Constructor<? extends Generator> ctor = findConstructorQuietly(generatorType, Class.class);
+        if (ctor != null)
+            return instantiateQuietly(ctor, rawParameterType());
 
         return instantiateQuietly(generatorType);
     }

@@ -88,9 +88,8 @@ public class GeneratorRepository {
     }
 
     private void maybeRegisterGeneratorForType(Class<?> type, Generator<?> generator) {
-        if (generator.canRegisterAsType(type)) {
+        if (generator.canRegisterAsType(type))
             registerGeneratorForType(type, generator);
-        }
     }
 
     private void registerGeneratorForType(Class<?> type, Generator<?> generator) {
