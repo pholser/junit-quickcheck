@@ -27,11 +27,11 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.SuchThat;
+import com.pholser.junit.quickcheck.internal.AnnotatedConstructorParameter;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 
 import static org.junit.Assert.*;
 

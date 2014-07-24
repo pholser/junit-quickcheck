@@ -46,7 +46,7 @@ public final class Lambdas {
 
     /**
      * <p>Creates an instance of a given "functional interface" type, whose single abstract method returns values of
-     * the type produced by the given generator. The arguments to the lambda's single method will be used to perturb
+     * the type produced by the given generator. The arguments to the lambda's single method will be used to seed
      * a random generator that will be used to generate the return value of that method.</p>
      *
      * <p>junit-quickcheck uses this to create random values for theory parameters whose type is determined to be a

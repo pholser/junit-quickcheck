@@ -1,5 +1,6 @@
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.internal.AnnotatedConstructorParameter;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
@@ -10,7 +11,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 
 /**
- * <p>A generator that produces instances of a class by introspecting the class for a single accessible constructor,
+ * <p>A generator that produces instances of a class by reflecting the class for a single accessible constructor,
  * generating values for the constructor's parameters, and invoking the constructor.</p>
  *
  * <p>If a constructor parameter is marked with an annotation that influences the generation of a given kind of
@@ -41,7 +42,7 @@ public class Ctor<T> extends Generator<T> {
             random,
             status);
 
-        return Reflection.instantiateQuietly(single, args);
+        return Reflection.instantiate(single, args);
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {
@@ -55,6 +56,7 @@ public class Ctor<T> extends Generator<T> {
         GenerationStatus status) {
 
         Object[] args = new Object[parameterTypes.length];
+
         for (int i = 0; i < args.length; ++i) {
             AnnotatedConstructorParameter ctorParameter = new AnnotatedConstructorParameter(parameterAnnotations[i]);
             ParameterContext parameter = new ParameterContext(parameterTypes[i]).annotate(ctorParameter);

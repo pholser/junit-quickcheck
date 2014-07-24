@@ -66,7 +66,7 @@ public final class Reflection {
         return wrapped == null ? clazz : wrapped;
     }
 
-    public static <T> Constructor<T> findConstructorQuietly(Class<T> type, Class<?> parameterTypes) {
+    public static <T> Constructor<T> findConstructor(Class<T> type, Class<?> parameterTypes) {
         try {
             return type.getConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {
@@ -74,7 +74,7 @@ public final class Reflection {
         }
     }
 
-    public static <T> T instantiateQuietly(Class<T> clazz) {
+    public static <T> T instantiate(Class<T> clazz) {
         try {
             return clazz.newInstance();
         } catch (Exception ex) {
@@ -82,7 +82,7 @@ public final class Reflection {
         }
     }
 
-    public static <T> T instantiateQuietly(Constructor<T> ctor, Object... args) {
+    public static <T> T instantiate(Constructor<T> ctor, Object... args) {
         try {
             return ctor.newInstance(args);
         } catch (Exception ex) {
@@ -128,7 +128,7 @@ public final class Reflection {
         return false;
     }
 
-    public static Method findMethodQuietly(Class<?> target, String methodName, Class<?>... argTypes) {
+    public static Method findMethod(Class<?> target, String methodName, Class<?>... argTypes) {
         try {
             return target.getMethod(methodName, argTypes);
         } catch (Exception ex) {
@@ -136,7 +136,7 @@ public final class Reflection {
         }
     }
 
-    public static Object invokeQuietly(Method method, Object target, Object... args) {
+    public static Object invoke(Method method, Object target, Object... args) {
         try {
             return method.invoke(target, args);
         } catch (Exception ex) {

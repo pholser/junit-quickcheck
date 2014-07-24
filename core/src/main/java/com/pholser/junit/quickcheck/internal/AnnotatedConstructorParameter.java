@@ -23,15 +23,15 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.internal;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
-class AnnotatedConstructorParameter implements AnnotatedElement {
+public class AnnotatedConstructorParameter implements AnnotatedElement {
     private final Annotation[] annotations;
 
-    AnnotatedConstructorParameter(Annotation[] annotations) {
+    public AnnotatedConstructorParameter(Annotation[] annotations) {
         this.annotations = annotations.clone();
     }
 

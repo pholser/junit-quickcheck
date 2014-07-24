@@ -246,6 +246,6 @@ public class GeneratorRepository {
     }
 
     private static Generator<?> copyOf(Generator<?> generator) {
-        return Reflection.instantiateQuietly(generator.getClass());
+        return Reflection.instantiate(generator.getClass());
     }
 }

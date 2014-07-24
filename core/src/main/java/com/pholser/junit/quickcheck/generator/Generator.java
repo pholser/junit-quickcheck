@@ -192,12 +192,12 @@ public abstract class Generator<T> {
         Method configurer;
 
         try {
-            configurer = findMethodQuietly(getClass(), "configure", annotationType);
+            configurer = findMethod(getClass(), "configure", annotationType);
         } catch (ReflectionException ex) {
             return;
         }
 
-        invokeQuietly(configurer, this, configuration);
+        invoke(configurer, this, configuration);
     }
 
     public void provideRepository(GeneratorRepository repo) {

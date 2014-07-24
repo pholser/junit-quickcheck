@@ -45,33 +45,33 @@ public class ReflectionTest {
     @Rule public final ExpectedException thrown = none();
 
     @Test public void findingConstructorQuietly() {
-        Constructor<Integer> ctor = findConstructorQuietly(Integer.class, int.class);
+        Constructor<Integer> ctor = findConstructor(Integer.class, int.class);
 
         assertEquals(int.class, ctor.getParameterTypes()[0]);
     }
 
     @Test public void findingConstructorQuietlyGivesNullIfNoSuchConstructor() {
-        assertNull(findConstructorQuietly(Integer.class, Object.class));
+        assertNull(findConstructor(Integer.class, Object.class));
     }
 
     @Test public void invokingZeroArgConstructorQuietlyWrapsInstantiationException() {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(InstantiationException.class.getName());
 
-        instantiateQuietly(ZeroArgInstantiationProblematic.class);
+        instantiate(ZeroArgInstantiationProblematic.class);
     }
 
     @Test public void invokingZeroArgConstructorQuietlyWrapsIllegalAccessException() {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(IllegalAccessException.class.getName());
 
-        instantiateQuietly(ZeroArgIllegalAccessProblematic.class);
+        instantiate(ZeroArgIllegalAccessProblematic.class);
     }
 
     @Test public void invokingZeroArgConstructorPropagatesExceptionsRaisedByConstructor() {
         thrown.expect(IllegalStateException.class);
 
-        instantiateQuietly(InvocationTargetProblematic.class);
+        instantiate(InvocationTargetProblematic.class);
     }
 
     private abstract static class MultiArgInstantiationProblematic {
@@ -84,27 +84,27 @@ public class ReflectionTest {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(InstantiationException.class.getName());
 
-        instantiateQuietly(MultiArgInstantiationProblematic.class.getConstructor(int.class), 2);
+        instantiate(MultiArgInstantiationProblematic.class.getConstructor(int.class), 2);
     }
 
     @Test public void invokingNonZeroArgConstructorQuietlyWrapsIllegalAccessException() throws Exception {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(IllegalAccessException.class.getName());
 
-        instantiateQuietly(MultiArgIllegalAccessProblematic.class.getDeclaredConstructor(int.class), 2);
+        instantiate(MultiArgIllegalAccessProblematic.class.getDeclaredConstructor(int.class), 2);
     }
 
     @Test public void invokingNonZeroArgConstructorQuietlyPropagatesIllegalArgumentException() throws Exception {
         thrown.expect(IllegalArgumentException.class);
 
-        instantiateQuietly(Integer.class.getDeclaredConstructor(int.class), "2");
+        instantiate(Integer.class.getDeclaredConstructor(int.class), "2");
     }
 
     @Test public void invokingNonZeroArgConstructorWrapsExceptionsRaisedByConstructor() throws Exception {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(IndexOutOfBoundsException.class.getName());
 
-        instantiateQuietly(InvocationTargetProblematic.class.getConstructor(int.class), 2);
+        instantiate(InvocationTargetProblematic.class.getConstructor(int.class), 2);
     }
 
     private abstract static class ZeroArgInstantiationProblematic {
@@ -117,7 +117,7 @@ public class ReflectionTest {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(NoSuchMethodException.class.getName());
 
-        findMethodQuietly(getClass(), "foo");
+        findMethod(getClass(), "foo");
     }
 
     @Test public void invokingMethodQuietlyWrapsIllegalAccessException() throws Exception {
@@ -126,26 +126,26 @@ public class ReflectionTest {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(IllegalAccessException.class.getName());
 
-        invokeQuietly(method, new ZeroArgIllegalAccessProblematic(0));
+        invoke(method, new ZeroArgIllegalAccessProblematic(0));
     }
 
     @Test public void invokingMethodQuietlyPropagatesExceptionRaisedByMethod() {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(NumberFormatException.class.getName());
 
-        invokeQuietly(findMethodQuietly(getClass(), "bar"), this);
+        invoke(findMethod(getClass(), "bar"), this);
     }
 
     @Test public void invokingMethodPropagatesIllegalArgumentException() {
         thrown.expect(IllegalArgumentException.class);
 
-        invokeQuietly(findMethodQuietly(getClass(), "bar"), this, "baz");
+        invoke(findMethod(getClass(), "bar"), this, "baz");
     }
 
     @Test public void invokingMethodQuietlyPropagatesOtherRuntimeExceptions() throws Exception {
         thrown.expect(NullPointerException.class);
 
-        invokeQuietly(findMethodQuietly(getClass(), "bar"), null);
+        invoke(findMethod(getClass(), "bar"), null);
     }
 
     public void bar() {

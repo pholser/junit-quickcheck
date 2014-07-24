@@ -34,7 +34,7 @@ import java.lang.reflect.Field;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * <p>A generator that produces instances of a class by introspecting the class's fields and generating random
+ * <p>A generator that produces instances of a class by reflecting the class's fields and generating random
  * values for them.</p>
  *
  * <p>All fields of the class and its class hierarchy are auto-generated.</p>
@@ -56,7 +56,7 @@ public class Fields<T> extends Generator<T> {
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         Class<T> type = types().get(0);
-        Object generated = Reflection.instantiateQuietly(type);
+        Object generated = Reflection.instantiate(type);
 
         for (Field each : allDeclaredFieldsOf(type)) {
             ParameterContext parameter = new ParameterContext(each.getGenericType()).annotate(each);
