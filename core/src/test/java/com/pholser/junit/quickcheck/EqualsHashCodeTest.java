@@ -74,7 +74,7 @@ public class EqualsHashCodeTest {
             assertThat(x.equals(y), is(alwaysTheSame));
     }
 
-    @Theory public void equalsReturnFalseOnNull(@ForAll Object x) {
+    @Theory public void equalsReturnsFalseOnNull(@ForAll Object x) {
         assumeThat(x, is(not(equalTo(null))));
 
         assertFalse(x.equals(null));
