@@ -46,7 +46,7 @@ public class StringGenerator extends Generator<String> {
         int[] codePoints = new int[status.size()];
 
         for (int i = 0; i < codePoints.length; ++i)
-            codePoints[i] = random.nextInt(0, 0xD7FF);
+            codePoints[i] = random.nextInt(0, Character.MIN_SURROGATE - 1);
 
         return new String(codePoints, 0, codePoints.length);
     }

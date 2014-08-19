@@ -32,11 +32,11 @@ import static org.junit.Assert.*;
 public class CodePointRangeTest {
     @Test(expected = IllegalArgumentException.class)
     public void illegalRange() {
-        new CodePointRange(54, 53, 0);
+        new CodePoints.CodePointRange(54, 53, 0);
     }
 
     @Test public void rangeOfOne() {
-        CodePointRange range = new CodePointRange(55, 55, 0);
+        CodePoints.CodePointRange range = new CodePoints.CodePointRange(55, 55, 0);
 
         assertEquals(1, range.size());
         assertFalse(range.contains(54));
@@ -45,7 +45,7 @@ public class CodePointRangeTest {
     }
 
     @Test public void largerRange() {
-        CodePointRange range = new CodePointRange(55, 58, 0);
+        CodePoints.CodePointRange range = new CodePoints.CodePointRange(55, 58, 0);
 
         assertEquals(4, range.size());
         assertFalse(range.contains(54));

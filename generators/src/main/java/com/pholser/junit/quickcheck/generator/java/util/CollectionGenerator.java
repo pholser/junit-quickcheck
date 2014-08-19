@@ -37,6 +37,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
  * <p>The generated collection has a number of elements limited by
  * {@link GenerationStatus#size()}. The individual elements will have a type corresponding to the theory parameter's
  * type argument.</p>
+ *
+ * @param <T> the type of collection generated
  */
 public abstract class CollectionGenerator<T extends Collection> extends ComponentizedGenerator<T> {
     protected CollectionGenerator(Class<T> type) {

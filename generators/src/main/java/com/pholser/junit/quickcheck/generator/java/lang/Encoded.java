@@ -25,18 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
-import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.nio.charset.Charset;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
+import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
  * <p>Produces values for theory parameters of type {@link String}.</p>
@@ -68,7 +68,10 @@ public class Encoded extends Generator<String> {
         return new String(codePoints, 0, codePoints.length);
     }
 
-    @Target({PARAMETER, FIELD})
+    /**
+     * Names a {@linkplain java.nio.charset.Charset}.
+     */
+    @Target({ PARAMETER, FIELD })
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface InCharset {

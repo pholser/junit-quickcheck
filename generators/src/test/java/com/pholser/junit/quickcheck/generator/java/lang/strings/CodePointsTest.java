@@ -54,12 +54,12 @@ public class CodePointsTest {
 
     @Test public void middlingTree() {
         CodePoints points = new CodePoints();
-        points.add(new CodePointRange(20, 21, 0));
-        points.add(new CodePointRange(30, 34, 2));
-        points.add(new CodePointRange(50, 55, 7));
-        points.add(new CodePointRange(60, 62, 13));
-        points.add(new CodePointRange(70, 73, 16));
-        points.add(new CodePointRange(80, 87, 20));
+        points.add(new CodePoints.CodePointRange(20, 21, 0));
+        points.add(new CodePoints.CodePointRange(30, 34, 2));
+        points.add(new CodePoints.CodePointRange(50, 55, 7));
+        points.add(new CodePoints.CodePointRange(60, 62, 13));
+        points.add(new CodePoints.CodePointRange(70, 73, 16));
+        points.add(new CodePoints.CodePointRange(80, 87, 20));
 
         assertEquals(28, points.size());
         assertEquals(20, points.at(0));

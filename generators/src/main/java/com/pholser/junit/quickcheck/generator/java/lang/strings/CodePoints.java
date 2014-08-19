@@ -32,8 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Maps ordinal values to corresponding Unicode code points in a {@link java.nio.charset.Charset}.
+ */
 public class CodePoints {
-    private static final Map<Charset, CodePoints> encodables = new HashMap<Charset, CodePoints>();
+    private static final Map<Charset, CodePoints> ENCODABLES = new HashMap<Charset, CodePoints>();
 
     private final List<CodePointRange> ranges;
 
@@ -45,6 +48,13 @@ public class CodePoints {
         ranges.add(range);
     }
 
+    /**
+     * Gives the {@code index}'th code point of this code point set.
+     *
+     * @param index index to look up
+     * @return this code point set's {@code index}'th code point
+     * @throws IndexOutOfBoundsException if there is no such code point
+     */
     public int at(int index) {
         if (index < 0)
             throw new IndexOutOfBoundsException("illegal negative index: " + index);
@@ -67,6 +77,9 @@ public class CodePoints {
         throw new IndexOutOfBoundsException(String.valueOf(index));
     }
 
+    /**
+     * @return how many code points are in this code point set
+     */
     public int size() {
         if (ranges.isEmpty())
             return 0;
@@ -75,12 +88,18 @@ public class CodePoints {
         return last.previousCount + last.size();
     }
 
+    /**
+     * Gives a set of the code points in the given charset.
+     *
+     * @param c a charset
+     * @return the set of code points in the charset
+     */
     public static CodePoints forCharset(Charset c) {
-        if (encodables.containsKey(c))
-            return encodables.get(c);
+        if (ENCODABLES.containsKey(c))
+            return ENCODABLES.get(c);
 
         CodePoints points = load(c);
-        encodables.put(c, points);
+        ENCODABLES.put(c, points);
         return points;
     }
 
@@ -100,7 +119,7 @@ public class CodePoints {
         int previousCount = 0;
         int[] buffer = new int[1];
 
-        for (; current <= 0x10FFFF; ++current) {
+        for (; current <= Character.MAX_CODE_POINT; ++current) {
             encoder.reset();
             buffer[0] = current;
 
@@ -122,5 +141,28 @@ public class CodePoints {
             points.add(new CodePointRange(start, current - 1, previousCount));
 
         return points;
+    }
+
+    static class CodePointRange {
+        final int low;
+        final int high;
+        final int previousCount;
+
+        CodePointRange(int low, int high, int previousCount) {
+            if (low > high)
+                throw new IllegalArgumentException(String.format("%d > %d", low, high));
+
+            this.low = low;
+            this.high = high;
+            this.previousCount = previousCount;
+        }
+
+        boolean contains(int codePoint) {
+            return codePoint >= low && codePoint <= high;
+        }
+
+        int size() {
+            return high - low + 1;
+        }
     }
 }

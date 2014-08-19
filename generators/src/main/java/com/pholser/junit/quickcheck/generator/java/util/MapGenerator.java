@@ -36,6 +36,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
  *
  * <p>The generated map has a number of entries no larger than {@link GenerationStatus#size()}. The individual keys
  * and values will have types corresponding to the theory parameter's type arguments.</p>
+ *
+ * @param <T> the type of map generated
  */
 public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator<T> {
     protected MapGenerator(Class<T> type) {
