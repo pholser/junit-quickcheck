@@ -25,8 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import org.javaruntype.type.Type;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -42,6 +40,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.javaruntype.type.Type;
 
 public final class Reflection {
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<Class<?>, Class<?>>(16);

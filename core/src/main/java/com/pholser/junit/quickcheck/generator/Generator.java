@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
@@ -42,8 +45,6 @@ import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
 
 /**
  * Produces values for theory parameters.
@@ -126,9 +127,9 @@ public abstract class Generator<T> {
      * <p>Some generators need component generators to create proper values. For example, lists require a single
      * component generator in order to generate elements that have the type of the list parameter's type argument.</p>
      *
-     * @param components component generators to add
+     * @param newComponents component generators to add
      */
-    public void addComponentGenerators(List<Generator<?>> components) {
+    public void addComponentGenerators(List<Generator<?>> newComponents) {
         // do nothing by default
     }
 
@@ -200,8 +201,8 @@ public abstract class Generator<T> {
         invoke(configurer, this, configuration);
     }
 
-    public void provideRepository(GeneratorRepository repo) {
-        this.repo = repo;
+    public void provideRepository(GeneratorRepository provided) {
+        repo = provided;
     }
 
     public Generator<?> generatorFor(ParameterContext parameter) {

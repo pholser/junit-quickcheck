@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.reflect.Field;
+
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import java.lang.reflect.Field;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 

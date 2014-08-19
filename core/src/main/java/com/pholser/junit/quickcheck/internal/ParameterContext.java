@@ -25,13 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import com.pholser.junit.quickcheck.ForAll;
-import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.SuchThat;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
-import org.javaruntype.type.Types;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
@@ -43,8 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Collections.*;
+
+import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.SuchThat;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
+import org.javaruntype.type.Types;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class ParameterContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =

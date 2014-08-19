@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import org.junit.contrib.theories.ParameterSignature;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+
+import org.junit.contrib.theories.ParameterSignature;
 
 class AnnotatedParameterSignature implements AnnotatedElement {
     private final ParameterSignature signature;

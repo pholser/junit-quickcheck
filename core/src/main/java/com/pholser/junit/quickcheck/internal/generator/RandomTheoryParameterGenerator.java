@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.PotentialAssignment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RandomTheoryParameterGenerator {
     private final SourceOfRandomness random;

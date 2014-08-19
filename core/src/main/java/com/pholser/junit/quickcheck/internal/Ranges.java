@@ -27,19 +27,33 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.math.BigInteger;
 
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import static java.lang.String.*;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 public final class Ranges {
+    public enum Type {
+        CHARACTER("c"),
+        INTEGRAL("d"),
+        FLOAT("f");
+
+        private final String pattern;
+
+        private Type(String pattern) {
+            this.pattern = pattern;
+        }
+    }
+
     private Ranges() {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends Comparable<? super T>> int checkRange(String pattern, T min, T max) {
+    public static <T extends Comparable<? super T>> int checkRange(Type type, T min, T max) {
         int comparison = min.compareTo(max);
-        if (comparison > 0)
-            throw new IllegalArgumentException(format("bad range, %" + pattern + " > %" + pattern, min, max));
+        if (comparison > 0) {
+            throw new IllegalArgumentException(
+                format("bad range, %" + type.pattern + " > %" + type.pattern, min, max));
+        }
         return comparison;
     }
 

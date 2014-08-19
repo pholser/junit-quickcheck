@@ -27,6 +27,8 @@ package com.pholser.junit.quickcheck.generator.java.math;
 
 import java.math.BigInteger;
 
+import static java.math.BigInteger.*;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -35,7 +37,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.math.BigInteger.*;
 
 /**
  * <p>Produces values for theory parameters of type {@link BigInteger}.</p>
@@ -68,7 +69,7 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = new BigInteger(range.max());
         if (min != null && max != null)
-            checkRange("d", min, max);
+            checkRange(Ranges.Type.INTEGRAL, min, max);
     }
 
     @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {

@@ -56,9 +56,9 @@ public class ArrayGenerator extends Generator<Object> {
         component.configure(configurationsByType);
     }
 
-    @Override public void provideRepository(GeneratorRepository repo) {
-        super.provideRepository(repo);
-        component.provideRepository(repo);
+    @Override public void provideRepository(GeneratorRepository provided) {
+        super.provideRepository(provided);
+        component.provideRepository(provided);
     }
 
     public Generator<?> componentGenerator() {

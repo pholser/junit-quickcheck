@@ -55,9 +55,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         return true;
     }
 
-    @Override public void addComponentGenerators(List<Generator<?>> components) {
-        this.components.clear();
-        this.components.addAll(components);
+    @Override public void addComponentGenerators(List<Generator<?>> newComponents) {
+        components.clear();
+        components.addAll(newComponents);
     }
 
     public List<Generator<?>> componentGenerators() {
@@ -73,9 +73,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
             each.configure(configurationsByType);
     }
 
-    @Override public void provideRepository(GeneratorRepository repo) {
-        super.provideRepository(repo);
+    @Override public void provideRepository(GeneratorRepository provided) {
+        super.provideRepository(provided);
         for (Generator<?> each : components)
-            each.provideRepository(repo);
+            each.provideRepository(provided);
     }
 }
