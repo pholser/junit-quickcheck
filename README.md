@@ -1,5 +1,7 @@
 # junit-quickcheck: QuickCheck-style parameter suppliers for JUnit theories
 
+## Property-based testing, JUnit-style
+
 junit-quickcheck is a library that supplies [JUnit](http://junit.org)
 [theories](http://groups.csail.mit.edu/pag/pubs/test-theory-demo-oopsla2007.pdf)
 with random values with which to test the validity of the theories.
