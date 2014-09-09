@@ -74,6 +74,15 @@ public final class Reflection {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> singleAccessibleConstructor(Class<T> type) {
+        Constructor<?>[] constructors = type.getConstructors();
+        if (constructors.length != 1)
+            throw new ReflectionException(type + " needs a single accessible constructor");
+
+        return (Constructor<T>) constructors[0];
+    }
+
     public static <T> T instantiate(Class<T> clazz) {
         try {
             return clazz.newInstance();

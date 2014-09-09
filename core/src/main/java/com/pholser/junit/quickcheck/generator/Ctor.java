@@ -32,7 +32,6 @@ import java.lang.reflect.Type;
 import com.pholser.junit.quickcheck.internal.AnnotatedConstructorParameter;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.Reflection;
-import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
@@ -41,6 +40,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
  *
  * <p>If a constructor parameter is marked with an annotation that influences the generation of a given kind of
  * value, it will be applied to the generation of values for that parameter.</p>
+ *
+ * <p>This generator is intended to be used with {@link com.pholser.junit.quickcheck.From}, and not to be
+ * loaded via the {@link com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource}.</p>
  *
  * @param <T> the type of objects generated
  */
@@ -53,13 +55,7 @@ public class Ctor<T> extends Generator<T> {
     }
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        Class<T> type = types().get(0);
-        Constructor<?>[] constructors = type.getConstructors();
-        if (constructors.length != 1)
-            throw new ReflectionException(type + " needs a single accessible constructor");
-
-        @SuppressWarnings("unchecked")
-        Constructor<T> single = (Constructor<T>) constructors[0];
+        Constructor<T> single = Reflection.singleAccessibleConstructor(types().get(0));
 
         Object[] args = arguments(
             single.getGenericParameterTypes(),

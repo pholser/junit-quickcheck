@@ -106,6 +106,7 @@ public class ParameterContext {
 
     @SuppressWarnings("unchecked")
     private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
+        // for Ctor/Fields
         Constructor<? extends Generator> ctor = findConstructor(generatorType, Class.class);
         if (ctor != null)
             return instantiate(ctor, rawParameterType());

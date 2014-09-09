@@ -44,6 +44,9 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * <p>If a field is marked with an annotation that influences the generation of a given kind of value, it will
  * be applied to the generation of values for that field.</p>
  *
+ * <p>This generator is intended to be used with {@link com.pholser.junit.quickcheck.From}, and not to be
+ * loaded via the {@link com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource}.</p>
+
  * @param <T> the type of objects generated
  */
 public class Fields<T> extends Generator<T> {

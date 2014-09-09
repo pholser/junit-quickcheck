@@ -54,6 +54,19 @@ public class ReflectionTest {
         assertNull(findConstructor(Integer.class, Object.class));
     }
 
+    @Test public void findingSingleAccessibleConstructorSuccessfully() {
+        Constructor<Object> ctor = singleAccessibleConstructor(Object.class);
+
+        assertEquals(0, ctor.getParameterTypes().length);
+    }
+
+    @Test public void rejectsFindingSingleAccessibleConstructorOnNonConformingClass() {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(Integer.class + " needs a single accessible constructor");
+
+        singleAccessibleConstructor(Integer.class);
+    }
+
     @Test public void invokingZeroArgConstructorQuietlyWrapsInstantiationException() {
         thrown.expect(ReflectionException.class);
         thrown.expectMessage(InstantiationException.class.getName());
