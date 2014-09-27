@@ -36,6 +36,6 @@ public class LinkedHashSetGenerator extends CollectionGenerator<LinkedHashSet> {
     }
 
     @Override protected LinkedHashSet<Object> empty() {
-        return new LinkedHashSet<Object>();
+        return new LinkedHashSet<>();
     }
 }

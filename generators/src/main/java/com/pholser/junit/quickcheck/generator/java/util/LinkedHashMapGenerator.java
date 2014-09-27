@@ -36,6 +36,6 @@ public class LinkedHashMapGenerator extends MapGenerator<LinkedHashMap> {
     }
 
     @Override protected LinkedHashMap<Object, Object> emptyMap() {
-        return new LinkedHashMap<Object, Object>();
+        return new LinkedHashMap<>();
     }
 }

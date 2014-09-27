@@ -56,8 +56,8 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override protected List<?> randomValues() {
         List<Box<?>[]> values = new ArrayList<Box<?>[]>();
         values.add(new Box<?>[0]);
-        values.add(new Box<?>[] { new Box<Long>(1L) });
-        values.add(new Box<?>[] { new Box<Long>(7L), new Box<Long>(63L) });
+        values.add(new Box<?>[] { new Box<>(1L) });
+        values.add(new Box<?>[] { new Box<>(7L), new Box<>(63L) });
         return values;
     }
 

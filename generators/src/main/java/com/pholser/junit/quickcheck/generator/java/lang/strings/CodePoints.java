@@ -36,12 +36,12 @@ import java.util.Map;
  * Maps ordinal values to corresponding Unicode code points in a {@link java.nio.charset.Charset}.
  */
 public class CodePoints {
-    private static final Map<Charset, CodePoints> ENCODABLES = new HashMap<Charset, CodePoints>();
+    private static final Map<Charset, CodePoints> ENCODABLES = new HashMap<>();
 
     private final List<CodePointRange> ranges;
 
     CodePoints() {
-        ranges = new ArrayList<CodePointRange>();
+        ranges = new ArrayList<>();
     }
 
     void add(CodePointRange range) {

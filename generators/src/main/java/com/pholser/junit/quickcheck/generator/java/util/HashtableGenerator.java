@@ -36,7 +36,7 @@ public class HashtableGenerator extends MapGenerator<Hashtable> {
     }
 
     @Override protected Hashtable<Object, Object> emptyMap() {
-        return new Hashtable<Object, Object>();
+        return new Hashtable<>();
     }
 
     @Override protected boolean okToAdd(Object key, Object value) {

@@ -259,8 +259,9 @@ public class ForAllBigNumberTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class RangedBigDecimalWithMinAndMax {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "-123456789.0123", max = "99999999.87654321") BigDecimal d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321") BigDecimal d) {
+
             assertEquals(8, d.scale());
             assertThat(
                 d,
@@ -276,9 +277,9 @@ public class ForAllBigNumberTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class RangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "-123456789.0123", max = "99999999.87654321")
-                                       @Precision(scale = 7) BigDecimal d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321") @Precision(scale = 7) BigDecimal d) {
+
             assertEquals(8, d.scale());
             assertThat(
                 d,
@@ -294,8 +295,9 @@ public class ForAllBigNumberTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision {
-        @Theory public void shouldHold(@ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321")
-                                       @Precision(scale = 11) BigDecimal d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "-123456789.0123", max = "99999999.87654321") @Precision(scale = 11) BigDecimal d) {
+
             assertEquals(11, d.scale());
             assertThat(
                 d,

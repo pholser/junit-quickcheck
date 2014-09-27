@@ -57,9 +57,9 @@ public class ForAllLambdaTheoryParameterTypesTest {
             ++iterations;
 
             @SuppressWarnings("unchecked")
-            Foo value = functionValue(new FooGenerator(), new Object[] { new Box<Foo>(new Foo(2)) });
+            Foo value = functionValue(new FooGenerator(), new Object[] { new Box<>(new Foo(2)) });
             for (int i = 0; i < 10000; ++i)
-                assertEquals(value, b.unbox(new Box<Foo>(new Foo(2))));
+                assertEquals(value, b.unbox(new Box<>(new Foo(2))));
         }
     }
 

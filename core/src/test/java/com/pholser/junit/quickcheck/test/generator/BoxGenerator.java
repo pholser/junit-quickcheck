@@ -35,7 +35,7 @@ public class BoxGenerator extends ComponentizedGenerator<Box> {
     }
 
     @Override public Box<?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Box<Object>(componentGenerators().get(0).generate(random, status));
+        return new Box<>(componentGenerators().get(0).generate(random, status));
     }
 
     @Override public int numberOfNeededComponents() {

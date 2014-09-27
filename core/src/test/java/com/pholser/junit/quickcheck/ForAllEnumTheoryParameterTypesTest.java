@@ -67,7 +67,7 @@ public class ForAllEnumTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class EnumWithValuesOf {
-        static List<TestEnum> values = new ArrayList<TestEnum>();
+        static List<TestEnum> values = new ArrayList<>();
 
         @Theory public void shouldHold(@ForAll @ValuesOf TestEnum e) {
             values.add(e);

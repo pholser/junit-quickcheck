@@ -36,6 +36,6 @@ public class IdentityHashMapGenerator extends MapGenerator<IdentityHashMap> {
     }
 
     @Override protected IdentityHashMap<Object, Object> emptyMap() {
-        return new IdentityHashMap<Object, Object>();
+        return new IdentityHashMap<>();
     }
 }

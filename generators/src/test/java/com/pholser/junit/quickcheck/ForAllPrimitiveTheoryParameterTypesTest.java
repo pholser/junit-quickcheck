@@ -30,13 +30,12 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
-import com.pholser.junit.quickcheck.internal.Reflection;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.number.OrderingComparison.*;
@@ -72,7 +71,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class PrimitiveBooleanWithValuesOf {
-        static List<Boolean> values = new ArrayList<Boolean>();
+        static List<Boolean> values = new ArrayList<>();
 
         @Theory public void shouldHold(@ForAll @ValuesOf boolean b) {
             values.add(b);
@@ -86,7 +85,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class WrapperBooleanWithValuesOf {
-        static List<Boolean> values = new ArrayList<Boolean>();
+        static List<Boolean> values = new ArrayList<>();
 
         @Theory public void shouldHold(@ForAll @ValuesOf Boolean b) {
             values.add(b);
@@ -272,8 +271,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class PrimitiveDouble {
         @Theory public void shouldHold(@ForAll double d) {
-            assertThat(d, greaterThanOrEqualTo((Double) Reflection.defaultValueOf(InRange.class, "minDouble")));
-            assertThat(d, lessThan((Double) Reflection.defaultValueOf(InRange.class, "maxDouble")));
+            assertThat(d, greaterThanOrEqualTo((Double) defaultValueOf(InRange.class, "minDouble")));
+            assertThat(d, lessThan((Double) defaultValueOf(InRange.class, "maxDouble")));
         }
     }
 
@@ -295,8 +294,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperDouble {
         @Theory public void shouldHold(@ForAll Double d) {
-            assertThat(d, greaterThanOrEqualTo((Double) Reflection.defaultValueOf(InRange.class, "minDouble")));
-            assertThat(d, lessThan((Double) Reflection.defaultValueOf(InRange.class, "maxDouble")));
+            assertThat(d, greaterThanOrEqualTo((Double) defaultValueOf(InRange.class, "minDouble")));
+            assertThat(d, lessThan((Double) defaultValueOf(InRange.class, "maxDouble")));
         }
     }
 
@@ -318,8 +317,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class PrimitiveFloat {
         @Theory public void shouldHold(@ForAll float f) {
-            assertThat(f, greaterThanOrEqualTo((Float) Reflection.defaultValueOf(InRange.class, "minFloat")));
-            assertThat(f, lessThan((Float) Reflection.defaultValueOf(InRange.class, "maxFloat")));
+            assertThat(f, greaterThanOrEqualTo((Float) defaultValueOf(InRange.class, "minFloat")));
+            assertThat(f, lessThan((Float) defaultValueOf(InRange.class, "maxFloat")));
         }
     }
 
@@ -341,8 +340,8 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class WrapperFloat {
         @Theory public void shouldHold(@ForAll Float f) {
-            assertThat(f, greaterThanOrEqualTo((Float) Reflection.defaultValueOf(InRange.class, "minFloat")));
-            assertThat(f, lessThan((Float) Reflection.defaultValueOf(InRange.class, "maxFloat")));
+            assertThat(f, greaterThanOrEqualTo((Float) defaultValueOf(InRange.class, "minFloat")));
+            assertThat(f, lessThan((Float) defaultValueOf(InRange.class, "maxFloat")));
         }
     }
 

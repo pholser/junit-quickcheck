@@ -36,6 +36,6 @@ public class ArrayListGenerator extends CollectionGenerator<ArrayList> {
     }
 
     @Override protected ArrayList<Object> empty() {
-        return new ArrayList<Object>();
+        return new ArrayList<>();
     }
 }

@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static java.util.Arrays.*;
@@ -35,7 +36,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.google.common.collect.Sets.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -44,7 +44,7 @@ public class RandomElementFromItemsTest {
     @Mock private SourceOfRandomness random;
 
     @Test public void choosingFromSet() {
-        Set<String> names = newLinkedHashSet(asList("alpha", "bravo", "charlie", "delta"));
+        Set<String> names = new LinkedHashSet<>(asList("alpha", "bravo", "charlie", "delta"));
         when(random.nextInt(0, names.size() - 1)).thenReturn(2);
 
         assertEquals("charlie", Items.choose(names, random));

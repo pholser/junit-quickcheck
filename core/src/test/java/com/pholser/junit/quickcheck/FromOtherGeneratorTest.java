@@ -69,7 +69,8 @@ public class FromOtherGeneratorTest {
     }
 
     @Test public void typeMismatch() throws Exception {
-        assertThat(testResult(WithGeneratorTypeThatDoesNotMatchTheoryParameterType.class),
+        assertThat(
+            testResult(WithGeneratorTypeThatDoesNotMatchTheoryParameterType.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 

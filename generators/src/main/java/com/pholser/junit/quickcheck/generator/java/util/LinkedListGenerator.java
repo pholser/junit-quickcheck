@@ -36,6 +36,6 @@ public class LinkedListGenerator extends CollectionGenerator<LinkedList> {
     }
 
     @Override protected LinkedList<Object> empty() {
-        return new LinkedList<Object>();
+        return new LinkedList<>();
     }
 }

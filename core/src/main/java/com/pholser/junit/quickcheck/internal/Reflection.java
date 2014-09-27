@@ -44,7 +44,7 @@ import java.util.Set;
 import org.javaruntype.type.Type;
 
 public final class Reflection {
-    private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<Class<?>, Class<?>>(16);
+    private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<>(16);
 
     static {
         PRIMITIVES.put(Boolean.TYPE, Boolean.class);
@@ -100,7 +100,7 @@ public final class Reflection {
     }
 
     public static Set<Type<?>> supertypes(Type<?> bottom) {
-        Set<Type<?>> supertypes = new HashSet<Type<?>>();
+        Set<Type<?>> supertypes = new HashSet<>();
         supertypes.add(bottom);
         supertypes.addAll(bottom.getAllTypesAssignableFromThis());
         return supertypes;
@@ -118,7 +118,7 @@ public final class Reflection {
         List<Annotation> annotations,
         Class<? extends Annotation> marker) {
 
-        List<Annotation> marked = new ArrayList<Annotation>();
+        List<Annotation> marked = new ArrayList<>();
 
         for (Annotation each : annotations) {
             if (markedWith(each, marker))
@@ -154,7 +154,7 @@ public final class Reflection {
     }
 
     public static List<Field> allDeclaredFieldsOf(Class<?> type) {
-        List<Field> allFields = new ArrayList<Field>();
+        List<Field> allFields = new ArrayList<>();
 
         for (Class<?> c = type; c != null; c = c.getSuperclass())
             Collections.addAll(allFields, c.getDeclaredFields());

@@ -52,7 +52,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * @param <T> type of theory parameter to apply this generator's values to
  */
 public abstract class Generator<T> {
-    private final List<Class<T>> types = new ArrayList<Class<T>>();
+    private final List<Class<T>> types = new ArrayList<>();
     private GeneratorRepository repo;
 
     /**

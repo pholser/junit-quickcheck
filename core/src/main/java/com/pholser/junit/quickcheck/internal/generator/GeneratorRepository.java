@@ -52,7 +52,7 @@ import static org.javaruntype.type.Types.*;
 
 public class GeneratorRepository {
     private final SourceOfRandomness random;
-    private final Map<Class<?>, Set<Generator<?>>> generators = new HashMap<Class<?>, Set<Generator<?>>>();
+    private final Map<Class<?>, Set<Generator<?>>> generators = new HashMap<>();
 
     public GeneratorRepository(SourceOfRandomness random) {
         this.random = random;
@@ -95,7 +95,7 @@ public class GeneratorRepository {
     private void registerGeneratorForType(Class<?> type, Generator<?> generator) {
         Set<Generator<?>> forType = generators.get(type);
         if (forType == null) {
-            forType = new LinkedHashSet<Generator<?>>();
+            forType = new LinkedHashSet<>();
             generators.put(type, forType);
         }
 
@@ -144,7 +144,7 @@ public class GeneratorRepository {
         org.javaruntype.type.Type<?> typeToken,
         boolean allowMixedTypes) {
 
-        List<Generator<?>> matches = new ArrayList<Generator<?>>();
+        List<Generator<?>> matches = new ArrayList<>();
 
         if (!hasGeneratorsForRawClass(typeToken.getRawClass()))
             maybeAddLambdaGenerator(typeToken, matches);
@@ -164,7 +164,7 @@ public class GeneratorRepository {
         Method method = singleAbstractMethodOf(typeToken.getRawClass());
         if (method != null) {
             @SuppressWarnings("unchecked")
-            LambdaGenerator lambda =
+            Generator<?> lambda =
                 new LambdaGenerator(typeToken.getRawClass(), generatorFor(method.getGenericReturnType()));
             matches.add(lambda);
         }
@@ -189,7 +189,7 @@ public class GeneratorRepository {
     }
 
     private Generator<?> composite(org.javaruntype.type.Type<?> typeToken, List<Generator<?>> matches) {
-        List<Generator<?>> forComponents = new ArrayList<Generator<?>>();
+        List<Generator<?>> forComponents = new ArrayList<>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));
 
@@ -202,9 +202,11 @@ public class GeneratorRepository {
     private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
         if (generator.hasComponents()) {
             if (componentGenerators.isEmpty()) {
-                List<Generator<?>> substitutes = new ArrayList<Generator<?>>();
+                List<Generator<?>> substitutes = new ArrayList<>();
+                Generator<?> zilch = generatorFor(Zilch.class);
                 for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
-                    substitutes.add(generatorFor(Zilch.class));
+                    substitutes.add(zilch);
+
                 generator.addComponentGenerators(substitutes);
             } else
                 generator.addComponentGenerators(componentGenerators);
@@ -230,11 +232,11 @@ public class GeneratorRepository {
 
         if (!allowMixedTypes) {
             Generator<?> match = choose(matches, random);
-            matches = new HashSet<Generator<?>>();
+            matches = new HashSet<>();
             matches.add(match);
         }
 
-        List<Generator<?>> copies = new ArrayList<Generator<?>>();
+        List<Generator<?>> copies = new ArrayList<>();
         for (Generator<?> each : matches)
             copies.add(each.hasComponents() ? copyOf(each) : each);
         return copies;

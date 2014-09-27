@@ -73,7 +73,7 @@ public final class Lambdas {
         return lambdaType.cast(Proxy.newProxyInstance(
             lambdaType.getClassLoader(),
             new Class<?>[] { lambdaType },
-            new LambdaInvocationHandler<T, U>(lambdaType, returnValueGenerator, status, new Random())));
+            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status, new Random())));
     }
 
     private static class LambdaInvocationHandler<T, U> implements InvocationHandler {

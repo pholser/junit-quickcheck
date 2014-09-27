@@ -116,7 +116,7 @@ public class AutoGenerationByConstructorTest {
     @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() {
         GeneratorRepository repo = new GeneratorRepository(null);
 
-        repo.register(new Ctor<Object>(Object.class));
+        repo.register(new Ctor<>(Object.class));
 
         thrown.expect(IllegalArgumentException.class);
         repo.generatorFor(Object.class);

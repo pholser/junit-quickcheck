@@ -48,7 +48,7 @@ public class Box<T> {
         if (o == null || !getClass().equals(o.getClass()))
             return false;
 
-        Box other = (Box) o;
+        Box<?> other = (Box<?>) o;
         return Objects.equal(contents, other.contents);
     }
 

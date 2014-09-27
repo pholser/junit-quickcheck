@@ -40,7 +40,7 @@ public class CompositeGenerator extends Generator<Object> {
     public CompositeGenerator(List<Generator<?>> components) {
         super(Object.class);
 
-        this.components = new ArrayList<Generator<?>>(components);
+        this.components = new ArrayList<>(components);
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {

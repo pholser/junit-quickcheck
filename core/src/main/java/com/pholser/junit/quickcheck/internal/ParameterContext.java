@@ -52,14 +52,13 @@ public class ParameterContext {
         "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
 
     private final Type parameterType;
-    private final List<Generator<?>> explicits = new ArrayList<Generator<?>>();
+    private final List<Generator<?>> explicits = new ArrayList<>();
 
     private int configuredSampleSize;
     private SampleSizer sampleSizer;
     private int discardRatio;
     private String constraint;
-    private Map<Class<? extends Annotation>, Annotation> configurations =
-        new HashMap<Class<? extends Annotation>, Annotation>();
+    private Map<Class<? extends Annotation>, Annotation> configurations = new HashMap<>();
 
     public ParameterContext(Type parameterType) {
         this.parameterType = parameterType;

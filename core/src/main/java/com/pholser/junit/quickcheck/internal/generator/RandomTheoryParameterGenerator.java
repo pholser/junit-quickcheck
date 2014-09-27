@@ -42,7 +42,7 @@ public class RandomTheoryParameterGenerator {
     }
 
     public List<PotentialAssignment> generate(ParameterContext parameter) {
-        List<PotentialAssignment> assignments = new ArrayList<PotentialAssignment>();
+        List<PotentialAssignment> assignments = new ArrayList<>();
 
         for (GenerationContext gen = new GenerationContext(parameter, repository); gen.shouldContinue();) {
             Object nextValue = gen.generate(random);

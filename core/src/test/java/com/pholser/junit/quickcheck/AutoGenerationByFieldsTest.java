@@ -82,7 +82,7 @@ public class AutoGenerationByFieldsTest {
     @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() {
         GeneratorRepository repo = new GeneratorRepository(null);
 
-        repo.register(new Fields<Object>(Object.class));
+        repo.register(new Fields<>(Object.class));
 
         thrown.expect(IllegalArgumentException.class);
         repo.generatorFor(Object.class);

@@ -56,9 +56,8 @@ public class ForAllDateTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class RangedDateTheory {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") Date d)
-            throws Exception {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") Date d) throws Exception {
 
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
             assertThat(
@@ -77,8 +76,8 @@ public class ForAllDateTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class MalformedMinDateTheory {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") Date d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") Date d) {
         }
     }
 
@@ -90,8 +89,8 @@ public class ForAllDateTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class MalformedMaxDateTheory {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") Date d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") Date d) {
         }
     }
 
@@ -103,8 +102,8 @@ public class ForAllDateTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class MalformedFormatDateTheory {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") Date d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") Date d) {
         }
     }
 
@@ -144,8 +143,8 @@ public class ForAllDateTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class BackwardsRangeTheory {
-        @Theory public void shouldHold(@ForAll
-                                       @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") Date d) {
+        @Theory public void shouldHold(
+            @ForAll @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") Date d) {
         }
     }
 }

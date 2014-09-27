@@ -36,6 +36,6 @@ public class HashSetGenerator extends CollectionGenerator<HashSet> {
     }
 
     @Override protected HashSet<Object> empty() {
-        return new HashSet<Object>();
+        return new HashSet<>();
     }
 }

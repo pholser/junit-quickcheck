@@ -42,7 +42,7 @@ import static java.util.Collections.*;
  * @param <T> type of theory parameter to apply this generator's values to
  */
 public abstract class ComponentizedGenerator<T> extends Generator<T> {
-    private final List<Generator<?>> components = new ArrayList<Generator<?>>();
+    private final List<Generator<?>> components = new ArrayList<>();
 
     /**
      * @param type class token for type of theory parameter this generator is applicable to

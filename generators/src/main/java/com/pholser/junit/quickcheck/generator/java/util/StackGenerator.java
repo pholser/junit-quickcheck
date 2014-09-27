@@ -36,6 +36,6 @@ public class StackGenerator extends CollectionGenerator<Stack> {
     }
 
     @Override protected Stack<Object> empty() {
-        return new Stack<Object>();
+        return new Stack<>();
     }
 }

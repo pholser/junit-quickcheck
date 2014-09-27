@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -38,7 +39,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,7 +51,7 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
         repo = new GeneratorRepository(random);
 
         generator = new TestCallableGenerator<Object>();
-        List<Generator<?>> generators = newArrayList();
+        List<Generator<?>> generators = new ArrayList<>();
         generators.add(generator);
         generators.add(new TestIntegerGenerator());
         generators.add(new ZilchGenerator());

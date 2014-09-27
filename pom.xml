@@ -75,13 +75,13 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>16.0.1</version>
+                <version>18.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava-testlib</artifactId>
-                <version>16.0.1</version>
+                <version>18.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -123,15 +123,15 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>3.1</version>
                     <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
+                        <source>1.7</source>
+                        <target>1.7</target>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -163,7 +163,7 @@
                         <dependency>
                             <groupId>com.sun</groupId>
                             <artifactId>tools</artifactId>
-                            <version>1.6</version>
+                            <version>1.7</version>
                             <scope>system</scope>
                             <systemPath>${tools-jar}</systemPath>
                         </dependency>
@@ -200,7 +200,7 @@
                     <version>3.2</version>
                     <configuration>
                         <minimumTokens>100</minimumTokens>
-                        <targetJdk>1.5</targetJdk>
+                        <targetJdk>1.7</targetJdk>
                     </configuration>
                     <executions>
                         <execution>
@@ -214,7 +214,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>2.5.5</version>
+                    <version>3.0.0</version>
                     <configuration>
                         <effort>Max</effort>
                         <threshold>Low</threshold>

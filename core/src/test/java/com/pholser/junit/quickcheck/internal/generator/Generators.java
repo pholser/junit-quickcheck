@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -39,11 +40,12 @@ public class Generators {
         throw new UnsupportedOperationException();
     }
 
+    @SafeVarargs
     public static void assertGenerators(Generator<?> result, Class<? extends Generator>... expectedTypes) {
         assumeThat(result, instanceOf(CompositeGenerator.class));
 
         CompositeGenerator composite = (CompositeGenerator) result;
-        Set<Class<?>> compositeTypes = newHashSet();
+        Set<Class<?>> compositeTypes = new HashSet<>();
         for (int i = 0; i < composite.numberOfComponentGenerators(); ++i)
             compositeTypes.add(composite.componentGenerator(i).getClass());
 

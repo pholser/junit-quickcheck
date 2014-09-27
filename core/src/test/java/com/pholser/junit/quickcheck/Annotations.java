@@ -27,9 +27,9 @@ package com.pholser.junit.quickcheck;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class Annotations {
@@ -42,7 +42,7 @@ public class Annotations {
     }
 
     public static Map<String, Object> defaultValuesOf(Class<? extends Annotation> annotation) {
-        Map<String, Object> values = newHashMap();
+        Map<String, Object> values = new HashMap<>();
         for (Method each : annotation.getDeclaredMethods())
             values.put(each.getName(), defaultValueOf(annotation, each.getName()));
         return values;

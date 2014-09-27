@@ -94,7 +94,7 @@ public class ForAllFunctionTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll Function<?, ?>[] functions) {
             ++iterations;
 
-            Box<Zilch> box = new Box<Zilch>(Zilch.INSTANCE);
+            Box<Zilch> box = new Box<>(Zilch.INSTANCE);
 
             for (Function each : functions)
                 each.apply(box);

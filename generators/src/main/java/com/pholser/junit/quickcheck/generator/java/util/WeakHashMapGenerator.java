@@ -36,6 +36,6 @@ public class WeakHashMapGenerator extends MapGenerator<WeakHashMap> {
     }
 
     @Override protected WeakHashMap<Object, Object> emptyMap() {
-        return new WeakHashMap<Object, Object>();
+        return new WeakHashMap<>();
     }
 }

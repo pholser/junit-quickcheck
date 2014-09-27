@@ -42,7 +42,7 @@ public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
     }
 
     @Override public Iterator<Generator<?>> iterator() {
-        List<Generator<?>> generators = new ArrayList<Generator<?>>();
+        List<Generator<?>> generators = new ArrayList<>();
 
         for (Generator<?> each : loader)
             generators.add(each);

@@ -37,7 +37,7 @@ class Arrays {
     static List<?> toList(Object array) {
         int length = Array.getLength(array);
 
-        List<Object> items = new ArrayList<Object>();
+        List<Object> items = new ArrayList<>();
         for (int i = 0; i < length; ++i) {
             items.add(Array.get(array, i));
         }

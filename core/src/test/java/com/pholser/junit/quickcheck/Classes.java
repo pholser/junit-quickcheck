@@ -76,18 +76,18 @@ public class Classes {
                 intersection.retainAll(getClassesBreadthFirst(each));
         }
 
-        return new ArrayList<Class<?>>(intersection);
+        return new ArrayList<>(intersection);
     }
 
     private static Set<Class<?>> getClassesBreadthFirst(Class<?> clazz) {
-        Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
-        Set<Class<?>> nextLevel = new LinkedHashSet<Class<?>>();
+        Set<Class<?>> classes = new LinkedHashSet<>();
+        Set<Class<?>> nextLevel = new LinkedHashSet<>();
         nextLevel.add(clazz);
 
         do {
             classes.addAll(nextLevel);
 
-            Set<Class<?>> thisLevel = new LinkedHashSet<Class<?>>(nextLevel);
+            Set<Class<?>> thisLevel = new LinkedHashSet<>(nextLevel);
             nextLevel.clear();
 
             for (Class<?> each : thisLevel) {

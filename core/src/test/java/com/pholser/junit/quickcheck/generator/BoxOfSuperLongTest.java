@@ -64,7 +64,7 @@ public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(new Box<Long>(3L), new Box<Long>(4L), new Box<Long>(5L));
+        return asList(new Box<>(3L), new Box<>(4L), new Box<>(5L));
     }
 
     @Override public void verifyInteractionWithRandomness() {
