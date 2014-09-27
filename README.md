@@ -6,6 +6,9 @@ junit-quickcheck is a library that supplies [JUnit](http://junit.org)
 [theories](http://groups.csail.mit.edu/pag/pubs/test-theory-demo-oopsla2007.pdf)
 with random values with which to test the validity of the theories.
 
+As of version 0.4, junit-quickcheck is built with JDK 7, and
+source/target-compatible with 1.7 and beyond.
+
 **PLEASE NOTE**: junit-quickcheck uses a
 [version of the JUnit theories runner](https://github.com/junit-team/junit.contrib/tree/master/theories) 
 that has been modified to respect generics on theory parameter types, as described
