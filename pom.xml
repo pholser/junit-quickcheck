@@ -51,7 +51,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12-beta-1</version>
+                <version>4.12-beta-2</version>
             </dependency>
 
             <dependency>
@@ -243,17 +243,6 @@
             </activation>
             <properties>
                 <tools-jar>${java.home}/../lib/tools.jar</tools-jar>
-            </properties>
-        </profile>
-        <profile>
-            <id>apple-jdk</id>
-            <activation>
-                <file>
-                    <exists>${java.home}/../Classes/classes.jar</exists>
-                </file>
-            </activation>
-            <properties>
-                <tools-jar>${java.home}/../Classes/classes.jar</tools-jar>
             </properties>
         </profile>
     </profiles>
