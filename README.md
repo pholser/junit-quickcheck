@@ -237,26 +237,29 @@ they hold:
 ```java
     @RunWith(Theories.class)
     public class PrimeFactorsTheories {
-        @Theory public void factorsPassPrimalityTest(@ForAll int n) {
-            assumeThat(n, greaterThan(0));
+        @Theory public void factorsPassPrimalityTest(@ForAll BigInteger n) {
+            assumeThat(n, greaterThan(ZERO));
 
-            for (int each : PrimeFactors.of(n))
-                assertTrue(BigInteger.valueOf(each).isProbablePrime(1000));
+            for (BigInteger each : PrimeFactors.of(n))
+                assertTrue(each.isProbablePrime(1000));
         }
 
-        @Theory public void factorsMultiplyToOriginal(@ForAll int n) {
-            assumeThat(n, greaterThan(0));
+        @Theory public void factorsMultiplyToOriginal(@ForAll BigInteger n) {
+            assumeThat(n, greaterThan(ZERO));
 
-            int product = 1;
-            for (int each : PrimeFactors.of(n))
-                product *= each;
+            BigInteger product = ONE;
+            for (BigInteger each : PrimeFactors.of(n))
+                product = product.multiply(each);
 
             assertEquals(n, product);
         }
 
-        @Theory public void factorizationsAreUnique(@ForAll int m, @ForAll int n) {
-            assumeThat(m, greaterThan(0));
-            assumeThat(n, greaterThan(0));
+        @Theory public void factorizationsAreUnique(
+            @ForAll BigInteger m,
+            @ForAll BigInteger n) {
+
+            assumeThat(m, greaterThan(ZERO));
+            assumeThat(n, greaterThan(ZERO));
             assumeThat(m, not(equalTo(n)));
 
             assertThat(PrimeFactors.of(m), not(equalTo(PrimeFactors.of(n))));
