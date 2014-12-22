@@ -31,12 +31,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 
 import com.pholser.junit.quickcheck.ForAll;
@@ -73,7 +73,7 @@ public class ParameterContext {
         if (explicitGenerators != null)
             addGenerators(explicitGenerators);
 
-        addConfigurations(markedAnnotations(Arrays.asList(element.getAnnotations()), GeneratorConfiguration.class));
+        addConfigurations(markedAnnotations(asList(element.getAnnotations()), GeneratorConfiguration.class));
 
         return this;
     }
