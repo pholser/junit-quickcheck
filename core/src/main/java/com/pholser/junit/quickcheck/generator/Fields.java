@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Field;
 
 import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -59,7 +58,7 @@ public class Fields<T> extends Generator<T> {
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         Class<T> type = types().get(0);
-        Object generated = Reflection.instantiate(type);
+        Object generated = instantiate(type);
 
         for (Field each : allDeclaredFieldsOf(type)) {
             ParameterContext parameter = new ParameterContext(each.getGenericType()).annotate(each);

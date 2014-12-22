@@ -85,6 +85,6 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
         else if (maxToUse == null)
             maxToUse = minToUse.add(TEN.pow(numberOfBits));
 
-        return Ranges.choose(random, minToUse, maxToUse);
+        return choose(random, minToUse, maxToUse);
     }
 }

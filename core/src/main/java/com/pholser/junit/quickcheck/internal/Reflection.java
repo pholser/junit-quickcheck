@@ -31,7 +31,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +41,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.javaruntype.type.Type;
+
+import static java.security.AccessController.doPrivileged;
 
 public final class Reflection {
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<>(16);
@@ -168,8 +169,9 @@ public final class Reflection {
         Object value,
         final boolean suppressProtection) {
 
-        AccessController.doPrivileged(new PrivilegedAction<Void>() {
-            @Override public Void run() {
+        doPrivileged(new PrivilegedAction<Void>() {
+            @Override
+            public Void run() {
                 field.setAccessible(suppressProtection);
                 return null;
             }

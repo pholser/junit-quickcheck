@@ -28,8 +28,9 @@ package com.pholser.junit.quickcheck.guava.generator;
 import com.google.common.base.Function;
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Lambdas;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
 
 /**
  * Produces values for theory parameters of type {@code Function}.
@@ -44,7 +45,7 @@ public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
 
     @SuppressWarnings("unchecked")
     @Override public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return (Function<F, T>) Lambdas.makeLambda(
+        return (Function<F, T>) makeLambda(
             Function.class,
             componentGenerators().get(1),
             status);

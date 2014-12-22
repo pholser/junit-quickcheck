@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Items.*;
+import static java.util.TimeZone.*;
 
 /**
  * Produces values for theory parameters of type {@link TimeZone}.
@@ -44,6 +45,6 @@ public class TimeZoneGenerator extends Generator<TimeZone> {
     }
 
     @Override public TimeZone generate(SourceOfRandomness random, GenerationStatus status) {
-        return TimeZone.getTimeZone(choose(asList(TimeZone.getAvailableIDs()), random));
+        return getTimeZone(choose(asList(getAvailableIDs()), random));
     }
 }

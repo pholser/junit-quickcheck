@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 /**
  * Maps ordinal values to corresponding Unicode code points in a {@link java.nio.charset.Charset}.
  */
@@ -150,7 +152,7 @@ public class CodePoints {
 
         CodePointRange(int low, int high, int previousCount) {
             if (low > high)
-                throw new IllegalArgumentException(String.format("%d > %d", low, high));
+                throw new IllegalArgumentException(format("%d > %d", low, high));
 
             this.low = low;
             this.high = high;

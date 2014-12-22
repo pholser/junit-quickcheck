@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
 import static java.util.Collections.*;
 
 import com.pholser.junit.quickcheck.ForAll;
@@ -134,8 +135,12 @@ public class ParameterContext {
 
         for (Class<?> each : generator.types()) {
             if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
-                throw new IllegalArgumentException(String.format(EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE, each,
-                    From.class.getName(), parameterType));
+                throw new IllegalArgumentException(
+                    format(
+                        EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
+                        each,
+                        From.class.getName(),
+                        parameterType));
             }
         }
     }

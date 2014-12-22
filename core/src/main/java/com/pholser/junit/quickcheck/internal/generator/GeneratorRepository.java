@@ -37,7 +37,6 @@ import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.ExtendsTypeParameter;
@@ -222,7 +221,7 @@ public class GeneratorRepository {
             return generatorForTypeToken(parameter.getType(), false);
 
         // must be "? super X"
-        Set<org.javaruntype.type.Type<?>> supertypes = Reflection.supertypes(parameter.getType());
+        Set<org.javaruntype.type.Type<?>> supertypes = supertypes(parameter.getType());
         org.javaruntype.type.Type<?> chosen = choose(supertypes, random);
         return generatorForTypeToken(chosen, false);
     }
@@ -248,6 +247,6 @@ public class GeneratorRepository {
     }
 
     private static Generator<?> copyOf(Generator<?> generator) {
-        return Reflection.instantiate(generator.getClass());
+        return instantiate(generator.getClass());
     }
 }
