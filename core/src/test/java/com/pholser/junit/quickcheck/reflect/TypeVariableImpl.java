@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.reflect;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -56,6 +58,26 @@ public class TypeVariableImpl<D extends GenericDeclaration> implements TypeVaria
         return name;
     }
 
+    @Override
+    public AnnotatedType[] getAnnotatedBounds() {
+        return new AnnotatedType[0];
+    }
+
+    @Override
+    public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+        return null;
+    }
+
+    @Override
+    public Annotation[] getAnnotations() {
+        return new Annotation[0];
+    }
+
+    @Override
+    public Annotation[] getDeclaredAnnotations() {
+        return new Annotation[0];
+    }
+
     @Override public boolean equals(Object that) {
         if (this == that)
             return true;
@@ -65,8 +87,8 @@ public class TypeVariableImpl<D extends GenericDeclaration> implements TypeVaria
 
         TypeVariable<?> other = (TypeVariable<?>) that;
         return Objects.equal(getName(), other.getName())
-            && Arrays.equals(getBounds(), other.getBounds())
-            && Objects.equal(getGenericDeclaration(), other.getGenericDeclaration());
+                && Arrays.equals(getBounds(), other.getBounds())
+                && Objects.equal(getGenericDeclaration(), other.getGenericDeclaration());
     }
 
     @Override public int hashCode() {
