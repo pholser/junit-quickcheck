@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Items.*;
+import static java.util.Locale.getAvailableLocales;
 
 /**
  * Produces values for theory parameters of type {@link Locale}.
@@ -44,6 +45,6 @@ public class LocaleGenerator extends Generator<Locale> {
     }
 
     @Override public Locale generate(SourceOfRandomness random, GenerationStatus status) {
-        return choose(asList(Locale.getAvailableLocales()), random);
+        return choose(asList(getAvailableLocales()), random);
     }
 }

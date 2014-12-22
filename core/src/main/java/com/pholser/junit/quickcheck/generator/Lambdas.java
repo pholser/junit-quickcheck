@@ -27,14 +27,14 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Random;
 
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.System.*;
+import static java.lang.reflect.Proxy.newProxyInstance;
+import static com.pholser.junit.quickcheck.internal.Reflection.singleAbstractMethodOf;
 
 /**
  * Helper class for creating instances of "functional interfaces".
@@ -67,10 +67,10 @@ public final class Lambdas {
         Generator<U> returnValueGenerator,
         GenerationStatus status) {
 
-        if (Reflection.singleAbstractMethodOf(lambdaType) == null)
+        if (singleAbstractMethodOf(lambdaType) == null)
             throw new IllegalArgumentException(lambdaType + " is not a functional interface type");
 
-        return lambdaType.cast(Proxy.newProxyInstance(
+        return lambdaType.cast(newProxyInstance(
             lambdaType.getClassLoader(),
             new Class<?>[] { lambdaType },
             new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status, new Random())));

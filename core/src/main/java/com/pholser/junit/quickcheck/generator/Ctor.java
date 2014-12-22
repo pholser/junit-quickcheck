@@ -31,8 +31,9 @@ import java.lang.reflect.Type;
 
 import com.pholser.junit.quickcheck.internal.AnnotatedConstructorParameter;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>A generator that produces instances of a class by reflecting the class for a single accessible constructor,
@@ -55,7 +56,7 @@ public class Ctor<T> extends Generator<T> {
     }
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        Constructor<T> single = Reflection.singleAccessibleConstructor(types().get(0));
+        Constructor<T> single = singleAccessibleConstructor(types().get(0));
 
         Object[] args = arguments(
             single.getGenericParameterTypes(),
@@ -63,7 +64,7 @@ public class Ctor<T> extends Generator<T> {
             random,
             status);
 
-        return Reflection.instantiate(single, args);
+        return instantiate(single, args);
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {

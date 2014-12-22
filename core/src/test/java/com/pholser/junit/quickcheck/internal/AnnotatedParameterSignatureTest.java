@@ -35,12 +35,13 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.contrib.theories.ParameterSignature.signatures;
 
 public class AnnotatedParameterSignatureTest {
     private AnnotatedParameterSignature signature;
 
     @Before public void setUp() throws Exception {
-        List<ParameterSignature> sigs = ParameterSignature.signatures(Annotated.class.getConstructor(int.class));
+        List<ParameterSignature> sigs = signatures(Annotated.class.getConstructor(int.class));
         signature = new AnnotatedParameterSignature(sigs.get(0));
     }
 
