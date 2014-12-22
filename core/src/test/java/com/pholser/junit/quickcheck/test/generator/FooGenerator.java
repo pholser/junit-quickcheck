@@ -39,7 +39,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 public class FooGenerator extends Generator<Foo> {
     private Same value;
 
-    @Target(PARAMETER)
+    @Target({ PARAMETER, FIELD, TYPE })
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface Same {

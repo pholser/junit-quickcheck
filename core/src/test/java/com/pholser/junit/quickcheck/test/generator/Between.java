@@ -33,7 +33,7 @@ import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
-@Target({PARAMETER, FIELD})
+@Target({ PARAMETER, FIELD, TYPE })
 @Retention(RUNTIME)
 @GeneratorConfiguration
 public @interface Between {

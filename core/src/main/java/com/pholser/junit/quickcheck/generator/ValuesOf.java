@@ -38,7 +38,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  *
  * <p>This annotation is recognized on parameters of type {@code boolean} and {@link Enum}.</p>
  */
-@Target({ PARAMETER, FIELD })
+@Target({ PARAMETER, FIELD, TYPE })
 @Retention(RUNTIME)
 @GeneratorConfiguration
 public @interface ValuesOf {

@@ -36,7 +36,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * {@link com.pholser.junit.quickcheck.ForAll} with this annotation to constrain the values generated for the parameter
  * to a given precision.</p>
  */
-@Target({ PARAMETER, FIELD })
+@Target({ PARAMETER, FIELD, TYPE })
 @Retention(RUNTIME)
 @GeneratorConfiguration
 public @interface Precision {
