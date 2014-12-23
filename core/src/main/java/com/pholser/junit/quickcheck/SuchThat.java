@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with {@link ForAll}
  * with this annotation to constrain the values generated for it.
  */
-@Target({ PARAMETER, FIELD, TYPE })
+@Target({ PARAMETER, FIELD, TYPE_PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
 public @interface SuchThat {
     /**
