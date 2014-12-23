@@ -165,7 +165,7 @@ public final class RFC4122 {
     /**
      * Used in version 3 and version 5 UUID generation to specify a "namespace" UUID for use in generation.
      */
-    @Target({ PARAMETER, FIELD, TYPE_PARAMETER, TYPE_USE })
+    @Target({ PARAMETER, FIELD, TYPE_USE })
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface Namespace {
