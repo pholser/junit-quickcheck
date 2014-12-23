@@ -71,7 +71,7 @@ public class Encoded extends Generator<String> {
     /**
      * Names a {@linkplain java.nio.charset.Charset}.
      */
-    @Target({ PARAMETER, FIELD, TYPE_PARAMETER, TYPE_USE })
+    @Target({ PARAMETER, FIELD, TYPE_USE })
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface InCharset {
