@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.lang.annotation.Annotation;
 
+import com.pholser.junit.quickcheck.AnnotatedTypes;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class SampleSizerTest {
     }
 
     @Test public void primitiveBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext(boolean.class);
+        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(boolean.class));
         addValuesOf(parameter);
 
         SampleSizer sizer = new SampleSizer(5, parameter);
@@ -47,7 +48,7 @@ public class SampleSizerTest {
     }
 
     @Test public void wrapperBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext(Boolean.class);
+        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(Boolean.class));
         addValuesOf(parameter);
 
         SampleSizer sizer = new SampleSizer(6, parameter);
@@ -56,7 +57,7 @@ public class SampleSizerTest {
     }
 
     @Test public void enumWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext(Ternary.class);
+        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(Ternary.class));
         addValuesOf(parameter);
 
         SampleSizer sizer = new SampleSizer(7, parameter);
@@ -65,7 +66,7 @@ public class SampleSizerTest {
     }
 
     @Test public void otherClassesUseConfiguredSampleSize() {
-        ParameterContext parameter = new ParameterContext(String.class);
+        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(String.class));
         addValuesOf(parameter);
 
         SampleSizer sizer = new SampleSizer(8, parameter);

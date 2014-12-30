@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import com.pholser.junit.quickcheck.AnnotatedTypes;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -66,7 +67,7 @@ public class GenerationContextTest {
     }
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() {
-        ParameterContext parameter = new ParameterContext(int.class);
+        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(int.class));
         parameter.addQuantifier(quantifier);
         parameter.addConstraint(constraint);
 

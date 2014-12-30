@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -52,7 +53,7 @@ public class ParameterContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =
         "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
 
-    private final Type parameterType;
+    private final AnnotatedType parameterType;
     private final List<Generator<?>> explicits = new ArrayList<>();
 
     private int configuredSampleSize;
@@ -61,7 +62,7 @@ public class ParameterContext {
     private String constraint;
     private Map<Class<? extends Annotation>, Annotation> configurations = new HashMap<>();
 
-    public ParameterContext(Type parameterType) {
+    public ParameterContext(AnnotatedType parameterType) {
         this.parameterType = parameterType;
     }
 
@@ -73,6 +74,7 @@ public class ParameterContext {
         if (explicitGenerators != null)
             addGenerators(explicitGenerators);
 
+        // TODO - how can i associate type use annotations with their different usages?
         addConfigurations(markedAnnotations(asList(element.getAnnotations()), GeneratorConfiguration.class));
 
         return this;
@@ -115,9 +117,9 @@ public class ParameterContext {
     }
 
     private Class<?> rawParameterType() {
-        if (parameterType instanceof ParameterizedType)
-            return (Class<?>) ((ParameterizedType) parameterType).getRawType();
-        return (Class<?>) parameterType;
+        if (parameterType() instanceof ParameterizedType)
+            return (Class<?>) ((ParameterizedType) parameterType()).getRawType();
+        return (Class<?>) parameterType();
     }
 
     public ParameterContext addConfigurations(List<Annotation> generatorConfigurations) {
@@ -131,7 +133,7 @@ public class ParameterContext {
     }
 
     private void ensureCorrectType(Generator<?> generator) {
-        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(parameterType);
+        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(parameterType());
 
         for (Class<?> each : generator.types()) {
             if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
@@ -140,13 +142,13 @@ public class ParameterContext {
                         EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
                         each,
                         From.class.getName(),
-                        parameterType));
+                        parameterType()));
             }
         }
     }
 
     public Type parameterType() {
-        return parameterType;
+        return parameterType.getType();
     }
 
     public int sampleSize() {
