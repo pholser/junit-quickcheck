@@ -25,11 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Type;
+import java.lang.reflect.Parameter;
 
-import com.pholser.junit.quickcheck.internal.AnnotatedConstructorParameter;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -59,8 +57,7 @@ public class Ctor<T> extends Generator<T> {
         Constructor<T> single = singleAccessibleConstructor(types().get(0));
 
         Object[] args = arguments(
-            single.getGenericParameterTypes(),
-            single.getParameterAnnotations(),
+            single.getParameters(),
             random,
             status);
 
@@ -72,16 +69,15 @@ public class Ctor<T> extends Generator<T> {
     }
 
     private Object[] arguments(
-        Type[] parameterTypes,
-        Annotation[][] parameterAnnotations,
+        Parameter[] parameters,
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        Object[] args = new Object[parameterTypes.length];
+        Object[] args = new Object[parameters.length];
 
         for (int i = 0; i < args.length; ++i) {
-            AnnotatedConstructorParameter ctorParameter = new AnnotatedConstructorParameter(parameterAnnotations[i]);
-            ParameterContext parameter = new ParameterContext(parameterTypes[i]).annotate(ctorParameter);
+            ParameterContext parameter =
+                new ParameterContext(parameters[i].getAnnotatedType().getType()).annotate(parameters[i]);
             args[i] = generatorFor(parameter).generate(random, status);
         }
 
