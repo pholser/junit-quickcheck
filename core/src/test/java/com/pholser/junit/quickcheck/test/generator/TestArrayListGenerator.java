@@ -37,7 +37,7 @@ public class TestArrayListGenerator extends ComponentizedGenerator<ArrayList> {
     }
 
     @Override public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new ArrayList<Object>(status.size());
+        return new ArrayList<>(status.size());
     }
 
     @Override public int numberOfNeededComponents() {
