@@ -51,7 +51,7 @@ public class FindingGeneratorInvolvingTypeVariableTest {
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random).register(new TestGeneratorSource());
-        typeVariable = new TypeVariableImpl<Class<?>>("E", List.class, new Type[] { Object.class });
+        typeVariable = new TypeVariableImpl<>("E", List.class, new Type[] { Object.class });
     }
 
     @Test(expected = TypeValidationException.class)
