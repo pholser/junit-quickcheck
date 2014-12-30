@@ -38,7 +38,7 @@ public class TestHashMapGenerator extends ComponentizedGenerator<HashMap> {
     }
 
     @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new HashMap<Object, Object>(status.size());
+        return new HashMap<>(status.size());
     }
 
     @Override public int numberOfNeededComponents() {
