@@ -61,7 +61,7 @@ public class Fields<T> extends Generator<T> {
         Object generated = instantiate(type);
 
         for (Field each : allDeclaredFieldsOf(type)) {
-            ParameterContext parameter = new ParameterContext(each.getGenericType()).annotate(each);
+            ParameterContext parameter = new ParameterContext(each.getAnnotatedType()).annotate(each);
             setField(each, generated, generatorFor(parameter).generate(random, status), true);
         }
 

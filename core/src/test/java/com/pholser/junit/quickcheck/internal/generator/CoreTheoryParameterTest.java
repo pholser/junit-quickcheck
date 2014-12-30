@@ -26,10 +26,12 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.AnnotatedTypes;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
@@ -75,7 +77,7 @@ public abstract class CoreTheoryParameterTest {
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(randomForParameterGenerator, repository);
 
-        ParameterContext context = new ParameterContext(parameterType());
+        ParameterContext context = new ParameterContext(annotatedType());
         context.addQuantifier(quantifier);
         context.addConstraint(constraint);
         if (explicitGenerators.value() != null)
@@ -107,6 +109,10 @@ public abstract class CoreTheoryParameterTest {
     }
 
     protected abstract void primeSourceOfRandomness() throws Exception;
+
+    protected final AnnotatedType annotatedType() {
+        return AnnotatedTypes.from(parameterType());
+    }
 
     protected abstract Type parameterType();
 
