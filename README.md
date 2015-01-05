@@ -50,6 +50,10 @@ elements in your POM like so:
     ...
 ```    
 
+### Discussing
+
+There is [a Google group for junit-quickcheck](https://groups.google.com/d/forum/junit-quickcheck).
+
 
 ### Background
 
