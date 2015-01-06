@@ -28,26 +28,22 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfWrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
+    public static final Set<Boolean> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.booleans(randomForParameterGenerator))
             .thenReturn(false).thenReturn(true).thenReturn(false)
             .thenReturn(true).thenReturn(false).thenReturn(true);
         verifyNoMoreInteractions(randomForParameterGenerator);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Set.class).on(Boolean.class);
     }
 
     @Override protected int sampleSize() {

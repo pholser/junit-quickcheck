@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.lang;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.Generating.*;
@@ -36,13 +35,11 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveByteTest extends BasicGeneratorTheoryParameterTest {
+    public static final byte TYPE_BEARER = 0;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))
             .thenReturn((byte) -12).thenReturn((byte) -11).thenReturn((byte) -10);
-    }
-
-    @Override protected Type parameterType() {
-        return byte.class;
     }
 
     @Override protected int sampleSize() {

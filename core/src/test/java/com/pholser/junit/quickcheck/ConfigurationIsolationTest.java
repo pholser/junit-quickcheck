@@ -82,7 +82,7 @@ public class ConfigurationIsolationTest {
     public static class ParametersOfSameParameterizedType {
         static int iterations;
 
-        @Theory public void holds(@ForAll @Same(2) Box<Foo> first, @ForAll @Same(3) Box<Foo> second) {
+        @Theory public void holds(@ForAll Box<@Same(2) Foo> first, @ForAll Box<@Same(3) Foo> second) {
             ++iterations;
 
             assertEquals(2, first.contents().i());
@@ -101,7 +101,7 @@ public class ConfigurationIsolationTest {
     public static class ParametersOfSameParameterizedTypeWithOneConstant {
         static int iterations;
 
-        @Theory public void holds(@ForAll @Same(2) Box<Foo> first, @ForAll Box<Foo> second) {
+        @Theory public void holds(@ForAll Box<@Same(2) Foo> first, @ForAll Box<Foo> second) {
             ++iterations;
 
             assertEquals(2, first.contents().i());
@@ -124,7 +124,7 @@ public class ConfigurationIsolationTest {
     public static class ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant {
         static int iterations;
 
-        @Theory public void holds(@ForAll @Same(2) Box<Foo> first, @ForAll Foo second) {
+        @Theory public void holds(@ForAll Box<@Same(2) Foo> first, @ForAll Foo second) {
             ++iterations;
 
             assertEquals(2, first.contents().i());

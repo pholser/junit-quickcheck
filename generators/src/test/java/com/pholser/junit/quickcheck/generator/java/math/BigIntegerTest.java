@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -36,15 +35,13 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BigIntegerTest extends BasicGeneratorTheoryParameterTest {
+    public static final BigInteger TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(1)).thenReturn(ONE);
         when(randomForParameterGenerator.nextBigInteger(2)).thenReturn(new BigInteger("3"));
         when(randomForParameterGenerator.nextBigInteger(3)).thenReturn(new BigInteger("-7"));
         when(randomForParameterGenerator.nextBigInteger(4)).thenReturn(new BigInteger("12"));
-    }
-
-    @Override protected Type parameterType() {
-        return BigInteger.class;
     }
 
     @Override protected int sampleSize() {

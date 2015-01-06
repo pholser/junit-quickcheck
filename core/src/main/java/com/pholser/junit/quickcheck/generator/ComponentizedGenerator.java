@@ -25,10 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.javaruntype.type.TypeParameter;
@@ -36,8 +35,8 @@ import org.javaruntype.type.TypeParameter;
 import static java.util.Collections.*;
 
 /**
- * Produces values for theory parameters of types that have components that would also need generation, such as arrays,
- * lists, and predicates.
+ * Produces values for theory parameters of types that have parameterizations that would also need generation,
+ * such as collections, maps, and predicates.
  *
  * @param <T> type of theory parameter to apply this generator's values to
  */
@@ -68,13 +67,20 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         return numberOfNeededComponents() == typeParameters.size();
     }
 
-    @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
-        for (Generator<?> each : components)
-            each.configure(configurationsByType);
+    @Override public void configure(AnnotatedType annotatedType) {
+        super.configure(annotatedType);
+
+        List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
+
+        if (annotatedComponentTypes.size() == components.size()) {
+            for (int i = 0; i < components.size(); ++i)
+                components.get(i).configure(annotatedComponentTypes.get(i));
+        }
     }
 
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
+
         for (Generator<?> each : components)
             each.provideRepository(provided);
     }

@@ -67,7 +67,7 @@ public class GenerationContextTest {
     }
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() {
-        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(int.class));
+        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(int.class));
         parameter.addQuantifier(quantifier);
         parameter.addConstraint(constraint);
 

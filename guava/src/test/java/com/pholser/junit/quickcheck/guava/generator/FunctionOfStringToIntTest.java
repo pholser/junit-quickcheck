@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Random;
 
@@ -37,16 +36,13 @@ import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSou
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.google.common.collect.Lists.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static org.junit.Assert.*;
 
 public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
+    public static final Function<String, Integer> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         // nothing to do here
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Function.class).on(String.class, Integer.class);
     }
 
     @Override protected int sampleSize() {

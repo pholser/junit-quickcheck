@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -36,17 +36,11 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ExplicitGeneratorsChosenWithEqualProbabilityTest extends CoreTheoryParameterTest {
+    @From({FooGenerator.class, BarGenerator.class, BazGenerator.class})
+    public static final String TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override protected Class<? extends Generator>[] explicitGenerators() {
-        return new Class[] { FooGenerator.class, BarGenerator.class, BazGenerator.class };
-    }
-
-    @Override protected Type parameterType() {
-        return String.class;
     }
 
     @Override protected int sampleSize() {

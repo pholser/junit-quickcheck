@@ -25,13 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.Precision;
@@ -41,6 +37,9 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BigDecimalWithSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
+    @Precision(scale = 5)
+    public static final BigDecimal TYPE_BEARER = null;
+
     private BigDecimal first;
     private BigDecimal second;
     private BigDecimal third;
@@ -58,22 +57,12 @@ public class BigDecimalWithSpecifiedPrecisionTest extends BasicGeneratorTheoryPa
             .thenReturn(new BigInteger("768"));
     }
 
-    @Override protected Type parameterType() {
-        return BigDecimal.class;
-    }
-
     @Override protected int sampleSize() {
         return 3;
     }
 
     @Override protected List<?> randomValues() {
         return asList(new BigDecimal("-9.99999"), new BigDecimal("-99.99864"), new BigDecimal("-999.99232"));
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        Precision precision = mock(Precision.class);
-        when(precision.scale()).thenReturn(5);
-        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(Precision.class, precision);
     }
 
     @Override public void verifyInteractionWithRandomness() {

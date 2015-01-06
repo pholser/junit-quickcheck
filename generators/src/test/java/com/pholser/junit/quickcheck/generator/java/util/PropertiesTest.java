@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,15 +36,13 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PropertiesTest extends BasicGeneratorTheoryParameterTest {
+    public static final Properties TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.charsForString(randomForParameterGenerator))
             .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64)
             .thenReturn(0x65).thenReturn(0x66).thenReturn(0x67).thenReturn(0x68)
             .thenReturn(0x69).thenReturn(0x6a);
-    }
-
-    @Override protected Type parameterType() {
-        return Properties.class;
     }
 
     @Override protected int sampleSize() {

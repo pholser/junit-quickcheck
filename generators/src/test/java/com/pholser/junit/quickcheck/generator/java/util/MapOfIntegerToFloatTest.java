@@ -28,27 +28,23 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.*;
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class MapOfIntegerToFloatTest extends BasicGeneratorTheoryParameterTest {
+    public static final Map<Integer, Float> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator))
             .thenReturn(1).thenReturn(-2).thenReturn(2);
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.1F).thenReturn(0.2F).thenReturn(0.3F);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Map.class).on(Integer.class, Float.class);
     }
 
     @Override protected int sampleSize() {

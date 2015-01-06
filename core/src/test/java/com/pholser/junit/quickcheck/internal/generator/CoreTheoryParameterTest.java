@@ -25,13 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-
-import com.pholser.junit.quickcheck.AnnotatedTypes;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
@@ -45,8 +38,12 @@ import org.junit.contrib.theories.PotentialAssignment;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Field;
+import java.util.List;
+
 import static com.pholser.junit.quickcheck.Objects.*;
-import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -66,8 +63,6 @@ public abstract class CoreTheoryParameterTest {
         source = generatorSource();
         primeSourceOfRandomness();
         primeSampleSize();
-        primeExplicitGenerators();
-        primeConstraint();
 
         repository = new GeneratorRepository(randomForGeneratorRepo).register(source);
         Iterable<Generator<?>> auxiliarySource = auxiliaryGeneratorSource();
@@ -77,13 +72,8 @@ public abstract class CoreTheoryParameterTest {
         RandomTheoryParameterGenerator generator =
             new RandomTheoryParameterGenerator(randomForParameterGenerator, repository);
 
-        ParameterContext context = new ParameterContext(annotatedType());
+        ParameterContext context = new ParameterContext("arg", annotatedType()).annotate(annotatedElement());
         context.addQuantifier(quantifier);
-        context.addConstraint(constraint);
-        if (explicitGenerators.value() != null)
-            context.addGenerators(explicitGenerators);
-        for (Map.Entry<Class<? extends Annotation>, Annotation> each : configurations().entrySet())
-            context.addConfiguration(each.getKey(), each.getValue());
 
         theoryParameters = generator.generate(context);
     }
@@ -96,39 +86,25 @@ public abstract class CoreTheoryParameterTest {
         when(quantifier.sampleSize()).thenReturn(sampleSize());
     }
 
-    private void primeExplicitGenerators() {
-        when(explicitGenerators.value()).thenReturn(explicitGenerators());
-    }
-
-    private void primeConstraint() {
-        when(constraint.value()).thenReturn(constraintExpression());
-    }
-
     protected Iterable<Generator<?>> auxiliaryGeneratorSource() {
         return null;
     }
 
     protected abstract void primeSourceOfRandomness() throws Exception;
 
-    protected final AnnotatedType annotatedType() {
-        return AnnotatedTypes.from(parameterType());
+    protected final AnnotatedType annotatedType() throws Exception {
+        return typeBearer().getAnnotatedType();
     }
 
-    protected abstract Type parameterType();
+    protected final AnnotatedElement annotatedElement() throws Exception {
+        return typeBearer();
+    }
+
+    private Field typeBearer() throws Exception {
+        return getClass().getField("TYPE_BEARER");
+    }
 
     protected abstract int sampleSize();
-
-    protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        return emptyMap();
-    }
-
-    protected String constraintExpression() {
-        return null;
-    }
-
-    protected Class<? extends Generator>[] explicitGenerators() {
-        return null;
-    }
 
     protected abstract List<?> randomValues();
 

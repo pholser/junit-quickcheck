@@ -30,19 +30,18 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
+    public static final Set<? super Float> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
@@ -55,10 +54,6 @@ public class SetOfSuperFloatTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(floatType))
             .thenReturn(0);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Set.class).on(superOf(Float.class));
     }
 
     @Override protected int sampleSize() {

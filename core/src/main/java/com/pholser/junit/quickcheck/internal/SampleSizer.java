@@ -35,7 +35,7 @@ class SampleSizer {
         org.javaruntype.type.Type<?> parameterType = Types.forJavaLangReflectType(parameter.parameterType());
         Class<?> raw = parameterType.getRawClass();
 
-        if (parameter.configurations().containsKey(ValuesOf.class)) {
+        if (parameter.annotatedWith(ValuesOf.class)) {
             if (boolean.class.equals(raw) || Boolean.class.equals(raw))
                 sampleSize = 2;
             else if (raw.isEnum())

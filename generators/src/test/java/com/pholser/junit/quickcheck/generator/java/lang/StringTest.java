@@ -25,31 +25,24 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.generator.Generator;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
-import static com.pholser.junit.quickcheck.Generating.verifyCharsForString;
+import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class StringTest extends BasicGeneratorTheoryParameterTest {
+    @From(StringGenerator.class)
+    public static final String TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.charsForString(randomForParameterGenerator))
             .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63)
             .thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
-    }
-
-    @Override protected Type parameterType() {
-        return String.class;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override protected Class<? extends Generator>[] explicitGenerators() {
-        return (Class<? extends Generator>[]) new Class<?>[] { StringGenerator.class };
     }
 
     @Override protected int sampleSize() {

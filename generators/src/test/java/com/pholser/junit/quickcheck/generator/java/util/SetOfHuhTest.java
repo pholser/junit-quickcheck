@@ -25,25 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.internal.Zilch;
-import com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl;
 
 import static com.google.common.collect.Sets.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.*;
 
 public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
+    public static final Set<?> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         // nothing to do here
-    }
-
-    @Override protected Type parameterType() {
-        return ParameterizedTypeImpl.parameterized(Set.class).on(huh());
     }
 
     @Override protected int sampleSize() {
@@ -52,7 +46,7 @@ public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet(Zilch.INSTANCE), newHashSet(Zilch.INSTANCE, Zilch.INSTANCE));
+        return asList(newHashSet(), newHashSet(false), newHashSet(false, false));
     }
 
     @Override public void verifyInteractionWithRandomness() {

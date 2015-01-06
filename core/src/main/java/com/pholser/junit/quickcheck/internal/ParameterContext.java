@@ -32,27 +32,24 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import org.javaruntype.type.Types;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class ParameterContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =
-        "The generator %s named in @%s on parameter of type %s does not produce a type-compatible object";
+        "The generator %s named in @%s on parameter %s does not produce a type-compatible object";
 
+    private final String parameterName;
     private final AnnotatedType parameterType;
     private final List<Generator<?>> explicits = new ArrayList<>();
 
@@ -60,9 +57,9 @@ public class ParameterContext {
     private SampleSizer sampleSizer;
     private int discardRatio;
     private String constraint;
-    private Map<Class<? extends Annotation>, Annotation> configurations = new HashMap<>();
 
-    public ParameterContext(AnnotatedType parameterType) {
+    public ParameterContext(String parameterName, AnnotatedType parameterType) {
+        this.parameterName = parameterName;
         this.parameterType = parameterType;
     }
 
@@ -73,9 +70,6 @@ public class ParameterContext {
         From explicitGenerators = element.getAnnotation(From.class);
         if (explicitGenerators != null)
             addGenerators(explicitGenerators);
-
-        // TODO - how can i associate type use annotations with their different usages?
-        addConfigurations(markedAnnotations(asList(element.getAnnotations()), GeneratorConfiguration.class));
 
         return this;
     }
@@ -122,16 +116,6 @@ public class ParameterContext {
         return (Class<?>) parameterType();
     }
 
-    public ParameterContext addConfigurations(List<Annotation> generatorConfigurations) {
-        for (Annotation each : generatorConfigurations)
-            addConfiguration(each.annotationType(), each);
-        return this;
-    }
-
-    public void addConfiguration(Class<? extends Annotation> annotationType, Annotation configuration) {
-        configurations.put(annotationType, configuration);
-    }
-
     private void ensureCorrectType(Generator<?> generator) {
         org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(parameterType());
 
@@ -142,9 +126,13 @@ public class ParameterContext {
                         EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
                         each,
                         From.class.getName(),
-                        parameterType()));
+                        parameterName));
             }
         }
+    }
+
+    public AnnotatedType annotatedParameterType() {
+        return parameterType;
     }
 
     public Type parameterType() {
@@ -170,7 +158,7 @@ public class ParameterContext {
         return unmodifiableList(explicits);
     }
 
-    public Map<Class<? extends Annotation>, Annotation> configurations() {
-        return unmodifiableMap(configurations);
+    public boolean annotatedWith(Class<? extends Annotation> annotationType) {
+        return parameterType.getAnnotation(annotationType) != null;
     }
 }

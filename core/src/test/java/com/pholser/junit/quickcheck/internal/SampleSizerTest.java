@@ -39,8 +39,7 @@ public class SampleSizerTest {
     }
 
     @Test public void primitiveBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(boolean.class));
-        addValuesOf(parameter);
+        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(boolean.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(5, parameter);
 
@@ -48,8 +47,7 @@ public class SampleSizerTest {
     }
 
     @Test public void wrapperBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(Boolean.class));
-        addValuesOf(parameter);
+        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(Boolean.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(6, parameter);
 
@@ -57,8 +55,7 @@ public class SampleSizerTest {
     }
 
     @Test public void enumWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(Ternary.class));
-        addValuesOf(parameter);
+        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(Ternary.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(7, parameter);
 
@@ -66,20 +63,19 @@ public class SampleSizerTest {
     }
 
     @Test public void otherClassesUseConfiguredSampleSize() {
-        ParameterContext parameter = new ParameterContext(AnnotatedTypes.from(String.class));
-        addValuesOf(parameter);
+        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(String.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(8, parameter);
 
         assertEquals(8, sizer.sampleSize());
     }
 
-    private void addValuesOf(ParameterContext parameter) {
-        parameter.addConfiguration(ValuesOf.class, new ValuesOf() {
+    private ValuesOf valuesOf() {
+        return new ValuesOf() {
             @Override
             public Class<? extends Annotation> annotationType() {
                 return ValuesOf.class;
             }
-        });
+        };
     }
 }

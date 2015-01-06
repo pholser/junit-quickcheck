@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -37,6 +36,8 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BigDecimalTest extends BasicGeneratorTheoryParameterTest {
+    public static final BigDecimal TYPE_BEARER = null;
+
     private BigDecimal first;
     private BigDecimal second;
     private BigDecimal third;
@@ -52,10 +53,6 @@ public class BigDecimalTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(new BigInteger("136"));
         when(randomForParameterGenerator.nextBigInteger(third.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("768"));
-    }
-
-    @Override protected Type parameterType() {
-        return BigDecimal.class;
     }
 
     @Override protected int sampleSize() {

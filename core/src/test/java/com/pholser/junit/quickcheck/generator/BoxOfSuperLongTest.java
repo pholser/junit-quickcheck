@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static java.util.Arrays.*;
@@ -36,11 +35,11 @@ import com.pholser.junit.quickcheck.test.generator.Box;
 import org.javaruntype.type.Types;
 
 import static com.google.common.collect.Lists.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
+    public static final Box<? super Long> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextLong()).thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
@@ -52,10 +51,6 @@ public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(longType))
             .thenReturn(0);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Box.class).on(superOf(Long.class));
     }
 
     @Override protected int sampleSize() {

@@ -36,13 +36,11 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveFloatTest extends BasicGeneratorTheoryParameterTest {
+    public static final float TYPE_BEARER = 0;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.7F).thenReturn(0.8F);
-    }
-
-    @Override protected Type parameterType() {
-        return float.class;
     }
 
     @Override protected int sampleSize() {

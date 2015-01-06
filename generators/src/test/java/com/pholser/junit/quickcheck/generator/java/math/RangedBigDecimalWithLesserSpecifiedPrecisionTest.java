@@ -25,14 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
@@ -42,6 +38,10 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedBigDecimalWithLesserSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
+    @InRange(min = "-12345678123456781234567812345.678", max = "9876543219876543.21")
+    @Precision(scale = 2)
+    public static final BigDecimal TYPE_BEARER = null;
+
     private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;
@@ -56,32 +56,16 @@ public class RangedBigDecimalWithLesserSpecifiedPrecisionTest extends BasicGener
             .thenReturn(new BigInteger("234234234234"));
     }
 
-    @Override protected Type parameterType() {
-        return BigDecimal.class;
-    }
-
     @Override protected int sampleSize() {
         return 4;
     }
 
     @Override protected List<?> randomValues() {
         return asList(
-            new BigDecimal("-12345678123456781234567812345.677"),
-            new BigDecimal("-12345678123456781234567812345.668"),
-            min,
-            new BigDecimal("-12345678123456781234333578111.444"));
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InRange range = mock(InRange.class);
-        when(range.min()).thenReturn(min.toString());
-        when(range.max()).thenReturn(max.toString());
-        Precision precision = mock(Precision.class);
-        when(precision.scale()).thenReturn(2);
-        return ImmutableMap.<Class<? extends Annotation>, Annotation> builder()
-            .put(InRange.class, range)
-            .put(Precision.class, precision)
-            .build();
+                new BigDecimal("-12345678123456781234567812345.677"),
+                new BigDecimal("-12345678123456781234567812345.668"),
+                min,
+                new BigDecimal("-12345678123456781234333578111.444"));
     }
 
     @Override public void verifyInteractionWithRandomness() {

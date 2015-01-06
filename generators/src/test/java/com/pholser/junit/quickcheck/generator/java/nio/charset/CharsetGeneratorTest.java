@@ -28,10 +28,8 @@ package com.pholser.junit.quickcheck.generator.java.nio.charset;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.TimeZone;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.pholser.junit.quickcheck.Generating.*;
@@ -39,6 +37,8 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class CharsetGeneratorTest extends BasicGeneratorTheoryParameterTest {
+    public static final Charset TYPE_BEARER = null;
+
     private static final List<String> CHARSET_NAMES = newArrayList(Charset.availableCharsets().keySet());
 
     @Override protected void primeSourceOfRandomness() {
@@ -46,16 +46,14 @@ public class CharsetGeneratorTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(2).thenReturn(0).thenReturn(1);
     }
 
-    @Override protected Type parameterType() {
-        return Charset.class;
-    }
-
     @Override protected int sampleSize() {
         return 3;
     }
 
     @Override protected List<?> randomValues() {
-        return asList(Charset.forName(CHARSET_NAMES.get(2)), Charset.forName(CHARSET_NAMES.get(0)),
+        return asList(
+            Charset.forName(CHARSET_NAMES.get(2)),
+            Charset.forName(CHARSET_NAMES.get(0)),
             Charset.forName(CHARSET_NAMES.get(1)));
     }
 

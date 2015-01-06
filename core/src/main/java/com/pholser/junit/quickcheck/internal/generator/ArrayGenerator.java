@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Array;
-import java.util.Map;
+import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -52,12 +52,17 @@ public class ArrayGenerator extends Generator<Object> {
         return array;
     }
 
-    @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
-        component.configure(configurationsByType);
+    @Override public void configure(AnnotatedType annotatedType) {
+        super.configure(annotatedType);
+
+        List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
+        if (!annotatedComponentTypes.isEmpty())
+            component.configure(annotatedComponentTypes.get(0));
     }
 
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
+
         component.provideRepository(provided);
     }
 

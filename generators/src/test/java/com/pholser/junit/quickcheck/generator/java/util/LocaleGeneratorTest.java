@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,15 +36,13 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class LocaleGeneratorTest extends BasicGeneratorTheoryParameterTest {
+    public static final Locale TYPE_BEARER = null;
+
     private static final Locale[] LOCALES = Locale.getAvailableLocales();
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, 0, LOCALES.length - 1))
             .thenReturn(1).thenReturn(0).thenReturn(2);
-    }
-
-    @Override protected Type parameterType() {
-        return Locale.class;
     }
 
     @Override protected int sampleSize() {

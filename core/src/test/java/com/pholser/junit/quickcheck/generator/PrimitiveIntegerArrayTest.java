@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
@@ -34,12 +33,10 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class PrimitiveIntegerArrayTest extends CoreTheoryParameterTest {
+    public static final int[] TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt()).thenReturn(-1).thenReturn(-2).thenReturn(2);
-    }
-
-    @Override protected Type parameterType() {
-        return int[].class;
     }
 
     @Override protected int sampleSize() {

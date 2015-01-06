@@ -28,17 +28,17 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
+    public static final Set<Ternary> TYPE_BEARER = null;
+
     enum Ternary {
         YES, NO, MAYBE
     }
@@ -47,10 +47,6 @@ public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
         when(Generating.ints(randomForParameterGenerator, 0, 2))
             .thenReturn(0).thenReturn(1).thenReturn(2)
             .thenReturn(0).thenReturn(1).thenReturn(2);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Set.class).on(Ternary.class);
     }
 
     @Override protected int sampleSize() {

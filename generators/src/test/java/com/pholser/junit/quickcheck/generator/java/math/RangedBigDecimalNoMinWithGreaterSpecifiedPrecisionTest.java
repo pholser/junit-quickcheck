@@ -25,24 +25,23 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
+    @InRange(max = "987654321987654321.09876")
+    @Precision(scale = 8)
+    public static final BigDecimal TYPE_BEARER = null;
+
     private final BigDecimal max = new BigDecimal("987654321987654321.09876");
     private final BigInteger maxBigInt = max.movePointRight(8).toBigInteger();
 
@@ -55,28 +54,12 @@ public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest extends Basi
             .thenReturn(new BigInteger("35"));
     }
 
-    @Override protected Type parameterType() {
-        return BigDecimal.class;
-    }
-
     @Override protected int sampleSize() {
         return 2;
     }
 
     @Override protected List<?> randomValues() {
         return asList(new BigDecimal("987654321987654311.09876006"), new BigDecimal("987654321987654221.09876035"));
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InRange range = mock(InRange.class);
-        when(range.min()).thenReturn((String) defaultValueOf(InRange.class, "min"));
-        when(range.max()).thenReturn(max.toString());
-        Precision precision = mock(Precision.class);
-        when(precision.scale()).thenReturn(8);
-        return ImmutableMap.<Class<? extends Annotation>, Annotation> builder()
-            .put(InRange.class, range)
-            .put(Precision.class, precision)
-            .build();
     }
 
     @Override public void verifyInteractionWithRandomness() {

@@ -29,24 +29,19 @@ import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
+    @InRange(minInt = -4, maxInt = 5)
+    public static final int TYPE_BEARER = 0;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, -4, 5))
             .thenReturn(-2).thenReturn(3);
-    }
-
-    @Override protected Type parameterType() {
-        return int.class;
     }
 
     @Override protected int sampleSize() {
@@ -55,13 +50,6 @@ public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTes
 
     @Override protected List<?> randomValues() {
         return asList(-2, 3);
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InRange range = mock(InRange.class);
-        when(range.minInt()).thenReturn(-4);
-        when(range.maxInt()).thenReturn(5);
-        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override public void verifyInteractionWithRandomness() {

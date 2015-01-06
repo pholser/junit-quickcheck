@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
@@ -34,15 +33,13 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ThreeDCharArrayTest extends CoreTheoryParameterTest {
+    public static final char[][][] TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt())
             .thenReturn((int) 'a').thenReturn((int) 'b').thenReturn((int) 'c').thenReturn((int) 'd')
             .thenReturn((int) 'e').thenReturn((int) 'f').thenReturn((int) 'g').thenReturn((int) 'h')
             .thenReturn((int) 'i');
-    }
-
-    @Override protected Type parameterType() {
-        return char[][][].class;
     }
 
     @Override protected int sampleSize() {

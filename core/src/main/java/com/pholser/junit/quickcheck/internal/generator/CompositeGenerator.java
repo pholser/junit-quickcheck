@@ -25,10 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -59,13 +58,14 @@ public class CompositeGenerator extends Generator<Object> {
         return components.size();
     }
 
-    @Override public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
+    @Override public void configure(AnnotatedType annotatedType) {
         for (Generator<?> each : components)
-            each.configure(configurationsByType);
+            each.configure(annotatedType);
     }
 
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
+
         for (Generator<?> each : components)
             each.provideRepository(provided);
     }

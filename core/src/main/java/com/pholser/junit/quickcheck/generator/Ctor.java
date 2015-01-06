@@ -77,7 +77,8 @@ public class Ctor<T> extends Generator<T> {
 
         for (int i = 0; i < args.length; ++i) {
             ParameterContext parameter =
-                new ParameterContext(parameters[i].getAnnotatedType()).annotate(parameters[i]);
+                new ParameterContext(parameters[i].getName(), parameters[i].getAnnotatedType())
+                    .annotate(parameters[i]);
             args[i] = generatorFor(parameter).generate(random, status);
         }
 

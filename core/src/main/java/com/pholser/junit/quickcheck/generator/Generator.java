@@ -26,8 +26,15 @@
 package com.pholser.junit.quickcheck.generator;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedArrayType;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -166,6 +173,17 @@ public abstract class Generator<T> {
         return parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
     }
 
+    public void configure(AnnotatedType annotatedType) {
+        List<Annotation> configs =
+            markedAnnotations(Arrays.asList(annotatedType.getAnnotations()), GeneratorConfiguration.class);
+
+        Map<Class<? extends Annotation>, Annotation> configurationsByType = new HashMap<>();
+        for (Annotation each : configs)
+            configurationsByType.put(each.annotationType(), each);
+
+        configure(configurationsByType);
+    }
+
     /**
      * <p>Tells this generator to configure itself using annotations from a theory parameter.</p>
      *
@@ -184,7 +202,7 @@ public abstract class Generator<T> {
      *
      * @param configurationsByType a map of configuration annotations, keyed by annotation type
      */
-    public void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
+    private void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
         for (Map.Entry<Class<? extends Annotation>, Annotation> each : configurationsByType.entrySet())
             configure(each.getKey(), each.getValue());
     }
@@ -199,6 +217,24 @@ public abstract class Generator<T> {
         }
 
         invoke(configurer, this, configuration);
+    }
+
+    protected final List<AnnotatedType> annotatedComponentTypes(AnnotatedType annotatedType) {
+        if (annotatedType instanceof AnnotatedParameterizedType)
+            return Arrays.asList(((AnnotatedParameterizedType) annotatedType).getAnnotatedActualTypeArguments());
+
+        if (annotatedType instanceof AnnotatedArrayType)
+            return Arrays.asList(((AnnotatedArrayType) annotatedType).getAnnotatedGenericComponentType());
+
+        if (annotatedType instanceof AnnotatedWildcardType) {
+            AnnotatedWildcardType wildcard = (AnnotatedWildcardType) annotatedType;
+            if (wildcard.getAnnotatedLowerBounds().length > 0)
+                return Arrays.asList(wildcard.getAnnotatedLowerBounds());
+
+            return Arrays.asList(wildcard.getAnnotatedUpperBounds());
+        }
+
+        return Collections.emptyList();
     }
 
     public void provideRepository(GeneratorRepository provided) {

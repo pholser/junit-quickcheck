@@ -25,12 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -40,6 +36,9 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedBigIntegerTest extends BasicGeneratorTheoryParameterTest {
+    @InRange(min = "-12345678123456781234567812345678", max = "987654321987654321")
+    public static final BigInteger TYPE_BEARER = null;
+
     private final BigInteger min = new BigInteger("-12345678123456781234567812345678");
     private final BigInteger max = new BigInteger("987654321987654321");
 
@@ -53,23 +52,12 @@ public class RangedBigIntegerTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(new BigInteger("234234234234"));
     }
 
-    @Override protected Type parameterType() {
-        return BigInteger.class;
-    }
-
     @Override protected int sampleSize() {
         return 4;
     }
 
     @Override protected List<?> randomValues() {
         return asList(min.add(ONE), min.add(TEN), min.add(ZERO), min.add(new BigInteger("234234234234")));
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InRange range = mock(InRange.class);
-        when(range.min()).thenReturn(min.toString());
-        when(range.max()).thenReturn(max.toString());
-        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override public void verifyInteractionWithRandomness() {

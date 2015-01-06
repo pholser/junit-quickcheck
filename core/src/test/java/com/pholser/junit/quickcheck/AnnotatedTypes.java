@@ -9,21 +9,25 @@ public class AnnotatedTypes {
         throw new UnsupportedOperationException();
     }
 
-    public static AnnotatedType from(Type type) {
+    public static AnnotatedType from(Type type, Annotation... annotations) {
         return new AnnotatedType() {
             @Override
             public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+                for (Annotation each : annotations) {
+                    if (annotationClass.isAssignableFrom(each.getClass()))
+                        return annotationClass.cast(each);
+                }
                 return null;
             }
 
             @Override
             public Annotation[] getAnnotations() {
-                return new Annotation[0];
+                return annotations;
             }
 
             @Override
             public Annotation[] getDeclaredAnnotations() {
-                return new Annotation[0];
+                return annotations;
             }
 
             @Override

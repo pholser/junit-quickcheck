@@ -29,19 +29,18 @@ import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
+    @InRange(min = "1/1/500", max = "12/31/2020", format = "MM/dd/yyyy")
+    public static final Date TYPE_BEARER = null;
+
     private final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
     private Date first;
     private Date second;
@@ -61,24 +60,12 @@ public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(third.getTime());
     }
 
-    @Override protected Type parameterType() {
-        return Date.class;
-    }
-
     @Override protected int sampleSize() {
         return 3;
     }
 
     @Override protected List<?> randomValues() {
         return asList(new Date(first.getTime()), new Date(second.getTime()), new Date(third.getTime()));
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InRange range = mock(InRange.class);
-        when(range.min()).thenReturn("1/1/500");
-        when(range.max()).thenReturn("12/31/2020");
-        when(range.format()).thenReturn("MM/dd/yyyy");
-        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override public void verifyInteractionWithRandomness() {

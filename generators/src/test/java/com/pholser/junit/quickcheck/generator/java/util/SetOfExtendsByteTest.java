@@ -28,27 +28,22 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
+    public static final Set<? extends Byte> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(0);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(Set.class).on(extendsOf(Byte.class));
     }
 
     @Override protected int sampleSize() {

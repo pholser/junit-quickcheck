@@ -30,19 +30,17 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
+    public static final List<? super Long> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, 0, 100))
             .thenReturn(2).thenReturn(1);
@@ -57,10 +55,6 @@ public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(longType))
             .thenReturn(0);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(List.class).on(superOf(Long.class));
     }
 
     @Override protected int sampleSize() {

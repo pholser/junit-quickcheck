@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.lang;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.Generating.*;
@@ -36,13 +35,11 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperFloatTest extends BasicGeneratorTheoryParameterTest {
+    public static final Float TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.06F).thenReturn(0.05F).thenReturn(0.044F);
-    }
-
-    @Override protected Type parameterType() {
-        return Float.class;
     }
 
     @Override protected int sampleSize() {

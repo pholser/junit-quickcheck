@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
@@ -37,13 +36,11 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class DateTest extends BasicGeneratorTheoryParameterTest {
+    public static final Date TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.longs(randomForParameterGenerator, Integer.MIN_VALUE, Long.MAX_VALUE))
             .thenReturn(0L).thenReturn(60000L).thenReturn(100000000L).thenReturn(300000000000L);
-    }
-
-    @Override protected Type parameterType() {
-        return Date.class;
     }
 
     @Override protected int sampleSize() {

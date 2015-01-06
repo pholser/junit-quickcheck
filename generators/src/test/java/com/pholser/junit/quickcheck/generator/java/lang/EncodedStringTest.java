@@ -25,15 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
-import com.pholser.junit.quickcheck.generator.Generator;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static com.pholser.junit.quickcheck.Generating.*;
 import static com.pholser.junit.quickcheck.generator.java.lang.Encoded.*;
@@ -41,25 +37,14 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class EncodedStringTest extends BasicGeneratorTheoryParameterTest {
+    @From(Encoded.class)
+    @InCharset("US-ASCII")
+    public static final String TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, 0, 127))
             .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63)
             .thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
-    }
-
-    @Override protected Type parameterType() {
-        return String.class;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override protected Class<? extends Generator>[] explicitGenerators() {
-        return (Class<? extends Generator>[]) new Class<?>[] { Encoded.class };
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InCharset charset = mock(InCharset.class);
-        when(charset.value()).thenReturn("US-ASCII");
-        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InCharset.class, charset);
     }
 
     @Override protected int sampleSize() {

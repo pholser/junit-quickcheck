@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class CompositeGeneratorsPassConfigurationOnToComponentsTest {
+public class ComponentizedGeneratorsDoNotPassConfigurationOnToComponentsTest {
     @Test public void boxOfFoo() throws Exception {
         assertThat(testResult(BoxOfFoo.class), isSuccessful());
         assertEquals(defaultSampleSize(), BoxOfFoo.iterations);
@@ -51,24 +51,7 @@ public class CompositeGeneratorsPassConfigurationOnToComponentsTest {
         @Theory public void holds(@ForAll @Same(5) Box<Foo> b) {
             ++iterations;
 
-            assertEquals(5, b.contents().i());
-        }
-    }
-
-    @Test public void arrayOfFoo() throws Exception {
-        assertThat(testResult(ArrayOfFoo.class), isSuccessful());
-        assertEquals(defaultSampleSize(), ArrayOfFoo.iterations);
-    }
-
-    @RunWith(Theories.class)
-    public static class ArrayOfFoo {
-        static int iterations;
-
-        @Theory public void holds(@ForAll @Same(6) Foo[] f) {
-            ++iterations;
-
-            for (Foo each : f)
-                assertEquals(6, each.i());
+            assertNotEquals(5, b.contents().i());
         }
     }
 }

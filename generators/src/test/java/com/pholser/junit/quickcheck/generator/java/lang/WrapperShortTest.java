@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.lang;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.Generating.*;
@@ -36,15 +35,13 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class WrapperShortTest extends BasicGeneratorTheoryParameterTest {
+    public static final Short TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.shorts(randomForParameterGenerator))
             .thenReturn((short) -9).thenReturn((short) -8)
             .thenReturn((short) -7).thenReturn((short) -6)
             .thenReturn((short) -5);
-    }
-
-    @Override protected Type parameterType() {
-        return Short.class;
     }
 
     @Override protected int sampleSize() {

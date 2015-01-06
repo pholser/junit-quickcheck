@@ -109,7 +109,7 @@ public class GeneratorRepository {
         } else
             generator = generatorFor(parameter.parameterType());
 
-        generator.configure(parameter.configurations());
+        generator.configure(parameter.annotatedParameterType());
         generator.provideRepository(this);
         return generator;
     }

@@ -28,23 +28,19 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.Generating.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
 public class ListOfWrapperLongTest extends BasicGeneratorTheoryParameterTest {
+    public static final List<Long> TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.longs(randomForParameterGenerator))
             .thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
-    }
-
-    @Override protected Type parameterType() {
-        return parameterized(List.class).on(Long.class);
     }
 
     @Override protected int sampleSize() {

@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
-import java.lang.reflect.Type;
 import java.util.BitSet;
 import java.util.List;
 
@@ -37,13 +36,11 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BitSetTest extends BasicGeneratorTheoryParameterTest {
+    public static final BitSet TYPE_BEARER = null;
+
     @Override protected void primeSourceOfRandomness() {
         when(Generating.booleans(randomForParameterGenerator))
             .thenReturn(true).thenReturn(false).thenReturn(true);
-    }
-
-    @Override protected Type parameterType() {
-        return BitSet.class;
     }
 
     @Override protected int sampleSize() {

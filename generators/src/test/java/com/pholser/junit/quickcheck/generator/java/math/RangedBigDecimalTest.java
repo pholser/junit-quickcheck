@@ -25,13 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -41,6 +37,9 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedBigDecimalTest extends BasicGeneratorTheoryParameterTest {
+    @InRange(min = "-12345678123456781234567812345.678", max = "9876543219876543.21")
+    public static final BigDecimal TYPE_BEARER = null;
+
     private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;
@@ -55,10 +54,6 @@ public class RangedBigDecimalTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(new BigInteger("234234234234"));
     }
 
-    @Override protected Type parameterType() {
-        return BigDecimal.class;
-    }
-
     @Override protected int sampleSize() {
         return 4;
     }
@@ -69,13 +64,6 @@ public class RangedBigDecimalTest extends BasicGeneratorTheoryParameterTest {
             new BigDecimal("-12345678123456781234567812345.668"),
             min,
             new BigDecimal("-12345678123456781234333578111.444"));
-    }
-
-    @Override protected Map<Class<? extends Annotation>, Annotation> configurations() {
-        InRange range = mock(InRange.class);
-        when(range.min()).thenReturn(min.toString());
-        when(range.max()).thenReturn(max.toString());
-        return Collections.<Class<? extends Annotation>, Annotation> singletonMap(InRange.class, range);
     }
 
     @Override public void verifyInteractionWithRandomness() {
