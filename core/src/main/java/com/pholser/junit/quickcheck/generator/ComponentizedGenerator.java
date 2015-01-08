@@ -67,6 +67,13 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         return numberOfNeededComponents() == typeParameters.size();
     }
 
+    @Override public void provideRepository(GeneratorRepository provided) {
+        super.provideRepository(provided);
+
+        for (Generator<?> each : components)
+            each.provideRepository(provided);
+    }
+
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
@@ -76,12 +83,5 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
             for (int i = 0; i < components.size(); ++i)
                 components.get(i).configure(annotatedComponentTypes.get(i));
         }
-    }
-
-    @Override public void provideRepository(GeneratorRepository provided) {
-        super.provideRepository(provided);
-
-        for (Generator<?> each : components)
-            each.provideRepository(provided);
     }
 }

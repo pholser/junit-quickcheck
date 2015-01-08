@@ -27,13 +27,23 @@ package com.pholser.junit.quickcheck.test.generator;
 
 public class Foo {
     private final int i;
+    private final boolean marked;
 
     public Foo(int i) {
+        this(i, false);
+    }
+
+    public Foo(int i, boolean marked) {
         this.i = i;
+        this.marked = marked;
     }
 
     public int i() {
         return i;
+    }
+
+    public boolean marked() {
+        return marked;
     }
 
     @Override public int hashCode() {

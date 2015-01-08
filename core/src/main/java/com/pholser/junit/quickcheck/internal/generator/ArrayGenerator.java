@@ -52,18 +52,18 @@ public class ArrayGenerator extends Generator<Object> {
         return array;
     }
 
+    @Override public void provideRepository(GeneratorRepository provided) {
+        super.provideRepository(provided);
+
+        component.provideRepository(provided);
+    }
+
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
         List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
         if (!annotatedComponentTypes.isEmpty())
             component.configure(annotatedComponentTypes.get(0));
-    }
-
-    @Override public void provideRepository(GeneratorRepository provided) {
-        super.provideRepository(provided);
-
-        component.provideRepository(provided);
     }
 
     public Generator<?> componentGenerator() {

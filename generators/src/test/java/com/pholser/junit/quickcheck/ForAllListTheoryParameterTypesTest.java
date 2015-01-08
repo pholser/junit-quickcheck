@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.generator.InRange;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -33,6 +34,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.Classes.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -112,6 +114,22 @@ public class ForAllListTheoryParameterTypesTest {
             for (List<Integer> each : items) {
                 for (Integer i : each) {
                     // ensuring the cast works
+                }
+            }
+        }
+    }
+
+    @Test public void listOfRangedInteger() {
+        assertThat(testResult(ListOfListOfRangedInteger.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfListOfRangedInteger {
+        @Theory public void shouldHold(@ForAll List<List<@InRange(minInt = 0, maxInt = 9) Integer>> items) {
+            for (List<Integer> each : items) {
+                for (Integer i : each) {
+                    assertThat(i, greaterThanOrEqualTo(0));
+                    assertThat(i, lessThanOrEqualTo(9));
                 }
             }
         }

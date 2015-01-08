@@ -23,30 +23,31 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.test.generator;
 
-import com.pholser.junit.quickcheck.test.generator.Box;
-import com.pholser.junit.quickcheck.test.generator.Foo;
-import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
-import org.junit.runner.RunWith;
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
+public class PairGenerator extends ComponentizedGenerator<Pair> {
+    private Mark mark;
 
-public class MarkingTypeParametersWithConfigurationTest {
-    @Test public void genericParameterConfigured() throws Exception {
-        assertThat(testResult(GenericParameterConfigured.class), isSuccessful());
+    public PairGenerator() {
+        super(Pair.class);
     }
 
-    @RunWith(Theories.class)
-    public static class GenericParameterConfigured {
-        @Theory public void holds(@ForAll Box<@Same(-1) Foo> box) {
-            assertEquals(-1, box.contents().i());
-        }
+    @Override public Pair<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
+        return new Pair<>(
+            componentGenerators().get(0).generate(random, status),
+            componentGenerators().get(1).generate(random, status),
+            mark != null);
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 2;
+    }
+
+    public void configure(Mark mark) {
+        this.mark = mark;
     }
 }

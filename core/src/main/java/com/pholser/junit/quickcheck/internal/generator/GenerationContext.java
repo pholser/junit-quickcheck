@@ -35,6 +35,7 @@ public class GenerationContext implements GenerationStatus {
     private final ParameterContext parameter;
     private final GeneratorRepository repository;
     private final ConstraintEvaluator evaluator;
+    private Generator<?> generator;
     private int successfulEvaluations;
     private int discards;
 
@@ -61,7 +62,11 @@ public class GenerationContext implements GenerationStatus {
     }
 
     private Generator<?> decideGenerator() {
-        return repository.generatorFor(parameter);
+        if (generator == null) {
+            generator = repository.generatorFor(parameter);
+        }
+
+        return generator;
     }
 
     private boolean evaluate(Object value) {

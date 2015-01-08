@@ -25,28 +25,46 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Objects;
 
-public class BoxGenerator extends ComponentizedGenerator<Box> {
-    private Mark mark;
+public final class Pair<F, S> {
+    private final F first;
+    private final S second;
+    private final boolean marked;
 
-    public BoxGenerator() {
-        super(Box.class);
+    public Pair(F first, S second, boolean marked) {
+        this.first = first;
+        this.second = second;
+        this.marked = marked;
     }
 
-    @Override public Box<?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Box<>(
-            componentGenerators().get(0).generate(random, status),
-            mark != null);
+    public F first() {
+        return first;
     }
 
-    @Override public int numberOfNeededComponents() {
-        return 1;
+    public S second() {
+        return second;
     }
 
-    public void configure(Mark mark) {
-        this.mark = mark;
+    public boolean marked() {
+        return marked;
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(first, second);
+    }
+
+    @Override public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (o == null || !getClass().equals(o.getClass()))
+            return false;
+
+        Pair<?, ?> other = (Pair<?, ?>) o;
+        return Objects.equals(first, other.first) && Objects.equals(second, other.second);
+    }
+
+    @Override public String toString() {
+        return String.format("(%s, %s)", first, second);
     }
 }

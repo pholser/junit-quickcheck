@@ -29,13 +29,23 @@ import com.google.common.base.Objects;
 
 public class Box<T> {
     private final T contents;
+    private final boolean marked;
 
     public Box(T contents) {
+        this(contents, false);
+    }
+
+    public Box(T contents, boolean marked) {
         this.contents = contents;
+        this.marked = marked;
     }
 
     public T contents() {
         return contents;
+    }
+
+    public boolean marked() {
+        return marked;
     }
 
     @Override public int hashCode() {

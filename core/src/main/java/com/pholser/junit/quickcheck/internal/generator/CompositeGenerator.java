@@ -58,15 +58,15 @@ public class CompositeGenerator extends Generator<Object> {
         return components.size();
     }
 
-    @Override public void configure(AnnotatedType annotatedType) {
-        for (Generator<?> each : components)
-            each.configure(annotatedType);
-    }
-
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
 
         for (Generator<?> each : components)
             each.provideRepository(provided);
+    }
+
+    @Override public void configure(AnnotatedType annotatedType) {
+        for (Generator<?> each : components)
+            each.configure(annotatedType);
     }
 }

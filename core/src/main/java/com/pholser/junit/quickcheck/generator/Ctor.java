@@ -25,10 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -46,42 +50,52 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * @param <T> the type of objects generated
  */
 public class Ctor<T> extends Generator<T> {
+    private final Constructor<T> single;
+    private final Parameter[] parameters;
+    private final List<Generator<?>> parameterGenerators = new ArrayList<>();
+
     /**
      * @param type the type of objects to be generated
      */
     public Ctor(Class<T> type) {
         super(type);
+
+        this.single = singleAccessibleConstructor(type);
+        this.parameters = single.getParameters();
     }
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        Constructor<T> single = singleAccessibleConstructor(types().get(0));
-
-        Object[] args = arguments(
-            single.getParameters(),
-            random,
-            status);
-
-        return instantiate(single, args);
+        return instantiate(single, arguments(random, status));
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {
         return false;
     }
 
-    private Object[] arguments(
-        Parameter[] parameters,
-        SourceOfRandomness random,
-        GenerationStatus status) {
-
+    private Object[] arguments(SourceOfRandomness random, GenerationStatus status) {
         Object[] args = new Object[parameters.length];
 
-        for (int i = 0; i < args.length; ++i) {
-            ParameterContext parameter =
-                new ParameterContext(parameters[i].getName(), parameters[i].getAnnotatedType())
-                    .annotate(parameters[i]);
-            args[i] = generatorFor(parameter).generate(random, status);
-        }
+        for (int i = 0; i < args.length; ++i)
+            args[i] = parameterGenerators.get(i).generate(random, status);
 
         return args;
+    }
+
+    @Override public void provideRepository(GeneratorRepository provided) {
+        super.provideRepository(provided);
+
+        parameterGenerators.clear();
+        for (Parameter each : parameters) {
+            parameterGenerators.add(generatorFor(
+                new ParameterContext(each.getName(), each.getAnnotatedType())
+                    .annotate(each)));
+        }
+    }
+
+    @Override public void configure(AnnotatedType annotatedType) {
+        super.configure(annotatedType);
+
+        for (int i = 0; i < parameters.length; ++i)
+            parameterGenerators.get(i).configure(parameters[i].getAnnotatedType());
     }
 }

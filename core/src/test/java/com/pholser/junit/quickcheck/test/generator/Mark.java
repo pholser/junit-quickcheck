@@ -23,25 +23,18 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.test.generator;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 
-class Arrays {
-    private Arrays() {
-        throw new UnsupportedOperationException();
-    }
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-    static List<?> toList(Object array) {
-        int length = Array.getLength(array);
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
-        List<Object> items = new ArrayList<>();
-        for (int i = 0; i < length; ++i) {
-            items.add(Array.get(array, i));
-        }
-
-        return items;
-    }
+@Target({ PARAMETER, FIELD, TYPE_USE })
+@Retention(RUNTIME)
+@GeneratorConfiguration
+public @interface Mark {
 }

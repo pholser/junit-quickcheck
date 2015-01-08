@@ -109,8 +109,9 @@ public class GeneratorRepository {
         } else
             generator = generatorFor(parameter.parameterType());
 
-        generator.configure(parameter.annotatedParameterType());
         generator.provideRepository(this);
+        generator.configure(parameter.annotatedParameterType());
+
         return generator;
     }
 
@@ -237,7 +238,7 @@ public class GeneratorRepository {
 
         List<Generator<?>> copies = new ArrayList<>();
         for (Generator<?> each : matches)
-            copies.add(each.hasComponents() ? copyOf(each) : each);
+            copies.add(copyOf(each));
         return copies;
     }
 

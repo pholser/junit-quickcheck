@@ -173,22 +173,10 @@ public abstract class Generator<T> {
         return parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
     }
 
-    public void configure(AnnotatedType annotatedType) {
-        List<Annotation> configs =
-            markedAnnotations(Arrays.asList(annotatedType.getAnnotations()), GeneratorConfiguration.class);
-
-        Map<Class<? extends Annotation>, Annotation> configurationsByType = new HashMap<>();
-        for (Annotation each : configs)
-            configurationsByType.put(each.annotationType(), each);
-
-        configure(configurationsByType);
-    }
-
     /**
-     * <p>Tells this generator to configure itself using annotations from a theory parameter.</p>
+     * <p>Tells this generator to configure itself using annotations from a given annotated type.</p>
      *
-     * <p>The annotations fed to this method will be those annotations on the theory parameter that are themselves
-     * marked with {@link GeneratorConfiguration}.</p>
+     * <p>This method considers only annotations that are themselves marked with {@link GeneratorConfiguration}.</p>
      *
      * <p>By default, the generator will configure itself by:</p>
      * <ul>
@@ -200,10 +188,21 @@ public abstract class Generator<T> {
      *     </ul>
      * </ul>
      *
-     * @param configurationsByType a map of configuration annotations, keyed by annotation type
+     * @param annotatedType a type usage
      */
-    private void configure(Map<Class<? extends Annotation>, Annotation> configurationsByType) {
-        for (Map.Entry<Class<? extends Annotation>, Annotation> each : configurationsByType.entrySet())
+    public void configure(AnnotatedType annotatedType) {
+        List<Annotation> configs =
+            markedAnnotations(Arrays.asList(annotatedType.getAnnotations()), GeneratorConfiguration.class);
+
+        Map<Class<? extends Annotation>, Annotation> byType = new HashMap<>();
+        for (Annotation each : configs)
+            byType.put(each.annotationType(), each);
+
+        configure(byType);
+    }
+
+    private void configure(Map<Class<? extends Annotation>, Annotation> byType) {
+        for (Map.Entry<Class<? extends Annotation>, Annotation> each : byType.entrySet())
             configure(each.getKey(), each.getValue());
     }
 
@@ -241,7 +240,7 @@ public abstract class Generator<T> {
         repo = provided;
     }
 
-    public Generator<?> generatorFor(ParameterContext parameter) {
+    Generator<?> generatorFor(ParameterContext parameter) {
         return repo.generatorFor(parameter);
     }
 }

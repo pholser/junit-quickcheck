@@ -25,9 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -49,11 +53,18 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * @param <T> the type of objects generated
  */
 public class Fields<T> extends Generator<T> {
+    private final List<Field> fields;
+    private final List<Generator<?>> fieldGenerators = new ArrayList<>();
+
     /**
      * @param type the type of objects to be generated
      */
     public Fields(Class<T> type) {
         super(type);
+
+        this.fields = allDeclaredFieldsOf(type);
+
+        instantiate(type);
     }
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
@@ -72,5 +83,23 @@ public class Fields<T> extends Generator<T> {
 
     @Override public boolean canRegisterAsType(Class<?> type) {
         return false;
+    }
+
+    @Override public void provideRepository(GeneratorRepository provided) {
+        super.provideRepository(provided);
+
+        fieldGenerators.clear();
+        for (Field each : fields) {
+            fieldGenerators.add(generatorFor(
+                    new ParameterContext(each.getName(), each.getAnnotatedType())
+                            .annotate(each)));
+        }
+    }
+
+    @Override public void configure(AnnotatedType annotatedType) {
+        super.configure(annotatedType);
+
+        for (int i = 0; i < fields.size(); ++i)
+            fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());
     }
 }

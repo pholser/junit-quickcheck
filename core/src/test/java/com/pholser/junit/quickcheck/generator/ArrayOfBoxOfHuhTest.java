@@ -58,7 +58,7 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong();
         verifyNoMoreInteractions(randomForParameterGenerator);
-        verify(randomForGeneratorRepo, times(3)).nextInt(0, Iterables.size(source) - 1);
+        verify(randomForGeneratorRepo).nextInt(0, Iterables.size(source) - 1);
         verifyNoMoreInteractions(randomForGeneratorRepo);
     }
 }

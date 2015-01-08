@@ -25,8 +25,11 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.hamcrest.BaseMatcher;
@@ -78,7 +81,7 @@ public class Objects {
             return linearDeepEquals((Object[]) first, (Object[]) second);
 
         if (first.getClass().isArray() && second.getClass().isArray())
-            return Arrays.toList(first).equals(Arrays.toList(second));
+            return toList(first).equals(toList(second));
 
         return first.equals(second);
     }
@@ -129,5 +132,16 @@ public class Objects {
         }
 
         return true;
+    }
+
+    static List<?> toList(Object array) {
+        int length = Array.getLength(array);
+
+        List<Object> items = new ArrayList<>();
+        for (int i = 0; i < length; ++i) {
+            items.add(Array.get(array, i));
+        }
+
+        return items;
     }
 }

@@ -26,20 +26,49 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Type;
 
-import com.pholser.junit.quickcheck.AnnotatedTypes;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class SampleSizerTest {
+    public static AnnotatedType from(Type type, Annotation... annotations) {
+        return new AnnotatedType() {
+            @Override
+            public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+                for (Annotation each : annotations) {
+                    if (annotationClass.isAssignableFrom(each.getClass()))
+                        return annotationClass.cast(each);
+                }
+                return null;
+            }
+
+            @Override
+            public Annotation[] getAnnotations() {
+                return annotations;
+            }
+
+            @Override
+            public Annotation[] getDeclaredAnnotations() {
+                return annotations;
+            }
+
+            @Override
+            public Type getType() {
+                return type;
+            }
+        };
+    }
+
     enum Ternary {
         YES, NO, MAYBE
     }
 
     @Test public void primitiveBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(boolean.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(boolean.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(5, parameter);
 
@@ -47,7 +76,7 @@ public class SampleSizerTest {
     }
 
     @Test public void wrapperBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(Boolean.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(Boolean.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(6, parameter);
 
@@ -55,7 +84,7 @@ public class SampleSizerTest {
     }
 
     @Test public void enumWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(Ternary.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(Ternary.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(7, parameter);
 
@@ -63,7 +92,7 @@ public class SampleSizerTest {
     }
 
     @Test public void otherClassesUseConfiguredSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", AnnotatedTypes.from(String.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(String.class, valuesOf()));
 
         SampleSizer sizer = new SampleSizer(8, parameter);
 
