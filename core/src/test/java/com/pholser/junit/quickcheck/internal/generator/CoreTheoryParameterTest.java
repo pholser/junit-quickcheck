@@ -41,6 +41,7 @@ import org.mockito.MockitoAnnotations;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.Objects.*;
@@ -93,15 +94,27 @@ public abstract class CoreTheoryParameterTest {
     protected abstract void primeSourceOfRandomness() throws Exception;
 
     protected final AnnotatedType annotatedType() throws Exception {
-        return typeBearer().getAnnotatedType();
+        try {
+            return typeBearerField().getAnnotatedType();
+        } catch (Exception e) {
+            return typeBearerParameter().getAnnotatedType();
+        }
     }
 
     protected final AnnotatedElement annotatedElement() throws Exception {
-        return typeBearer();
+        try {
+            return typeBearerField();
+        } catch (Exception e) {
+            return typeBearerParameter();
+        }
     }
 
-    private Field typeBearer() throws Exception {
+    private Field typeBearerField() throws Exception {
         return getClass().getField("TYPE_BEARER");
+    }
+
+    private Parameter typeBearerParameter() throws Exception {
+        return getClass().getMethod("TYPE_BEARER", Integer.class).getParameters()[0];
     }
 
     protected abstract int sampleSize();

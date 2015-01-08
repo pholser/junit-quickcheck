@@ -36,8 +36,8 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ConstrainedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
-    @SuchThat("#_ <= 0")
-    public static final int TYPE_BEARER = 0;
+    public void TYPE_BEARER(@SuchThat("#_ <= 0") Integer o) {
+    }
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator)).thenReturn(0).thenReturn(1).thenReturn(-1);
