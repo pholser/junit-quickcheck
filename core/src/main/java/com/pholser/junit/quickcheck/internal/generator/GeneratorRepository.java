@@ -104,8 +104,10 @@ public class GeneratorRepository {
     public Generator<?> generatorFor(ParameterContext parameter) {
         Generator<?> generator;
         if (!parameter.explicitGenerators().isEmpty()) {
-            generator = composite(Types.forJavaLangReflectType(parameter.parameterType()),
-                parameter.explicitGenerators());
+            generator =
+                compose(
+                    Types.forJavaLangReflectType(parameter.parameterType()),
+                    parameter.explicitGenerators());
         } else
             generator = generatorFor(parameter.parameterType());
 
@@ -129,7 +131,7 @@ public class GeneratorRepository {
             return new EnumGenerator(typeToken.getRawClass());
 
         List<Generator<?>> matches = findMatchingGenerators(typeToken, allowMixedTypes);
-        return composite(typeToken, matches);
+        return compose(typeToken, matches);
     }
 
     private Generator<?> generatorForArrayType(org.javaruntype.type.Type<?> typeToken) {
@@ -188,7 +190,7 @@ public class GeneratorRepository {
         }
     }
 
-    private Generator<?> composite(org.javaruntype.type.Type<?> typeToken, List<Generator<?>> matches) {
+    private Generator<?> compose(org.javaruntype.type.Type<?> typeToken, List<Generator<?>> matches) {
         List<Generator<?>> forComponents = new ArrayList<>();
         for (TypeParameter<?> each : typeToken.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));
@@ -223,8 +225,7 @@ public class GeneratorRepository {
 
         // must be "? super X"
         Set<org.javaruntype.type.Type<?>> supertypes = supertypes(parameter.getType());
-        org.javaruntype.type.Type<?> chosen = choose(supertypes, random);
-        return generatorForTypeToken(chosen, false);
+        return generatorForTypeToken(choose(supertypes, random), false);
     }
 
     private List<Generator<?>> generatorsForRawClass(Class<?> clazz, boolean allowMixedTypes) {
