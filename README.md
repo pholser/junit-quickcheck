@@ -528,7 +528,7 @@ the `Fields` or the `Ctor` generator, like so:
 
 Any generation-influencing annotations applied to either fields
 (when using the `Fields` generator) or constructor parameters
-(with using the `Ctor` generator) will be honored when the
+(when using the `Ctor` generator) will be honored when the
 respective generators create values for the fields or constructor
 parameters.
 
