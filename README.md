@@ -4,8 +4,8 @@ junit-quickcheck is a library that supplies [JUnit](http://junit.org)
 [theories](http://groups.csail.mit.edu/pag/pubs/test-theory-demo-oopsla2007.pdf)
 with random values with which to test the validity of the theories.
 
-As of version 0.4, junit-quickcheck is built with JDK 7, and
-source/target-compatible with 1.7 and beyond.
+As of version 0.5, junit-quickcheck is built with JDK 8, and
+source/target-compatible with 1.8 and beyond.
 
 **PLEASE NOTE**: junit-quickcheck uses a
 [version of the JUnit theories runner](https://github.com/junit-team/junit.contrib/tree/master/theories) 
@@ -38,12 +38,12 @@ elements in your POM like so:
       <dependency>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck-core</artifactId>
-        <version>0.4</version>
+        <version>0.5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck-generators</artifactId>
-        <version>0.4</version>
+        <version>0.5-SNAPSHOT</version>
       </dependency>
       ...
     </dependencies>
@@ -225,11 +225,6 @@ the `configure` method reflectively, passing it the annotation:
 
 A `Generator` can have many such `configure` methods.
 
-Generators of "componentized" types such as arrays and lists pass
-configurations on parameters of their type to generators of the
-component types. When junit-quickcheck migrates to Java 8, it will
-likely lean on [type annotations](https://jcp.org/en/jsr/detail?id=308)
-instead.
 
 #### Constraining generated values
 
@@ -311,6 +306,18 @@ minimum/maximum:
 Now, the generator will be configured to ensure that every value
 generated meets the desired criteria -- no need to express the
 desired range of values as an assumption.
+
+Configuration annotations that can target type uses will be honored:
+
+```java
+    @RunWith(Theories.class)
+    public class ListsOfSingleDigitTheories {
+        @Theory public void hold(
+            @ForAll List<@InRange(minInt = 0, maxInt = 9) Integer> digits) {
+                // ...
+        }
+    }
+```
 
 When using assumptions with junit-quickcheck, every value fed
 to a `@ForAll` theory parameter counts against the sample size,
