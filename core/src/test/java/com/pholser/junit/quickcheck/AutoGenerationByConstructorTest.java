@@ -168,4 +168,6 @@ public class AutoGenerationByConstructorTest {
             assertThat(p.i, allOf(greaterThanOrEqualTo(5), lessThanOrEqualTo(7)));
         }
     }
+
+    // TODO - Tests with Ctor and marks on type uses in target class's ctor parameters
 }

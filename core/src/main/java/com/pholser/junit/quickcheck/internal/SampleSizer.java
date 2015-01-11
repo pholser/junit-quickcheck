@@ -32,7 +32,7 @@ class SampleSizer {
     private final int sampleSize;
 
     SampleSizer(int configuredSampleSize, ParameterContext parameter) {
-        org.javaruntype.type.Type<?> parameterType = Types.forJavaLangReflectType(parameter.parameterType());
+        org.javaruntype.type.Type<?> parameterType = Types.forJavaLangReflectType(parameter.type());
         Class<?> raw = parameterType.getRawClass();
 
         if (parameter.annotatedWith(ValuesOf.class)) {

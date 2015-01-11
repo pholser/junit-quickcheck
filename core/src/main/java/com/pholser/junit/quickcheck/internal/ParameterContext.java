@@ -111,13 +111,13 @@ public class ParameterContext {
     }
 
     private Class<?> rawParameterType() {
-        if (parameterType() instanceof ParameterizedType)
-            return (Class<?>) ((ParameterizedType) parameterType()).getRawType();
-        return (Class<?>) parameterType();
+        if (type() instanceof ParameterizedType)
+            return (Class<?>) ((ParameterizedType) type()).getRawType();
+        return (Class<?>) type();
     }
 
     private void ensureCorrectType(Generator<?> generator) {
-        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(parameterType());
+        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(type());
 
         for (Class<?> each : generator.types()) {
             if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
@@ -131,11 +131,11 @@ public class ParameterContext {
         }
     }
 
-    public AnnotatedType annotatedParameterType() {
+    public AnnotatedType annotatedType() {
         return parameterType;
     }
 
-    public Type parameterType() {
+    public Type type() {
         return parameterType.getType();
     }
 

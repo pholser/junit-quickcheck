@@ -126,4 +126,6 @@ public class AutoGenerationByFieldsTest {
             assertThat(p.i, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
         }
     }
+
+    // TODO - Tests with Fields and marks on type uses in target class's fields
 }

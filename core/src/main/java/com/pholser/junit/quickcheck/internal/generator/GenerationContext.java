@@ -63,7 +63,7 @@ public class GenerationContext implements GenerationStatus {
 
     private Generator<?> decideGenerator() {
         if (generator == null) {
-            generator = repository.generatorFor(parameter);
+            generator = repository.produceGenerator(parameter);
         }
 
         return generator;

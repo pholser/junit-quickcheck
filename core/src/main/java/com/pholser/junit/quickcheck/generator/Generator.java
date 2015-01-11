@@ -241,6 +241,6 @@ public abstract class Generator<T> {
     }
 
     Generator<?> generatorFor(ParameterContext parameter) {
-        return repo.generatorFor(parameter);
+        return repo.produceGenerator(parameter);
     }
 }
