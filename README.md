@@ -183,6 +183,8 @@ make those generators available for use. The generators in the module
 generators you supply and make available to the `ServiceLoader`
 complement these generators rather than override them.
 
+##### Functional interfaces
+
 Custom generators for types that are functional interfaces override
 the built-in means of generation for such types. This is usually
 necessary for functional interfaces that involve generics.
@@ -307,6 +309,8 @@ Now, the generator will be configured to ensure that every value
 generated meets the desired criteria -- no need to express the
 desired range of values as an assumption.
 
+###### Configuration on type uses
+
 Configuration annotations that can target type uses will be honored:
 
 ```java
@@ -319,6 +323,39 @@ Configuration annotations that can target type uses will be honored:
     }
 ```
 
+###### Configuration on types in a hierarchy
+
+Recall that for a given theory parameter, many generators can potentially
+satisfy a given theory parameter based on its type:
+
+```java
+    @RunWith(Theories.class)
+    public class Serialization {
+        @Theory public void hold(@ForAll @InRange(min = "0", max = "10") Serializable s) {
+        }
+    }
+```
+
+Any available generators that can produce something that is `java.io.Serializable` can be
+called on to generate a value for parameter `s` above. Because of this, any configuration
+annotations on a parameter or type use are ignored by a generator that cannot support the
+annotation. This may or may not matter depending on the nature of the theory you're writing.
+
+Also, if you have a family of generators that can produce members of a hierarchy, you may
+want to ensure that all the generators respect the same attributes of a given configuration
+annotation. Not doing so could lead to surprising results:
+
+```java
+    @RunWith(Theories.class)
+    public class Numbers {
+        @Theory public void hold(@ForAll @InRange(minInt = 0, maxInt = 10) Number n) {
+            // integer generator recognizes minInt and maxInt; other number generators do not
+        }
+    }
+```
+
+###### Configuration methods vs. assumptions
+
 When using assumptions with junit-quickcheck, every value fed
 to a `@ForAll` theory parameter counts against the sample size,
 even if it doesn't pass any assumptions made against it in the
@@ -328,6 +365,8 @@ Using generator configurations, assumptions aren't very important,
 if needed at all -- every value fed to a `@ForAll` theory parameter
 counts against the sample size, but will meet some conditions that
 assumptions would otherwise have tested.
+
+###### `ValuesOf`
 
 `boolean` and `enum` theory parameters can be annotated with
 `@ValuesOf` to force the generation to run through every value in
