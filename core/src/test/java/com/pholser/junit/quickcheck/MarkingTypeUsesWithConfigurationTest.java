@@ -118,6 +118,7 @@ public class MarkingTypeUsesWithConfigurationTest {
         }
     }
 
+    /*
     @Test public void alternateGeneratorOnGenericParameter() throws Exception {
         assertThat(testResult(AlternateGeneratorOnGenericParameter.class), isSuccessful());
     }
@@ -130,4 +131,5 @@ public class MarkingTypeUsesWithConfigurationTest {
             assertThat(box.contents(), allOf(greaterThanOrEqualTo(3), lessThanOrEqualTo(4)));
         }
     }
+     */
 }
