@@ -25,32 +25,28 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-
 /**
  * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked
- * with {@link ForAll} with this annotation to have random values supplied to it via the specified
- * {@link Generator}.</p>
+ * with {@link ForAll} with this annotation to have random values supplied to it via one of the
+ * {@link com.pholser.junit.quickcheck.generator.Generator}s specified by the aggregated
+ * {@link From} annotations.</p>
  *
- * <p>You may specify as many of these annotation as as you wish on a given parameter. On a given generation,
- * one of the specified generators will be chosen at random with equal probability.</p>
+ * <p>Alternatively, you can specify many generators via many repetitions of {@link From}, without
+ * using this container annotation.</p>
  *
- * <p>If any such generator produces values of a type incompatible with the type of the marked theory parameter,
- * {@link IllegalArgumentException} is raised.</p>
+ * <p>On a given generation, one of the specified generators will be chosen at random with equal
+ * probability.</p>
+ *
+ * @see From
  */
 @Target({ PARAMETER, FIELD })
 @Retention(RUNTIME)
-@Repeatable(Produced.class)
-public @interface From {
-    /**
-     * @return the choices of generators for the annotated theory parameter
-     */
-    Class<? extends Generator> value();
+public @interface Produced {
+    From[] value();
 }
