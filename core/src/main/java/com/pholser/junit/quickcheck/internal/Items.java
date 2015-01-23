@@ -37,6 +37,20 @@ public final class Items {
     @SuppressWarnings("unchecked")
     public static <T> T choose(Collection<T> items, SourceOfRandomness random) {
         Object[] asArray = items.toArray(new Object[items.size()]);
-        return (T) asArray[random.nextInt(0, items.size() - 1)];
+        return (T) asArray[random.nextInt(items.size())];
+    }
+
+    public static <T> T chooseWeighted(Collection<Weighted<T>> items, SourceOfRandomness random) {
+        int range = items.stream().mapToInt(i -> i.weight).sum();
+        int sample = random.nextInt(range);
+
+        int threshold = 0;
+        for (Weighted<T> each : items) {
+            threshold += each.weight;
+            if (sample < threshold)
+                return each.item;
+        }
+
+        throw new AssertionError(String.format("sample = %d, range = %d", sample, range));
     }
 }

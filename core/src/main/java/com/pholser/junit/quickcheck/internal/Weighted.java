@@ -23,37 +23,17 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.java.util;
+package com.pholser.junit.quickcheck.internal;
 
-import com.pholser.junit.quickcheck.Generating;
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+public final class Weighted<T> {
+    public final T item;
+    public final int weight;
 
-import java.util.List;
-import java.util.Locale;
+    public Weighted(T item, int weight) {
+        if (weight <= 0)
+            throw new IllegalArgumentException("non-positive weight: " + weight);
 
-import static com.pholser.junit.quickcheck.Generating.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
-
-public class LocaleGeneratorTest extends BasicGeneratorTheoryParameterTest {
-    public static final Locale TYPE_BEARER = null;
-
-    private static final Locale[] LOCALES = Locale.getAvailableLocales();
-
-    @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, LOCALES.length))
-            .thenReturn(1).thenReturn(0).thenReturn(2);
-    }
-
-    @Override protected int sampleSize() {
-        return 3;
-    }
-
-    @Override protected List<?> randomValues() {
-        return asList(LOCALES[1], LOCALES[0], LOCALES[2]);
-    }
-
-    @Override public void verifyInteractionWithRandomness() {
-        verifyInts(randomForParameterGenerator, times(3), LOCALES.length);
+        this.item = item;
+        this.weight = weight;
     }
 }

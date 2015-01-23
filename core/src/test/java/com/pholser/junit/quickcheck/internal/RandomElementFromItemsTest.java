@@ -31,6 +31,7 @@ import java.util.Set;
 import static java.util.Arrays.*;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -42,11 +43,50 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class RandomElementFromItemsTest {
     @Mock private SourceOfRandomness random;
+    private Weighted<String> first;
+    private Weighted<String> second;
+    private Weighted<String> third;
+
+    @Before public void setUp() {
+        first = new Weighted<>("a", 2);
+        second = new Weighted<>("b", 3);
+        third = new Weighted<>("c", 4);
+    }
 
     @Test public void choosingFromSet() {
         Set<String> names = new LinkedHashSet<>(asList("alpha", "bravo", "charlie", "delta"));
-        when(random.nextInt(0, names.size() - 1)).thenReturn(2);
+        when(random.nextInt(names.size())).thenReturn(2);
 
         assertEquals("charlie", Items.choose(names, random));
+    }
+
+    @Test public void singleWeightedItem() {
+        when(random.nextInt(2)).thenReturn(1);
+
+        assertEquals("a", Items.chooseWeighted(asList(first), random));
+    }
+
+    @Test public void choosingFirstOfManyWeightedItems() {
+        when(random.nextInt(9)).thenReturn(0).thenReturn(1);
+
+        assertEquals("a", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals("a", Items.chooseWeighted(asList(first, second, third), random));
+    }
+
+    @Test public void choosingMiddleOfManyWeightedItems() {
+        when(random.nextInt(9)).thenReturn(2).thenReturn(3).thenReturn(4);
+
+        assertEquals("b", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals("b", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals("b", Items.chooseWeighted(asList(first, second, third), random));
+    }
+
+    @Test public void choosingLastOfManyWeightedItems() {
+        when(random.nextInt(9)).thenReturn(5).thenReturn(6).thenReturn(7).thenReturn(8);
+
+        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
     }
 }

@@ -51,7 +51,7 @@ public class ParameterContext {
 
     private final String parameterName;
     private final AnnotatedType parameterType;
-    private final List<Generator<?>> explicits = new ArrayList<>();
+    private final List<Weighted<Generator<?>>> explicits = new ArrayList<>();
 
     private int configuredSampleSize;
     private SampleSizer sampleSizer;
@@ -94,7 +94,7 @@ public class ParameterContext {
         for (From each : generators) {
             Generator<?> generator = makeGenerator(each.value());
             ensureCorrectType(generator);
-            explicits.add(generator);
+            explicits.add(new Weighted<>(generator, each.frequency()));
         }
 
         return this;
@@ -154,7 +154,7 @@ public class ParameterContext {
         return constraint;
     }
 
-    public List<Generator<?>> explicitGenerators() {
+    public List<Weighted<Generator<?>>> explicitGenerators() {
         return unmodifiableList(explicits);
     }
 

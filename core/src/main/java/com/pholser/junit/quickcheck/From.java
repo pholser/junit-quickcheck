@@ -53,4 +53,6 @@ public @interface From {
      * @return the choices of generators for the annotated theory parameter
      */
     Class<? extends Generator> value();
+
+    int frequency() default 1;
 }

@@ -25,33 +25,34 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Weighted;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 public class CompositeGenerator extends Generator<Object> {
-    private final List<Generator<?>> components;
+    private final List<Weighted<Generator<?>>> components;
 
-    public CompositeGenerator(List<Generator<?>> components) {
+    public CompositeGenerator(List<Weighted<Generator<?>>> components) {
         super(Object.class);
 
         this.components = new ArrayList<>(components);
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
-        Generator<?> generator = components.size() == 1
+        Weighted<Generator<?>> weighting = components.size() == 1
             ? components.get(0)
-            : components.get(random.nextInt(0, components.size() - 1));
+            : components.get(random.nextInt(components.size()));
 
-        return generator.generate(random, status);
+        return weighting.item.generate(random, status);
     }
 
     public Generator<?> componentGenerator(int index) {
-        return components.get(index);
+        return components.get(index).item;
     }
 
     public int numberOfComponentGenerators() {
@@ -61,12 +62,12 @@ public class CompositeGenerator extends Generator<Object> {
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
 
-        for (Generator<?> each : components)
-            each.provideRepository(provided);
+        for (Weighted<Generator<?>> each : components)
+            each.item.provideRepository(provided);
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
-        for (Generator<?> each : components)
-            each.configure(annotatedType);
+        for (Weighted<Generator<?>> each : components)
+            each.item.configure(annotatedType);
     }
 }

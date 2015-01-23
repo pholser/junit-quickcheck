@@ -42,7 +42,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest extends CoreTheory
     public static final String TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(0, 2)).thenReturn(0).thenReturn(1).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(3)).thenReturn(0).thenReturn(1).thenReturn(2);
     }
 
     @Override protected int sampleSize() {
@@ -54,7 +54,7 @@ public class ExplicitGeneratorsChosenWithEqualProbabilityTest extends CoreTheory
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(0, 2);
+        verify(randomForParameterGenerator, times(3)).nextInt(3);
     }
 
     public static class FooGenerator extends Generator<String> {

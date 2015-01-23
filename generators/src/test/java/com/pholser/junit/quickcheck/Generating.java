@@ -75,6 +75,14 @@ public class Generating {
         verify(random, mode).nextInt(min, max);
     }
 
+    public static int ints(SourceOfRandomness random, int n) {
+        return random.nextInt(n);
+    }
+
+    public static void verifyInts(SourceOfRandomness random, VerificationMode mode, int n) {
+        verify(random, mode).nextInt(n);
+    }
+
     public static long longs(SourceOfRandomness random) {
         return longs(random, minLong(), maxLong());
     }

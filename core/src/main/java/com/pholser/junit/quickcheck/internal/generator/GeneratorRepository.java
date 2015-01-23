@@ -34,9 +34,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.ExtendsTypeParameter;
@@ -101,7 +103,6 @@ public class GeneratorRepository {
         forType.add(generator);
     }
 
-    // TODO - make ParameterContexts from sub-annotated types, and gen repo uses these?
     public Generator<?> produceGenerator(ParameterContext parameter) {
         Generator<?> generator = generatorFor(parameter);
         generator.provideRepository(this);
@@ -115,7 +116,7 @@ public class GeneratorRepository {
 
     private Generator<?> generatorFor(ParameterContext parameter) {
         if (!parameter.explicitGenerators().isEmpty())
-            return compose(token(parameter.type()), parameter.explicitGenerators());
+            return composeWeighted(token(parameter.type()), parameter.explicitGenerators());
 
         return generatorFor(token(parameter.type()), true);
     }
@@ -181,12 +182,23 @@ public class GeneratorRepository {
     }
 
     private Generator<?> compose(org.javaruntype.type.Type<?> token, List<Generator<?>> matches) {
+        List<Weighted<Generator<?>>> weightings = matches.stream()
+                .map(g -> new Weighted<Generator<?>>(g, 1))
+                .collect(Collectors.toList());
+
+        return composeWeighted(token, weightings);
+    }
+
+    private Generator<?> composeWeighted(
+            org.javaruntype.type.Type<?> token,
+            List<Weighted<Generator<?>>> matches) {
+
         List<Generator<?>> forComponents = new ArrayList<>();
         for (TypeParameter<?> each : token.getTypeParameters())
             forComponents.add(generatorForTypeParameter(each));
 
-        for (Generator<?> each : matches)
-            applyComponentGenerators(each, forComponents);
+        for (Weighted<Generator<?>> each : matches)
+            applyComponentGenerators(each.item, forComponents);
 
         return new CompositeGenerator(matches);
     }
@@ -214,8 +226,7 @@ public class GeneratorRepository {
             return generatorFor(parameter.getType(), false);
 
         // must be "? super X"
-        Set<org.javaruntype.type.Type<?>> supertypes = supertypes(parameter.getType());
-        return generatorFor(choose(supertypes, random), false);
+        return generatorFor(choose(supertypes(parameter.getType()), random), false);
     }
 
     private List<Generator<?>> generatorsForRawClass(Class<?> clazz, boolean allowMixedTypes) {

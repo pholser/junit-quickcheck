@@ -40,7 +40,7 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         int longIndex = 12;
         when(randomForParameterGenerator.nextLong()).thenReturn(1L).thenReturn(7L).thenReturn(63L);
-        when(randomForGeneratorRepo.nextInt(0, Iterables.size(source) - 1)).thenReturn(longIndex);
+        when(randomForGeneratorRepo.nextInt(Iterables.size(source))).thenReturn(longIndex);
     }
 
     @Override protected int sampleSize() {
@@ -58,7 +58,7 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong();
         verifyNoMoreInteractions(randomForParameterGenerator);
-        verify(randomForGeneratorRepo).nextInt(0, Iterables.size(source) - 1);
+        verify(randomForGeneratorRepo).nextInt(Iterables.size(source));
         verifyNoMoreInteractions(randomForGeneratorRepo);
     }
 }

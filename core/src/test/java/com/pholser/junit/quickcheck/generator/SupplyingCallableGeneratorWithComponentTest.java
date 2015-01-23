@@ -57,7 +57,7 @@ public class SupplyingCallableGeneratorWithComponentTest {
                 new ZilchGenerator(),
                 new TestCallableGenerator(),
                 new BoxGenerator()));
-        when(random.nextInt(0, 2)).thenReturn(1);
+        when(random.nextInt(3)).thenReturn(1);
     }
 
     @Test public void coaxingGeneratorToSupplyComponentForCallable() {

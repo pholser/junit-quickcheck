@@ -42,7 +42,7 @@ public class CharsetGeneratorTest extends BasicGeneratorTheoryParameterTest {
     private static final List<String> CHARSET_NAMES = newArrayList(Charset.availableCharsets().keySet());
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, 0, CHARSET_NAMES.size() - 1))
+        when(Generating.ints(randomForParameterGenerator, CHARSET_NAMES.size()))
             .thenReturn(2).thenReturn(0).thenReturn(1);
     }
 
@@ -58,6 +58,6 @@ public class CharsetGeneratorTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyInts(randomForParameterGenerator, times(3), 0, CHARSET_NAMES.size() - 1);
+        verifyInts(randomForParameterGenerator, times(3), CHARSET_NAMES.size());
     }
 }

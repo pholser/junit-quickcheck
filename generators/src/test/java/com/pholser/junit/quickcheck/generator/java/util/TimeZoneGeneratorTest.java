@@ -41,7 +41,7 @@ public class TimeZoneGeneratorTest extends BasicGeneratorTheoryParameterTest {
     private static final String[] ZONES = TimeZone.getAvailableIDs();
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, 0, ZONES.length - 1))
+        when(Generating.ints(randomForParameterGenerator, ZONES.length))
             .thenReturn(1).thenReturn(0).thenReturn(2);
     }
 
@@ -54,6 +54,6 @@ public class TimeZoneGeneratorTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyInts(randomForParameterGenerator, times(3), 0, ZONES.length - 1);
+        verifyInts(randomForParameterGenerator, times(3), ZONES.length);
     }
 }
