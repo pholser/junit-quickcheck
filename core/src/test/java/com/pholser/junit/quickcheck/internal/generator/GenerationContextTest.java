@@ -35,6 +35,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.AnnotatedElement;
@@ -47,6 +48,8 @@ import static org.junit.rules.ExpectedException.*;
 @RunWith(MockitoJUnitRunner.class)
 public class GenerationContextTest {
     @Rule public final ExpectedException thrown = none();
+
+    @Mock private SourceOfRandomness random;
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() throws Exception {
         ParameterContext parameter =
@@ -65,7 +68,7 @@ public class GenerationContextTest {
             3D));
 
         while (gen.shouldContinue())
-            gen.generate(null);
+            gen.generate(random);
     }
 
     public static void parameterHaver(

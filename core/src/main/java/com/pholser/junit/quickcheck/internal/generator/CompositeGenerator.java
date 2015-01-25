@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -44,11 +45,8 @@ public class CompositeGenerator extends Generator<Object> {
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
-        Weighted<Generator<?>> weighting = components.size() == 1
-            ? components.get(0)
-            : components.get(random.nextInt(components.size()));
-
-        return weighting.item.generate(random, status);
+        Generator<?> choice = Items.chooseWeighted(components, random);
+        return choice.generate(random, status);
     }
 
     public Generator<?> componentGenerator(int index) {

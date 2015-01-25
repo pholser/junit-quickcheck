@@ -41,6 +41,9 @@ public final class Items {
     }
 
     public static <T> T chooseWeighted(Collection<Weighted<T>> items, SourceOfRandomness random) {
+        if (items.size() == 1)
+            return items.iterator().next().item;
+
         int range = items.stream().mapToInt(i -> i.weight).sum();
         int sample = random.nextInt(range);
 
