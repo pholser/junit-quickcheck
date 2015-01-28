@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * generator can use {@link #min()} and {@link #max()}, and take on the responsibility of converting their string
  * values to values of the desired type.</p>
  */
-@Target({ PARAMETER, FIELD, TYPE_USE })
+@Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
 @GeneratorConfiguration
 public @interface InRange {

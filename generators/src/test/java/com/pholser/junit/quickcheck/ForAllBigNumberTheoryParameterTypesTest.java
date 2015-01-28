@@ -25,9 +25,6 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
 import org.junit.Test;
@@ -35,6 +32,13 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -304,6 +308,29 @@ public class ForAllBigNumberTheoryParameterTypesTest {
                 allOf(
                     greaterThanOrEqualTo(new BigDecimal("-123456789.0123")),
                     lessThanOrEqualTo(new BigDecimal("99999999.87654321"))));
+        }
+    }
+
+    @Test public void bigDecimalByAggregateAnnotations() {
+        assertThat(testResult(BigDecimalByAggregateAnnotations.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class BigDecimalByAggregateAnnotations {
+        @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+        @Retention(RUNTIME)
+        @InRange(min = "0", max = "20")
+        @Precision(scale = 2)
+        public @interface SmallChange {
+        }
+
+        @Theory public void shouldHold(@ForAll @SmallChange BigDecimal d) {
+            assertEquals(2, d.scale());
+            assertThat(
+                d,
+                allOf(
+                    greaterThanOrEqualTo(BigDecimal.ZERO),
+                    lessThanOrEqualTo(new BigDecimal("20"))));
         }
     }
 }

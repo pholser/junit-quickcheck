@@ -40,7 +40,7 @@ public class FooGenerator extends Generator<Foo> {
     private Same value;
     private Mark mark;
 
-    @Target({ PARAMETER, FIELD, TYPE_USE })
+    @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface Same {

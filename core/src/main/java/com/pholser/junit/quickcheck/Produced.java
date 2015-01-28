@@ -45,7 +45,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  *
  * @see From
  */
-@Target({ PARAMETER, FIELD })
+@Target({ PARAMETER, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 public @interface Produced {
     From[] value();

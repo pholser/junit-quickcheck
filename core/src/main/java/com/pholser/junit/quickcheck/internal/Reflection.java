@@ -25,7 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import org.javaruntype.type.Type;
+
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -39,10 +42,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.javaruntype.type.Type;
-
-import static java.security.AccessController.doPrivileged;
+import static java.security.AccessController.*;
+import static java.util.Arrays.*;
 
 public final class Reflection {
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<>(16);
@@ -115,27 +118,34 @@ public final class Reflection {
         }
     }
 
-    public static List<Annotation> markedAnnotations(
-        List<Annotation> annotations,
-        Class<? extends Annotation> marker) {
+    public static List<Annotation> allAnnotations(AnnotatedElement e) {
+        List<Annotation> thisAnnotations =
+            asList(e.getAnnotations()).stream()
+                .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
+                .collect(Collectors.toList());
 
-        List<Annotation> marked = new ArrayList<>();
-
-        for (Annotation each : annotations) {
-            if (markedWith(each, marker))
-                marked.add(each);
+        List<Annotation> annotations = new ArrayList<>();
+        for (Annotation each : thisAnnotations) {
+            annotations.add(each);
+            annotations.addAll(allAnnotations(each.annotationType()));
         }
 
-        return marked;
+        return annotations;
     }
 
-    private static boolean markedWith(Annotation a, Class<? extends Annotation> marker) {
-        for (Annotation each : a.annotationType().getAnnotations()) {
-            if (each.annotationType().equals(marker))
-                return true;
-        }
+    public static <T extends Annotation> List<T> allAnnotationsByType(AnnotatedElement e, Class<T> type) {
+        List<T> annotations = new ArrayList<>();
+        Collections.addAll(annotations, e.getAnnotationsByType(type));
 
-        return false;
+        List<Annotation> thisAnnotations =
+                asList(e.getAnnotations()).stream()
+                        .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
+                        .collect(Collectors.toList());
+
+        for (Annotation each : thisAnnotations)
+            annotations.addAll(allAnnotationsByType(each.annotationType(), type));
+
+        return annotations;
     }
 
     public static Method findMethod(Class<?> target, String methodName, Class<?>... argTypes) {

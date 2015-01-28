@@ -66,10 +66,7 @@ public class ParameterContext {
     public ParameterContext annotate(AnnotatedElement element) {
         addQuantifier(element.getAnnotation(ForAll.class));
         addConstraint(element.getAnnotation(SuchThat.class));
-
-        From[] explicitGenerators = element.getAnnotationsByType(From.class);
-        if (explicitGenerators != null)
-            addGenerators(explicitGenerators);
+        addGenerators(allAnnotationsByType(element, From.class));
 
         return this;
     }
@@ -90,7 +87,7 @@ public class ParameterContext {
         return this;
     }
 
-    private ParameterContext addGenerators(From[] generators) {
+    private ParameterContext addGenerators(List<From> generators) {
         for (From each : generators) {
             Generator<?> generator = makeGenerator(each.value());
             ensureCorrectType(generator);

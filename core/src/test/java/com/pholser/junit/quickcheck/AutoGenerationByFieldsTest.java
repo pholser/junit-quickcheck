@@ -32,6 +32,8 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import com.pholser.junit.quickcheck.test.generator.FooGenerator.Same;
+import com.pholser.junit.quickcheck.test.generator.Mark;
 import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +43,11 @@ import org.junit.experimental.results.PrintableResult;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -127,5 +134,65 @@ public class AutoGenerationByFieldsTest {
         }
     }
 
-    // TODO - Tests with Fields and marks on type uses in target class's fields
+    @Test public void autoGenerationWithAggregateAnnotation() {
+        assertThat(testResult(WithAutoGenerationWithAggregateAnnotations.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAggregateAnnotations {
+        @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+        @Retention(RUNTIME)
+        @From(TestIntegerGenerator.class)
+        @Between(min = 1, max = 5)
+        public @interface Small {
+        }
+
+        public static class P {
+            @Small public int i;
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Fields.class) P p) {
+            assertThat(p.i, allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(5)));
+        }
+    }
+
+    @Test public void autoGenerationWithAnnotationsOnTypeUsesInFields() {
+        assertThat(testResult(WithAutoGenerationWithAnnotationsOnTypeUsesInFields.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAnnotationsOnTypeUsesInFields {
+        public static class P {
+            public Box<@Mark Foo> box;
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Fields.class) P p) {
+            assertFalse(p.box.marked());
+            assertTrue(p.box.contents().marked());
+        }
+    }
+
+    @Test public void autoGenerationWithAggregateAnnotationsOnTypeUsesInFields() {
+        assertThat(testResult(WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInFields.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInFields {
+        @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+        @Retention(RUNTIME)
+        @Mark
+        @Same(2)
+        public @interface MarkTwo {
+        }
+
+        public static class P {
+            public Box<@MarkTwo Foo> box;
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Fields.class) P p) {
+            assertFalse(p.box.marked());
+            assertTrue(p.box.contents().marked());
+            assertEquals(2, p.box.contents().i());
+        }
+    }
 }

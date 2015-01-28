@@ -25,6 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedParameterizedType;
@@ -38,20 +48,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-
-import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.ReflectionException;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.ExtendsTypeParameter;
-import org.javaruntype.type.StandardTypeParameter;
-import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
-import org.javaruntype.type.WildcardTypeParameter;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Produces values for theory parameters.
@@ -191,8 +191,9 @@ public abstract class Generator<T> {
      * @param annotatedType a type usage
      */
     public void configure(AnnotatedType annotatedType) {
-        List<Annotation> configs =
-            markedAnnotations(Arrays.asList(annotatedType.getAnnotations()), GeneratorConfiguration.class);
+        List<Annotation> configs = allAnnotations(annotatedType).stream()
+                .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))
+                .collect(toList());
 
         Map<Class<? extends Annotation>, Annotation> byType = new HashMap<>();
         for (Annotation each : configs)

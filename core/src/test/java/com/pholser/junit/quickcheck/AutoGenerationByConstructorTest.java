@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import com.pholser.junit.quickcheck.test.generator.Mark;
 import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +42,12 @@ import org.junit.experimental.results.PrintableResult;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.*;
@@ -169,5 +175,93 @@ public class AutoGenerationByConstructorTest {
         }
     }
 
-    // TODO - Tests with Ctor and marks on type uses in target class's ctor parameters
+    @Test public void autoGenerationWithAggregateAnnotations() {
+        assertThat(testResult(WithAutoGenerationWithAggregateAnnotations.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAggregateAnnotations {
+        public static class P {
+            @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+            @Retention(RUNTIME)
+            @From(TestIntegerGenerator.class)
+            @Between(min = 100, max = 999)
+            public @interface ThreeDigit {
+            }
+
+            private final int i;
+
+            public P(@ThreeDigit int i) {
+                this.i = i;
+            }
+
+            public int i() {
+                return i;
+            }
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Ctor.class) P p) {
+            assertThat(p.i, allOf(greaterThanOrEqualTo(100), lessThanOrEqualTo(999)));
+        }
+    }
+
+    @Test public void autoGenerationWithAnnotationsOnTypeUsesInConstructors() {
+        assertThat(
+            testResult(WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors.class),
+            isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors {
+        public static class P {
+            private final Box<Foo> box;
+
+            public P(Box<@Mark Foo> box) {
+                this.box = box;
+            }
+
+            public Box<Foo> box() {
+                return box;
+            }
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Ctor.class) P p) {
+            assertFalse(p.box().marked());
+            assertTrue(p.box().contents().marked());
+        }
+    }
+
+    @Test public void autoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors() {
+        assertThat(
+            testResult(WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors.class),
+            isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors {
+        @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+        @Retention(RUNTIME)
+        @Mark
+        @Same(2)
+        public @interface MarkTwo {
+        }
+
+        public static class P {
+            private final Box<Foo> box;
+
+            public P(@Mark Box<@MarkTwo Foo> box) {
+                this.box = box;
+            }
+
+            public Box<Foo> box() {
+                return box;
+            }
+        }
+
+        @Theory public void shouldHold(@ForAll @From(Ctor.class) P p) {
+            assertTrue(p.box().marked());
+            assertTrue(p.box().contents().marked());
+            assertEquals(2, p.box().contents().i());
+        }
+    }
 }

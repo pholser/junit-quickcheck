@@ -30,6 +30,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -37,7 +40,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static org.hamcrest.CoreMatchers.*;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 
@@ -319,5 +324,43 @@ public class ReflectionTest {
 
     public static class Child extends Parent {
         private String s;
+    }
+
+    @Test public void findingAnnotationsRecursively() {
+        Method method = findMethod(this.getClass(), "withMarker", String.class);
+
+        List<Annotation> annotations = allAnnotations(method.getParameters()[0]);
+
+        assertEquals(4, annotations.size());
+        assertEquals(X.class, annotations.get(0).annotationType());
+        assertEquals(Y.class, annotations.get(1).annotationType());
+        assertEquals(Z.class, annotations.get(2).annotationType());
+        assertEquals(W.class, annotations.get(3).annotationType());
+    }
+
+    public void withMarker(@X String s) {
+    }
+
+    @Target(PARAMETER)
+    @Retention(RUNTIME)
+    @Y
+    public @interface X {
+    }
+
+    @Target(ANNOTATION_TYPE)
+    @Retention(RUNTIME)
+    @Z
+    @W
+    public @interface Y {
+    }
+
+    @Target(ANNOTATION_TYPE)
+    @Retention(RUNTIME)
+    public @interface Z {
+    }
+
+    @Target(ANNOTATION_TYPE)
+    @Retention(RUNTIME)
+    public @interface W {
     }
 }

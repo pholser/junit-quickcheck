@@ -202,7 +202,7 @@ a single parameter of the annotation type, junit-quickcheck will call
 the `configure` method reflectively, passing it the annotation:
 
 ```java
-    @Target({PARAMETER, FIELD})
+    @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
     @Retention(RUNTIME)
     @GeneratorConfiguration
     public @interface Stuff {
@@ -350,6 +350,34 @@ annotation. Not doing so could lead to surprising results:
     public class Numbers {
         @Theory public void hold(@ForAll @InRange(minInt = 0, maxInt = 10) Number n) {
             // integer generator recognizes minInt and maxInt; other number generators do not
+        }
+    }
+```
+
+###### Aggregating configuration
+
+Configuration annotations that are directly on a parameter,
+and any configuration annotations on annotations that are directly
+on a parameter (and so on...) are collected to configure the generators
+for the parameter:
+
+```java
+    @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+    @Retention(RUNTIME)
+    @From(MoneyGenerator.class)
+    @InRange(min = "0", max = "20")
+    @Precision(scale = 2)
+    public @interface SmallChange {
+    }
+
+    @RunWith(Theories.class)
+    public class Monies {
+        @Theory public void hold(@ForAll @SmallChange BigDecimal m) {
+            assertEquals(2, m.scale());
+            assertThat(
+                m,
+                allOf(greaterThanOrEqualTo(BigDecimal.ZERO),
+                    lessThanOrEqualTo(new BigDecimal("20"))));
         }
     }
 ```
