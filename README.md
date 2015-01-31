@@ -162,8 +162,9 @@ If you wish to generate random values for theory parameters of other
 types, or to override the default means of generation for a supported
 type, mark the theory parameter already marked as `@ForAll` with
 `@From` and supply the class(es) of the `Generator` to be used.
-If you give multiple classes in `@From`, one will be chosen on every
-generation with (roughly) equal probability.
+If you give multiple `@From` annotations, one will be chosen on every
+generation with probability in proportion to its `frequency` attribute
+(default is 1).
 
 ```java
     @RunWith(Theories.class)
