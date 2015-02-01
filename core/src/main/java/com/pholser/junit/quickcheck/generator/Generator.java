@@ -180,12 +180,13 @@ public abstract class Generator<T> {
      *
      * <p>By default, the generator will configure itself by:</p>
      * <ul>
-     *     <li>For each of the given annotations:</li>
-     *     <ul>
-     *         <li>Find a {@code public} method on the generator named {@code configure}, that accepts a single
-     *         parameter of the annotation type</li>
-     *         <li>Invoke the {@code configure} method reflectively, passing the annotation as the argument</li>
-     *     </ul>
+     *     <li>For each of the given annotations:
+     *         <ul>
+     *             <li>Find a {@code public} method on the generator named {@code configure}, that accepts a single
+     *             parameter of the annotation type</li>
+     *             <li>Invoke the {@code configure} method reflectively, passing the annotation as the argument</li>
+     *         </ul>
+     *     </li>
      * </ul>
      *
      * @param annotatedType a type usage
