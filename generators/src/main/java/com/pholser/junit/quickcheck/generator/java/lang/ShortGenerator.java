@@ -32,28 +32,28 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
-
 /**
  * Produces values for theory parameters of type {@code short} or {@link Short}.
  */
 public class ShortGenerator extends Generator<Short> {
-    private short min = (Short) defaultValueOf(InRange.class, "minShort");
-    private short max = (Short) defaultValueOf(InRange.class, "maxShort");
+    private short min = Short.MIN_VALUE;
+    private short max = Short.MAX_VALUE;
 
     @SuppressWarnings("unchecked") public ShortGenerator() {
         super(asList(short.class, Short.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#minShort() minimum} and/or
-     * {@linkplain InRange#maxShort()} maximum}, inclusive, with uniform distribution.
+     * Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
+     * {@linkplain InRange#max()} maximum}, inclusive, with uniform distribution.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.minShort();
-        max = range.maxShort();
+        if (!range.min().isEmpty())
+            min = Short.parseShort(range.min());
+        if (!range.max().isEmpty())
+            max = Short.parseShort(range.max());
     }
 
     @Override public Short generate(SourceOfRandomness random, GenerationStatus status) {

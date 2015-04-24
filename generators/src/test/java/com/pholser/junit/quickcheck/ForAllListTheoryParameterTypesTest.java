@@ -125,7 +125,7 @@ public class ForAllListTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class ListOfListOfRangedInteger {
-        @Theory public void shouldHold(@ForAll List<List<@InRange(minInt = 0, maxInt = 9) Integer>> items) {
+        @Theory public void shouldHold(@ForAll List<List<@InRange(min = "0", max = "9") Integer>> items) {
             for (List<Integer> each : items) {
                 for (Integer i : each)
                     assertThat(i, allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));

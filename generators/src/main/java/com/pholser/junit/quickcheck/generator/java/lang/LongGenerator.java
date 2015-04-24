@@ -32,28 +32,28 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
-
 /**
  * Produces values for theory parameters of type {@code long} or {@link Long}.
  */
 public class LongGenerator extends Generator<Long> {
-    private long min = (Long) defaultValueOf(InRange.class, "minLong");
-    private long max = (Long) defaultValueOf(InRange.class, "maxLong");
+    private long min = Long.MIN_VALUE;
+    private long max = Long.MAX_VALUE;
 
     @SuppressWarnings("unchecked") public LongGenerator() {
         super(asList(long.class, Long.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#minLong() minimum} and/or
-     * {@linkplain InRange#maxLong()} maximum}, inclusive, with uniform distribution.
+     * Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
+     * {@linkplain InRange#max()} maximum}, inclusive, with uniform distribution.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.minLong();
-        max = range.maxLong();
+        if (!range.min().isEmpty())
+            min = Long.parseLong(range.min());
+        if (!range.max().isEmpty())
+            max = Long.parseLong(range.max());
     }
 
     @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {

@@ -25,78 +25,60 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.Map;
-
-import static com.pholser.junit.quickcheck.Annotations.*;
-
 public class RangeAttributes {
-    private static final Map<String, Object> attributes;
-
-    static {
-        attributes = defaultValuesOf(InRange.class);
-    }
-
-    private RangeAttributes() {
-        throw new UnsupportedOperationException();
-    }
-
-    private static <T> T rangeAttribute(String name, Class<T> type) {
-        return type.cast(attributes.get(name));
-    }
-
     public static byte minByte() {
-        return rangeAttribute("minByte", Byte.class);
+        return Byte.MIN_VALUE;
     }
 
     public static byte maxByte() {
-        return rangeAttribute("maxByte", Byte.class);
+        return Byte.MAX_VALUE;
     }
 
     public static char minChar() {
-        return rangeAttribute("minChar", Character.class);
+        return Character.MIN_VALUE;
     }
 
     public static char maxChar() {
-        return rangeAttribute("maxChar", Character.class);
+        return Character.MAX_VALUE;
     }
 
     public static double minDouble() {
-        return rangeAttribute("minDouble", Double.class);
+        return 0;
     }
 
     public static double maxDouble() {
-        return rangeAttribute("maxDouble", Double.class);
+        return 1;
     }
 
     public static float minFloat() {
-        return rangeAttribute("minFloat", Float.class);
+        return 0F;
     }
 
     public static float maxFloat() {
-        return rangeAttribute("maxFloat", Float.class);
+        return 1F;
     }
 
     public static int minInt() {
-        return rangeAttribute("minInt", Integer.class);
+        return Integer.MIN_VALUE;
     }
 
     public static int maxInt() {
-        return rangeAttribute("maxInt", Integer.class);
+        return Integer.MAX_VALUE;
     }
 
     public static long minLong() {
-        return rangeAttribute("minLong", Long.class);
+        return Long.MIN_VALUE;
     }
 
     public static long maxLong() {
-        return rangeAttribute("maxLong", Long.class);
+        return Long.MAX_VALUE;
     }
 
     public static short minShort() {
-        return rangeAttribute("minShort", Short.class);
+        return Short.MIN_VALUE;
     }
 
     public static short maxShort() {
-        return rangeAttribute("maxShort", Short.class);
+        return Short.MAX_VALUE;
     }
 }

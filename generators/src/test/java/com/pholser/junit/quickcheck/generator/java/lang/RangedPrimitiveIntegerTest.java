@@ -36,7 +36,7 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
-    @InRange(minInt = -4, maxInt = 5)
+    @InRange(min = "-4", max = "5")
     public static final int TYPE_BEARER = 0;
 
     @Override protected void primeSourceOfRandomness() {

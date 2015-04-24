@@ -300,7 +300,7 @@ minimum/maximum:
 ```java
     @RunWith(Theories.class)
     public class SingleDigitTheories {
-        @Theory public void hold(@ForAll @InRange(minInt = 0, maxInt = 9) int digit) {
+        @Theory public void hold(@ForAll @InRange(min = "0", max = "9") int digit) {
             // ...
         }
     }
@@ -318,7 +318,7 @@ Configuration annotations that can target type uses will be honored:
     @RunWith(Theories.class)
     public class ListsOfSingleDigitTheories {
         @Theory public void hold(
-            @ForAll List<@InRange(minInt = 0, maxInt = 9) Integer> digits) {
+            @ForAll List<@InRange(min = "0", max = "9") Integer> digits) {
                 // ...
         }
     }
@@ -344,16 +344,7 @@ annotation. This may or may not matter depending on the nature of the theory you
 
 Also, if you have a family of generators that can produce members of a hierarchy, you may
 want to ensure that all the generators respect the same attributes of a given configuration
-annotation. Not doing so could lead to surprising results:
-
-```java
-    @RunWith(Theories.class)
-    public class Numbers {
-        @Theory public void hold(@ForAll @InRange(minInt = 0, maxInt = 10) Number n) {
-            // integer generator recognizes minInt and maxInt; other number generators do not
-        }
-    }
-```
+annotation. Not doing so could lead to surprising results.
 
 ###### Aggregating configuration
 
