@@ -25,8 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.Generating;
-import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import java.util.List;
@@ -36,7 +36,7 @@ import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class ConstrainedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
-    public void TYPE_BEARER(@SuchThat("#_ <= 0") Integer o) {
+    public void TYPE_BEARER(@ForAll(suchThat = "#_ <= 0") Integer o) {
     }
 
     @Override protected void primeSourceOfRandomness() {

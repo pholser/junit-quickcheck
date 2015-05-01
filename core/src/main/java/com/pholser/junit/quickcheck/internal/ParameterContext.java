@@ -39,7 +39,6 @@ import static java.util.Collections.*;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import org.javaruntype.type.Types;
 
@@ -64,8 +63,9 @@ public class ParameterContext {
     }
 
     public ParameterContext annotate(AnnotatedElement element) {
-        addQuantifier(element.getAnnotation(ForAll.class));
-        addConstraint(element.getAnnotation(SuchThat.class));
+        ForAll quantifier = element.getAnnotation(ForAll.class);
+        addQuantifier(quantifier);
+        addConstraint(quantifier);
         addGenerators(allAnnotationsByType(element, From.class));
 
         return this;
@@ -80,9 +80,9 @@ public class ParameterContext {
         return this;
     }
 
-    public ParameterContext addConstraint(SuchThat expression) {
-        if (expression != null)
-            constraint = expression.value();
+    public ParameterContext addConstraint(ForAll quantifier) {
+        if (quantifier != null && !defaultValueOf(ForAll.class, "suchThat").equals(quantifier.suchThat()))
+            constraint = quantifier.suchThat();
 
         return this;
     }

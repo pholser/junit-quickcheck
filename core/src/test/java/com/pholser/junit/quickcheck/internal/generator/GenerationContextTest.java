@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.ForAll;
-import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
@@ -71,10 +70,7 @@ public class GenerationContextTest {
             gen.generate(random);
     }
 
-    public static void parameterHaver(
-        @ForAll(sampleSize = 20, discardRatio = 3)
-        @SuchThat("#_ > 0")
-        int x) {
+    public static void parameterHaver(@ForAll(sampleSize = 20, discardRatio = 3, suchThat = "#_ > 0") int x) {
     }
 
     private AnnotatedElement annotatedElement() throws Exception {

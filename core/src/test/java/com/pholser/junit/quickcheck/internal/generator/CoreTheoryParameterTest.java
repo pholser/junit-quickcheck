@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.SuchThat;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -53,7 +52,6 @@ public abstract class CoreTheoryParameterTest {
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
     @Mock private ForAll quantifier;
     @Mock private From explicitGenerators;
-    @Mock private SuchThat constraint;
     protected Iterable<Generator<?>> source;
     protected GeneratorRepository repository;
     private List<PotentialAssignment> theoryParameters;

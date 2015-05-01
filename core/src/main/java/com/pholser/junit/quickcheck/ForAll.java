@@ -53,4 +53,11 @@ public @interface ForAll {
      * stop if the number of discarded generated values exceeds the {@linkplain #sampleSize() sample size}.
      */
     int discardRatio() default 0;
+
+    /**
+     * @return an <a href="http://commons.apache.org/ognl/">OGNL</a> expression used to constrain the values fed to
+     * the annotated theory parameter. The expression should evaluate to a {@code boolean} value. Within the
+     * expression, {@code "_"} refers to the theory parameter.
+     */
+    String suchThat() default "";
 }

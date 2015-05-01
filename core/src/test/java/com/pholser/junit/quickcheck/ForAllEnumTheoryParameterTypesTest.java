@@ -84,8 +84,8 @@ public class ForAllEnumTheoryParameterTypesTest {
         static List<TestEnum> values = new ArrayList<TestEnum>();
 
         @Theory public void shouldHold(
-            @ForAll @ValuesOf
-            @SuchThat("#_ != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")
+            @ForAll(suchThat = "#_ != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")
+            @ValuesOf
             TestEnum e) {
 
             values.add(e);

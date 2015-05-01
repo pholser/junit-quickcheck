@@ -412,16 +412,15 @@ size for the parameter.
 ##### Constraint expressions
 
 Constraint expressions enable you to filter the values that
-reach a theory parameter. Mark a theory parameter already marked
-as `@ForAll` with `@SuchThat`, supplying an
-[OGNL](http://commons.apache.org/ognl) expression that will be
-used to decide whether a generated value will be given to the
-theory method.
+reach a theory parameter. Supply the `suchThat` attribute of
+`@ForAll` an [OGNL](http://commons.apache.org/ognl) expression
+that will be used to decide whether a generated value will be
+given to the theory method.
 
 ```java
     @RunWith(Theories.class)
     public class SingleDigitTheories {
-        @Theory public void hold(@ForAll @SuchThat("#_ >= 0 && #_ <= 9") int digit) {
+        @Theory public void hold(@ForAll(suchThat = "#_ >= 0 && #_ <= 9") int digit) {
             // ...
         }
     }

@@ -63,7 +63,7 @@ public class DiscardRatioTest {
         static int iterations;
 
         @Theory
-        public void shouldHold(@ForAll(discardRatio = 3) @SuchThat("false") Foo f) {
+        public void shouldHold(@ForAll(discardRatio = 3, suchThat = "false") Foo f) {
             ++iterations;
         }
     }
@@ -79,7 +79,7 @@ public class DiscardRatioTest {
     public static class ZeroDiscardRatio {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll @SuchThat("false") Foo f) {
+        @Theory public void shouldHold(@ForAll(suchThat = "false") Foo f) {
             ++iterations;
         }
     }
