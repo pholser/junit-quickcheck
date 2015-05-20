@@ -4,6 +4,25 @@ junit-quickcheck is a library that supplies [JUnit](http://junit.org)
 [theories](http://groups.csail.mit.edu/pag/pubs/test-theory-demo-oopsla2007.pdf)
 with random values with which to test the validity of the theories.
 
+```java
+    import com.pholser.junit.quickcheck.ForAll;
+    import org.junit.contrib.theories.Theories;
+    import org.junit.contrib.theories.Theory;
+    import org.junit.runner.RunWith;
+
+    import static org.junit.Assert.*;
+
+    @RunWith(Theories.class)
+    public class SimpleTest {
+        @Theory public void concatenatedStringLength(
+            @ForAll String s1,
+            @ForAll String s2) {
+
+            assertEquals(s1.length() + s2.length(), (s1 + s2).length());
+        }
+    }
+```
+
 As of version 0.5, junit-quickcheck is built with JDK 8, and
 source/target-compatible with 1.8 and beyond.
 
@@ -69,14 +88,15 @@ to see whether the property holds up against them.
 
 JUnit's answer to function properties is the notion of _theories_.
 Programmers write parameterized tests marked as theories, run using a
-special test runner:
+special test runner. 
 
 ```java
     import org.junit.contrib.theories.*;
     import static org.hamcrest.Matchers.*;
     import static org.junit.Assert.*;
     import static org.junit.Assume.*;
-    
+
+    // Imagining the existence of classes Money and Account...
     @RunWith(Theories.class)
     public class Accounts {
         @Theory public void withdrawingReducesBalance(
@@ -117,6 +137,7 @@ parameter, mark the theory parameter with `@ForAll`:
 ```java
     import com.pholser.junit.quickcheck.ForAll;
 
+    // Imagining the existence of class Crypto...
     @RunWith(Theories.class)
     public class SymmetricKeyCryptography {
         @Theory public void decryptReversesEncrypt(
