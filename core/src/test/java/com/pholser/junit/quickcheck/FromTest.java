@@ -194,4 +194,15 @@ public class FromTest {
             }
         }
     }
+
+    @Test public void explicitPrimitiveIntFixedSeed() {
+        assertThat(testResult(ExplicitPrimitiveIntFixedSeed.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ExplicitPrimitiveIntFixedSeed {
+        @Theory public void shouldHold(@ForAll(sampleSize = 1, seed = -1) @From(TestIntegerGenerator.class) int i) {
+            assertEquals(1155099827, i);
+        }
+    }
 }

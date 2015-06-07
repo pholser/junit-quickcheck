@@ -25,38 +25,36 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.test.generator.Box;
-import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.FooGenerator;
-import com.pholser.junit.quickcheck.test.generator.FooBoxOpener;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.Callable;
+
 import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.Functions.functionValue;
+import static com.pholser.junit.quickcheck.Functions.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ForAllLambdaTheoryParameterTypesTest {
-    @Test public void unboxingAFoo() throws Exception {
-        assertThat(testResult(UnboxingAFoo.class), isSuccessful());
-        assertEquals(defaultSampleSize(), UnboxingAFoo.iterations);
+public class ForAllCallableTheoryParameterTest {
+    @Test public void callable() throws Exception {
+        assertThat(testResult(CallableOfInt.class), isSuccessful());
+        assertEquals(defaultSampleSize(), CallableOfInt.iterations);
     }
 
     @RunWith(Theories.class)
-    public static class UnboxingAFoo {
+    public static class CallableOfInt {
         static int iterations;
 
-        @Theory public void shouldHold(@ForAll FooBoxOpener b) {
+        @Theory public void shouldHold(@ForAll Callable<Integer> c) throws Exception {
             ++iterations;
 
-            @SuppressWarnings("unchecked")
-            Foo value = functionValue(new FooGenerator(), new Object[] { new Box<>(new Foo(2)) });
+            Integer value = functionValue(new IntegerGenerator(), null);
             for (int i = 0; i < 10000; ++i)
-                assertEquals(value, b.open(new Box<>(new Foo(2))));
+                assertEquals(value, c.call());
         }
     }
 }

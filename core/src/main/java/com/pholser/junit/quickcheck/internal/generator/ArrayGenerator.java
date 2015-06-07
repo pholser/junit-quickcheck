@@ -62,8 +62,7 @@ public class ArrayGenerator extends Generator<Object> {
         super.configure(annotatedType);
 
         List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
-        if (!annotatedComponentTypes.isEmpty())
-            component.configure(annotatedComponentTypes.get(0));
+        component.configure(annotatedComponentTypes.get(0));
     }
 
     public Generator<?> componentGenerator() {

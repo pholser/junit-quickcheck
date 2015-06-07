@@ -37,6 +37,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -88,5 +89,13 @@ public class RandomElementFromItemsTest {
         assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
         assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
         assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
+    }
+
+    @Test public void choosingFromEmptyCollection() {
+        try {
+            Items.chooseWeighted(emptyList(), random);
+        } catch (AssertionError expected) {
+            assertEquals("sample = 0, range = 0", expected.getMessage());
+        }
     }
 }

@@ -25,9 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.security.SecureRandom;
-import java.util.List;
-
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
@@ -35,21 +32,27 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
 import org.junit.contrib.theories.PotentialAssignment;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Random;
 
 public class RandomValueSupplier extends ParameterSupplier {
     private final RandomTheoryParameterGenerator generator;
 
     /* Called by JUnit reflectively. */
     public RandomValueSupplier() {
+        SourceOfRandomness random = new SourceOfRandomness(new Random());
         generator = new RandomTheoryParameterGenerator(
-            new SourceOfRandomness(new SecureRandom()),
-            new GeneratorRepository(new SourceOfRandomness(new SecureRandom()))
-                .register(new ServiceLoaderGeneratorSource()));
+                random,
+                new GeneratorRepository(random)
+                        .register(new ServiceLoaderGeneratorSource()),
+                LoggerFactory.getLogger("junit-quickcheck.seed-reporting"));
     }
 
     @Override public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
         ParameterContext parameter =
-            new ParameterContext(signature.getName(), signature.getAnnotatedType())
+            new ParameterContext(signature.getName(), signature.getAnnotatedType(), signature.getDeclarerName())
                 .annotate(signature);
         return generator.generate(parameter);
     }

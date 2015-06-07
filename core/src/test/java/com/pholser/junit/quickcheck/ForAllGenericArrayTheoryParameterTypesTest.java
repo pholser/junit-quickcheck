@@ -56,4 +56,14 @@ public class ForAllGenericArrayTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll(sampleSize = 5) Box<Zilch>[] items) {
         }
     }
+
+    @Test public void arrayOfBoxOfSuperZilch() {
+        assertThat(testResult(ArrayOfBoxOfSuperZilch.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ArrayOfBoxOfSuperZilch {
+        @Theory public void shouldHold(@ForAll(sampleSize = 5) Box<? super Zilch>[] items) {
+        }
+    }
 }

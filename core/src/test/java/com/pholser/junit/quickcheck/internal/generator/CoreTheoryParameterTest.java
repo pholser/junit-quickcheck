@@ -29,13 +29,17 @@ import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.theories.PotentialAssignment;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.slf4j.Logger;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
@@ -48,19 +52,21 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public abstract class CoreTheoryParameterTest {
+    @Rule public final MockitoRule mockito = MockitoJUnit.rule();
+
     @Mock protected SourceOfRandomness randomForParameterGenerator;
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
-    @Mock private ForAll quantifier;
-    @Mock private From explicitGenerators;
+    @Mock protected Logger log;
     protected Iterable<Generator<?>> source;
     protected GeneratorRepository repository;
+    @Mock private ForAll quantifier;
+    @Mock private From explicitGenerators;
     private List<PotentialAssignment> theoryParameters;
 
     @Before public final void beforeEach() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
         source = generatorSource();
         primeSourceOfRandomness();
+        primeSeed();
         primeSampleSize();
 
         repository = new GeneratorRepository(randomForGeneratorRepo).register(source);
@@ -69,9 +75,12 @@ public abstract class CoreTheoryParameterTest {
             repository.register(auxiliarySource);
 
         RandomTheoryParameterGenerator generator =
-            new RandomTheoryParameterGenerator(randomForParameterGenerator, repository);
+            new RandomTheoryParameterGenerator(randomForParameterGenerator, repository, log);
 
-        ParameterContext context = new ParameterContext("arg", annotatedType()).annotate(annotatedElement());
+        AnnotatedType type = annotatedType();
+        ParameterContext context =
+            new ParameterContext("arg", type, type.toString())
+                .annotate(annotatedElement());
         context.addQuantifier(quantifier);
 
         theoryParameters = generator.generate(context);
@@ -83,6 +92,16 @@ public abstract class CoreTheoryParameterTest {
 
     private void primeSampleSize() {
         when(quantifier.sampleSize()).thenReturn(sampleSize());
+    }
+
+    private void primeSeed() {
+        long seed = seed();
+        when(quantifier.seed()).thenReturn(seed);
+        when(randomForParameterGenerator.seed()).thenReturn(seed);
+    }
+
+    protected long seed() {
+        return (long) Reflection.defaultValueOf(ForAll.class, "seed");
     }
 
     protected Iterable<Generator<?>> auxiliaryGeneratorSource() {

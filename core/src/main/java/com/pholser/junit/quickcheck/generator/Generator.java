@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 
@@ -66,7 +65,7 @@ public abstract class Generator<T> {
      * @param type class token for type of theory parameter this generator is applicable to
      */
     @SuppressWarnings("unchecked") protected Generator(Class<T> type) {
-        this(asList(type));
+        this(singletonList(type));
     }
 
     /**
@@ -225,7 +224,7 @@ public abstract class Generator<T> {
             return Arrays.asList(((AnnotatedParameterizedType) annotatedType).getAnnotatedActualTypeArguments());
 
         if (annotatedType instanceof AnnotatedArrayType)
-            return Arrays.asList(((AnnotatedArrayType) annotatedType).getAnnotatedGenericComponentType());
+            return singletonList(((AnnotatedArrayType) annotatedType).getAnnotatedGenericComponentType());
 
         if (annotatedType instanceof AnnotatedWildcardType) {
             AnnotatedWildcardType wildcard = (AnnotatedWildcardType) annotatedType;

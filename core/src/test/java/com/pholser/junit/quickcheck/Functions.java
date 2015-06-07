@@ -23,8 +23,22 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.test.generator;
+package com.pholser.junit.quickcheck;
 
-public interface FooUnboxer {
-    Foo unbox(Box<Foo> b);
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import java.util.Arrays;
+import java.util.Random;
+
+public class Functions {
+    private Functions() {
+        throw new UnsupportedOperationException();
+    }
+
+    public static <T> T functionValue(Generator<T> generator, Object[] args) {
+        SourceOfRandomness source = new SourceOfRandomness(new Random());
+        source.setSeed(Arrays.hashCode(args));
+        return generator.generate(source, null);
+    }
 }

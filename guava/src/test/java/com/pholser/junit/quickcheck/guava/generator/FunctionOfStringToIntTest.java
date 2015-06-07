@@ -66,9 +66,9 @@ public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
 
         String argument = "foobar";
 
-        Random r = new Random();
-        r.setSeed(Objects.hashCode(argument));
-        Integer value = (Integer) repository.generatorFor(Integer.class).generate(new SourceOfRandomness(r), null);
+        SourceOfRandomness source = new SourceOfRandomness(new Random());
+        source.setSeed(Objects.hashCode(argument));
+        Integer value = (Integer) repository.generatorFor(Integer.class).generate(source, null);
 
         for (int i = 0; i < 10000; ++i)
             assertEquals(value, f.apply(argument));

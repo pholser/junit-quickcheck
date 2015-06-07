@@ -31,17 +31,29 @@ import java.util.List;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.PotentialAssignment;
+import org.slf4j.Logger;
 
 public class RandomTheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final GeneratorRepository repository;
+    private final Logger log;
 
-    public RandomTheoryParameterGenerator(SourceOfRandomness random, GeneratorRepository repository) {
+    public RandomTheoryParameterGenerator(
+        SourceOfRandomness random,
+        GeneratorRepository repository,
+        Logger log) {
+
         this.random = random;
         this.repository = repository;
+        this.log = log;
     }
 
     public List<PotentialAssignment> generate(ParameterContext parameter) {
+        if (parameter.fixedSeed()) {
+            random.setSeed(parameter.seed());
+        }
+        log.debug("Seed for parameter {} is {}", parameter.name(), random.seed());
+
         List<PotentialAssignment> assignments = new ArrayList<>();
 
         for (GenerationContext gen = new GenerationContext(parameter, repository); gen.shouldContinue();) {

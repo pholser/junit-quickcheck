@@ -68,7 +68,7 @@ public class SampleSizerTest {
     }
 
     @Test public void primitiveBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(boolean.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(boolean.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(5, parameter);
 
@@ -76,7 +76,7 @@ public class SampleSizerTest {
     }
 
     @Test public void wrapperBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(Boolean.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(Boolean.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(6, parameter);
 
@@ -84,7 +84,7 @@ public class SampleSizerTest {
     }
 
     @Test public void enumWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(Ternary.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(Ternary.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(7, parameter);
 
@@ -92,7 +92,7 @@ public class SampleSizerTest {
     }
 
     @Test public void otherClassesUseConfiguredSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(String.class, valuesOf()));
+        ParameterContext parameter = new ParameterContext("arg", from(String.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(8, parameter);
 

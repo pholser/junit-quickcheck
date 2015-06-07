@@ -73,33 +73,31 @@ public final class Lambdas {
         return lambdaType.cast(newProxyInstance(
             lambdaType.getClassLoader(),
             new Class<?>[] { lambdaType },
-            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status, new Random())));
+            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status)));
     }
 
     private static class LambdaInvocationHandler<T, U> implements InvocationHandler {
-        private final Random random;
+        private final Class<T> lambdaType;
         private final Generator<U> returnValueGenerator;
         private final GenerationStatus status;
-        private final Class<T> lambdaType;
 
         LambdaInvocationHandler(
-            Class<T> lambdaType,
-            Generator<U> returnValueGenerator,
-            GenerationStatus status,
-            Random random) {
+                Class<T> lambdaType,
+                Generator<U> returnValueGenerator,
+                GenerationStatus status) {
 
             this.lambdaType = lambdaType;
             this.returnValueGenerator = returnValueGenerator;
             this.status = status;
-            this.random = random;
         }
 
         @Override public Object invoke(Object proxy, Method method, Object[] args) {
             if (Object.class.equals(method.getDeclaringClass()))
                 return handleObjectMethod(proxy, method, args);
 
-            random.setSeed(Arrays.hashCode(args));
-            return returnValueGenerator.generate(new SourceOfRandomness(random), status);
+            SourceOfRandomness source = new SourceOfRandomness(new Random());
+            source.setSeed(Arrays.hashCode(args));
+            return returnValueGenerator.generate(source, status);
         }
 
         private Object handleObjectMethod(Object proxy, Method method, Object[] args) {

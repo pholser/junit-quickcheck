@@ -72,9 +72,7 @@ public class Fields<T> extends Generator<T> {
         Object generated = instantiate(type);
 
         for (Field each : allDeclaredFieldsOf(type)) {
-            ParameterContext parameter =
-                new ParameterContext(each.getName(), each.getAnnotatedType())
-                    .annotate(each);
+            ParameterContext parameter = parameterContext(each);
             setField(each, generated, generatorFor(parameter).generate(random, status), true);
         }
 
@@ -90,9 +88,7 @@ public class Fields<T> extends Generator<T> {
 
         fieldGenerators.clear();
         for (Field each : fields) {
-            fieldGenerators.add(generatorFor(
-                    new ParameterContext(each.getName(), each.getAnnotatedType())
-                            .annotate(each)));
+            fieldGenerators.add(generatorFor(parameterContext(each)));
         }
     }
 
@@ -101,5 +97,13 @@ public class Fields<T> extends Generator<T> {
 
         for (int i = 0; i < fields.size(); ++i)
             fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());
+    }
+
+    private ParameterContext parameterContext(Field field) {
+        return new ParameterContext(
+            field.getName(),
+            field.getAnnotatedType(),
+            field.getDeclaringClass().getName())
+            .annotate(field);
     }
 }

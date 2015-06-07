@@ -60,4 +60,10 @@ public @interface ForAll {
      * expression, {@code "_"} refers to the theory parameter.
      */
     String suchThat() default "";
+
+    /**
+     * @return a value to be used as the initial seed for the random value generator. Not specifying a value
+     * causes the seed to be chosen in the usual JDK way.
+     */
+    long seed() default 0;
 }

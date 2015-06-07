@@ -50,16 +50,23 @@ public class ParameterContext {
 
     private final String parameterName;
     private final AnnotatedType parameterType;
+    private final String declarerName;
     private final List<Weighted<Generator<?>>> explicits = new ArrayList<>();
 
     private int configuredSampleSize;
     private SampleSizer sampleSizer;
     private int discardRatio;
     private String constraint;
+    private long seed = (long) Reflection.defaultValueOf(ForAll.class, "seed");
 
-    public ParameterContext(String parameterName, AnnotatedType parameterType) {
+    public ParameterContext(
+        String parameterName,
+        AnnotatedType parameterType,
+        String declarerName) {
+
         this.parameterName = parameterName;
         this.parameterType = parameterType;
+        this.declarerName = declarerName;
     }
 
     public ParameterContext annotate(AnnotatedElement element) {
@@ -75,6 +82,7 @@ public class ParameterContext {
         if (quantifier != null) {
             this.configuredSampleSize = quantifier.sampleSize();
             this.discardRatio = quantifier.discardRatio();
+            this.seed = quantifier.seed();
         }
 
         return this;
@@ -128,6 +136,10 @@ public class ParameterContext {
         }
     }
 
+    public String name() {
+        return declarerName + ':' + parameterName;
+    }
+
     public AnnotatedType annotatedType() {
         return parameterType;
     }
@@ -149,6 +161,14 @@ public class ParameterContext {
 
     public String constraint() {
         return constraint;
+    }
+
+    public boolean fixedSeed() {
+        return seed != (long) Reflection.defaultValueOf(ForAll.class, "seed");
+    }
+
+    public long seed() {
+        return seed;
     }
 
     public List<Weighted<Generator<?>>> explicitGenerators() {

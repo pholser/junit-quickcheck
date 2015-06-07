@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.junit.contrib</groupId>
             <artifactId>junit-theories</artifactId>
-            <version>5.0-alpha-1</version>
+            <version>5.0-alpha-3</version>
         </dependency>
         <dependency>
             <groupId>org.javaruntype</groupId>
@@ -33,6 +33,10 @@
             <groupId>ognl</groupId>
             <artifactId>ognl</artifactId>
             <version>3.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
@@ -53,6 +57,11 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

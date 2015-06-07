@@ -52,7 +52,7 @@ public class GenerationContextTest {
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() throws Exception {
         ParameterContext parameter =
-            new ParameterContext("arg", annotatedType())
+            new ParameterContext("arg", annotatedType(), "declarer")
                 .annotate(annotatedElement());
 
         GenerationContext gen =

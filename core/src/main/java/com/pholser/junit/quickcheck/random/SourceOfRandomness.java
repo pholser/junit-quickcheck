@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import com.pholser.junit.quickcheck.internal.Ranges;
+
 import java.math.BigInteger;
 import java.util.Random;
-
-import com.pholser.junit.quickcheck.internal.Ranges;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
@@ -38,6 +38,7 @@ import static com.pholser.junit.quickcheck.internal.Ranges.*;
  */
 public class SourceOfRandomness {
     private final Random delegate;
+    private long seed;
 
     /**
      * Makes a new source of randomness.
@@ -46,6 +47,11 @@ public class SourceOfRandomness {
      */
     public SourceOfRandomness(Random delegate) {
         this.delegate = delegate;
+
+        // Swiped from java.util.Random
+        seed = (181783497276652981L * 8682522807148012L) ^ System.nanoTime();
+
+        delegate.setSeed(seed);
     }
 
     /**
@@ -131,7 +137,15 @@ public class SourceOfRandomness {
      * @see java.util.Random#setSeed(long)
      */
     public void setSeed(long seed) {
+        this.seed = seed;
         delegate.setSeed(seed);
+    }
+
+    /**
+     * @return the value used to initially seed this source of randomness
+     */
+    public long seed() {
+        return seed;
     }
 
     /**
@@ -159,7 +173,7 @@ public class SourceOfRandomness {
     }
 
     /**
-     * <p>Gives a random {@code double} value in the interval {@code [min, max]}.</p>
+     * <p>Gives a random {@code double} value in the interval {@code [min, max)}.</p>
      *
      * <p>This naive implementation takes a random {@code double} value from {@link Random#nextDouble()} and
      * scales/shifts the value into the desired interval. This may give surprising results for large ranges.</p>
@@ -174,7 +188,7 @@ public class SourceOfRandomness {
     }
 
     /**
-     * <p>Gives a random {@code float} value in the interval {@code [min, max]}.</p>
+     * <p>Gives a random {@code float} value in the interval {@code [min, max)}.</p>
      *
      * <p>This naive implementation takes a random {@code float} value from {@link Random#nextFloat()} and
      * scales/shifts the value into the desired interval. This may give surprising results for large ranges.</p>

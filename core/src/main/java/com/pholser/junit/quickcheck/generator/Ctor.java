@@ -86,9 +86,7 @@ public class Ctor<T> extends Generator<T> {
 
         parameterGenerators.clear();
         for (Parameter each : parameters) {
-            parameterGenerators.add(generatorFor(
-                new ParameterContext(each.getName(), each.getAnnotatedType())
-                    .annotate(each)));
+            parameterGenerators.add(generatorFor(parameterContext(each)));
         }
     }
 
@@ -98,4 +96,13 @@ public class Ctor<T> extends Generator<T> {
         for (int i = 0; i < parameters.length; ++i)
             parameterGenerators.get(i).configure(parameters[i].getAnnotatedType());
     }
+
+    private ParameterContext parameterContext(Parameter parameter) {
+        return new ParameterContext(
+            parameter.getName(),
+            parameter.getAnnotatedType(),
+            single.getName())
+            .annotate(parameter);
+    }
+
 }
