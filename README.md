@@ -13,8 +13,8 @@ with random values with which to test the validity of the theories.
     import static org.junit.Assert.*;
 
     @RunWith(Theories.class)
-    public class SimpleTest {
-        @Theory public void concatenatedStringLength(
+    public class StringTheories {
+        @Theory public void concatenationLength(
             @ForAll String s1,
             @ForAll String s2) {
 
@@ -27,21 +27,22 @@ As of version 0.5, junit-quickcheck is built with JDK 8, and
 source/target-compatible with 1.8 and beyond.
 
 **PLEASE NOTE**: junit-quickcheck uses a
-[version of the JUnit theories runner](https://github.com/junit-team/junit.contrib/tree/master/theories) 
-that has been modified to respect generics on theory parameter types, as described
-[here](http://github.com/junit-team/junit/issues/64). The classes that comprise
-this rendition of the JUnit theories runner are packaged as
-`org.junit.contrib.theories.*`, rather than `org.junit.experimental.theories.*`.
-Be sure to use the `contrib` version of the runner, annotations, etc. with
-junit-quickcheck.
+[version of the JUnit theories runner]
+(https://github.com/junit-team/junit.contrib/tree/master/theories) 
+that has been modified to respect generics on theory parameter types, as
+described [here](http://github.com/junit-team/junit/issues/64). The classes
+that comprise this rendition of the JUnit theories runner are packaged as
+`org.junit.contrib.theories.*`, rather than
+`org.junit.experimental.theories.*`. Be sure to use the `contrib` version of
+the runner, annotations, etc. with junit-quickcheck.
 
 
 ### Downloading
 
 junit-quickcheck's framework is contained in the JAR file for the module
-`junit-quickcheck-core`. You will want to start out also with the JAR file for
-the module `junit-quickcheck-generators`, which consists of generators for
-theory parameters of basic Java types, such as primitives, arrays, and
+`junit-quickcheck-core`. You will want to start out also with the JAR file
+for the module `junit-quickcheck-generators`, which consists of generators
+for theory parameters of basic Java types, such as primitives, arrays, and
 collections.
 
 There is also a module `junit-quickcheck-guava`, containing generators for
@@ -71,17 +72,18 @@ elements in your POM like so:
 
 ### Discussing
 
-There is [a Google group for junit-quickcheck](https://groups.google.com/d/forum/junit-quickcheck).
+There is [a Google group for junit-quickcheck]
+(https://groups.google.com/d/forum/junit-quickcheck).
 
 
 ### Background
 
-The [Haskell](http://haskell.org) library
-[QuickCheck](http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html)
-allows programmers to specify properties of a function that should hold
-true for some large (potentially infinite) set of possible arguments to
-the function, then executes the function using lots of random arguments
-to see whether the property holds up against them.
+The [Haskell](http://haskell.org) library [QuickCheck]
+(http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html) allows programmers
+to specify properties of a function that should hold true for some large
+(potentially infinite) set of possible arguments to the function, then
+executes the function using lots of random arguments to see whether the
+property holds up against them.
 
 
 #### Theories
@@ -112,7 +114,9 @@ special test runner.
 
             account.withdraw(withdrawalAmount);
 
-            assertEquals(originalBalance.minus(withdrawalAmount), account.balance());
+            assertEquals(
+                originalBalance.minus(withdrawalAmount),
+                account.balance());
         }
     }
 ```
@@ -123,16 +127,15 @@ special test runner.
 TDD/BDD builds up designs example by example. The resulting test suites
 give programmers confidence that their code works for the examples they
 thought of. Theories offer a means to express statements about code that
-should hold for an entire domain of inputs, not just a handful of
-examples, and to validate those statements against lots of randomly generated
-inputs.
+should hold for an entire domain of inputs, not just a handful of examples,
+and to validate those statements against lots of randomly generated inputs.
 
 
 ### Using junit-quickcheck
 
-Create theories as you normally would with JUnit. If you want JUnit to
-exercise the theory with lots of randomly generated values for a theory
-parameter, mark the theory parameter with `@ForAll`:
+Create theories as you normally would with JUnit. To exercise the theory
+with lots of randomly generated values for a theory parameter, mark the theory
+parameter with `@ForAll`:
 
 ```java
     import com.pholser.junit.quickcheck.ForAll;
@@ -146,9 +149,12 @@ parameter, mark the theory parameter with `@ForAll`:
 
             Crypto crypto = new Crypto();
 
-            byte[] ciphertext = crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
+            byte[] ciphertext =
+                crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
 
-            assertEquals(plaintext, new String(crypto.decrypt(ciphertext, key)));
+            assertEquals(
+                plaintext,
+                new String(crypto.decrypt(ciphertext, key)));
         }
     }
 ```
@@ -156,36 +162,36 @@ parameter, mark the theory parameter with `@ForAll`:
 
 #### Supported types
 
-Out of the box (core + generators), junit-quickcheck can generate
-random values for theory parameters of the following types:
+Out of the box (core + generators), junit-quickcheck recognizes theory
+parameters of the following types:
 
 * all Java primitives and primitive wrappers
 * `java.math.Big(Decimal|Integer)`
 * `java.util.Date`
 * any `enum`
 * `String`
-* "functional interfaces" (interfaces with a single method that does not override a method from `java.lang.Object`)
+* "functional interfaces" (interfaces with a single method that does not
+  override a method from `java.lang.Object`)
 * `java.util.ArrayList` and `java.util.LinkedList` of supported types
 * `java.util.HashSet` and `java.util.LinkedHashSet` of supported types
 * `java.util.HashMap` and `java.util.LinkedHashMap` of supported types
 * arrays of supported types
 * others...
 
-When many generators can satisfy a given theory parameter based
-on its type (for example, `java.io.Serializable`), on a given
-generation one of the multiple generators will be chosen at random
-with (roughly) equal probability.
+When many generators can satisfy a given theory parameter based on its type
+(for example, `java.io.Serializable`), on a given generation junit-quickcheck
+will choose one of the multiple generators at random with (roughly) equal
+probability.
 
 
 #### Generating values of other types
 
-If you wish to generate random values for theory parameters of other
-types, or to override the default means of generation for a supported
-type, mark the theory parameter already marked as `@ForAll` with
-`@From` and supply the class(es) of the `Generator` to be used.
-If you give multiple `@From` annotations, one will be chosen on every
-generation with probability in proportion to its `frequency` attribute
-(default is 1).
+To generate random values for theory parameters of other types, or to override
+the default means of generation for a supported type, mark the theory
+parameter already marked as `@ForAll` with `@From` and supply the class(es) of
+the `Generator` to be used. If you give multiple `@From` annotations,
+junit-quickcheck will choose one on every generation with probability in
+proportion to its `frequency` attribute (default is 1).
 
 ```java
     @RunWith(Theories.class)
@@ -196,32 +202,31 @@ generation with probability in proportion to its `frequency` attribute
     }
 ```
 
-If you wish to add a generator for a type without having to use
-`@From`, you can package your `Generator` in a
-[ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)
-JAR file and place the JAR on the class path. junit-quickcheck will
-make those generators available for use. The generators in the module
+To add a generator for a type without having to use `@From`, you can package
+your `Generator` in a [ServiceLoader]
+(http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)
+JAR file and place the JAR on the class path. junit-quickcheck will make those
+generators available for use. The generators in the module
 `junit-quickcheck-generators` are loaded via this mechanism also; any
-generators you supply and make available to the `ServiceLoader`
-complement these generators rather than override them.
+generators you supply and make available to the `ServiceLoader` complement
+these generators rather than override them.
 
 ##### Functional interfaces
 
-Custom generators for types that are functional interfaces override
-the built-in means of generation for such types. This is usually
-necessary for functional interfaces that involve generics.
+Custom generators for types that are functional interfaces override the
+built-in means of generation for such types. This is usually necessary for
+functional interfaces that involve generics.
 
 
 #### Configuring generators
 
-Over the period of generating values for a single theory parameter,
-you can feed specific configurations to the generator(s) for values
-of the parameter's type. If you mark a theory parameter already marked
-as `@ForAll` with an annotation that is itself marked as
-`@GeneratorConfiguration`, then if the `Generator` for that
-parameter's type has a public method named `configure` that accepts
-a single parameter of the annotation type, junit-quickcheck will call
-the `configure` method reflectively, passing it the annotation:
+Over the period of generating values for a single theory parameter, you can
+feed specific configurations to the generator(s) for that parameter.  If you
+mark a theory parameter already marked as `@ForAll` with an annotation that is
+itself marked as `@GeneratorConfiguration`, then if the `Generator` for that
+parameter's type has a public method named `configure` that accepts a single
+parameter of the annotation type, junit-quickcheck will call the `configure`
+method reflectively, passing it the annotation:
 
 ```java
     @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
@@ -254,8 +259,7 @@ A `Generator` can have many such `configure` methods.
 
 ##### Assumptions
 
-Theories often use _assumptions_ to declare conditions under which
-they hold:
+Theories often use _assumptions_ to declare conditions under which they hold:
 
 ```java
     @RunWith(Theories.class)
@@ -290,8 +294,8 @@ they hold:
     }
 ```
 
-Sometimes, using assumptions with junit-quickcheck may yield too
-few values that meet the desired criteria:
+Sometimes, using assumptions with junit-quickcheck can yield too few values
+that meet the desired criteria:
 
 ```java
     @RunWith(Theories.class)
@@ -306,30 +310,27 @@ few values that meet the desired criteria:
     }
 ```
 
-Here, there's not much guarantee that we'll get very many, if any,
-values to test out the theory.
-
 ##### Generator configuration methods
 
-Generator configuration methods and annotations can serve to
-constrain the values that a generator emits. For example,
-the `@InRange` annotation on theory parameters of integral,
-floating-point, and `Date` types causes the generators for those
-types to emit values that fall within a configured
-minimum/maximum:
+Generator configuration methods and annotations can constrain the values that
+a generator emits. For example, the `@InRange` annotation on theory parameters
+of integral, floating-point, and `Date` types causes the generators for those
+types to emit values that fall within a configured minimum/maximum:
 
 ```java
     @RunWith(Theories.class)
     public class SingleDigitTheories {
-        @Theory public void hold(@ForAll @InRange(min = "0", max = "9") int digit) {
+        @Theory public void hold(
+            @ForAll @InRange(min = "0", max = "9") int digit) {
+
             // ...
         }
     }
 ```
 
-Now, the generator will be configured to ensure that every value
-generated meets the desired criteria -- no need to express the
-desired range of values as an assumption.
+Now, the generator will be configured to ensure that every value generated
+meets the desired criteria -- no need to express the desired range of values
+as an assumption.
 
 ###### Configuration on type uses
 
@@ -353,26 +354,28 @@ satisfy a given theory parameter based on its type:
 ```java
     @RunWith(Theories.class)
     public class Serialization {
-        @Theory public void hold(@ForAll @InRange(min = "0", max = "10") Serializable s) {
+        @Theory public void hold(
+            @ForAll @InRange(min = "0", max = "10") Serializable s) {
         }
     }
 ```
 
-Any available generators that can produce something that is `java.io.Serializable` can be
-called on to generate a value for parameter `s` above. Because of this, any configuration
-annotations on a parameter or type use are ignored by a generator that cannot support the
-annotation. This may or may not matter depending on the nature of the theory you're writing.
+Any available generators that can produce something that is
+`java.io.Serializable` might be called on to generate a value for parameter
+`s` above. Because of this, any configuration annotations on a parameter or
+type use are ignored by a generator that cannot support the annotation. This
+may or may not matter depending on the nature of the theory you're writing.
 
-Also, if you have a family of generators that can produce members of a hierarchy, you may
-want to ensure that all the generators respect the same attributes of a given configuration
-annotation. Not doing so could lead to surprising results.
+Also, if you have a family of generators that can produce members of a
+hierarchy, you may want to ensure that all the generators respect the same
+attributes of a given configuration annotation. Not doing so could lead to
+surprising results.
 
 ###### Aggregating configuration
 
-Configuration annotations that are directly on a parameter,
-and any configuration annotations on annotations that are directly
-on a parameter (and so on...) are collected to configure the generators
-for the parameter:
+Configuration annotations that are directly on a parameter, and any
+configuration annotations on annotations that are directly on a parameter
+(and so on...) are collected to configure the generator(s) for the parameter:
 
 ```java
     @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
@@ -397,23 +400,22 @@ for the parameter:
 
 ###### Configuration methods vs. assumptions
 
-When using assumptions with junit-quickcheck, every value fed
-to a `@ForAll` theory parameter counts against the sample size,
-even if it doesn't pass any assumptions made against it in the
-theory. You could end up with no values passing the assumption.
+When using assumptions with junit-quickcheck, every value fed to a `@ForAll`
+theory parameter counts against the sample size, even if it doesn't pass any
+assumptions made against it in the theory. You could end up with no values
+passing the assumption.
 
-Using generator configurations, assumptions aren't very important,
-if needed at all -- every value fed to a `@ForAll` theory parameter
-counts against the sample size, but will meet some conditions that
-assumptions would otherwise have tested.
+Using generator configurations, assumptions aren't very important, if needed
+at all -- every value fed to a `@ForAll` theory parameter counts against the
+sample size, but will meet some conditions that assumptions would otherwise
+have tested.
 
 ###### `ValuesOf`
 
-`boolean` and `enum` theory parameters can be annotated with
-`@ValuesOf` to force the generation to run through every value in
-the type's domain, instead of choosing an element from the domain
-at random every time. This also effectively dictates the sample
-size for the parameter.
+You can `boolean` and `enum` theory parameters with `@ValuesOf` to force the
+generation to run through every value in the type's domain, instead of
+choosing an element from the domain at random every time. This also
+effectively dictates the sample size for the parameter.
 
 ```java
     enum Ternary { YES, NO, MAYBE }
@@ -432,11 +434,10 @@ size for the parameter.
 
 ##### Constraint expressions
 
-Constraint expressions enable you to filter the values that
-reach a theory parameter. Supply the `suchThat` attribute of
-`@ForAll` an [OGNL](http://commons.apache.org/ognl) expression
-that will be used to decide whether a generated value will be
-given to the theory method.
+Constraint expressions allow you to filter the values that reach a theory
+parameter. Supply the `suchThat` attribute of `@ForAll` an
+[OGNL](http://commons.apache.org/ognl) expression that will be used to decide
+whether a generated value will be given to the theory method.
 
 ```java
     @RunWith(Theories.class)
@@ -450,25 +451,23 @@ given to the theory method.
 A theory parameter is referred to as "_" in the constraint expression.
 Constraint expressions cannot refer to other theory parameters.
 
-junit-quickcheck generates values for a theory parameter with a
-constraint expression until `sampleSize` values pass the
-constraint, or until the ratio of constraint passes to constraint
-failures is greater than the `discardRatio` specified by `@ForAll`,
-if any. Exceeding the discard ratio raises an exception and thus
-fails the theory.
+junit-quickcheck generates values for a theory parameter with a constraint
+expression until `sampleSize` values pass the constraint, or until the ratio
+of constraint passes to constraint failures is greater than the `discardRatio`
+specified by `@ForAll`, if any. Exceeding the discard ratio raises an
+exception and thus fails the theory.
 
 
 #### Sample size
 
-By default, 100 random values are generated for a parameter
+By default, junit-quickcheck generates 100 random values for a parameter
 marked `@ForAll`.
 
-**NOTE**: Because junit-quickcheck uses the `Theories` runner,
-a given theory method will be executed for every combination of values
-for theory parameters. This means that for a two-parameter theory
-method, where each parameter is marked with `@ForAll`, the theory
-class will be instantiated and the theory executed 10,000 times
-(100 * 100).
+**NOTE**: junit-quickcheck uses the `Theories` runner, which executes a theory
+method for every combination of values for theory parameters. This means that
+for a two-parameter theory method, where each parameter is marked with
+`@ForAll`, the `Theories` runner instantiates the theory class and executes
+the theory method 10,000 times (100 * 100).
 
 ```java
     @RunWith(Theories.class)
@@ -484,18 +483,20 @@ class will be instantiated and the theory executed 10,000 times
     }
 ```
 
-If you don't want to take on that many invocations, here are some
-mitigation strategies you can use:
+If you don't want to take on that many invocations, here are some mitigation
+strategies you can use:
 
-- Use the `sampleSize` attribute of `@ForAll` to change the number
-of generated values for a given theory parameter:
+- Use the `sampleSize` attribute of `@ForAll` to change the number of
+generated values for a given theory parameter:
 
 ```java
     @RunWith(Theories.class)
     public class GeographyTheories {
         @Theory public void northernHemisphere(
-            @ForAll(sampleSize = 20) @InRange(min = "-90", max = "90") BigDecimal latitude,
-            @ForAll(sampleSize = 20) @InRange(min = "-180", max = "180") BigDecimal longitude) {
+            @ForAll(sampleSize = 20) @InRange(min = "-90", max = "90")
+                BigDecimal latitude,
+            @ForAll(sampleSize = 20) @InRange(min = "-180", max = "180")
+                BigDecimal longitude) {
 
             assumeThat(latitude, greaterThan(BigDecimal.ZERO));
 
@@ -504,9 +505,8 @@ of generated values for a given theory parameter:
     }
 ```
 
-- Collapse the parameters into a class, and use a generator for the
-class. Sometimes, this approach can exert positive pressure on your
-designs:
+- Collapse the theory parameters into a class, and use a generator for the
+class. This approach can exert positive pressure on your designs:
 
 ```java
     public class Coordinate {
@@ -552,10 +552,9 @@ designs:
     }
 ```
 
-- If you opt for artificially collapsing theory parameters
-into a class (that is, not introducing a new concept into your
-domain), you can avoid writing a custom generator by using either
-the `Fields` or the `Ctor` generator, like so:
+- If you opt for artificially collapsing theory parameters into a class
+(that is, not introducing a new concept into your domain), you can use either
+the `Fields` or the `Ctor` generator to avoid writing a custom generator:
 
 ```java
     @RunWith(Theories.class)
@@ -566,7 +565,9 @@ the `Fields` or the `Ctor` generator, like so:
             public double z;
         }
 
-        @Theory public void originDistance(@ForAll @From(Fields.class) Point p) {
+        @Theory public void originDistance(
+            @ForAll @From(Fields.class) Point p) {
+
             assertEquals(
                 Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z),
                 Space.distanceFromOrigin(p.x, p.y, p.z));
@@ -597,7 +598,9 @@ the `Fields` or the `Ctor` generator, like so:
             }
         }
 
-        @Theory public void northernHemisphere(@ForAll @From(Ctor.class) Coordinate c) {
+        @Theory public void northernHemisphere(
+            @ForAll @From(Ctor.class) Coordinate c) {
+
             assumeThat(c.latitude(), greaterThan(BigDecimal.ZERO));
 
             assertTrue(c.inNorthernHemisphere());
@@ -605,48 +608,53 @@ the `Fields` or the `Ctor` generator, like so:
     }
 ```
 
-Any generation-influencing annotations applied to either fields
-(when using the `Fields` generator) or constructor parameters
-(when using the `Ctor` generator) will be honored when the
-respective generators create values for the fields or constructor
-parameters.
+junit-quickcheck will honor any generation-influencing annotations applied to
+either fields (when using the `Fields` generator) or constructor parameters
+(when using the `Ctor` generator) when the respective generators create values
+for the fields or constructor parameters.
+
+#### Seed
+
 
 
 ### How it works
 
-junit-quickcheck leverages the `ParameterSupplier` feature of
-the JUnit theories machinery.
+junit-quickcheck leverages the `ParameterSupplier` feature of the JUnit
+theories machinery.
 
-By default, when the `Theories` runner executes a theory,
-it attempts to scrape _data points_ off the theory class to
-feed to the theories. Data points come from static fields or
-methods annotated with `@DataPoint` (single value) or `@DataPoints`
-(array/iterable of values). The `Theories` runner arranges for
-all combinations of data points of types matching a theory
-parameter to be fed to the theory for execution.
+By default, when the `Theories` runner executes a theory, it attempts to
+scrape _data points_ off the theory class to feed to the theories. Data points
+come from static fields or methods annotated with `@DataPoint` (single value)
+or `@DataPoints` (array/iterable of values). The `Theories` runner feeds all
+combinations of data points of types matching a theory's parameters to the
+theory for execution.
 
-Marking a theory parameter with an annotation that is itself
-annotated with `@ParametersSuppliedBy` tells the `Theories` runner
-to ask a `ParameterSupplier` for values for the theory parameter
-instead. This is how junit-quickcheck interacts with the
-`Theories` runner -- `@ForAll` tells the runner to use
-junit-quickcheck's `ParameterSupplier` rather than the
+Marking a theory parameter with an annotation that is itself annotated with
+`@ParametersSuppliedBy` tells the `Theories` runner to ask a
+`ParameterSupplier` for values for the theory parameter instead. This is how
+junit-quickcheck interacts with the `Theories` runner -- `@ForAll` tells the
+runner to use junit-quickcheck's `ParameterSupplier` rather than the
 `DataPoint`-oriented one.
 
 
 ### Similar projects
 
-* [JCheck](http://www.jcheck.org/). This uses its own test runner, whereas junit-quickcheck leverages the existing
-`Theories` runner and `ParameterSupplier`s.
-* [QuickCheck](http://java.net/projects/quickcheck/pages/Home). This appears to be test framework-agnostic, focusing
-instead on generators of random values.
-* [fj.test package of FunctionalJava (formerly Reductio)](http://functionaljava.org/)
-* [ScalaCheck](http://code.google.com/p/scalacheck/), if you wish to test Java or Scala code using Scala.
+* [JCheck](http://www.jcheck.org/). This uses its own test runner, whereas
+junit-quickcheck leverages the existing `Theories` runner and
+`ParameterSupplier`s.
+* [QuickCheck](http://java.net/projects/quickcheck/pages/Home). This appears
+to be test framework-agnostic, focusing instead on generators of random
+values.
+* [fj.test package of FunctionalJava (formerly Reductio)]
+(http://functionaljava.org/)
+* [ScalaCheck](http://code.google.com/p/scalacheck/), if you wish to test
+Java or Scala code using Scala.
 
 
 ### About junit-quickcheck
 
-junit-quickcheck was written by Paul Holser, and is distributed under the MIT License.
+junit-quickcheck was written by Paul Holser, and is distributed under the MIT
+License.
 
     The MIT License
 
