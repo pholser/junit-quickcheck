@@ -613,8 +613,34 @@ either fields (when using the `Fields` generator) or constructor parameters
 (when using the `Ctor` generator) when the respective generators create values
 for the fields or constructor parameters.
 
+
 #### Seed
 
+For each theory parameter, junit-quickcheck uses a unique value as a seed for
+the source of randomness used to generate the parameter's values. To fix the
+seed value for a theory parameter, use the `seed` attribute of the `@ForAll`
+annotation:
+
+```java
+    @RunWith(Theories.class)
+    public class SameValues {
+        @Theory public void holds(@ForAll(seed = -1L) int i) {
+            // ...
+        }
+    }
+```
+
+You may want to fix the seed when a theory fails, so that you can execute the
+theory again with the same set of generated values.
+
+junit-quickcheck reports the seed used for a given theory parameter by logging
+it to a [SLF4J](http://www.slf4j.org/) logger named
+`junit-quickcheck.seed-reporting`, at `DEBUG` level:
+
+    Seed for parameter com.your.TheoryClass.theoryMethod:parameterName is 8007238959251963394
+
+Add an SLF4J binding JAR file to your test class path and configuration for
+your logger of choice to see the seed log messages.
 
 
 ### How it works
