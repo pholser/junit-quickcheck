@@ -104,5 +104,4 @@ public class Ctor<T> extends Generator<T> {
             single.getName())
             .annotate(parameter);
     }
-
 }
