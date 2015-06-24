@@ -42,10 +42,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.security.AccessController.*;
 import static java.util.Arrays.*;
+import static java.util.stream.Collectors.*;
 
 public final class Reflection {
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<>(16);
@@ -122,7 +122,7 @@ public final class Reflection {
         List<Annotation> thisAnnotations =
             asList(e.getAnnotations()).stream()
                 .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         List<Annotation> annotations = new ArrayList<>();
         for (Annotation each : thisAnnotations) {
@@ -140,7 +140,7 @@ public final class Reflection {
         List<Annotation> thisAnnotations =
                 asList(e.getAnnotations()).stream()
                         .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-                        .collect(Collectors.toList());
+                        .collect(toList());
 
         for (Annotation each : thisAnnotations)
             annotations.addAll(allAnnotationsByType(each.annotationType(), type));
@@ -170,7 +170,7 @@ public final class Reflection {
         for (Class<?> c = type; c != null; c = c.getSuperclass())
             Collections.addAll(allFields, c.getDeclaredFields());
 
-        return allFields;
+        return allFields.stream().filter(f -> !f.isSynthetic()).collect(toList());
     }
 
     public static void setField(
@@ -179,12 +179,9 @@ public final class Reflection {
         Object value,
         final boolean suppressProtection) {
 
-        doPrivileged(new PrivilegedAction<Void>() {
-            @Override
-            public Void run() {
-                field.setAccessible(suppressProtection);
-                return null;
-            }
+        doPrivileged((PrivilegedAction<Void>) () -> {
+            field.setAccessible(suppressProtection);
+            return null;
         });
 
         try {

@@ -326,6 +326,19 @@ public class ReflectionTest {
         private String s;
     }
 
+    @Test public void findingAllDeclaredFieldsOnAClassExcludesSynthetics() throws Exception {
+        List<Field> fields = allDeclaredFieldsOf(Outer.Inner.class);
+
+        assertEquals(1, fields.size());
+        assertThat(fields, hasItem(Outer.Inner.class.getDeclaredField("s")));
+    }
+
+    public static class Outer {
+        public class Inner {
+            private String s;
+        }
+    }
+
     @Test public void findingAnnotationsRecursively() {
         Method method = findMethod(this.getClass(), "withMarker", String.class);
 
