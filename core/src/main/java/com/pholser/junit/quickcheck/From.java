@@ -50,9 +50,12 @@ import com.pholser.junit.quickcheck.generator.Generator;
 @Repeatable(Produced.class)
 public @interface From {
     /**
-     * @return the choices of generators for the annotated theory parameter
+     * @return the generator to be used for the annotated theory parameter
      */
     Class<? extends Generator> value();
 
+    /**
+     * @return a weight to influence how often the generator is chosen
+     */
     int frequency() default 1;
 }
