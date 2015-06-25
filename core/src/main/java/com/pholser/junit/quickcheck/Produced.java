@@ -40,8 +40,8 @@ import static java.lang.annotation.RetentionPolicy.*;
  * <p>Alternatively, you can specify many generators via many repetitions of {@link From}, without
  * using this container annotation.</p>
  *
- * <p>On a given generation, one of the specified generators will be chosen at random with equal
- * probability.</p>
+ * <p>On a given generation, one of the specified generators will be chosen at random with probability
+ * in proportion to {@link From#frequency()}.</p>
  *
  * @see From
  */

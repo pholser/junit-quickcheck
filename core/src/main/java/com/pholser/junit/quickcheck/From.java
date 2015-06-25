@@ -39,8 +39,9 @@ import com.pholser.junit.quickcheck.generator.Generator;
  * with {@link ForAll} with this annotation to have random values supplied to it via the specified
  * {@link Generator}.</p>
  *
- * <p>You may specify as many of these annotation as as you wish on a given parameter. On a given generation,
- * one of the specified generators will be chosen at random with equal probability.</p>
+ * <p>You may specify as many of these annotation as as you wish on a given parameter.
+ * On a given generation, one of the specified generators will be chosen at random with probability
+ * in proportion to {@link #frequency()}.</p>
  *
  * <p>If any such generator produces values of a type incompatible with the type of the marked theory parameter,
  * {@link IllegalArgumentException} is raised.</p>
