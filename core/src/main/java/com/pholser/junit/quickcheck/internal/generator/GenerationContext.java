@@ -33,23 +33,18 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class GenerationContext implements GenerationStatus {
     private final ParameterContext parameter;
-    private final GeneratorRepository repository;
     private final ConstraintEvaluator evaluator;
-    private Generator<?> generator;
+    private final Generator<?> generator;
     private int successfulEvaluations;
     private int discards;
 
     public GenerationContext(ParameterContext parameter, GeneratorRepository repository) {
         this.parameter = parameter;
-        this.repository = repository;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
+        this.generator = repository.produceGenerator(parameter);
     }
 
     public Object generate(SourceOfRandomness random) {
-        return generateUsing(decideGenerator(), random);
-    }
-
-    private Object generateUsing(Generator<?> generator, SourceOfRandomness random) {
         Object nextValue;
 
         for (nextValue = generator.generate(random, this);
@@ -57,13 +52,6 @@ public class GenerationContext implements GenerationStatus {
             nextValue = generator.generate(random, this));
 
         return nextValue;
-    }
-
-    private Generator<?> decideGenerator() {
-        if (generator == null)
-            generator = repository.produceGenerator(parameter);
-
-        return generator;
     }
 
     private boolean evaluate(Object value) {
