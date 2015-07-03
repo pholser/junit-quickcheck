@@ -41,6 +41,9 @@ public class ListOfWrapperLongTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.longs(randomForParameterGenerator))
             .thenReturn(-3L).thenReturn(-2L).thenReturn(-1L);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {
@@ -49,7 +52,7 @@ public class ListOfWrapperLongTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), asList(-3L), asList(-2L, -1L));
+        return asList(emptyList(), singletonList(-3L), asList(-2L, -1L));
     }
 
     @Override public void verifyInteractionWithRandomness() {

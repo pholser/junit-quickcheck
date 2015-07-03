@@ -29,6 +29,7 @@ import java.util.List;
 
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static org.mockito.Mockito.*;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
@@ -36,7 +37,9 @@ public class ListOfHuhTest extends BasicGeneratorTheoryParameterTest {
     public static final List<?> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        // nothing to do here
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {
@@ -45,10 +48,12 @@ public class ListOfHuhTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), asList(false), asList(false, false));
+        return asList(emptyList(), singletonList(false), asList(false, false));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        // nothing to do here
+        verify(distro).sampleWithMean(1, randomForParameterGenerator);
+        verify(distro).sampleWithMean(2, randomForParameterGenerator);
+        verify(distro).sampleWithMean(3, randomForParameterGenerator);
     }
 }

@@ -41,6 +41,9 @@ public class BitSetTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.booleans(randomForParameterGenerator))
             .thenReturn(true).thenReturn(false).thenReturn(true);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {

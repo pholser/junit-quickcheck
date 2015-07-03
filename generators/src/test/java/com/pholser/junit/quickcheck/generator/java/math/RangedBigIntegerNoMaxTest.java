@@ -46,6 +46,8 @@ public class RangedBigIntegerNoMaxTest extends BasicGeneratorTheoryParameterTest
             .thenReturn(new BigInteger("6"));
         when(randomForParameterGenerator.nextBigInteger(min.add(TEN.pow(2)).subtract(min).bitLength()))
             .thenReturn(new BigInteger("35"));
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
     }
 
     @Override protected int sampleSize() {

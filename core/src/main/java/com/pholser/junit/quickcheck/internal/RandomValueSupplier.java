@@ -44,10 +44,11 @@ public class RandomValueSupplier extends ParameterSupplier {
     public RandomValueSupplier() {
         SourceOfRandomness random = new SourceOfRandomness(new Random());
         generator = new RandomTheoryParameterGenerator(
-                random,
-                new GeneratorRepository(random)
-                        .register(new ServiceLoaderGeneratorSource()),
-                LoggerFactory.getLogger("junit-quickcheck.seed-reporting"));
+            random,
+            new GeneratorRepository(random)
+                .register(new ServiceLoaderGeneratorSource()),
+            new GeometricDistribution(),
+            LoggerFactory.getLogger("junit-quickcheck.seed-reporting"));
     }
 
     @Override public List<PotentialAssignment> getValueSources(ParameterSignature signature) {

@@ -55,6 +55,9 @@ public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(longType))
             .thenReturn(0);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {
@@ -63,7 +66,7 @@ public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), asList(3L), asList(4L, 5L));
+        return asList(emptyList(), singletonList(3L), asList(4L, 5L));
     }
 
     @Override public void verifyInteractionWithRandomness() {

@@ -46,9 +46,10 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
 
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        T items = emptyMap();
+        int size = status.size();
 
-        for (int i = 0; i < status.size(); ++i) {
+        T items = emptyMap();
+        for (int i = 0; i < size; ++i) {
             Object key = componentGenerators().get(0).generate(random, status);
             Object value = componentGenerators().get(1).generate(random, status);
             if (okToAdd(key, value))

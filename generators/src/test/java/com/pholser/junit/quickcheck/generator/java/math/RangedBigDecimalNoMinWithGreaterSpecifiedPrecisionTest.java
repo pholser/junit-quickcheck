@@ -52,6 +52,8 @@ public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionTest extends Basi
         when(randomForParameterGenerator.nextBigInteger(
             maxBigInt.subtract(maxBigInt.subtract(TEN.pow(2).movePointRight(8).toBigInteger())).bitLength()))
             .thenReturn(new BigInteger("35"));
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
     }
 
     @Override protected int sampleSize() {

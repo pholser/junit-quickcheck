@@ -45,6 +45,9 @@ public class MapOfIntegerToFloatTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn(1).thenReturn(-2).thenReturn(2);
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.1F).thenReturn(0.2F).thenReturn(0.3F);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {

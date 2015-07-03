@@ -44,6 +44,9 @@ public class SetOfExtendsByteTest extends BasicGeneratorTheoryParameterTest {
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(0);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {

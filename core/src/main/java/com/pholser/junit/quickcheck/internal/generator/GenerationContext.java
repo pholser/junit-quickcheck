@@ -27,20 +27,30 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class GenerationContext implements GenerationStatus {
     private final ParameterContext parameter;
+    private final GeometricDistribution distro;
     private final ConstraintEvaluator evaluator;
+    private final SourceOfRandomness random;
     private final Generator<?> generator;
     private int successfulEvaluations;
     private int discards;
 
-    public GenerationContext(ParameterContext parameter, GeneratorRepository repository) {
+    public GenerationContext(
+        ParameterContext parameter,
+        GeneratorRepository repository,
+        GeometricDistribution distro,
+        SourceOfRandomness random) {
+
         this.parameter = parameter;
+        this.distro = distro;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
+        this.random = random;
         this.generator = repository.produceGenerator(parameter);
     }
 
@@ -89,7 +99,7 @@ public class GenerationContext implements GenerationStatus {
     }
 
     @Override public int size() {
-        return successfulEvaluations;
+        return distro.sampleWithMean(successfulEvaluations + 1, random);
     }
 
     @Override public int attempts() {

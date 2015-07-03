@@ -38,6 +38,10 @@ public class IntArrayTest extends CoreTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt())
             .thenReturn(-1).thenReturn(-2).thenReturn(2).thenReturn(-3).thenReturn(3).thenReturn(-1);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
     }
 
     @Override protected int sampleSize() {

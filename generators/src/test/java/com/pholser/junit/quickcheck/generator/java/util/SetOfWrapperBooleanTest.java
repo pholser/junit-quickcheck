@@ -43,6 +43,10 @@ public class SetOfWrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
         when(Generating.booleans(randomForParameterGenerator))
             .thenReturn(false).thenReturn(true).thenReturn(false)
             .thenReturn(true).thenReturn(false).thenReturn(true);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
         verifyNoMoreInteractions(randomForParameterGenerator);
     }
 

@@ -47,9 +47,10 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
 
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        T items = empty();
+        int size = status.size();
 
-        for (int i = 0; i < status.size(); ++i)
+        T items = empty();
+        for (int i = 0; i < size; ++i)
             items.add(componentGenerators().get(0).generate(random, status));
 
         return items;

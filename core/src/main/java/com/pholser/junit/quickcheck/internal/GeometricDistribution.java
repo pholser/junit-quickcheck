@@ -23,35 +23,36 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.internal;
 
-import java.util.List;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
+import static java.lang.Math.*;
 
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
-
-public class PrimitiveIntegerArrayTest extends CoreTheoryParameterTest {
-    public static final int[] TYPE_BEARER = null;
-
-    @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt())
-            .thenReturn(-1).thenReturn(-2).thenReturn(2);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+public class GeometricDistribution {
+    public int sampleWithMean(double mean, SourceOfRandomness random) {
+        return sample(probabilityOfMean(mean), random);
     }
 
-    @Override protected int sampleSize() {
-        return 3;
+    int sample(double p, SourceOfRandomness random) {
+        ensureProbability(p);
+
+        if (p == 1)
+            return 0;
+
+        double uniform = random.nextDouble();
+        return (int) ceil((log(1 - uniform) / log(1 - p)));
     }
 
-    @Override protected List<?> randomValues() {
-        return asList(new int[0], new int[] { -1 }, new int[] { -2, 2 });
+    double probabilityOfMean(double mean) {
+        if (mean < 0)
+            throw new IllegalArgumentException("Need a non-negative mean, got " + mean);
+
+        return 1 / (1 + mean);
     }
 
-    @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt();
+    private void ensureProbability(double p) {
+        if (p <= 0 || p > 1)
+            throw new IllegalArgumentException("Need a probability in (0, 1], got " + p);
     }
 }

@@ -32,12 +32,15 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
 import static com.google.common.collect.Sets.*;
 import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
 public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     public static final Set<?> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        // nothing to do here
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {
@@ -50,6 +53,8 @@ public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        // nothing to do here
+        verify(distro).sampleWithMean(1, randomForParameterGenerator);
+        verify(distro).sampleWithMean(2, randomForParameterGenerator);
+        verify(distro).sampleWithMean(3, randomForParameterGenerator);
     }
 }

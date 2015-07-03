@@ -41,6 +41,9 @@ public class ListOfExtendsShortTest extends BasicGeneratorTheoryParameterTest {
     @Override protected void primeSourceOfRandomness() {
         when(Generating.shorts(randomForParameterGenerator))
             .thenReturn((short) -1).thenReturn((short) -2).thenReturn((short) -3);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
     }
 
     @Override protected int sampleSize() {
@@ -49,7 +52,7 @@ public class ListOfExtendsShortTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), asList((short) -1), asList((short) -2, (short) -3));
+        return asList(emptyList(), singletonList((short) -1), asList((short) -2, (short) -3));
     }
 
     @Override public void verifyInteractionWithRandomness() {

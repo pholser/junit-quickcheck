@@ -39,8 +39,14 @@ public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
 
     @Override protected void primeSourceOfRandomness() {
         int longIndex = 12;
-        when(randomForParameterGenerator.nextLong()).thenReturn(1L).thenReturn(7L).thenReturn(63L);
-        when(randomForGeneratorRepo.nextInt(Iterables.size(source))).thenReturn(longIndex);
+        when(randomForParameterGenerator.nextLong())
+            .thenReturn(1L).thenReturn(7L).thenReturn(63L);
+        when(randomForGeneratorRepo.nextInt(Iterables.size(source)))
+            .thenReturn(longIndex);
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
     }
 
     @Override protected int sampleSize() {

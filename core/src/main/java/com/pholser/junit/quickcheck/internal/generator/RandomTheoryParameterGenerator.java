@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.PotentialAssignment;
@@ -36,15 +37,18 @@ import org.slf4j.Logger;
 public class RandomTheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final GeneratorRepository repository;
+    private final GeometricDistribution distro;
     private final Logger log;
 
     public RandomTheoryParameterGenerator(
         SourceOfRandomness random,
         GeneratorRepository repository,
+        GeometricDistribution distro,
         Logger log) {
 
         this.random = random;
         this.repository = repository;
+        this.distro = distro;
         this.log = log;
     }
 
@@ -56,7 +60,9 @@ public class RandomTheoryParameterGenerator {
 
         List<PotentialAssignment> assignments = new ArrayList<>();
 
-        for (GenerationContext gen = new GenerationContext(parameter, repository); gen.shouldContinue();) {
+        for (GenerationContext gen = new GenerationContext(parameter, repository, distro, random);
+            gen.shouldContinue();) {
+
             Object nextValue = gen.generate(random);
             assignments.add(PotentialAssignment.forValue(String.valueOf(nextValue), nextValue));
         }

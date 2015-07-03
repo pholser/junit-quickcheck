@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -56,6 +57,7 @@ public abstract class CoreTheoryParameterTest {
 
     @Mock protected SourceOfRandomness randomForParameterGenerator;
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
+    @Mock protected GeometricDistribution distro;
     @Mock protected Logger log;
     protected Iterable<Generator<?>> source;
     protected GeneratorRepository repository;
@@ -75,7 +77,7 @@ public abstract class CoreTheoryParameterTest {
             repository.register(auxiliarySource);
 
         RandomTheoryParameterGenerator generator =
-            new RandomTheoryParameterGenerator(randomForParameterGenerator, repository, log);
+            new RandomTheoryParameterGenerator(randomForParameterGenerator, repository, distro, log);
 
         AnnotatedType type = annotatedType();
         ParameterContext context =

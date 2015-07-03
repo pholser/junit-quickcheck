@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Rule;
@@ -55,8 +56,11 @@ public class GenerationContextTest {
             new ParameterContext("arg", annotatedType(), "declarer")
                 .annotate(annotatedElement());
 
-        GenerationContext gen =
-            new GenerationContext(parameter, new GeneratorRepository(null).register(new Countdown()));
+        GenerationContext gen = new GenerationContext(
+            parameter,
+            new GeneratorRepository(null).register(new Countdown()),
+            new GeometricDistribution(),
+            random);
 
         thrown.expect(GenerationContext.DiscardRatioExceededException.class);
         thrown.expectMessage(String.format(

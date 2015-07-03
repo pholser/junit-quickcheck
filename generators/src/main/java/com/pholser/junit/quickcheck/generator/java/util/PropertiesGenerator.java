@@ -50,9 +50,10 @@ public class PropertiesGenerator extends Generator<Properties> {
     }
 
     @Override public Properties generate(SourceOfRandomness random, GenerationStatus status) {
-        Properties properties = new Properties();
+        int size = status.size();
 
-        for (int i = 0; i < status.size(); ++i) {
+        Properties properties = new Properties();
+        for (int i = 0; i < size; ++i) {
             properties.setProperty(
                 stringGenerator.generate(random, status),
                 stringGenerator.generate(random, status));

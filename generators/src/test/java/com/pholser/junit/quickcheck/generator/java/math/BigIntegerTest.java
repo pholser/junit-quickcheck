@@ -42,6 +42,10 @@ public class BigIntegerTest extends BasicGeneratorTheoryParameterTest {
         when(randomForParameterGenerator.nextBigInteger(2)).thenReturn(new BigInteger("3"));
         when(randomForParameterGenerator.nextBigInteger(3)).thenReturn(new BigInteger("-7"));
         when(randomForParameterGenerator.nextBigInteger(4)).thenReturn(new BigInteger("12"));
+        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
     }
 
     @Override protected int sampleSize() {
@@ -57,5 +61,9 @@ public class BigIntegerTest extends BasicGeneratorTheoryParameterTest {
         verify(randomForParameterGenerator).nextBigInteger(2);
         verify(randomForParameterGenerator).nextBigInteger(3);
         verify(randomForParameterGenerator).nextBigInteger(4);
+        verify(distro).sampleWithMean(1, randomForParameterGenerator);
+        verify(distro).sampleWithMean(2, randomForParameterGenerator);
+        verify(distro).sampleWithMean(3, randomForParameterGenerator);
+        verify(distro).sampleWithMean(4, randomForParameterGenerator);
     }
 }
