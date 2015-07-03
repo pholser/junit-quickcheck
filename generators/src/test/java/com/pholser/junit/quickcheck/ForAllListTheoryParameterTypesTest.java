@@ -159,4 +159,16 @@ public class ForAllListTheoryParameterTypesTest {
         @Theory public void shouldHold(@ForAll(sampleSize = 5) List<List<? super Float>> items) {
         }
     }
+
+    @Test public void doesNotGetStuckWithConstraintExpression() {
+        assertThat(testResult(UsedToGetStuckOnConstraintExpression.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class UsedToGetStuckOnConstraintExpression {
+        @Theory
+        public void myTest(@ForAll(sampleSize = 8, suchThat = "not #_.empty") List<Integer> ints) {
+            assertThat(ints.size(), greaterThan(0));
+        }
+    }
 }
