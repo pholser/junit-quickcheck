@@ -1,5 +1,6 @@
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestBooleanGenerator;
@@ -15,8 +16,13 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.List;
 
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -203,6 +209,25 @@ public class FromTest {
     public static class ExplicitPrimitiveIntFixedSeed {
         @Theory public void shouldHold(@ForAll(sampleSize = 1, seed = -1) @From(TestIntegerGenerator.class) int i) {
             assertEquals(1155099827, i);
+        }
+    }
+
+
+    @Test public void indirectPrimitiveInt() {
+        assertThat(testResult(IndirectPrimitiveInt.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class IndirectPrimitiveInt {
+        @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+        @Retention(RUNTIME)
+        @From(TestIntegerGenerator.class)
+        @Between(min = 1, max = 5)
+        public @interface Small {
+        }
+
+        @Theory public void shouldHold(@ForAll @Small int i) {
+            assertThat(i, allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(5)));
         }
     }
 }
