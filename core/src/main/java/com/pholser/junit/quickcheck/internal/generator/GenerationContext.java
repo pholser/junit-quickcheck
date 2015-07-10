@@ -32,6 +32,8 @@ import com.pholser.junit.quickcheck.internal.ParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.lang.Math.*;
+
 public class GenerationContext implements GenerationStatus {
     private final ParameterContext parameter;
     private final GeometricDistribution distro;
@@ -99,7 +101,8 @@ public class GenerationContext implements GenerationStatus {
     }
 
     @Override public int size() {
-        return distro.sampleWithMean(successfulEvaluations + 1, random);
+        int sample = distro.sampleWithMean(attempts() + 1, random);
+        return min(sample, parameter.sampleSize());
     }
 
     @Override public int attempts() {

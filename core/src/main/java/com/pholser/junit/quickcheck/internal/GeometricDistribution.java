@@ -41,14 +41,14 @@ public class GeometricDistribution {
             return 0;
 
         double uniform = random.nextDouble();
-        return (int) ceil((log(1 - uniform) / log(1 - p)));
+        return (int) ceil(log(1 - uniform) / log(1 - p));
     }
 
     double probabilityOfMean(double mean) {
-        if (mean < 0)
-            throw new IllegalArgumentException("Need a non-negative mean, got " + mean);
+        if (mean <= 0)
+            throw new IllegalArgumentException("Need a positive mean, got " + mean);
 
-        return 1 / (1 + mean);
+        return 1 / mean;
     }
 
     private void ensureProbability(double p) {

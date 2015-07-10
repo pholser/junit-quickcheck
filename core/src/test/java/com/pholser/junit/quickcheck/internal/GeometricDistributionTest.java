@@ -85,16 +85,18 @@ public class GeometricDistributionTest {
     }
 
     @Test public void zeroMeanProbability() {
-        assertEquals(1, distro.probabilityOfMean(0), 0);
+        thrown.expect(IllegalArgumentException.class);
+
+        distro.probabilityOfMean(0);
     }
 
     @Test public void nonZeroMeanProbability() {
-        assertEquals(1 / 7D, distro.probabilityOfMean(6), 0);
+        assertEquals(1 / 6D, distro.probabilityOfMean(6), 0);
     }
 
     @Test public void sampleWithMean() {
         when(random.nextDouble()).thenReturn(0.76);
 
-        assertEquals(10, distro.sampleWithMean(6, random));
+        assertEquals(8, distro.sampleWithMean(6, random));
     }
 }
