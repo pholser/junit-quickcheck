@@ -31,13 +31,13 @@ package com.pholser.junit.quickcheck.generator;
  */
 public interface GenerationStatus {
     /**
-     * @return an arbitrary "size" parameter; this value increases for every successful generation
+     * @return an arbitrary "size" parameter; this value (probabilistically) increases for every successful generation,
+     * and certainly not greater than {@link #attempts()}.
      */
     int size();
 
     /**
-     * @return how many attempts have been made to generate a value for a theory parameter; generally greater than
-     * or equal to {@link #size()}.
+     * @return how many attempts have been made to generate a value for a theory parameter
      */
     int attempts();
 }
