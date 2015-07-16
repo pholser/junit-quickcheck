@@ -1,3 +1,0 @@
--- Do we need size control (e.g. maxSize on @ForAll)? Maybe size() gets computed on every generation, as with Haskell QuickCheck?
--- site
--- tighten up reporting
