@@ -412,10 +412,10 @@ have tested.
 
 ###### `ValuesOf`
 
-You can `boolean` and `enum` theory parameters with `@ValuesOf` to force the
-generation to run through every value in the type's domain, instead of
-choosing an element from the domain at random every time. This also
-effectively dictates the sample size for the parameter.
+You can mark `boolean` and `enum` theory parameters with `@ValuesOf` to
+force the generation to run through every value in the type's domain,
+instead of choosing an element from the domain at random every time.
+This also effectively dictates the sample size for the parameter.
 
 ```java
     enum Ternary { YES, NO, MAYBE }
