@@ -32,28 +32,31 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
 /**
  * Produces values for theory parameters of type {@code char} or {@link Character}.
  */
 public class CharacterGenerator extends Generator<Character> {
-    private char min = Character.MIN_VALUE;
-    private char max = Character.MAX_VALUE;
+    private char min = (Character) defaultValueOf(InRange.class, "minChar");
+    private char max = (Character) defaultValueOf(InRange.class, "maxChar");
 
     @SuppressWarnings("unchecked") public CharacterGenerator() {
         super(asList(char.class, Character.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max() maximum}, inclusive, with uniform distribution.
+     * Tells this generator to produce values within a specified minimum and/or maximum, inclusive,
+     * with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minChar()} and
+     * {@link InRange#maxChar()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        if (!range.min().isEmpty())
-            min = range.min().charAt(0);
-        if (!range.max().isEmpty())
-            max = range.max().charAt(0);
+        min = range.min().isEmpty() ? range.minChar() : range.min().charAt(0);
+        max = range.max().isEmpty() ? range.maxChar() : range.max().charAt(0);
     }
 
     @Override public Character generate(SourceOfRandomness random, GenerationStatus status) {

@@ -25,36 +25,38 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import static java.util.Arrays.*;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.lang.Integer.*;
-import static java.util.Arrays.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values for theory parameters of type {@code int} or {@link Integer}.
  */
 public class IntegerGenerator extends Generator<Integer> {
-    private int min = MIN_VALUE;
-    private int max = MAX_VALUE;
+    private int min = (Integer) defaultValueOf(InRange.class, "minInt");
+    private int max = (Integer) defaultValueOf(InRange.class, "maxInt");
 
     @SuppressWarnings("unchecked") public IntegerGenerator() {
         super(asList(int.class, Integer.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max()} maximum}, inclusive, with uniform distribution.
+     * Tells this generator to produce values within a specified minimum and/or maximum, inclusive,
+     * with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minInt()} and
+     * {@link InRange#maxInt()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        if (!range.min().isEmpty())
-            min = Integer.parseInt(range.min());
-        if (!range.max().isEmpty())
-            max = Integer.parseInt(range.max());
+        min = range.min().isEmpty() ? range.minInt() : Integer.parseInt(range.min());
+        max = range.max().isEmpty() ? range.maxInt() : Integer.parseInt(range.max());
     }
 
     @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {

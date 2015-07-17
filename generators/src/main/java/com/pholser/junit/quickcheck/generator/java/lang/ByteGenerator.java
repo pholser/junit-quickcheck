@@ -32,28 +32,31 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
 /**
  * Produces values for theory parameters of type {@code byte} or {@link Byte}.
  */
 public class ByteGenerator extends Generator<Byte> {
-    private byte min = Byte.MIN_VALUE;
-    private byte max = Byte.MAX_VALUE;
+    private byte min = (Byte) defaultValueOf(InRange.class, "minByte");
+    private byte max = (Byte) defaultValueOf(InRange.class, "maxByte");
 
     @SuppressWarnings("unchecked") public ByteGenerator() {
         super(asList(byte.class, Byte.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max()} maximum}, inclusive, with uniform distribution.
+     * Tells this generator to produce values within a specified minimum and/or maximum, inclusive,
+     * with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minByte()} and
+     * {@link InRange#maxByte()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        if (!range.min().isEmpty())
-            min = Byte.parseByte(range.min());
-        if (!range.max().isEmpty())
-            max = Byte.parseByte(range.max());
+        min = range.min().isEmpty() ? range.minByte() : Byte.parseByte(range.min());
+        max = range.max().isEmpty() ? range.maxByte() : Byte.parseByte(range.max());
     }
 
     @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {

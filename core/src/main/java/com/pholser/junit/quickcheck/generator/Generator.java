@@ -173,7 +173,7 @@ public abstract class Generator<T> {
     }
 
     /**
-     * <p>Tells this generator to configure itself using annotations from a given annotated type.</p>
+     * <p>Configures this generator using annotations from a given annotated type.</p>
      *
      * <p>This method considers only annotations that are themselves marked with {@link GeneratorConfiguration}.</p>
      *

@@ -32,28 +32,31 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
 /**
  * Produces values for theory parameters of type {@code float} or {@link Float}.
  */
 public class FloatGenerator extends Generator<Float> {
-    private float min = 0F;
-    private float max = 1F;
+    private float min = (Float) defaultValueOf(InRange.class, "minFloat");
+    private float max = (Float) defaultValueOf(InRange.class, "maxFloat");
 
     @SuppressWarnings("unchecked") public FloatGenerator() {
         super(asList(float.class, Float.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#min()}  minimum}
-     * (inclusive) and/or {@linkplain InRange#max()}  maximum} (exclusive), with uniform distribution.
+     * Tells this generator to produce values within a specified minimum (inclusive) and/or maximum (exclusive)
+     * with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minFloat()} and
+     * {@link InRange#maxFloat()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        if (!range.min().isEmpty())
-            min = Float.parseFloat(range.min());
-        if (!range.max().isEmpty())
-            max = Float.parseFloat(range.max());
+        min = range.min().isEmpty() ? range.minFloat() : Float.parseFloat(range.min());
+        max = range.max().isEmpty() ? range.maxFloat() : Float.parseFloat(range.max());
     }
 
     @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {

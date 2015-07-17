@@ -32,28 +32,31 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
 /**
  * Produces values for theory parameters of type {@code double} or {@link Double}.
  */
 public class DoubleGenerator extends Generator<Double> {
-    private double min = 0;
-    private double max = 1;
+    private double min = (Double) defaultValueOf(InRange.class, "minDouble");
+    private double max = (Double) defaultValueOf(InRange.class, "maxDouble");
 
     @SuppressWarnings("unchecked") public DoubleGenerator() {
         super(asList(double.class, Double.class));
     }
 
     /**
-     * Tells this generator to produce values within a specified {@linkplain InRange#min()}  minimum}
-     * (inclusive) and/or {@linkplain InRange#max()} maximum} (exclusive), with uniform distribution.
+     * Tells this generator to produce values within a specified minimum (inclusive) and/or maximum (exclusive)
+     * with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minDouble()} and
+     * {@link InRange#maxDouble()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        if (!range.min().isEmpty())
-            min = Double.parseDouble(range.min());
-        if (!range.max().isEmpty())
-            max = Double.parseDouble(range.max());
+        min = range.min().isEmpty() ? range.minDouble() : Double.parseDouble(range.min());
+        max = range.max().isEmpty() ? range.maxDouble() : Double.parseDouble(range.max());
     }
 
     @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
