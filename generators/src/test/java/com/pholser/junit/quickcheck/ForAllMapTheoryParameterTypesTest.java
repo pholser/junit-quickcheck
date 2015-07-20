@@ -271,7 +271,8 @@ public class ForAllMapTheoryParameterTypesTest {
 
         assertEquals(
             m1.getClass().getName() + '/' + m2.getClass().getName(),
-            m1.size() + m2.size(), mergeSize + intersectionSize);
+            m1.size() + m2.size(),
+            mergeSize + intersectionSize);
     }
 
     private static <K, V> Map<K, V> merge(Collection<Map<K, V>> maps) {
