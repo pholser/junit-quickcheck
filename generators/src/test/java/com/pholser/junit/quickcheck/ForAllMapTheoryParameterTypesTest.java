@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.pholser.junit.quickcheck.Classes.*;
+import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -262,5 +263,33 @@ public class ForAllMapTheoryParameterTypesTest {
                 }
             }
         }
+    }
+
+    @Theory public void mergeMapSize(@ForAll Map<Integer, Integer> m1, @ForAll Map<Integer, Integer> m2) {
+        int intersectionSize = intersectByKeys(m1, m2).size();
+        int mergeSize = merge(asList(m1, m2)).size();
+
+        assertEquals(
+            m1.getClass().getName() + '/' + m2.getClass().getName(),
+            m1.size() + m2.size(), mergeSize + intersectionSize);
+    }
+
+    private static <K, V> Map<K, V> merge(Collection<Map<K, V>> maps) {
+        Map<K, V> result = new HashMap<>();
+
+        maps.forEach(result::putAll);
+
+        return result;
+    }
+
+    private static <K1, V1, V2> Map<K1, V1> intersectByKeys(Map<K1, V1> m1, Map<K1, V2> m2) {
+        Map<K1, V1> result = new HashMap<>();
+
+        m1.forEach((k1, v1) -> {
+            if (m2.containsKey(k1))
+                result.put(k1, v1);
+        });
+
+        return result;
     }
 }
