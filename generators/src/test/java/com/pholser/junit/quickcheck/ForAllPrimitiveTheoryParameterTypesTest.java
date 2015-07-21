@@ -723,4 +723,18 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
             ++iterations;
         }
     }
+
+    @Test public void voidParameter() throws Exception {
+        assertThat(testResult(VoidParameter.class), isSuccessful());
+        assertEquals(Annotations.defaultSampleSize(), VoidParameter.iterations);
+    }
+
+    @RunWith(Theories.class)
+    public static class VoidParameter {
+        static int iterations;
+
+        @Theory public void shouldHold(@ForAll Void v) {
+            ++iterations;
+        }
+    }
 }

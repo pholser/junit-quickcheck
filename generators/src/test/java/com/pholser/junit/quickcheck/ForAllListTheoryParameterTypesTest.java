@@ -160,6 +160,19 @@ public class ForAllListTheoryParameterTypesTest {
         }
     }
 
+    @Test public void listOfVoid() throws Exception {
+        assertThat(testResult(ListOfVoid.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class ListOfVoid {
+        @Theory public void shouldHold(@ForAll List<Void> voids) {
+            for (Void v : voids) {
+                assertNull(v);
+            }
+        }
+    }
+
     @Test public void doesNotGetStuckWithConstraintExpression() {
         assertThat(testResult(UsedToGetStuckOnConstraintExpression.class), isSuccessful());
     }
