@@ -23,30 +23,20 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.generator.ValuesOf;
-import org.javaruntype.type.Types;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 
-class SampleSizer {
-    private final int sampleSize;
-
-    SampleSizer(int configuredSampleSize, ParameterTypeContext parameter) {
-        org.javaruntype.type.Type<?> token = Types.forJavaLangReflectType(parameter.type());
-        Class<?> raw = token.getRawClass();
-
-        if (parameter.annotatedWith(ValuesOf.class)) {
-            if (boolean.class.equals(raw) || Boolean.class.equals(raw))
-                sampleSize = 2;
-            else if (raw.isEnum())
-                sampleSize = raw.getEnumConstants().length;
-            else
-                sampleSize = configuredSampleSize;
-        } else
-            sampleSize = configuredSampleSize;
+public class Types {
+    private Types() {
+        throw new UnsupportedOperationException();
     }
 
-    int sampleSize() {
-        return sampleSize;
+    public static ParameterTypeContext typeOf(Class<?> c, String fieldName) throws NoSuchFieldException {
+        return new ParameterTypeContext(
+            fieldName,
+            c.getDeclaredField(fieldName).getAnnotatedType(),
+            c.getName())
+            .allowMixedTypes(true);
     }
 }

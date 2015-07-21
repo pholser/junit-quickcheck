@@ -25,11 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.TestBigDecimalGenerator;
@@ -40,10 +35,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
+    private static BigDecimal bigDecimal;
+    private static Comparable<BigDecimal> comparable;
+    private static Serializable serializable;
+    private static Number number;
+    private static Object object;
+
     private GeneratorRepository repo;
     private TestBigDecimalGenerator generator;
     @Mock private SourceOfRandomness random;
@@ -60,32 +67,32 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
         repo.register(generators);
     }
 
-    @Test public void bigDecimal() {
-        Generator<?> result = repo.generatorFor(BigDecimal.class);
+    @Test public void bigDecimal() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "bigDecimal"));
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test public void comparable() {
-        Generator<?> result = repo.generatorFor(Comparable.class);
+    @Test public void comparable() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "comparable"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
-    @Test public void serializable() {
-        Generator<?> result = repo.generatorFor(Serializable.class);
+    @Test public void serializable() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
-    @Test public void number() {
-        Generator<?> result = repo.generatorFor(Number.class);
+    @Test public void number() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "number"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
-    @Test public void object() {
-        Generator<?> result = repo.generatorFor(Object.class);
+    @Test public void object() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class, ZilchGenerator.class);
     }

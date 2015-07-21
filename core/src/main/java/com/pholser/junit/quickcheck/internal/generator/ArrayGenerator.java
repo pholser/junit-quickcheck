@@ -25,13 +25,15 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Array;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
@@ -61,8 +63,7 @@ public class ArrayGenerator extends Generator<Object> {
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
-        component.configure(annotatedComponentTypes.get(0));
+        component.configure(annotatedComponentTypes(annotatedType).get(0));
     }
 
     public Generator<?> componentGenerator() {

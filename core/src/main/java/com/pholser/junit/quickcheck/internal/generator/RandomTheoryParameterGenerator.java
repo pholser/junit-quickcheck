@@ -56,7 +56,7 @@ public class RandomTheoryParameterGenerator {
         if (parameter.fixedSeed()) {
             random.setSeed(parameter.seed());
         }
-        log.debug("Seed for parameter {} is {}", parameter.name(), random.seed());
+        log.debug("Seed for parameter {} is {}", parameter.typeContext().name(), random.seed());
 
         List<PotentialAssignment> assignments = new ArrayList<>();
 

@@ -25,25 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.ExtendsTypeParameter;
-import org.javaruntype.type.StandardTypeParameter;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedArrayType;
-import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,21 +148,8 @@ public abstract class Generator<T> {
      * @see #canGenerateForParametersOfTypes(List)
      */
     public static boolean compatibleWithTypeParameter(TypeParameter<?> parameter, Class<?> clazz) {
-        if (parameter instanceof WildcardTypeParameter)
-            return true;
-
-        if (parameter instanceof StandardTypeParameter<?>) {
-            StandardTypeParameter<?> standard = (StandardTypeParameter<?>) parameter;
-            return standard.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
-        }
-
-        if (parameter instanceof ExtendsTypeParameter<?>) {
-            ExtendsTypeParameter<?> extend = (ExtendsTypeParameter<?>) parameter;
-            return Types.forJavaLangReflectType(clazz).isAssignableFrom(extend.getType());
-        }
-
-        // must be "? super X"
-        return parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
+        return parameter instanceof WildcardTypeParameter
+            || parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
     }
 
     /**
@@ -219,29 +199,11 @@ public abstract class Generator<T> {
         invoke(configurer, this, configuration);
     }
 
-    protected final List<AnnotatedType> annotatedComponentTypes(AnnotatedType annotatedType) {
-        if (annotatedType instanceof AnnotatedParameterizedType)
-            return Arrays.asList(((AnnotatedParameterizedType) annotatedType).getAnnotatedActualTypeArguments());
-
-        if (annotatedType instanceof AnnotatedArrayType)
-            return singletonList(((AnnotatedArrayType) annotatedType).getAnnotatedGenericComponentType());
-
-        if (annotatedType instanceof AnnotatedWildcardType) {
-            AnnotatedWildcardType wildcard = (AnnotatedWildcardType) annotatedType;
-            if (wildcard.getAnnotatedLowerBounds().length > 0)
-                return Arrays.asList(wildcard.getAnnotatedLowerBounds());
-
-            return Arrays.asList(wildcard.getAnnotatedUpperBounds());
-        }
-
-        return Collections.emptyList();
-    }
-
     public void provideRepository(GeneratorRepository provided) {
         repo = provided;
     }
 
-    Generator<?> generatorFor(ParameterContext parameter) {
+    Generator<?> generatorFor(ParameterTypeContext parameter) {
         return repo.produceGenerator(parameter);
     }
 }

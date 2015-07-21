@@ -30,6 +30,7 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,12 +54,12 @@ public class GenerationContextTest {
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() throws Exception {
         ParameterContext parameter =
-            new ParameterContext("arg", annotatedType(), "declarer")
+            new ParameterContext(new ParameterTypeContext("arg", annotatedType(), "declarer"))
                 .annotate(annotatedElement());
 
         GenerationContext gen = new GenerationContext(
             parameter,
-            new GeneratorRepository(null).register(new Countdown()),
+            new GeneratorRepository(random).register(new Countdown()),
             new GeometricDistribution(),
             random);
 

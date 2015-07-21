@@ -53,7 +53,7 @@ public class GenerationContext implements GenerationStatus {
         this.distro = distro;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
         this.random = random;
-        this.generator = repository.produceGenerator(parameter);
+        this.generator = repository.produceGenerator(parameter.typeContext());
     }
 
     public Object generate(SourceOfRandomness random) {

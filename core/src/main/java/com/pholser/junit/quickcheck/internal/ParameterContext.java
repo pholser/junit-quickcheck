@@ -25,55 +25,30 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.String.format;
-import static java.util.Collections.*;
-
 import com.pholser.junit.quickcheck.ForAll;
-import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.generator.Generator;
-import org.javaruntype.type.Types;
+
+import java.lang.reflect.AnnotatedElement;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class ParameterContext {
-    private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =
-        "The generator %s named in @%s on parameter %s does not produce a type-compatible object";
-
-    private final String parameterName;
-    private final AnnotatedType parameterType;
-    private final String declarerName;
-    private final List<Weighted<Generator<?>>> explicits = new ArrayList<>();
+    private final ParameterTypeContext typeContext;
 
     private int configuredSampleSize;
     private SampleSizer sampleSizer;
     private int discardRatio;
     private String constraint;
-    private long seed = (long) Reflection.defaultValueOf(ForAll.class, "seed");
+    private long seed = (long) defaultValueOf(ForAll.class, "seed");
 
-    public ParameterContext(
-        String parameterName,
-        AnnotatedType parameterType,
-        String declarerName) {
-
-        this.parameterName = parameterName;
-        this.parameterType = parameterType;
-        this.declarerName = declarerName;
+    public ParameterContext(ParameterTypeContext typeContext) {
+        this.typeContext = typeContext;
     }
 
     public ParameterContext annotate(AnnotatedElement element) {
         ForAll quantifier = element.getAnnotation(ForAll.class);
         addQuantifier(quantifier);
         addConstraint(quantifier);
-        addGenerators(allAnnotationsByType(element, From.class));
+        typeContext.annotate(element);
 
         return this;
     }
@@ -95,62 +70,13 @@ public class ParameterContext {
         return this;
     }
 
-    private ParameterContext addGenerators(List<From> generators) {
-        for (From each : generators) {
-            Generator<?> generator = makeGenerator(each.value());
-            ensureCorrectType(generator);
-            explicits.add(new Weighted<>(generator, each.frequency()));
-        }
-
-        return this;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
-        // for Ctor/Fields
-        Constructor<? extends Generator> ctor = findConstructor(generatorType, Class.class);
-        if (ctor != null)
-            return instantiate(ctor, rawParameterType());
-
-        return instantiate(generatorType);
-    }
-
-    private Class<?> rawParameterType() {
-        if (type() instanceof ParameterizedType)
-            return (Class<?>) ((ParameterizedType) type()).getRawType();
-        return (Class<?>) type();
-    }
-
-    private void ensureCorrectType(Generator<?> generator) {
-        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(type());
-
-        for (Class<?> each : generator.types()) {
-            if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
-                throw new IllegalArgumentException(
-                    format(
-                        EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
-                        each,
-                        From.class.getName(),
-                        parameterName));
-            }
-        }
-    }
-
-    public String name() {
-        return declarerName + ':' + parameterName;
-    }
-
-    public AnnotatedType annotatedType() {
-        return parameterType;
-    }
-
-    public Type type() {
-        return parameterType.getType();
+    public ParameterTypeContext typeContext() {
+        return typeContext;
     }
 
     public int sampleSize() {
         if (sampleSizer == null)
-            sampleSizer = new SampleSizer(configuredSampleSize, this);
+            sampleSizer = new SampleSizer(configuredSampleSize, typeContext);
 
         return sampleSizer.sampleSize();
     }
@@ -164,18 +90,10 @@ public class ParameterContext {
     }
 
     public boolean fixedSeed() {
-        return seed != (long) Reflection.defaultValueOf(ForAll.class, "seed");
+        return seed != (long) defaultValueOf(ForAll.class, "seed");
     }
 
     public long seed() {
         return seed;
-    }
-
-    public List<Weighted<Generator<?>>> explicitGenerators() {
-        return unmodifiableList(explicits);
-    }
-
-    public boolean annotatedWith(Class<? extends Annotation> annotationType) {
-        return parameterType.getAnnotation(annotationType) != null;
     }
 }

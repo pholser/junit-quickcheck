@@ -52,9 +52,12 @@ public class RandomValueSupplier extends ParameterSupplier {
     }
 
     @Override public List<PotentialAssignment> getValueSources(ParameterSignature signature) {
-        ParameterContext parameter =
-            new ParameterContext(signature.getName(), signature.getAnnotatedType(), signature.getDeclarerName())
-                .annotate(signature);
+        ParameterTypeContext typeContext =
+            new ParameterTypeContext(
+                signature.getName(),
+                signature.getAnnotatedType(),
+                signature.getDeclarerName());
+        ParameterContext parameter = new ParameterContext(typeContext).annotate(signature);
         return generator.generate(parameter);
     }
 }

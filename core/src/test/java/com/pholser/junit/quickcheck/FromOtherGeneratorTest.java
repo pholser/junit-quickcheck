@@ -25,18 +25,22 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.Between;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.Arrays.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -49,7 +53,7 @@ public class FromOtherGeneratorTest {
 
     @RunWith(Theories.class)
     public static class WithExplicitGenerator {
-        public static final List<Integer> values = new ArrayList<Integer>();
+        public static final List<Integer> values = new ArrayList<>();
 
         @Theory public void shouldHold(@ForAll(sampleSize = 5) @From(Sequence.class) int i) {
             values.add(i);
@@ -87,6 +91,20 @@ public class FromOtherGeneratorTest {
 
         @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
             return "foo";
+        }
+    }
+
+    @Test public void alternateGeneratorOnGenericParameter() throws Exception {
+        assertThat(testResult(AlternateGeneratorOnGenericParameter.class), isSuccessful());
+    }
+
+    @RunWith(Theories.class)
+    public static class AlternateGeneratorOnGenericParameter {
+        @Theory public void holds(
+            @ForAll
+            Box<@From(TestIntegerGenerator.class) @Between(min = 3, max = 4) Integer> box) {
+
+            assertThat(box.contents(), allOf(greaterThanOrEqualTo(3), lessThanOrEqualTo(4)));
         }
     }
 }

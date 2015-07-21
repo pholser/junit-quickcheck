@@ -38,10 +38,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsWithServiceLoaderTest {
+    private static Foo foo;
+    private static Box<?> box;
+
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
@@ -50,11 +54,16 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
         repo.register(new TestGeneratorSource()).register(new ServiceLoaderGeneratorSource());
     }
 
-    @Test public void bringsInTypesForWhichASingleGeneratorExists() {
-        assertGenerators(repo.generatorFor(Foo.class), FooGenerator.class);
+    @Test public void bringsInTypesForWhichASingleGeneratorExists() throws Exception {
+        assertGenerators(
+            repo.generatorFor(typeOf(getClass(), "foo")),
+            FooGenerator.class);
     }
 
-    @Test public void bringsInTypesForWhichMultipleGeneratorsMayExist() {
-        assertGenerators(repo.generatorFor(Box.class), BoxGenerator.class, AnotherBoxGenerator.class);
+    @Test public void bringsInTypesForWhichMultipleGeneratorsMayExist() throws Exception {
+        assertGenerators(
+            repo.generatorFor(typeOf(getClass(), "box")),
+            BoxGenerator.class,
+            AnotherBoxGenerator.class);
     }
 }

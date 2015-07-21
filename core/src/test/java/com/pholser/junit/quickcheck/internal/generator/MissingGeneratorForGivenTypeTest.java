@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,8 +33,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.pholser.junit.quickcheck.Types.typeOf;
+
 @RunWith(MockitoJUnitRunner.class)
 public class MissingGeneratorForGivenTypeTest {
+    private static Object object;
+
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
@@ -42,7 +47,7 @@ public class MissingGeneratorForGivenTypeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void missing() {
-        repo.generatorFor(Object.class);
+    public void missing() throws Exception {
+        repo.generatorFor(typeOf(getClass(), "object"));
     }
 }

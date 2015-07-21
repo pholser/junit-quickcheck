@@ -28,7 +28,11 @@ package com.pholser.junit.quickcheck.internal;
 import org.javaruntype.type.Type;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -45,6 +49,7 @@ import java.util.Set;
 
 import static java.security.AccessController.*;
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 
 public final class Reflection {
@@ -138,9 +143,9 @@ public final class Reflection {
         Collections.addAll(annotations, e.getAnnotationsByType(type));
 
         List<Annotation> thisAnnotations =
-                asList(e.getAnnotations()).stream()
-                        .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-                        .collect(toList());
+            asList(e.getAnnotations()).stream()
+                .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
+                .collect(toList());
 
         for (Annotation each : thisAnnotations)
             annotations.addAll(allAnnotationsByType(each.annotationType(), type));
@@ -234,5 +239,23 @@ public final class Reflection {
             return (RuntimeException) ex;
 
         return new ReflectionException(ex);
+    }
+
+    public static List<AnnotatedType> annotatedComponentTypes(AnnotatedType annotatedType) {
+        if (annotatedType instanceof AnnotatedParameterizedType)
+            return asList(((AnnotatedParameterizedType) annotatedType).getAnnotatedActualTypeArguments());
+
+        if (annotatedType instanceof AnnotatedArrayType)
+            return singletonList(((AnnotatedArrayType) annotatedType).getAnnotatedGenericComponentType());
+
+        if (annotatedType instanceof AnnotatedWildcardType) {
+            AnnotatedWildcardType wildcard = (AnnotatedWildcardType) annotatedType;
+            if (wildcard.getAnnotatedLowerBounds().length > 0)
+                return singletonList(wildcard.getAnnotatedLowerBounds()[0]);
+
+            return asList(wildcard.getAnnotatedUpperBounds());
+        }
+
+        return emptyList();
     }
 }

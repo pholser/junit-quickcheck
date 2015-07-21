@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import com.pholser.junit.quickcheck.generator.ValuesOf;
+import org.junit.Test;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
-
-import com.pholser.junit.quickcheck.generator.ValuesOf;
-import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -68,7 +68,8 @@ public class SampleSizerTest {
     }
 
     @Test public void primitiveBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(boolean.class, valuesOf()), "declarer");
+        ParameterTypeContext parameter =
+            new ParameterTypeContext("arg", from(boolean.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(5, parameter);
 
@@ -76,7 +77,8 @@ public class SampleSizerTest {
     }
 
     @Test public void wrapperBooleanWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(Boolean.class, valuesOf()), "declarer");
+        ParameterTypeContext parameter =
+            new ParameterTypeContext("arg", from(Boolean.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(6, parameter);
 
@@ -84,7 +86,8 @@ public class SampleSizerTest {
     }
 
     @Test public void enumWithValuesOfTrumpsSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(Ternary.class, valuesOf()), "declarer");
+        ParameterTypeContext parameter =
+            new ParameterTypeContext("arg", from(Ternary.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(7, parameter);
 
@@ -92,7 +95,8 @@ public class SampleSizerTest {
     }
 
     @Test public void otherClassesUseConfiguredSampleSize() {
-        ParameterContext parameter = new ParameterContext("arg", from(String.class, valuesOf()), "declarer");
+        ParameterTypeContext parameter =
+            new ParameterTypeContext("arg", from(String.class, valuesOf()), "declarer");
 
         SampleSizer sizer = new SampleSizer(8, parameter);
 

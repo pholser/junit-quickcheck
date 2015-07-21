@@ -46,6 +46,7 @@ import org.junit.runner.RunWith;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static com.pholser.junit.quickcheck.Types.typeOf;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 import static org.hamcrest.Matchers.*;
@@ -56,6 +57,8 @@ import static org.junit.rules.ExpectedException.*;
 
 public class AutoGenerationByFieldsTest {
     @Rule public final ExpectedException thrown = none();
+
+    private static Object object;
 
     @Test public void autoGeneration() {
         assertThat(testResult(WithAutoGeneration.class), isSuccessful());
@@ -86,13 +89,13 @@ public class AutoGenerationByFieldsTest {
     public static class FakeList<T> {
     }
 
-    @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() {
+    @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() throws Exception {
         GeneratorRepository repo = new GeneratorRepository(null);
 
         repo.register(new Fields<>(Object.class));
 
         thrown.expect(IllegalArgumentException.class);
-        repo.generatorFor(Object.class);
+        repo.generatorFor(typeOf(getClass(), "object"));
     }
 
     @Test public void autoGenerationOnPrimitiveType() {

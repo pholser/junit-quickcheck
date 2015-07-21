@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
@@ -85,9 +85,8 @@ public class Ctor<T> extends Generator<T> {
         super.provideRepository(provided);
 
         parameterGenerators.clear();
-        for (Parameter each : parameters) {
-            parameterGenerators.add(generatorFor(parameterContext(each)));
-        }
+        for (Parameter each : parameters)
+            parameterGenerators.add(generatorFor(parameterTypeContext(each)));
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -97,8 +96,8 @@ public class Ctor<T> extends Generator<T> {
             parameterGenerators.get(i).configure(parameters[i].getAnnotatedType());
     }
 
-    private ParameterContext parameterContext(Parameter parameter) {
-        return new ParameterContext(
+    private ParameterTypeContext parameterTypeContext(Parameter parameter) {
+        return new ParameterTypeContext(
             parameter.getName(),
             parameter.getAnnotatedType(),
             single.getName())

@@ -30,6 +30,7 @@ import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterContext;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
@@ -81,7 +82,7 @@ public abstract class CoreTheoryParameterTest {
 
         AnnotatedType type = annotatedType();
         ParameterContext context =
-            new ParameterContext("arg", type, type.toString())
+            new ParameterContext(new ParameterTypeContext("arg", type, type.toString()))
                 .annotate(annotatedElement());
         context.addQuantifier(quantifier);
 
@@ -154,7 +155,7 @@ public abstract class CoreTheoryParameterTest {
             verifyEquivalenceOfTheoryParameter(i, values.get(i), theoryParameters.get(i).getValue());
     }
 
-    protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual) {
+    protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual) throws Exception {
         assertThat(index + "'th value", expected, deepEquals(actual));
     }
 

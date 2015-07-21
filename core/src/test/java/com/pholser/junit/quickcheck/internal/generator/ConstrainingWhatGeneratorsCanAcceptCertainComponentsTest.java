@@ -25,10 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -42,12 +38,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
+    private static HashMap raw;
+    private static HashMap<String, ?> stringKey;
+    private static HashMap<Integer, ?> integerKey;
+    private static HashMap<? extends String, ?> extendsStringKey;
+    private static HashMap<? super String, ?> superStringKey;
+    private static HashMap<?, ?> huhKey;
+
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
@@ -65,38 +71,38 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
         repo.register(generators);
     }
 
-    @Test public void rawHashMapType() {
-        Generator<?> result = repo.generatorFor(HashMap.class);
+    @Test public void rawHashMapType() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "raw"));
 
         assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
     }
 
-    @Test public void stringKeyHashMapType() {
-        Generator<?> result = repo.generatorFor(parameterized(HashMap.class).on(String.class, huh()));
+    @Test public void stringKeyHashMapType() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "stringKey"));
 
         assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
     }
 
-    @Test public void integerKeyHashMapType() {
-        Generator<?> result = repo.generatorFor(parameterized(HashMap.class).on(Integer.class, huh()));
+    @Test public void integerKeyHashMapType() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "integerKey"));
 
         assertGenerators(result, HashMapGenerator.class);
     }
 
-    @Test public void extendsStringKeyMapType() {
-        Generator<?> result = repo.generatorFor(parameterized(HashMap.class).on(extendsOf(String.class), huh()));
+    @Test public void extendsStringKeyMapType() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "extendsStringKey"));
 
         assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
     }
 
-    @Test public void superStringKeyMapType() {
-        Generator<?> result = repo.generatorFor(parameterized(HashMap.class).on(superOf(String.class), huh()));
+    @Test public void superStringKeyMapType() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "superStringKey"));
 
         assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
     }
 
-    @Test public void huhKeyMapType() {
-        Generator<?> result = repo.generatorFor(parameterized(HashMap.class).on(huh(), huh()));
+    @Test public void huhKeyMapType() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "huhKey"));
 
         assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
     }

@@ -25,13 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.Arrays;
-
 import com.pholser.junit.quickcheck.internal.generator.ArrayGenerator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.reflect.GenericArrayTypeImpl;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
 import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
@@ -41,13 +38,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
-import static com.pholser.junit.quickcheck.reflect.ParameterizedTypeImpl.*;
-import static com.pholser.junit.quickcheck.reflect.WildcardTypeImpl.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SupplyingCallableGeneratorWithComponentTest {
+    private static Box<?>[] arrayOfBox;
+
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
 
@@ -60,10 +60,10 @@ public class SupplyingCallableGeneratorWithComponentTest {
         when(random.nextInt(3)).thenReturn(1);
     }
 
-    @Test public void coaxingGeneratorToSupplyComponentForCallable() {
+    @Test public void coaxingGeneratorToSupplyComponentForCallable() throws Exception {
         ArrayGenerator generator =
             (ArrayGenerator) repo.generatorFor(
-                new GenericArrayTypeImpl(parameterized(Box.class).on(extendsOf(Object.class))));
+                typeOf(getClass(), "arrayOfBox"));
 
         Generator<?> arrayElementGenerator = generator.componentGenerator();
         assertGenerators(arrayElementGenerator, BoxGenerator.class);

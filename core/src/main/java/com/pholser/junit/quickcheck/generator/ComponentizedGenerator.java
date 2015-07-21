@@ -29,6 +29,7 @@ import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.javaruntype.type.TypeParameter;
 
@@ -77,7 +78,7 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
+        List<AnnotatedType> annotatedComponentTypes = Reflection.annotatedComponentTypes(annotatedType);
 
         if (annotatedComponentTypes.size() == components.size()) {
             for (int i = 0; i < components.size(); ++i)

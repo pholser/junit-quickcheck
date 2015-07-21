@@ -117,19 +117,4 @@ public class MarkingTypeUsesWithConfigurationTest {
             assertEquals(2, pair.second().contents().i());
         }
     }
-
-    /*
-    @Test public void alternateGeneratorOnGenericParameter() throws Exception {
-        assertThat(testResult(AlternateGeneratorOnGenericParameter.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class AlternateGeneratorOnGenericParameter {
-        @Theory public void holds(
-            @ForAll Box<@From(TestIntegerGenerator.class) @Between(min = 3, max = 4) Integer> box) {
-
-            assertThat(box.contents(), allOf(greaterThanOrEqualTo(3), lessThanOrEqualTo(4)));
-        }
-    }
-     */
 }

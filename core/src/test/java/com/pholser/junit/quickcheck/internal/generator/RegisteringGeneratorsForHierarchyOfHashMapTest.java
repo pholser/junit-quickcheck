@@ -25,12 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.io.Serializable;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.TestHashMapGenerator;
@@ -41,10 +35,23 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.Serializable;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfHashMapTest {
+    private static AbstractMap abstractMap;
+    private static Map map;
+    private static Cloneable cloneable;
+    private static Serializable serializable;
+    private static Object object;
+
     private GeneratorRepository repo;
     private TestHashMapGenerator generator;
     @Mock private SourceOfRandomness random;
@@ -61,32 +68,32 @@ public class RegisteringGeneratorsForHierarchyOfHashMapTest {
         repo.register(generators);
     }
 
-    @Test public void abstractMap() {
-        Generator<?> result = repo.generatorFor(AbstractMap.class);
+    @Test public void abstractMap() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "abstractMap"));
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test public void map() {
-        Generator<?> result = repo.generatorFor(Map.class);
+    @Test public void map() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "map"));
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test public void cloneable() {
-        Generator<?> result = repo.generatorFor(Cloneable.class);
+    @Test public void cloneable() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "cloneable"));
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test public void serializable() {
-        Generator<?> result = repo.generatorFor(Serializable.class);
+    @Test public void serializable() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
     }
 
-    @Test public void object() {
-        Generator<?> result = repo.generatorFor(Object.class);
+    @Test public void object() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class, ZilchGenerator.class);
     }

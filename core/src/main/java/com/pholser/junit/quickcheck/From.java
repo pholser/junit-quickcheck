@@ -46,7 +46,7 @@ import com.pholser.junit.quickcheck.generator.Generator;
  * <p>If any such generator produces values of a type incompatible with the type of the marked theory parameter,
  * {@link IllegalArgumentException} is raised.</p>
  */
-@Target({ PARAMETER, FIELD, ANNOTATION_TYPE })
+@Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
 @Repeatable(Produced.class)
 public @interface From {

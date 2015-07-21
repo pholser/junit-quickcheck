@@ -25,10 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
@@ -39,10 +35,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
+    private static Callable<?> callable;
+    private static Object object;
+
     private GeneratorRepository repo;
     private TestCallableGenerator<?> generator;
     @Mock private SourceOfRandomness random;
@@ -50,7 +54,7 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new TestCallableGenerator<Object>();
+        generator = new TestCallableGenerator<>();
         List<Generator<?>> generators = new ArrayList<>();
         generators.add(generator);
         generators.add(new TestIntegerGenerator());
@@ -59,14 +63,14 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
         repo.register(generators);
     }
 
-    @Test public void callable() {
-        Generator<?> result = repo.generatorFor(Callable.class);
+    @Test public void callable() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "callable"));
 
         assertGenerators(result, generator.getClass());
     }
 
-    @Test public void object() {
-        Generator<?> result = repo.generatorFor(Object.class);
+    @Test public void object() throws Exception {
+        Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
         assertGenerators(result, generator.getClass(), TestIntegerGenerator.class, ZilchGenerator.class);
     }

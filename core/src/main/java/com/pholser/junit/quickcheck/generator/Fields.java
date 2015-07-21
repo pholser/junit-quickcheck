@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.internal.ParameterContext;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
@@ -72,7 +72,7 @@ public class Fields<T> extends Generator<T> {
         Object generated = instantiate(type);
 
         for (Field each : fields) {
-            ParameterContext parameter = parameterContext(each);
+            ParameterTypeContext parameter = parameterContext(each);
             setField(each, generated, generatorFor(parameter).generate(random, status), true);
         }
 
@@ -87,9 +87,8 @@ public class Fields<T> extends Generator<T> {
         super.provideRepository(provided);
 
         fieldGenerators.clear();
-        for (Field each : fields) {
+        for (Field each : fields)
             fieldGenerators.add(generatorFor(parameterContext(each)));
-        }
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -99,8 +98,8 @@ public class Fields<T> extends Generator<T> {
             fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());
     }
 
-    private ParameterContext parameterContext(Field field) {
-        return new ParameterContext(
+    private ParameterTypeContext parameterContext(Field field) {
+        return new ParameterTypeContext(
             field.getName(),
             field.getAnnotatedType(),
             field.getDeclaringClass().getName())

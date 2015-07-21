@@ -36,10 +36,13 @@ import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSou
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.google.common.collect.Lists.*;
+import static com.pholser.junit.quickcheck.Types.typeOf;
 import static org.junit.Assert.*;
 
 public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
     public static final Function<String, Integer> TYPE_BEARER = null;
+
+    private static Integer integer;
 
     @Override protected void primeSourceOfRandomness() {
         // nothing to do here
@@ -60,7 +63,8 @@ public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
         return new ServiceLoaderGeneratorSource();
     }
 
-    @Override protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual) {
+    @Override protected void verifyEquivalenceOfTheoryParameter(int index, Object expected, Object actual)
+        throws Exception {
         @SuppressWarnings("unchecked")
         Function<String, Integer> f = (Function<String, Integer>) actual;
 
@@ -68,7 +72,7 @@ public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
 
         SourceOfRandomness source = new SourceOfRandomness(new Random());
         source.setSeed(Objects.hashCode(argument));
-        Integer value = (Integer) repository.generatorFor(Integer.class).generate(source, null);
+        Integer value = (Integer) repository.generatorFor(typeOf(getClass(), "integer")).generate(source, null);
 
         for (int i = 0; i < 10000; ++i)
             assertEquals(value, f.apply(argument));

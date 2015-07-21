@@ -45,6 +45,7 @@ import org.junit.runner.RunWith;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
@@ -58,6 +59,8 @@ import static org.junit.rules.ExpectedException.*;
 
 public class AutoGenerationByConstructorTest {
     @Rule public final ExpectedException thrown = none();
+
+    private static Object object;
 
     @Test public void autoGeneration() {
         assertThat(testResult(WithAutoGeneration.class), isSuccessful());
@@ -119,13 +122,13 @@ public class AutoGenerationByConstructorTest {
         }
     }
 
-    @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() {
+    @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() throws Exception {
         GeneratorRepository repo = new GeneratorRepository(null);
 
         repo.register(new Ctor<>(Object.class));
 
         thrown.expect(IllegalArgumentException.class);
-        repo.generatorFor(Object.class);
+        repo.generatorFor(typeOf(getClass(), "object"));
     }
 
     @Test public void autoGenerationOnPrimitiveType() {
