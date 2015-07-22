@@ -631,7 +631,8 @@ annotation:
 ```
 
 You may want to fix the seed when a theory fails, so that you can execute the
-theory again with the same set of generated values.
+theory over and over again with the same set of generated values that caused
+the failure.
 
 junit-quickcheck reports the seed used for a given theory parameter by logging
 it to a [SLF4J](http://www.slf4j.org/) logger named
@@ -639,8 +640,8 @@ it to a [SLF4J](http://www.slf4j.org/) logger named
 
     Seed for parameter com.your.TheoryClass.theoryMethod:parameterName is 8007238959251963394
 
-Add an SLF4J binding JAR file to your test class path and configuration for
-your logger of choice to see the seed log messages.
+Add an SLF4J binding JAR file to your test class path and logging configuration
+for your chosen bound library to see the seed log messages.
 
 
 ### How it works
