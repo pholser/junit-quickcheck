@@ -39,11 +39,11 @@ the runner, annotations, etc. with junit-quickcheck.
 
 ### Downloading
 
-junit-quickcheck's framework is contained in the JAR file for the module
-`junit-quickcheck-core`. You will want to start out also with the JAR file
-for the module `junit-quickcheck-generators`, which consists of generators
-for theory parameters of basic Java types, such as primitives, arrays, and
-collections.
+junit-quickcheck's basic machinery is contained in the JAR file for the
+module `junit-quickcheck-core`. You will want to start out also with the
+JAR file for the module `junit-quickcheck-generators`, which consists of
+generators for theory parameters of basic Java types, such as
+primitives, arrays, and collections.
 
 There is also a module `junit-quickcheck-guava`, containing generators for
 [Guava](https://code.google.com/p/guava-libraries/) types.
