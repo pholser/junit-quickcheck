@@ -348,7 +348,7 @@ Configuration annotations that can target type uses will be honored:
 
 ###### Configuration on types in a hierarchy
 
-Recall that for a given theory parameter, many generators can potentially
+Recall that for a given theory parameter, potentially many generators can
 satisfy a given theory parameter based on its type:
 
 ```java
@@ -510,8 +510,7 @@ class. This approach can exert positive pressure on your designs:
 
 ```java
     public class Coordinate {
-        private final BigDecimal latitude;
-        private final BigDecimal longitude;
+        private final BigDecimal latitude, longitude;
 
         public Coordinate(BigDecimal latitude, BigDecimal longitude) {
             // argument checks here...
@@ -560,9 +559,7 @@ the `Fields` or the `Ctor` generator to avoid writing a custom generator:
     @RunWith(Theories.class)
     public class ThreeDimensionalSpaceTheories {
         public static class Point {
-            public double x;
-            public double y;
-            public double z;
+            public double x, y, z;
         }
 
         @Theory public void originDistance(
@@ -580,8 +577,7 @@ the `Fields` or the `Ctor` generator to avoid writing a custom generator:
     @RunWith(Theories.class)
     public class GeographyTheories {
         public static class Coordinate {
-            private final BigDecimal latitude;
-            private final BigDecimal longitude;
+            private final BigDecimal latitude, longitude;
 
             public Coordinate(
                 @InRange(min = "-90", max = "90") BigDecimal latitude,
