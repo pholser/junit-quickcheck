@@ -30,7 +30,7 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class APair extends ComponentizedGenerator<Pair> {
-    private Mark mark;
+    private X x;
 
     public APair() {
         super(Pair.class);
@@ -40,14 +40,14 @@ public class APair extends ComponentizedGenerator<Pair> {
         return new Pair<>(
             componentGenerators().get(0).generate(random, status),
             componentGenerators().get(1).generate(random, status),
-            mark != null);
+            x != null);
     }
 
     @Override public int numberOfNeededComponents() {
         return 2;
     }
 
-    public void configure(Mark mark) {
-        this.mark = mark;
+    public void configure(X x) {
+        this.x = x;
     }
 }

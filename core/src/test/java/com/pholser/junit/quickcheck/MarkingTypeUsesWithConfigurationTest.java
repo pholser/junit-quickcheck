@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.Mark;
+import com.pholser.junit.quickcheck.test.generator.X;
 import com.pholser.junit.quickcheck.test.generator.Pair;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -59,7 +59,7 @@ public class MarkingTypeUsesWithConfigurationTest {
 
     @RunWith(Theories.class)
     public static class ParameterConfiguredButGenericParameterNotConfigured {
-        @Theory public void holds(@ForAll @Mark Box<Foo> box) {
+        @Theory public void holds(@ForAll @X Box<Foo> box) {
             assertTrue(box.marked());
             assertFalse(box.contents().marked());
         }
@@ -71,7 +71,7 @@ public class MarkingTypeUsesWithConfigurationTest {
 
     @RunWith(Theories.class)
     public static class OneGenericParameterConfiguredButTheOtherNot {
-        @Theory public void holds(@ForAll Pair<Foo, @Mark Foo> pair) {
+        @Theory public void holds(@ForAll Pair<Foo, @X Foo> pair) {
             assertFalse(pair.marked());
             assertFalse(pair.first().marked());
             assertTrue(pair.second().marked());
@@ -84,7 +84,7 @@ public class MarkingTypeUsesWithConfigurationTest {
 
     @RunWith(Theories.class)
     public static class TwoGenericParametersOfSameTypeConfiguredDifferently {
-        @Theory public void holds(@ForAll Pair<@Mark Box<@Same(1) Foo>, Box<@Mark @Same(2) Foo>> pair) {
+        @Theory public void holds(@ForAll Pair<@X Box<@Same(1) Foo>, Box<@X @Same(2) Foo>> pair) {
             assertFalse(pair.marked());
 
             assertTrue(pair.first().marked());
@@ -103,7 +103,7 @@ public class MarkingTypeUsesWithConfigurationTest {
 
     @RunWith(Theories.class)
     public static class TwoGenericParametersReferringToSameType {
-        @Theory public void holds(@ForAll Pair<@Mark @Same(1) Foo, Box<@Mark @Same(2) Foo>> pair) {
+        @Theory public void holds(@ForAll Pair<@X @Same(1) Foo, Box<@X @Same(2) Foo>> pair) {
             assertFalse(pair.marked());
 
             assertTrue(pair.first().marked());

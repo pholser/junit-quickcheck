@@ -38,7 +38,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class AFoo extends Generator<Foo> {
     private Same value;
-    private Mark mark;
+    private X x;
 
     @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
     @Retention(RUNTIME)
@@ -54,14 +54,14 @@ public class AFoo extends Generator<Foo> {
     @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
         return new Foo(
             value == null ? random.nextInt() : value.value(),
-            mark != null);
+            x != null);
     }
 
     public void configure(Same value) {
         this.value = value;
     }
 
-    public void configure(Mark mark) {
-        this.mark = mark;
+    public void configure(X x) {
+        this.x = x;
     }
 }

@@ -30,7 +30,7 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class ABox extends ComponentizedGenerator<Box> {
-    private Mark mark;
+    private X x;
 
     public ABox() {
         super(Box.class);
@@ -39,14 +39,14 @@ public class ABox extends ComponentizedGenerator<Box> {
     @Override public Box<?> generate(SourceOfRandomness random, GenerationStatus status) {
         return new Box<>(
             componentGenerators().get(0).generate(random, status),
-            mark != null);
+            x != null);
     }
 
     @Override public int numberOfNeededComponents() {
         return 1;
     }
 
-    public void configure(Mark mark) {
-        this.mark = mark;
+    public void configure(X x) {
+        this.x = x;
     }
 }

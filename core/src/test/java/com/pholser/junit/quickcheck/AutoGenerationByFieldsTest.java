@@ -33,7 +33,7 @@ import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.AFoo.Same;
-import com.pholser.junit.quickcheck.test.generator.Mark;
+import com.pholser.junit.quickcheck.test.generator.X;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Rule;
 import org.junit.Test;
@@ -166,7 +166,7 @@ public class AutoGenerationByFieldsTest {
     @RunWith(Theories.class)
     public static class WithAutoGenerationWithAnnotationsOnTypeUsesInFields {
         public static class P {
-            public Box<@Mark Foo> box;
+            public Box<@X Foo> box;
         }
 
         @Theory public void shouldHold(@ForAll @From(Fields.class) P p) {
@@ -183,7 +183,7 @@ public class AutoGenerationByFieldsTest {
     public static class WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInFields {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
-        @Mark
+        @X
         @Same(2)
         public @interface MarkTwo {
         }

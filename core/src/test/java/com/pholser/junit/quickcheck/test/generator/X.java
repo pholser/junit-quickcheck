@@ -36,5 +36,5 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
 @GeneratorConfiguration
-public @interface Mark {
+public @interface X {
 }

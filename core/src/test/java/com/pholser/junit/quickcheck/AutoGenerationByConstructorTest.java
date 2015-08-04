@@ -32,7 +32,7 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.Mark;
+import com.pholser.junit.quickcheck.test.generator.X;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Rule;
 import org.junit.Test;
@@ -219,7 +219,7 @@ public class AutoGenerationByConstructorTest {
         public static class P {
             private final Box<Foo> box;
 
-            public P(Box<@Mark Foo> box) {
+            public P(Box<@X Foo> box) {
                 this.box = box;
             }
 
@@ -244,7 +244,7 @@ public class AutoGenerationByConstructorTest {
     public static class WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
-        @Mark
+        @X
         @Same(2)
         public @interface MarkTwo {
         }
@@ -252,7 +252,7 @@ public class AutoGenerationByConstructorTest {
         public static class P {
             private final Box<Foo> box;
 
-            public P(@Mark Box<@MarkTwo Foo> box) {
+            public P(@X Box<@MarkTwo Foo> box) {
                 this.box = box;
             }
 
