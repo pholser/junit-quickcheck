@@ -29,10 +29,10 @@ import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class BoxGenerator extends ComponentizedGenerator<Box> {
+public class ABox extends ComponentizedGenerator<Box> {
     private Mark mark;
 
-    public BoxGenerator() {
+    public ABox() {
         super(Box.class);
     }
 

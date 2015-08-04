@@ -35,21 +35,21 @@ import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 public class TestGeneratorSource implements Iterable<Generator<?>> {
     @Override public Iterator<Generator<?>> iterator() {
         List<Generator<?>> generators = Arrays.<Generator<?>> asList(
-            new BoxGenerator(),
-            new TestArrayListGenerator(),
-            new TestBigDecimalGenerator(),
-            new TestBigIntegerGenerator(),
-            new TestBooleanGenerator(),
-            new TestByteGenerator(),
-            new TestCallableGenerator(),
-            new TestCharacterGenerator(),
-            new TestDoubleGenerator(),
-            new TestFloatGenerator(),
-            new TestHashMapGenerator(),
-            new TestIntegerGenerator(),
-            new TestLongGenerator(),
-            new TestShortGenerator(),
-            new TestStringGenerator(),
+            new ABox(),
+            new AList(),
+            new ADecimal(),
+            new ABigInt(),
+            new ABool(),
+            new AByte(),
+            new ACallable(),
+            new AChar(),
+            new ADouble(),
+            new AFloat(),
+            new AMap(),
+            new AnInt(),
+            new ALong(),
+            new AShort(),
+            new AString(),
             new ZilchGenerator());
 
         return generators.iterator();

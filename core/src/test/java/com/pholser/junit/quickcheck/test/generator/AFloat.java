@@ -25,5 +25,18 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-public class AnotherBoxGenerator extends BoxGenerator {
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.Arrays.*;
+
+public class AFloat extends Generator<Float> {
+    @SuppressWarnings("unchecked") public AFloat() {
+        super(asList(float.class, Float.class));
+    }
+
+    @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
+        return random.nextFloat();
+    }
 }

@@ -25,19 +25,16 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.Mark;
 import com.pholser.junit.quickcheck.test.generator.Pair;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
-import static org.hamcrest.Matchers.*;
+import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;

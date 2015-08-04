@@ -25,24 +25,5 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-
-public class TestIntegerGenerator extends Generator<Integer> {
-    private Between range;
-
-    @SuppressWarnings("unchecked") public TestIntegerGenerator() {
-        super(asList(int.class, Integer.class));
-    }
-
-    public void configure(Between range) {
-        this.range = range;
-    }
-
-    @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
-        return range == null ? random.nextInt() : random.nextInt(range.min(), range.max());
-    }
+public class AnotherBox extends ABox {
 }

@@ -31,8 +31,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 
-public class TestCharacterGenerator extends Generator<Character> {
-    @SuppressWarnings("unchecked") public TestCharacterGenerator() {
+public class AChar extends Generator<Character> {
+    @SuppressWarnings("unchecked") public AChar() {
         super(asList(char.class, Character.class));
     }
 

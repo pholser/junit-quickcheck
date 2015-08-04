@@ -27,8 +27,8 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.ACallable;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,16 +48,16 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     private static Object object;
 
     private GeneratorRepository repo;
-    private TestCallableGenerator<?> generator;
+    private ACallable<?> generator;
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new TestCallableGenerator<>();
+        generator = new ACallable<>();
         List<Generator<?>> generators = new ArrayList<>();
         generators.add(generator);
-        generators.add(new TestIntegerGenerator());
+        generators.add(new AnInt());
         generators.add(new ZilchGenerator());
 
         repo.register(generators);
@@ -72,6 +72,6 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     @Test public void object() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
-        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class, ZilchGenerator.class);
+        assertGenerators(result, generator.getClass(), AnInt.class, ZilchGenerator.class);
     }
 }

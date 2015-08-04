@@ -27,8 +27,8 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.TestHashMapGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.AMap;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,16 +53,16 @@ public class RegisteringGeneratorsForHierarchyOfHashMapTest {
     private static Object object;
 
     private GeneratorRepository repo;
-    private TestHashMapGenerator generator;
+    private AMap generator;
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new TestHashMapGenerator();
+        generator = new AMap();
         List<Generator<?>> generators = new ArrayList<>();
         generators.add(generator);
-        generators.add(new TestIntegerGenerator());
+        generators.add(new AnInt());
         generators.add(new ZilchGenerator());
 
         repo.register(generators);
@@ -89,12 +89,12 @@ public class RegisteringGeneratorsForHierarchyOfHashMapTest {
     @Test public void serializable() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
 
-        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), AnInt.class);
     }
 
     @Test public void object() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
-        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class, ZilchGenerator.class);
+        assertGenerators(result, generator.getClass(), AnInt.class, ZilchGenerator.class);
     }
 }

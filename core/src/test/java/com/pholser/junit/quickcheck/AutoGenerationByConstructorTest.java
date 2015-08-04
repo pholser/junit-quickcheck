@@ -33,7 +33,7 @@ import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.Mark;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -46,7 +46,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static com.pholser.junit.quickcheck.Types.*;
-import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
+import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -164,7 +164,7 @@ public class AutoGenerationByConstructorTest {
         public static class P {
             private final int i;
 
-            public P(@From(TestIntegerGenerator.class) @Between(min = 5, max = 7) int i) {
+            public P(@From(AnInt.class) @Between(min = 5, max = 7) int i) {
                 this.i = i;
             }
 
@@ -187,7 +187,7 @@ public class AutoGenerationByConstructorTest {
         public static class P {
             @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
             @Retention(RUNTIME)
-            @From(TestIntegerGenerator.class)
+            @From(AnInt.class)
             @Between(min = 100, max = 999)
             public @interface ThreeDigit {
             }

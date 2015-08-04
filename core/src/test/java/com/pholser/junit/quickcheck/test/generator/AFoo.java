@@ -25,18 +25,43 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.util.Arrays.*;
+public class AFoo extends Generator<Foo> {
+    private Same value;
+    private Mark mark;
 
-public class TestLongGenerator extends Generator<Long> {
-    @SuppressWarnings("unchecked") public TestLongGenerator() {
-        super(asList(long.class, Long.class));
+    @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
+    @Retention(RUNTIME)
+    @GeneratorConfiguration
+    public @interface Same {
+        int value();
     }
 
-    @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextLong();
+    public AFoo() {
+        super(Foo.class);
+    }
+
+    @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
+        return new Foo(
+            value == null ? random.nextInt() : value.value(),
+            mark != null);
+    }
+
+    public void configure(Same value) {
+        this.value = value;
+    }
+
+    public void configure(Mark mark) {
+        this.mark = mark;
     }
 }

@@ -25,18 +25,18 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigInteger;
+import java.nio.charset.Charset;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestBigIntegerGenerator extends Generator<BigInteger> {
-    public TestBigIntegerGenerator() {
-        super(BigInteger.class);
+public class AString extends Generator<String> {
+    public AString() {
+        super(String.class);
     }
 
-    @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
-        return new BigInteger(random.nextBytes(status.size() + 1));
+    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        return new String(random.nextBytes(status.size() + 1), Charset.forName("UTF-8"));
     }
 }

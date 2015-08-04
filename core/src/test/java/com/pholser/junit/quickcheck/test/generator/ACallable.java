@@ -25,18 +25,23 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.nio.charset.Charset;
+import java.util.concurrent.Callable;
 
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestStringGenerator extends Generator<String> {
-    public TestStringGenerator() {
-        super(String.class);
+public class ACallable<V> extends ComponentizedGenerator<Callable> {
+    public ACallable() {
+        super(Callable.class);
     }
 
-    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
-        return new String(random.nextBytes(status.size() + 1), Charset.forName("UTF-8"));
+    @SuppressWarnings("unchecked")
+    @Override public Callable<V> generate(final SourceOfRandomness random, final GenerationStatus status) {
+        return () -> (V) componentGenerators().get(0).generate(random, status);
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 1;
     }
 }

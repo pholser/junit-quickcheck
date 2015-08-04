@@ -25,18 +25,22 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestBigDecimalGenerator extends Generator<BigDecimal> {
-    public TestBigDecimalGenerator() {
-        super(BigDecimal.class);
+public class AList extends ComponentizedGenerator<ArrayList> {
+    public AList() {
+        super(ArrayList.class);
     }
 
-    @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
-        return new BigDecimal(random.nextDouble());
+    @Override public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
+        return new ArrayList<>(status.size());
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 1;
     }
 }

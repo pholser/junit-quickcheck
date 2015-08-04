@@ -27,8 +27,8 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.AList;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,16 +59,16 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     private static Object object;
 
     private GeneratorRepository repo;
-    private TestArrayListGenerator generator;
+    private AList generator;
     @Mock private SourceOfRandomness random;
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
 
-        generator = new TestArrayListGenerator();
+        generator = new AList();
         List<Generator<?>> generators = new ArrayList<>();
         generators.add(generator);
-        generators.add(new TestIntegerGenerator());
+        generators.add(new AnInt());
         generators.add(new ZilchGenerator());
 
         repo.register(generators);
@@ -101,7 +101,7 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     @Test public void serializable() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
 
-        assertGenerators(result, generator.getClass(), TestIntegerGenerator.class);
+        assertGenerators(result, generator.getClass(), AnInt.class);
     }
 
     @Test public void abstractCollection() throws Exception {
@@ -125,6 +125,6 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     @Test public void objectType() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
-        assertGenerators(result, TestIntegerGenerator.class, ZilchGenerator.class, TestArrayListGenerator.class);
+        assertGenerators(result, AnInt.class, ZilchGenerator.class, AList.class);
     }
 }

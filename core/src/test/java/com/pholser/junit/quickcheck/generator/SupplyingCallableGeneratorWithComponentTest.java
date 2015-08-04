@@ -30,8 +30,8 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.Box;
-import com.pholser.junit.quickcheck.test.generator.BoxGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestCallableGenerator;
+import com.pholser.junit.quickcheck.test.generator.ABox;
+import com.pholser.junit.quickcheck.test.generator.ACallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,8 +55,8 @@ public class SupplyingCallableGeneratorWithComponentTest {
         repo = new GeneratorRepository(random)
             .register(Arrays.<Generator<?>> asList(
                 new ZilchGenerator(),
-                new TestCallableGenerator(),
-                new BoxGenerator()));
+                new ACallable(),
+                new ABox()));
         when(random.nextInt(3)).thenReturn(1);
     }
 
@@ -66,11 +66,11 @@ public class SupplyingCallableGeneratorWithComponentTest {
                 typeOf(getClass(), "arrayOfBox"));
 
         Generator<?> arrayElementGenerator = generator.componentGenerator();
-        assertGenerators(arrayElementGenerator, BoxGenerator.class);
-        BoxGenerator boxGenerator = (BoxGenerator) componentOf(arrayElementGenerator, 0);
+        assertGenerators(arrayElementGenerator, ABox.class);
+        ABox boxGenerator = (ABox) componentOf(arrayElementGenerator, 0);
         Generator<?> listElementGenerator = boxGenerator.componentGenerators().get(0);
-        assertGenerators(listElementGenerator, TestCallableGenerator.class);
-        TestCallableGenerator<?> callableGenerator = (TestCallableGenerator<?>) componentOf(listElementGenerator, 0);
+        assertGenerators(listElementGenerator, ACallable.class);
+        ACallable<?> callableGenerator = (ACallable<?>) componentOf(listElementGenerator, 0);
         Generator<?> callableResultGenerator = callableGenerator.componentGenerators().get(0);
         assertGenerators(callableResultGenerator, ZilchGenerator.class);
     }

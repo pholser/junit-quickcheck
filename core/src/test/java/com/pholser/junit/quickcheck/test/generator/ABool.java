@@ -25,29 +25,18 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class PairGenerator extends ComponentizedGenerator<Pair> {
-    private Mark mark;
+import static java.util.Arrays.*;
 
-    public PairGenerator() {
-        super(Pair.class);
+public class ABool extends Generator<Boolean> {
+    @SuppressWarnings("unchecked") public ABool() {
+        super(asList(boolean.class, Boolean.class));
     }
 
-    @Override public Pair<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Pair<>(
-            componentGenerators().get(0).generate(random, status),
-            componentGenerators().get(1).generate(random, status),
-            mark != null);
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 2;
-    }
-
-    public void configure(Mark mark) {
-        this.mark = mark;
+    @Override public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
+        return random.nextBoolean();
     }
 }

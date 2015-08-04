@@ -2,15 +2,15 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.TestArrayListGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestBooleanGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestByteGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestCharacterGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestDoubleGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestFloatGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestLongGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestShortGenerator;
+import com.pholser.junit.quickcheck.test.generator.AList;
+import com.pholser.junit.quickcheck.test.generator.ABool;
+import com.pholser.junit.quickcheck.test.generator.AByte;
+import com.pholser.junit.quickcheck.test.generator.AChar;
+import com.pholser.junit.quickcheck.test.generator.ADouble;
+import com.pholser.junit.quickcheck.test.generator.AFloat;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import com.pholser.junit.quickcheck.test.generator.ALong;
+import com.pholser.junit.quickcheck.test.generator.AShort;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -34,7 +34,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveBoolean {
-        @Theory public void shouldHold(@ForAll @From(TestBooleanGenerator.class) boolean b) {
+        @Theory public void shouldHold(@ForAll @From(ABool.class) boolean b) {
         }
     }
 
@@ -44,7 +44,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperBoolean {
-        @Theory public void shouldHold(@ForAll @From(TestBooleanGenerator.class) boolean b) {
+        @Theory public void shouldHold(@ForAll @From(ABool.class) boolean b) {
         }
     }
 
@@ -54,7 +54,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveByte {
-        @Theory public void shouldHold(@ForAll @From(TestByteGenerator.class) byte b) {
+        @Theory public void shouldHold(@ForAll @From(AByte.class) byte b) {
         }
     }
 
@@ -64,7 +64,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperByte {
-        @Theory public void shouldHold(@ForAll @From(TestByteGenerator.class) byte b) {
+        @Theory public void shouldHold(@ForAll @From(AByte.class) byte b) {
         }
     }
 
@@ -74,7 +74,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveChar {
-        @Theory public void shouldHold(@ForAll @From(TestCharacterGenerator.class) char ch) {
+        @Theory public void shouldHold(@ForAll @From(AChar.class) char ch) {
         }
     }
 
@@ -84,7 +84,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperChar {
-        @Theory public void shouldHold(@ForAll @From(TestCharacterGenerator.class) char ch) {
+        @Theory public void shouldHold(@ForAll @From(AChar.class) char ch) {
         }
     }
 
@@ -94,7 +94,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveDouble {
-        @Theory public void shouldHold(@ForAll @From(TestDoubleGenerator.class) double d) {
+        @Theory public void shouldHold(@ForAll @From(ADouble.class) double d) {
         }
     }
 
@@ -104,7 +104,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperDouble {
-        @Theory public void shouldHold(@ForAll @From(TestDoubleGenerator.class) Double d) {
+        @Theory public void shouldHold(@ForAll @From(ADouble.class) Double d) {
         }
     }
 
@@ -114,7 +114,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveFloat {
-        @Theory public void shouldHold(@ForAll @From(TestFloatGenerator.class) float f) {
+        @Theory public void shouldHold(@ForAll @From(AFloat.class) float f) {
         }
     }
 
@@ -124,7 +124,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperFloat {
-        @Theory public void shouldHold(@ForAll @From(TestFloatGenerator.class) Float f) {
+        @Theory public void shouldHold(@ForAll @From(AFloat.class) Float f) {
         }
     }
 
@@ -134,7 +134,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveInt {
-        @Theory public void shouldHold(@ForAll @From(TestIntegerGenerator.class) int i) {
+        @Theory public void shouldHold(@ForAll @From(AnInt.class) int i) {
         }
     }
 
@@ -144,7 +144,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperInt {
-        @Theory public void shouldHold(@ForAll @From(TestIntegerGenerator.class) Integer i) {
+        @Theory public void shouldHold(@ForAll @From(AnInt.class) Integer i) {
         }
     }
 
@@ -154,7 +154,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveLong {
-        @Theory public void shouldHold(@ForAll @From(TestLongGenerator.class) long ell) {
+        @Theory public void shouldHold(@ForAll @From(ALong.class) long ell) {
         }
     }
 
@@ -164,7 +164,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperLong {
-        @Theory public void shouldHold(@ForAll @From(TestLongGenerator.class) long ell) {
+        @Theory public void shouldHold(@ForAll @From(ALong.class) long ell) {
         }
     }
 
@@ -174,7 +174,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveShort {
-        @Theory public void shouldHold(@ForAll @From(TestShortGenerator.class) short sh) {
+        @Theory public void shouldHold(@ForAll @From(AShort.class) short sh) {
         }
     }
 
@@ -184,7 +184,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWrapperShort {
-        @Theory public void shouldHold(@ForAll @From(TestShortGenerator.class) short sh) {
+        @Theory public void shouldHold(@ForAll @From(AShort.class) short sh) {
         }
     }
 
@@ -194,7 +194,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitWithParameterizedType {
-        @Theory public void shouldHold(@ForAll @From(TestArrayListGenerator.class) List<Foo> list) {
+        @Theory public void shouldHold(@ForAll @From(AList.class) List<Foo> list) {
             for (Foo each : list) {
                 // ensure the cast works
             }
@@ -207,7 +207,7 @@ public class FromTest {
 
     @RunWith(Theories.class)
     public static class ExplicitPrimitiveIntFixedSeed {
-        @Theory public void shouldHold(@ForAll(sampleSize = 1, seed = -1) @From(TestIntegerGenerator.class) int i) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 1, seed = -1) @From(AnInt.class) int i) {
             assertEquals(1155099827, i);
         }
     }
@@ -221,7 +221,7 @@ public class FromTest {
     public static class IndirectPrimitiveInt {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
-        @From(TestIntegerGenerator.class)
+        @From(AnInt.class)
         @Between(min = 1, max = 5)
         public @interface Small {
         }

@@ -33,7 +33,7 @@ import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.test.generator.FooGenerator.*;
+import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;

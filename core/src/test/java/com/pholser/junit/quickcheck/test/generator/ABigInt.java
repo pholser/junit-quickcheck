@@ -25,27 +25,18 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.concurrent.Callable;
+import java.math.BigInteger;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestCallableGenerator<V> extends ComponentizedGenerator<Callable> {
-    public TestCallableGenerator() {
-        super(Callable.class);
+public class ABigInt extends Generator<BigInteger> {
+    public ABigInt() {
+        super(BigInteger.class);
     }
 
-    @Override public Callable<V> generate(final SourceOfRandomness random, final GenerationStatus status) {
-        return new Callable<V>() {
-            @SuppressWarnings("unchecked")
-            @Override public V call() {
-                return (V) componentGenerators().get(0).generate(random, status);
-            }
-        };
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 1;
+    @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
+        return new BigInteger(random.nextBytes(status.size() + 1));
     }
 }

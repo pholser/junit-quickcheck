@@ -91,7 +91,7 @@ public class ParameterTypeContext {
     public ParameterTypeContext annotate(AnnotatedElement element) {
         List<From> generators = allAnnotationsByType(element, From.class);
         if (!generators.isEmpty() && element instanceof AnnotatedWildcardType)
-            throw new IllegalStateException("Wildcards cannot be marked with @From");
+            throw new IllegalArgumentException("Wildcards cannot be marked with @From");
 
         addGenerators(generators);
         return this;

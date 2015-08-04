@@ -30,10 +30,12 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
@@ -44,8 +46,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
+import static org.junit.rules.ExpectedException.*;
 
 public class FromOtherGeneratorTest {
+    @Rule public final ExpectedException thrown = none();
+
     @Test public void explicitGeneratorTakesPrecedence() throws Exception {
         assertThat(testResult(WithExplicitGenerator.class), isSuccessful());
         assertEquals(asList(0, 1, 2, 3, 4), WithExplicitGenerator.values);
@@ -94,17 +99,62 @@ public class FromOtherGeneratorTest {
         }
     }
 
-    @Test public void alternateGeneratorOnGenericParameter() throws Exception {
-        assertThat(testResult(AlternateGeneratorOnGenericParameter.class), isSuccessful());
+    @Test public void alternateGeneratorOnBasicTypeParameter() throws Exception {
+        assertThat(testResult(AlternateGeneratorOnBasicTypeParameter.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class AlternateGeneratorOnGenericParameter {
-        @Theory public void holds(
-            @ForAll
-            Box<@From(TestIntegerGenerator.class) @Between(min = 3, max = 4) Integer> box) {
-
+    public static class AlternateGeneratorOnBasicTypeParameter {
+        @Theory public void holds(@ForAll Box<@From(AnInt.class) @Between(min = 3, max = 4) Integer> box) {
             assertThat(box.contents(), allOf(greaterThanOrEqualTo(3), lessThanOrEqualTo(4)));
+        }
+    }
+
+    @Test public void alternateGeneratorOnHuhTypeParameter() throws Exception {
+        assertThat(
+            testResult(AlternateGeneratorOnHuhTypeParameter.class),
+            hasSingleFailureContaining("Wildcards cannot be marked with @From"));
+    }
+
+    @RunWith(Theories.class)
+    public static class AlternateGeneratorOnHuhTypeParameter {
+        @Theory public void holds(@ForAll Box<@From(AnInt.class) ?> box) {
+        }
+    }
+
+    @Test public void alternateGeneratorOnExtendsTypeParameter() throws Exception {
+        assertThat(
+            testResult(AlternateGeneratorOnExtendsTypeParameter.class),
+            hasSingleFailureContaining("Wildcards cannot be marked with @From"));
+    }
+
+    @RunWith(Theories.class)
+    public static class AlternateGeneratorOnExtendsTypeParameter {
+        @Theory public void holds(@ForAll Box<@From(AnInt.class) ? extends Integer> box) {
+        }
+    }
+
+    @Test public void alternateGeneratorOnSuperTypeParameter() throws Exception {
+        assertThat(
+            testResult(AlternateGeneratorOnSuperTypeParameter.class),
+            hasSingleFailureContaining("Wildcards cannot be marked with @From"));
+    }
+
+    @RunWith(Theories.class)
+    public static class AlternateGeneratorOnSuperTypeParameter {
+        @Theory public void holds(@ForAll Box<@From(AnInt.class) ? super Integer> box) {
+        }
+    }
+
+    @Test public void typeMismatchOnBasicTypeParameter() {
+        assertThat(
+            testResult(TypeMismatchOnBasicTypeParameter.class),
+            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    }
+
+    @RunWith(Theories.class)
+    public static class TypeMismatchOnBasicTypeParameter {
+        @Theory public void holds(@ForAll Box<@From(AnInt.class) String> box) {
         }
     }
 }

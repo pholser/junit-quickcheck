@@ -29,8 +29,8 @@ import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
-import com.pholser.junit.quickcheck.test.generator.TestStringGenerator;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import com.pholser.junit.quickcheck.test.generator.AString;
 import org.javaruntype.type.TypeParameter;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,8 +64,8 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
         generators.add(new HashMapGenerator<>());
         generators.add(new StringKeyHashMapGenerator<>());
         generators.add(new FailedStringKeyHashMapGenerator<>());
-        generators.add(new TestStringGenerator());
-        generators.add(new TestIntegerGenerator());
+        generators.add(new AString());
+        generators.add(new AnInt());
         generators.add(new ZilchGenerator());
 
         repo.register(generators);

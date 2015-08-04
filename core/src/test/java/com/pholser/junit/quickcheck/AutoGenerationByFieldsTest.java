@@ -32,9 +32,9 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.FooGenerator.Same;
+import com.pholser.junit.quickcheck.test.generator.AFoo.Same;
 import com.pholser.junit.quickcheck.test.generator.Mark;
-import com.pholser.junit.quickcheck.test.generator.TestIntegerGenerator;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -129,7 +129,7 @@ public class AutoGenerationByFieldsTest {
     @RunWith(Theories.class)
     public static class WithAutoGenerationWithAnnotations {
         public static class P {
-            @From(TestIntegerGenerator.class) @Between(min = 2, max = 4) public int i;
+            @From(AnInt.class) @Between(min = 2, max = 4) public int i;
         }
 
         @Theory public void shouldHold(@ForAll @From(Fields.class) P p) {
@@ -145,7 +145,7 @@ public class AutoGenerationByFieldsTest {
     public static class WithAutoGenerationWithAggregateAnnotations {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
-        @From(TestIntegerGenerator.class)
+        @From(AnInt.class)
         @Between(min = 1, max = 5)
         public @interface Small {
         }

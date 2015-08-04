@@ -25,18 +25,23 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.util.HashMap;
+
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.util.Arrays.*;
-
-public class TestDoubleGenerator extends Generator<Double> {
-    @SuppressWarnings("unchecked") public TestDoubleGenerator() {
-        super(asList(double.class, Double.class));
+public class AMap extends ComponentizedGenerator<HashMap> {
+    public AMap() {
+        super(HashMap.class);
     }
 
-    @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextDouble();
+    @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
+        return new HashMap<>(status.size());
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 2;
     }
 }

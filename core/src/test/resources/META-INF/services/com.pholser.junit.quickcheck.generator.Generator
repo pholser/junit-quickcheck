@@ -1,3 +1,3 @@
-com.pholser.junit.quickcheck.test.generator.AnotherBoxGenerator
-com.pholser.junit.quickcheck.test.generator.FooGenerator
-com.pholser.junit.quickcheck.test.generator.PairGenerator
+com.pholser.junit.quickcheck.test.generator.AnotherBox
+com.pholser.junit.quickcheck.test.generator.AFoo
+com.pholser.junit.quickcheck.test.generator.APair

@@ -25,23 +25,24 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.HashMap;
-
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestHashMapGenerator extends ComponentizedGenerator<HashMap> {
-    public TestHashMapGenerator() {
-        super(HashMap.class);
+import static java.util.Arrays.*;
+
+public class AnInt extends Generator<Integer> {
+    private Between range;
+
+    @SuppressWarnings("unchecked") public AnInt() {
+        super(asList(int.class, Integer.class));
     }
 
-    @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new HashMap<>(status.size());
+    public void configure(Between range) {
+        this.range = range;
     }
 
-    @Override public int numberOfNeededComponents() {
-        return 2;
+    @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+        return range == null ? random.nextInt() : random.nextInt(range.min(), range.max());
     }
 }

@@ -25,22 +25,18 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.ArrayList;
-
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class TestArrayListGenerator extends ComponentizedGenerator<ArrayList> {
-    public TestArrayListGenerator() {
-        super(ArrayList.class);
+import static java.util.Arrays.*;
+
+public class ADouble extends Generator<Double> {
+    @SuppressWarnings("unchecked") public ADouble() {
+        super(asList(double.class, Double.class));
     }
 
-    @Override public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new ArrayList<>(status.size());
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 1;
+    @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
+        return random.nextDouble();
     }
 }

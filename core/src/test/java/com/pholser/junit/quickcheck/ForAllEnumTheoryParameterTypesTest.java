@@ -81,7 +81,7 @@ public class ForAllEnumTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class EnumWithValuesOfAndConstraint {
-        static List<TestEnum> values = new ArrayList<TestEnum>();
+        static List<TestEnum> values = new ArrayList<>();
 
         @Theory public void shouldHold(
             @ForAll(suchThat = "#_ != @com.pholser.junit.quickcheck.ForAllEnumTheoryParameterTypesTest$TestEnum@E3")

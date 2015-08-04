@@ -25,40 +25,26 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class FooGenerator extends Generator<Foo> {
-    private Same value;
+public class APair extends ComponentizedGenerator<Pair> {
     private Mark mark;
 
-    @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
-    @Retention(RUNTIME)
-    @GeneratorConfiguration
-    public @interface Same {
-        int value();
+    public APair() {
+        super(Pair.class);
     }
 
-    public FooGenerator() {
-        super(Foo.class);
-    }
-
-    @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Foo(
-            value == null ? random.nextInt() : value.value(),
+    @Override public Pair<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
+        return new Pair<>(
+            componentGenerators().get(0).generate(random, status),
+            componentGenerators().get(1).generate(random, status),
             mark != null);
     }
 
-    public void configure(Same value) {
-        this.value = value;
+    @Override public int numberOfNeededComponents() {
+        return 2;
     }
 
     public void configure(Mark mark) {

@@ -31,12 +31,12 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 
-public class TestFloatGenerator extends Generator<Float> {
-    @SuppressWarnings("unchecked") public TestFloatGenerator() {
-        super(asList(float.class, Float.class));
+public class ALong extends Generator<Long> {
+    @SuppressWarnings("unchecked") public ALong() {
+        super(asList(long.class, Long.class));
     }
 
-    @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextFloat();
+    @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {
+        return random.nextLong();
     }
 }

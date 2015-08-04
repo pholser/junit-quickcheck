@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.FooGenerator;
+import com.pholser.junit.quickcheck.test.generator.AFoo;
 import com.pholser.junit.quickcheck.test.generator.FooBoxOpener;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
@@ -54,7 +54,7 @@ public class ForAllLambdaTheoryParameterTypesTest {
             ++iterations;
 
             @SuppressWarnings("unchecked")
-            Foo value = functionValue(new FooGenerator(), new Object[] { new Box<>(new Foo(2)) });
+            Foo value = functionValue(new AFoo(), new Object[] { new Box<>(new Foo(2)) });
             for (int i = 0; i < 10000; ++i)
                 assertEquals(value, b.open(new Box<>(new Foo(2))));
         }
