@@ -52,8 +52,8 @@ public class ArrayGenerator extends Generator<Object> {
     }
 
     /**
-     * Tells this generator to produce values with a length within a specified minimum (inclusive)
-     * and/or maximum (exclusive) with uniform distribution.
+     * Tells this generator to produce values with a length within a specified minimum and/or maximum,
+     * inclusive, chosen with uniform distribution.
      *
      * @param lengthRange annotation that gives the length constraints
      */

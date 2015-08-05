@@ -31,49 +31,22 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.Set;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ForAllSizeConstrainedArrayTheoryParameterTypesTest {
-    @Test public void oneD() {
-        assertThat(testResult(OneD.class), isSuccessful());
+public class ForAllSizeConstrainedSetTheoryParameterTypesTest {
+    @Test public void sizeConstrainedSets() {
+        assertThat(testResult(SizeConstrainedSets.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class OneD {
-        @Theory public void shouldHold(@ForAll boolean @Size(min = 2, max = 4) [] b) {
-            assertThat(b.length, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
-        }
-    }
-
-    @Test public void twoD() {
-        assertThat(testResult(TwoD.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class TwoD {
-        @Theory public void shouldHold(@ForAll boolean @Size(min = 13, max = 15) [] @Size(max = 2) [] b) {
-            assertThat(b.length, allOf(greaterThanOrEqualTo(13), lessThanOrEqualTo(15)));
-            for (boolean[] each : b)
-                assertThat(each.length, lessThanOrEqualTo(2));
-        }
-    }
-
-    @Test public void threeD() {
-        assertThat(testResult(ThreeD.class), isSuccessful());
-    }
-
-    @RunWith(Theories.class)
-    public static class ThreeD {
-        @Theory public void shouldHold(@ForAll boolean @Size(max = 6) [] @Size(max = 4) [] @Size(max = 2) [] z) {
-            assertThat(z.length, lessThanOrEqualTo(6));
-            for (boolean[][] y : z) {
-                assertThat(y.length, lessThanOrEqualTo(4));
-                for (boolean[] x : y)
-                    assertThat(x.length, lessThanOrEqualTo(2));
-            }
+    public static class SizeConstrainedSets {
+        @Theory public void shouldHold(@ForAll @Size(min = 2, max = 5) Set<?> items) {
+            assertThat(items.size(), lessThanOrEqualTo(5));
         }
     }
 
@@ -85,8 +58,8 @@ public class ForAllSizeConstrainedArrayTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class OutOfWhackSizeRange {
-        @Theory public void shouldHold(@ForAll boolean @Size(min = 2, max = 1) [] b) {
-            assertThat(b.length, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(1)));
+        @Theory public void shouldHold(@ForAll @Size(min = 4, max = 3) Set<?> items) {
+            assertThat(items.size(), lessThanOrEqualTo(3));
         }
     }
 }
