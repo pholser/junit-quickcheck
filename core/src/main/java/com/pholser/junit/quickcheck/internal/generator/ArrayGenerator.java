@@ -27,17 +27,22 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Array;
 import java.util.List;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
     private final Generator<?> component;
+    private Size lengthRange;
 
     public ArrayGenerator(Class<?> componentType, Generator<?> component) {
         super(Object.class);
@@ -46,12 +51,31 @@ public class ArrayGenerator extends Generator<Object> {
         this.component = component;
     }
 
+    /**
+     * Tells this generator to produce values with a length within a specified minimum (inclusive)
+     * and/or maximum (exclusive) with uniform distribution.
+     *
+     * @param lengthRange annotation that gives the length constraints
+     */
+    public void configure(Size lengthRange) {
+        this.lengthRange = lengthRange;
+        checkRange(INTEGRAL, lengthRange.min(), lengthRange.max());
+    }
+
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
-        Object array = Array.newInstance(componentType, status.size());
-        for (int i = 0; i < Array.getLength(array); ++i)
+        int length = length(random, status);
+        Object array = Array.newInstance(componentType, length);
+
+        for (int i = 0; i < length; ++i)
             Array.set(array, i, component.generate(random, status));
 
         return array;
+    }
+
+    private int length(SourceOfRandomness random, GenerationStatus status) {
+        return lengthRange != null
+            ? random.nextInt(lengthRange.min(), lengthRange.max())
+            : status.size();
     }
 
     @Override public void provideRepository(GeneratorRepository provided) {
