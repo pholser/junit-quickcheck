@@ -52,8 +52,11 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
     }
 
     /**
-     * Tells this generator to produce values with a number of elements within a specified minimum and/or maximum,
-     * inclusive, chosen with uniform distribution.
+     * <p>Tells this generator to add elements to the generated collection a number of times
+     * within a specified minimum and/or maximum, inclusive, chosen with uniform distribution.</p>
+     *
+     * <p>Note that some kinds of collections disallow duplicates, so the number of elements added may not
+     * be equal to the collection's {@link Collection#size()}.</p>
      *
      * @param sizeRange annotation that gives the size constraints
      */

@@ -31,21 +31,21 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
-import java.util.Set;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ForAllSizeConstrainedSetTheoryParameterTypesTest {
-    @Test public void sizeConstrainedSets() {
-        assertThat(testResult(SizeConstrainedSets.class), isSuccessful());
+public class ForAllSizeConstrainedMapTheoryParameterTypesTest {
+    @Test public void sizeConstrainedMaps() {
+        assertThat(testResult(SizeConstrainedMaps.class), isSuccessful());
     }
 
     @RunWith(Theories.class)
-    public static class SizeConstrainedSets {
-        @Theory public void shouldHold(@ForAll @Size(min = 2, max = 5) Set<String> items) {
+    public static class SizeConstrainedMaps {
+        @Theory public void shouldHold(@ForAll @Size(min = 2, max = 5) Map<String, Double> items) {
             assertThat(items.size(), lessThanOrEqualTo(5));
         }
     }
@@ -58,7 +58,7 @@ public class ForAllSizeConstrainedSetTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class OutOfWhackSizeRange {
-        @Theory public void shouldHold(@ForAll @Size(min = 4, max = 3) Set<String> items) {
+        @Theory public void shouldHold(@ForAll @Size(min = 4, max = 3) Map<Integer, ?> items) {
             assertThat(items.size(), lessThanOrEqualTo(3));
         }
     }

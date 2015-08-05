@@ -25,28 +25,49 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.Map;
-
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import java.util.Map;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
  * <p>Base class for generators of {@link Map}s.</p>
  *
- * <p>The generated map has a number of entries no larger than {@link GenerationStatus#size()}. The individual keys
- * and values will have types corresponding to the theory parameter's type arguments.</p>
+ * <p>The generated map has a number of entries limited by {@link GenerationStatus#size()}, or else
+ * by the attributes of a {@link Size} marking. The individual keys and values will have types
+ * corresponding to the theory parameter's type arguments.</p>
  *
  * @param <T> the type of map generated
  */
 public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator<T> {
+    private Size sizeRange;
+
     protected MapGenerator(Class<T> type) {
         super(type);
     }
 
+    /**
+     * <p>Tells this generator to add key-value pairs to the generated map a number of times
+     * within a specified minimum and/or maximum, inclusive, chosen with uniform distribution.</p>
+     *
+     * <p>Note that maps disallow duplicate keys, so the number of pairs added may not be equal
+     * to the map's {@link Map#size()}.</p>
+     *
+     * @param sizeRange annotation that gives the size constraints
+     */
+    public void configure(Size sizeRange) {
+        this.sizeRange = sizeRange;
+        checkRange(INTEGRAL, sizeRange.min(), sizeRange.max());
+    }
+
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        int size = status.size();
+        int size = size(random, status);
 
         T items = emptyMap();
         for (int i = 0; i < size; ++i) {
@@ -71,5 +92,11 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
 
     protected boolean okToAdd(Object key, Object value) {
         return true;
+    }
+
+    private int size(SourceOfRandomness random, GenerationStatus status) {
+        return sizeRange != null
+            ? random.nextInt(sizeRange.min(), sizeRange.max())
+            : status.size();
     }
 }
