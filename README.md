@@ -239,7 +239,7 @@ method reflectively, passing it the annotation:
     public class FooGenerator extends Generator<Foo> {
         // ...
 
-        public void configure(@Stuff stuff) {
+        public void configure(Stuff stuff) {
             // ...
         }
     }
