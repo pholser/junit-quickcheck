@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>junit-quickcheck-core</artifactId>
-    <version>0.5-beta-1</version>
+    <version>0.5-beta-2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>junit-quickcheck-core</name>
     <description>QuickCheck-style parameter suppliers for JUnit theories: core functionality</description>
@@ -11,7 +11,7 @@
     <parent>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck</artifactId>
-        <version>0.5-beta-1</version>
+        <version>0.5-beta-2-SNAPSHOT</version>
     </parent>
 
     <dependencies>
