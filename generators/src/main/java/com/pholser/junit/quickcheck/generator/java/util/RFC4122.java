@@ -193,7 +193,7 @@ public final class RFC4122 {
 
         final byte[] bytes;
 
-        private Namespaces(int difference) {
+        Namespaces(int difference) {
             this.bytes = new byte[] { 0x6B, (byte) 0xA7, (byte) 0xB8, (byte) difference,
                 (byte) 0x9D, (byte) 0xAD,
                 0x11, (byte) 0xD1,

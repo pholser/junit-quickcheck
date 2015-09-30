@@ -39,7 +39,7 @@ public final class Ranges {
 
         private final String pattern;
 
-        private Type(String pattern) {
+        Type(String pattern) {
             this.pattern = pattern;
         }
     }

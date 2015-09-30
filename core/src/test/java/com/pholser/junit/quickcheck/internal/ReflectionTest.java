@@ -181,7 +181,7 @@ public class ReflectionTest {
         defaultValueOf(Foo.class, "noneSuch");
     }
 
-    public static @interface Foo {
+    public @interface Foo {
         String bar() default "baz";
     }
 
