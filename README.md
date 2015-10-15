@@ -342,6 +342,7 @@ Configuration annotations that can target type uses will be honored:
         @Theory public void hold(
             @ForAll List<@InRange(min = "0", max = "9") Integer> digits) {
                 // ...
+            }
         }
     }
 ```
@@ -356,6 +357,8 @@ satisfy a given theory parameter based on its type:
     public class Serialization {
         @Theory public void hold(
             @ForAll @InRange(min = "0", max = "10") Serializable s) {
+                // ...
+            }
         }
     }
 ```
