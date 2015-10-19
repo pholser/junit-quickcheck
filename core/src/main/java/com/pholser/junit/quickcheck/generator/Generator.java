@@ -25,14 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
-import com.pholser.junit.quickcheck.internal.ReflectionException;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
-import org.javaruntype.type.WildcardTypeParameter;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
@@ -40,6 +32,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Collections.*;
@@ -50,7 +50,7 @@ import static java.util.stream.Collectors.*;
  *
  * @param <T> type of theory parameter to apply this generator's values to
  */
-public abstract class Generator<T> {
+public abstract class Generator<T> implements Shrink<T> {
     private final List<Class<T>> types = new ArrayList<>();
     private GeneratorRepository repo;
 
@@ -102,6 +102,25 @@ public abstract class Generator<T> {
      * @return the generated value
      */
     public abstract T generate(SourceOfRandomness random, GenerationStatus status);
+
+    public boolean canShrink(Object larger) {
+        return types().get(0).isInstance(larger);
+    }
+
+    private T narrow(Object o) {
+        return types().get(0).cast(o);
+    }
+
+    public final List<T> shrink(SourceOfRandomness random, Object larger) {
+        if (!canShrink(larger))
+            throw new IllegalStateException(getClass() + " not capable of shrinking " + larger);
+
+        return doShrink(random, narrow(larger));
+    }
+
+    public List<T> doShrink(SourceOfRandomness random, T larger) {
+        return emptyList();
+    }
 
     /**
      * @return whether this generator has component generators, such as for those generators that produce lists or

@@ -33,7 +33,7 @@ import static java.util.Arrays.*;
 
 public class AShort extends Generator<Short> {
     @SuppressWarnings("unchecked") public AShort() {
-        super(asList(short.class, Short.class));
+        super(asList(Short.class, short.class));
     }
 
     @Override public Short generate(SourceOfRandomness random, GenerationStatus status) {

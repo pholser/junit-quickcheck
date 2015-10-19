@@ -26,17 +26,19 @@
 package com.pholser.junit.quickcheck.generator.java.math;
 
 import java.math.BigInteger;
-
-import static java.math.BigInteger.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.math.BigInteger.*;
+import static java.util.function.Function.*;
 
 /**
  * <p>Produces values for theory parameters of type {@link BigInteger}.</p>
@@ -44,7 +46,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
  */
-public class BigIntegerGenerator extends Generator<BigInteger> {
+public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
     private BigInteger min;
     private BigInteger max;
 
@@ -86,5 +88,25 @@ public class BigIntegerGenerator extends Generator<BigInteger> {
             maxToUse = minToUse.add(TEN.pow(numberOfBits));
 
         return choose(random, minToUse, maxToUse);
+    }
+
+    @Override protected Function<BigInteger, BigInteger> narrow() {
+        return identity();
+    }
+
+    @Override protected Predicate<BigInteger> inRange() {
+        return Ranges.inRange(min, max);
+    }
+
+    @Override protected BigInteger leastMagnitude() {
+        return Ranges.leastMagnitude(min, max, ZERO);
+    }
+
+    @Override protected boolean negative(BigInteger target) {
+        return target.signum() < 0;
+    }
+
+    @Override protected BigInteger negate(BigInteger target) {
+        return target.negate();
     }
 }

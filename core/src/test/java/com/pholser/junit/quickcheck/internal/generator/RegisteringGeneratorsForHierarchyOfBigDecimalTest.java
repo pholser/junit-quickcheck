@@ -25,26 +25,28 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.ADecimal;
-import com.pholser.junit.quickcheck.test.generator.AnInt;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.ADecimal;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
 import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
+    @Rule public final MockitoRule mockito = MockitoJUnit.rule();
+
     private static BigDecimal bigDecimal;
     private static Comparable<BigDecimal> comparable;
     private static Serializable serializable;

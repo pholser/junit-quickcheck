@@ -25,24 +25,27 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import static java.util.Arrays.*;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code short} or {@link Short}.
  */
-public class ShortGenerator extends Generator<Short> {
+public class ShortGenerator extends IntegralGenerator<Short> {
     private short min = (Short) defaultValueOf(InRange.class, "minShort");
     private short max = (Short) defaultValueOf(InRange.class, "maxShort");
 
     @SuppressWarnings("unchecked") public ShortGenerator() {
-        super(asList(short.class, Short.class));
+        super(asList(Short.class, short.class));
     }
 
     /**
@@ -61,5 +64,30 @@ public class ShortGenerator extends Generator<Short> {
 
     @Override public Short generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextShort(min, max);
+    }
+
+    @Override protected Function<BigInteger, Short> narrow() {
+        return BigInteger::shortValue;
+    }
+
+    @Override protected Predicate<Short> inRange() {
+        return sh -> sh >= min && sh <= max;
+    }
+
+    @Override protected Short leastMagnitude() {
+        if (min > 0)
+            return min;
+        if (max < 0)
+            return max;
+
+        return 0;
+    }
+
+    @Override protected boolean negative(Short target) {
+        return target < 0;
+    }
+
+    @Override protected Short negate(Short target) {
+        return (short) -target;
     }
 }

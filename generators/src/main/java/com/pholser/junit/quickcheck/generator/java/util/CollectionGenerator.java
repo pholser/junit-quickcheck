@@ -25,18 +25,26 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
-import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static com.pholser.junit.quickcheck.internal.Lists.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
+import static java.util.stream.StreamSupport.*;
 
 /**
- * <p>Base class for generators of {@link Collection}s, such as {@link java.util.List}s and {@link java.util.Set}.</p>
+ * <p>Base class for generators of {@link Collection}s.</p>
  *
  * <p>The generated collection has a number of elements limited by {@link GenerationStatus#size()}, or else
  * by the attributes of a {@link Size} marking. The individual elements will have a type corresponding to the
@@ -76,6 +84,25 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
         return items;
     }
 
+    @Override public List<T> doShrink(SourceOfRandomness random, T larger) {
+        @SuppressWarnings("unchecked")
+        List<Object> asList = new ArrayList<>(larger);
+
+        List<T> shrinks = new ArrayList<>();
+        shrinks.addAll(removals(asList));
+
+        @SuppressWarnings("unchecked")
+        Shrink<Object> generator = (Shrink<Object>) componentGenerators().get(0);
+
+        List<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, generator);
+        shrinks.addAll(oneItemShrinks.stream()
+            .map(this::convert)
+            .filter(this::inSizeRange)
+            .collect(Collectors.toList()));
+
+        return shrinks;
+    }
+
     @Override public int numberOfNeededComponents() {
         return 1;
     }
@@ -86,9 +113,27 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
 
     protected abstract T empty();
 
+    private boolean inSizeRange(T items) {
+        return sizeRange == null
+            || (items.size() >= sizeRange.min() && items.size() <= sizeRange.max());
+    }
+
     private int size(SourceOfRandomness random, GenerationStatus status) {
         return sizeRange != null
             ? random.nextInt(sizeRange.min(), sizeRange.max())
             : status.size();
+    }
+
+    private List<T> removals(List<?> items) {
+        return stream(halving(items.size()).spliterator(), false)
+            .map(i -> removeFrom(items, i))
+            .flatMap(Collection::stream)
+            .map(this::convert)
+            .filter(this::inSizeRange)
+            .collect(Collectors.toList());
+    }
+
+    private T convert(List<?> items) {
+        return instantiate(findConstructor(types().get(0), Collection.class), items);
     }
 }

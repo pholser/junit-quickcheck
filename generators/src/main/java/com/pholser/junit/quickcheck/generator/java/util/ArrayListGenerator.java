@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Produces values for theory parameters of type {@link ArrayList}.
  */
-public class ArrayListGenerator extends CollectionGenerator<ArrayList> {
+public class ArrayListGenerator extends ListGenerator<ArrayList> {
     public ArrayListGenerator() {
         super(ArrayList.class);
     }

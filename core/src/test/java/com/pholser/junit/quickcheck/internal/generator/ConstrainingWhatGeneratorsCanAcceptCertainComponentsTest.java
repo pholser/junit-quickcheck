@@ -25,28 +25,30 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.AnInt;
-import com.pholser.junit.quickcheck.test.generator.AString;
-import org.javaruntype.type.TypeParameter;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.AString;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import org.javaruntype.type.TypeParameter;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
 import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
+    @Rule public final MockitoRule mockito = MockitoJUnit.rule();
+
     private static HashMap raw;
     private static HashMap<String, ?> stringKey;
     private static HashMap<Integer, ?> integerKey;

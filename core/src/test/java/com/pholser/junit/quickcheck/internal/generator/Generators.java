@@ -46,13 +46,13 @@ public class Generators {
 
         CompositeGenerator composite = (CompositeGenerator) result;
         Set<Class<?>> compositeTypes = new HashSet<>();
-        for (int i = 0; i < composite.numberOfComponentGenerators(); ++i)
-            compositeTypes.add(composite.componentGenerator(i).getClass());
+        for (int i = 0; i < composite.numberOfComposedGenerators(); ++i)
+            compositeTypes.add(composite.composed(i).getClass());
 
         assertEquals(newHashSet(expectedTypes), compositeTypes);
     }
 
     public static Generator<?> componentOf(Generator<?> generator, int index) {
-        return ((CompositeGenerator) generator).componentGenerator(index);
+        return ((CompositeGenerator) generator).composed(index);
     }
 }

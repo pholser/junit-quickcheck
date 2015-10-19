@@ -25,8 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import static java.util.Arrays.*;
 
+import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -37,12 +43,12 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 /**
  * Produces values for theory parameters of type {@code float} or {@link Float}.
  */
-public class FloatGenerator extends Generator<Float> {
+public class FloatGenerator extends DecimalGenerator<Float> {
     private float min = (Float) defaultValueOf(InRange.class, "minFloat");
     private float max = (Float) defaultValueOf(InRange.class, "maxFloat");
 
     @SuppressWarnings("unchecked") public FloatGenerator() {
-        super(asList(float.class, Float.class));
+        super(asList(Float.class, float.class));
     }
 
     /**
@@ -61,5 +67,34 @@ public class FloatGenerator extends Generator<Float> {
 
     @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextFloat(min, max);
+    }
+
+    @Override protected Function<Float, BigDecimal> widen() {
+        return BigDecimal::valueOf;
+    }
+
+    @Override protected Function<BigDecimal, Float> narrow() {
+        return BigDecimal::floatValue;
+    }
+
+    @Override protected Predicate<Float> inRange() {
+        return f -> f >= min && f <= max;
+    }
+
+    @Override protected Float leastMagnitude() {
+        if (min > 0F)
+            return min;
+        if (max < 0F)
+            return max;
+
+        return 0F;
+    }
+
+    @Override protected boolean negative(Float target) {
+        return target < 0;
+    }
+
+    @Override protected Float negate(Float target) {
+        return -target;
     }
 }

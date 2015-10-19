@@ -30,7 +30,7 @@ import java.util.HashSet;
 /**
  * Produces values for theory parameters of type {@link HashSet}.
  */
-public class HashSetGenerator extends CollectionGenerator<HashSet> {
+public class HashSetGenerator extends SetGenerator<HashSet> {
     public HashSetGenerator() {
         super(HashSet.class);
     }

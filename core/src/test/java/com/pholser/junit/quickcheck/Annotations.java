@@ -41,6 +41,10 @@ public class Annotations {
         return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
     }
 
+    public static int defaultPropertyTrialCount() throws Exception {
+        return (Integer) Property.class.getMethod("trials").getDefaultValue();
+    }
+
     public static Map<String, Object> defaultValuesOf(Class<? extends Annotation> annotation) {
         Map<String, Object> values = new HashMap<>();
         for (Method each : annotation.getDeclaredMethods())

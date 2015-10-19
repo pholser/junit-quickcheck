@@ -30,7 +30,7 @@ import java.util.Stack;
 /**
  * Produces values for theory parameters of type {@link Stack}.
  */
-public class StackGenerator extends CollectionGenerator<Stack> {
+public class StackGenerator extends ListGenerator<Stack> {
     public StackGenerator() {
         super(Stack.class);
     }

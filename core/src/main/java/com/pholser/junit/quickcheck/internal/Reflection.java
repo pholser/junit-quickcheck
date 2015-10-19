@@ -75,7 +75,7 @@ public final class Reflection {
         return wrapped == null ? clazz : wrapped;
     }
 
-    public static <T> Constructor<T> findConstructor(Class<T> type, Class<?> parameterTypes) {
+    public static <T> Constructor<T> findConstructor(Class<T> type, Class<?>... parameterTypes) {
         try {
             return type.getConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {

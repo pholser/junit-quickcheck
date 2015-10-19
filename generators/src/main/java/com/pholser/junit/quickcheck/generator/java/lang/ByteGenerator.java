@@ -25,24 +25,27 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import static java.util.Arrays.*;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code byte} or {@link Byte}.
  */
-public class ByteGenerator extends Generator<Byte> {
+public class ByteGenerator extends IntegralGenerator<Byte> {
     private byte min = (Byte) defaultValueOf(InRange.class, "minByte");
     private byte max = (Byte) defaultValueOf(InRange.class, "maxByte");
 
     @SuppressWarnings("unchecked") public ByteGenerator() {
-        super(asList(byte.class, Byte.class));
+        super(asList(Byte.class, byte.class));
     }
 
     /**
@@ -61,5 +64,30 @@ public class ByteGenerator extends Generator<Byte> {
 
     @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextByte(min, max);
+    }
+
+    @Override protected Function<BigInteger, Byte> narrow() {
+        return BigInteger::byteValue;
+    }
+
+    @Override protected Predicate<Byte> inRange() {
+        return b -> b >= min && b <= max;
+    }
+
+    @Override protected Byte leastMagnitude() {
+        if (min > 0)
+            return min;
+        if (max < 0)
+            return max;
+
+        return 0;
+    }
+
+    @Override protected boolean negative(Byte target) {
+        return target < 0;
+    }
+
+    @Override protected Byte negate(Byte target) {
+        return (byte) -target;
     }
 }

@@ -77,7 +77,7 @@ public class MarkedWithSuperfluousConfigurationTest {
 
     @RunWith(Theories.class)
     public static class MultipleCandidateGeneratorsButNoneUnderstandMarker {
-        @Theory public void shouldHold(@ForAll @X @From(Plain.class) Foo f) {
+        @Theory public void shouldHold(@ForAll @From(Plain.class) @X Foo f) {
             assertTrue(f.marked());
         }
     }

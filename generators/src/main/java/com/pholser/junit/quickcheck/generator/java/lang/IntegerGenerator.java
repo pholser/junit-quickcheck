@@ -25,24 +25,27 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import static java.util.Arrays.*;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code int} or {@link Integer}.
  */
-public class IntegerGenerator extends Generator<Integer> {
+public class IntegerGenerator extends IntegralGenerator<Integer> {
     private int min = (Integer) defaultValueOf(InRange.class, "minInt");
     private int max = (Integer) defaultValueOf(InRange.class, "maxInt");
 
     @SuppressWarnings("unchecked") public IntegerGenerator() {
-        super(asList(int.class, Integer.class));
+        super(asList(Integer.class, int.class));
     }
 
     /**
@@ -61,5 +64,30 @@ public class IntegerGenerator extends Generator<Integer> {
 
     @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextInt(min, max);
+    }
+
+    @Override protected Function<BigInteger, Integer> narrow() {
+        return BigInteger::intValue;
+    }
+
+    @Override protected Predicate<Integer> inRange() {
+        return i -> i >= min && i <= max;
+    }
+
+    @Override protected Integer leastMagnitude() {
+        if (min > 0)
+            return min;
+        if (max < 0)
+            return max;
+
+        return 0;
+    }
+
+    @Override protected boolean negative(Integer target) {
+        return target < 0;
+    }
+
+    @Override protected Integer negate(Integer target) {
+        return -target;
     }
 }

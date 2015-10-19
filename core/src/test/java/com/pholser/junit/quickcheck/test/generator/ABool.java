@@ -33,7 +33,7 @@ import static java.util.Arrays.*;
 
 public class ABool extends Generator<Boolean> {
     @SuppressWarnings("unchecked") public ABool() {
-        super(asList(boolean.class, Boolean.class));
+        super(asList(Boolean.class, boolean.class));
     }
 
     @Override public Boolean generate(SourceOfRandomness random, GenerationStatus status) {

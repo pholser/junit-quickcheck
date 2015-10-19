@@ -33,7 +33,7 @@ import static java.util.Arrays.*;
 
 public class AByte extends Generator<Byte> {
     @SuppressWarnings("unchecked") public AByte() {
-        super(asList(byte.class, Byte.class));
+        super(asList(Byte.class, byte.class));
     }
 
     @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {

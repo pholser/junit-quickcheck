@@ -25,23 +25,30 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.Size;
-import com.pholser.junit.quickcheck.internal.Ranges;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
-import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Lists.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
+import static java.util.stream.StreamSupport.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
     private final Generator<?> component;
+
     private Size lengthRange;
 
     public ArrayGenerator(Class<?> componentType, Generator<?> component) {
@@ -72,10 +79,27 @@ public class ArrayGenerator extends Generator<Object> {
         return array;
     }
 
-    private int length(SourceOfRandomness random, GenerationStatus status) {
-        return lengthRange != null
-            ? random.nextInt(lengthRange.min(), lengthRange.max())
-            : status.size();
+    @Override public boolean canShrink(Object larger) {
+        return larger.getClass().getComponentType() == componentType;
+    }
+
+    @Override public List<Object> doShrink(SourceOfRandomness random, Object larger) {
+        int length = Array.getLength(larger);
+        List<Object> asList = new ArrayList<>();
+        for (int i = 0; i < length; ++i)
+            asList.add(Array.get(larger, i));
+
+        List<Object> shrinks = new ArrayList<>();
+        shrinks.addAll(removals(asList));
+
+        @SuppressWarnings("unchecked")
+        List<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, (Shrink<Object>) component);
+        shrinks.addAll(oneItemShrinks.stream()
+            .map(this::convert)
+            .filter(this::inLengthRange)
+            .collect(Collectors.toList()));
+
+        return shrinks;
     }
 
     @Override public void provideRepository(GeneratorRepository provided) {
@@ -92,5 +116,33 @@ public class ArrayGenerator extends Generator<Object> {
 
     public Generator<?> componentGenerator() {
         return component;
+    }
+
+    private int length(SourceOfRandomness random, GenerationStatus status) {
+        return lengthRange != null
+            ? random.nextInt(lengthRange.min(), lengthRange.max())
+            : status.size();
+    }
+
+    private boolean inLengthRange(Object items) {
+        int length = Array.getLength(items);
+        return lengthRange == null
+            || (length >= lengthRange.min() && length <= lengthRange.max());
+    }
+
+    private List<Object> removals(List<?> items) {
+        return stream(halving(items.size()).spliterator(), false)
+            .map(i -> removeFrom(items, i))
+            .flatMap(Collection::stream)
+            .map(this::convert)
+            .filter(this::inLengthRange)
+            .collect(Collectors.toList());
+    }
+
+    private Object convert(List<?> items) {
+        Object array = Array.newInstance(componentType, items.size());
+        for (int i = 0; i < items.size(); ++i)
+            Array.set(array, i, items.get(i));
+        return array;
     }
 }

@@ -94,7 +94,7 @@
             <plugin>
                 <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
                 <artifactId>serviceloader-maven-plugin</artifactId>
-                <version>1.0.2</version>
+                <version>1.0.6</version>
                 <configuration>
                     <services>
                         <param>com.pholser.junit.quickcheck.generator.Generator</param>

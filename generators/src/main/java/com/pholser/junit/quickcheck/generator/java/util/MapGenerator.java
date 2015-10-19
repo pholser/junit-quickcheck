@@ -25,15 +25,27 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.util.Map;
-
+import static com.pholser.junit.quickcheck.internal.Lists.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
+import static java.util.stream.StreamSupport.*;
 
 /**
  * <p>Base class for generators of {@link Map}s.</p>
@@ -69,7 +81,7 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         int size = size(random, status);
 
-        T items = emptyMap();
+        T items = empty();
         for (int i = 0; i < size; ++i) {
             Object key = componentGenerators().get(0).generate(random, status);
             Object value = componentGenerators().get(1).generate(random, status);
@@ -80,6 +92,27 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         return items;
     }
 
+    @Override public List<T> doShrink(SourceOfRandomness random, T larger) {
+        @SuppressWarnings("unchecked")
+        List<Entry<?, ?>> entries = new ArrayList<>(larger.entrySet());
+
+        List<T> shrinks = new ArrayList<>();
+        shrinks.addAll(removals(entries));
+
+        @SuppressWarnings("unchecked")
+        Shrink<Entry<?, ?>> entryShrink = entryShrinker(
+            (Shrink<Object>) componentGenerators().get(0),
+            (Shrink<Object>) componentGenerators().get(1));
+
+        List<List<Entry<?, ?>>> oneEntryShrinks = shrinksOfOneItem(random, entries, entryShrink);
+        shrinks.addAll(oneEntryShrinks.stream()
+            .map(this::convert)
+            .filter(this::inSizeRange)
+            .collect(Collectors.toList()));
+
+        return shrinks;
+    }
+
     @Override public int numberOfNeededComponents() {
         return 2;
     }
@@ -88,15 +121,62 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         return !Object.class.equals(type);
     }
 
-    protected abstract T emptyMap();
+    protected abstract T empty();
 
     protected boolean okToAdd(Object key, Object value) {
         return true;
+    }
+
+    private boolean inSizeRange(T target) {
+        return sizeRange == null
+            || (target.size() >= sizeRange.min() && target.size() <= sizeRange.max());
     }
 
     private int size(SourceOfRandomness random, GenerationStatus status) {
         return sizeRange != null
             ? random.nextInt(sizeRange.min(), sizeRange.max())
             : status.size();
+    }
+
+    private List<T> removals(List<Entry<?, ?>> items) {
+        return stream(halving(items.size()).spliterator(), false)
+            .map(i -> removeFrom(items, i))
+            .flatMap(Collection::stream)
+            .map(this::convert)
+            .filter(this::inSizeRange)
+            .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    private T convert(List<?> entries) {
+        T converted = instantiate(findConstructor(types().get(0)));
+
+        for (Object each : entries) {
+            Entry<?, ?> entry = (Entry<?, ?>) each;
+            converted.put(entry.getKey(), entry.getValue());
+        }
+
+        return converted;
+    }
+
+    private Shrink<Entry<?, ?>> entryShrinker(
+        Shrink<Object> keyShrinker,
+        Shrink<Object> valueShrinker) {
+
+        return (r, e) -> {
+            @SuppressWarnings("unchecked")
+            Entry<Object, Object> entry = (Entry<Object, Object>) e;
+
+            List<Object> keyShrinks = keyShrinker.shrink(r, entry.getKey());
+            List<Object> valueShrinks = valueShrinker.shrink(r, entry.getValue());
+            List<Entry<?, ?>> shrinks = new ArrayList<>();
+            shrinks.addAll(IntStream.range(0, keyShrinks.size())
+                .mapToObj(i -> new SimpleEntry<>(keyShrinks.get(i), entry.getValue()))
+                .collect(Collectors.toList()));
+            shrinks.addAll(IntStream.range(0, valueShrinks.size())
+                .mapToObj(i -> new SimpleEntry<>(entry.getKey(), valueShrinks.get(i)))
+                .collect(Collectors.toList()));
+            return shrinks;
+        };
     }
 }

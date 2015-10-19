@@ -206,8 +206,8 @@ public class GeneratorRepository {
             if (componentGenerators.isEmpty()) {
                 List<Generator<?>> substitutes = new ArrayList<>();
                 Generator<?> zilch = generatorFor(
-                        new ParameterTypeContext("Zilch", null, getClass().getName(), token(Zilch.class))
-                        .allowMixedTypes(true));
+                    new ParameterTypeContext("Zilch", null, getClass().getName(), token(Zilch.class))
+                    .allowMixedTypes(true));
                 for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
                     substitutes.add(zilch);
 

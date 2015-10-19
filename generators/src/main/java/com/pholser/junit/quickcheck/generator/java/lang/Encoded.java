@@ -29,47 +29,42 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.nio.charset.Charset;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+
 /**
- * <p>Produces values for theory parameters of type {@link String}.</p>
- *
- * <p>This implementation produces strings whose code points correspond to code points in a given
+ * <p>Produces {@link String}s whose code points correspond to code points in a given
  * {@link java.nio.charset.Charset} ({@link java.nio.charset.Charset#defaultCharset() by default}).</p>
- *
- * <p>The generated values will have {@linkplain String#length()} decided by
- * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
  */
-public class Encoded extends Generator<String> {
-    private Charset charset = Charset.defaultCharset();
+public class Encoded extends AbstractStringGenerator {
+    private CodePoints charsetPoints;
 
     public Encoded() {
-        super(String.class);
+        initialize(Charset.defaultCharset());
     }
 
-    public void configure(InCharset c) {
-        charset = Charset.forName(c.value());
+    public void configure(InCharset charset) {
+        initialize(Charset.forName(charset.value()));
     }
 
-    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
-        CodePoints charsetPoints = CodePoints.forCharset(charset);
+    private void initialize(Charset charset) {
+        charsetPoints = CodePoints.forCharset(charset);
+    }
 
-        int[] codePoints = new int[status.size()];
-        for (int i = 0; i < codePoints.length; ++i)
-            codePoints[i] = charsetPoints.at(random.nextInt(0, charsetPoints.size() - 1));
+    @Override protected int nextCodePoint(SourceOfRandomness random) {
+        return charsetPoints.at(random.nextInt(0, charsetPoints.size() - 1));
+    }
 
-        return new String(codePoints, 0, codePoints.length);
+    @Override protected boolean codePointInRange(int codePoint) {
+        return charsetPoints.contains(codePoint);
     }
 
     /**
-     * Names a {@linkplain java.nio.charset.Charset}.
+     * Names a {@link java.nio.charset.Charset}.
      */
     @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
     @Retention(RUNTIME)

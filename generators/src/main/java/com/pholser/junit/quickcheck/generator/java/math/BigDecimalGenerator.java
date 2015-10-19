@@ -27,12 +27,11 @@ package com.pholser.junit.quickcheck.generator.java.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
-import static java.lang.Math.*;
-import static java.math.BigDecimal.*;
-
+import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
 import com.pholser.junit.quickcheck.internal.Ranges;
@@ -40,6 +39,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.lang.Math.*;
+import static java.math.BigDecimal.*;
+import static java.util.function.Function.*;
 
 /**
  * <p>Produces values for theory parameters of type {@link BigDecimal}.</p>
@@ -47,7 +49,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
  */
-public class BigDecimalGenerator extends Generator<BigDecimal> {
+public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
     private BigDecimal min;
     private BigDecimal max;
     private Precision precision;
@@ -132,5 +134,29 @@ public class BigDecimalGenerator extends Generator<BigDecimal> {
             scale = max(scale, precision.scale());
 
         return max(scale, 0);
+    }
+
+    @Override protected Function<BigDecimal, BigDecimal> widen() {
+        return identity();
+    }
+
+    @Override protected Function<BigDecimal, BigDecimal> narrow() {
+        return identity();
+    }
+
+    @Override protected Predicate<BigDecimal> inRange() {
+        return Ranges.inRange(min, max);
+    }
+
+    @Override protected BigDecimal leastMagnitude() {
+        return Ranges.leastMagnitude(min, max, ZERO);
+    }
+
+    @Override protected boolean negative(BigDecimal target) {
+        return target.signum() < 0;
+    }
+
+    @Override protected BigDecimal negate(BigDecimal target) {
+        return target.negate();
     }
 }

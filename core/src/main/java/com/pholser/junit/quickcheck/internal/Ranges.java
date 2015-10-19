@@ -26,10 +26,11 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.math.BigInteger;
-
-import static java.lang.String.*;
+import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.String.*;
 
 public final class Ranges {
     public enum Type {
@@ -66,5 +67,35 @@ public final class Ranges {
         } while (generated.compareTo(range) >= 0);
 
         return generated.add(min);
+    }
+
+    public static <T extends Comparable<? super T>> Predicate<T> inRange(T min, T max) {
+        return c -> {
+            if (min == null && max == null)
+                return true;
+            if (min == null)
+                return c.compareTo(max) <= 0;
+            if (max == null)
+                return c.compareTo(min) >= 0;
+            return c.compareTo(min) >= 0 && c.compareTo(max) <= 0;
+        };
+    }
+
+    public static <T extends Comparable<? super T>> T leastMagnitude(T min, T max, T zero) {
+        if (min == null && max == null)
+            return zero;
+
+        if (min == null)
+            return max.compareTo(zero) <= 0 ? max : zero;
+        if (max == null) {
+            return min.compareTo(zero) >= 0 ? min : zero;
+        }
+
+        if (min.compareTo(zero) >= 0)
+            return min;
+        if (max.compareTo(zero) <= 0)
+            return max;
+
+        return zero;
     }
 }

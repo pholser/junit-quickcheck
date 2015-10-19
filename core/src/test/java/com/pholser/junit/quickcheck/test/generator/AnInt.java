@@ -35,7 +35,7 @@ public class AnInt extends Generator<Integer> {
     private Between range;
 
     @SuppressWarnings("unchecked") public AnInt() {
-        super(asList(int.class, Integer.class));
+        super(asList(Integer.class, int.class));
     }
 
     public void configure(Between range) {

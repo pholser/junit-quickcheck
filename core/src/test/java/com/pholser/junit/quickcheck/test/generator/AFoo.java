@@ -27,14 +27,16 @@ package com.pholser.junit.quickcheck.test.generator;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+import static java.util.Collections.*;
 
 public class AFoo extends Generator<Foo> {
     private Same value;
@@ -55,6 +57,12 @@ public class AFoo extends Generator<Foo> {
         return new Foo(
             value == null ? random.nextInt() : value.value(),
             x != null);
+    }
+
+    @Override public List<Foo> doShrink(SourceOfRandomness random, Foo larger) {
+        return value != null || larger.i() == 0
+            ? emptyList()
+            : singletonList(new Foo(larger.i() / 2, larger.marked()));
     }
 
     public void configure(Same value) {

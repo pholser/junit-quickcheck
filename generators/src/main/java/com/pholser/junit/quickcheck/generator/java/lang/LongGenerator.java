@@ -25,24 +25,27 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import static java.util.Arrays.*;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code long} or {@link Long}.
  */
-public class LongGenerator extends Generator<Long> {
+public class LongGenerator extends IntegralGenerator<Long> {
     private long min = (Long) defaultValueOf(InRange.class, "minLong");
     private long max = (Long) defaultValueOf(InRange.class, "maxLong");
 
     @SuppressWarnings("unchecked") public LongGenerator() {
-        super(asList(long.class, Long.class));
+        super(asList(Long.class, long.class));
     }
 
     /**
@@ -61,5 +64,30 @@ public class LongGenerator extends Generator<Long> {
 
     @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextLong(min, max);
+    }
+
+    @Override protected Function<BigInteger, Long> narrow() {
+        return BigInteger::longValue;
+    }
+
+    @Override protected Predicate<Long> inRange() {
+        return ell -> ell >= min && ell <= max;
+    }
+
+    @Override protected Long leastMagnitude() {
+        if (min > 0)
+            return min;
+        if (max < 0)
+            return max;
+
+        return 0L;
+    }
+
+    @Override protected boolean negative(Long target) {
+        return target < 0;
+    }
+
+    @Override protected Long negate(Long target) {
+        return -target;
     }
 }

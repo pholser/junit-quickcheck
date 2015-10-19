@@ -38,7 +38,7 @@ public class HashtableGeneratorTest {
     }
 
     @Test public void startsOutWithAnEmptyMap() {
-        assertTrue(generator.emptyMap().isEmpty());
+        assertTrue(generator.empty().isEmpty());
     }
 
     @Test public void disallowsNullKeyAndNullValue() {

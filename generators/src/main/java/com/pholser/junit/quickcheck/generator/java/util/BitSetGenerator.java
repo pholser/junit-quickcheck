@@ -25,11 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.Collections.*;
 
 /**
  * Produces values for theory parameters of type {@link BitSet}.
@@ -47,5 +52,24 @@ public class BitSetGenerator extends Generator<BitSet> {
             bits.set(i, random.nextBoolean());
 
         return bits;
+    }
+
+    @Override public List<BitSet> doShrink(SourceOfRandomness random, BitSet larger) {
+        if (larger.length() == 0)
+            return emptyList();
+
+        List<BitSet> shrinks = new ArrayList<>();
+        shrinks.addAll(larger.stream()
+            .mapToObj(i -> larger.get(0, i))
+            .collect(Collectors.toList()));
+        shrinks.addAll(larger.stream()
+            .mapToObj(i -> {
+                BitSet smaller = (BitSet) larger.clone();
+                smaller.clear(i);
+                return smaller;
+            })
+            .collect(Collectors.toList()));
+
+        return shrinks;
     }
 }

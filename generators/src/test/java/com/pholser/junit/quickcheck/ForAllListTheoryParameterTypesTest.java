@@ -96,8 +96,7 @@ public class ForAllListTheoryParameterTypesTest {
 
     @RunWith(Theories.class)
     public static class ListOfListOfHuh {
-        @Theory
-        public void shouldHold(@ForAll(sampleSize = 10) List<List<?>> items) {
+        @Theory public void shouldHold(@ForAll(sampleSize = 10) List<List<?>> items) {
             for (List<?> each : items) {
                 // ensuring the cast works
             }
@@ -167,9 +166,8 @@ public class ForAllListTheoryParameterTypesTest {
     @RunWith(Theories.class)
     public static class ListOfVoid {
         @Theory public void shouldHold(@ForAll List<Void> voids) {
-            for (Void v : voids) {
-                assertNull(v);
-            }
+            for (Void each : voids)
+                assertNull(each);
         }
     }
 

@@ -25,29 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * <p>Produces values for theory parameters of type {@link String}.</p>
- *
- * <p>This implementation produces strings whose characters are in the interval [0x0000, 0xD7FF].</p>
- *
- * <p>The generated values will have {@linkplain String#length()} decided by
- * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
+ * <p>Produces {@link String}s whose characters are in the interval [0x0000, 0xD7FF].</p>
  */
-public class StringGenerator extends Generator<String> {
-    public StringGenerator() {
-        super(String.class);
+public class StringGenerator extends AbstractStringGenerator {
+    @Override protected int nextCodePoint(SourceOfRandomness random) {
+        return random.nextInt(0, Character.MIN_SURROGATE - 1);
     }
 
-    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
-        int[] codePoints = new int[status.size()];
-
-        for (int i = 0; i < codePoints.length; ++i)
-            codePoints[i] = random.nextInt(0, Character.MIN_SURROGATE - 1);
-
-        return new String(codePoints, 0, codePoints.length);
+    @Override protected boolean codePointInRange(int codePoint) {
+        return codePoint >= 0 && codePoint < Character.MIN_SURROGATE;
     }
 }

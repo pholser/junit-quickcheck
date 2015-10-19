@@ -39,36 +39,52 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CompositeGenerator extends Generator<Object> {
-    private final List<Weighted<Generator<?>>> components;
+    private final List<Weighted<Generator<?>>> composed;
 
-    public CompositeGenerator(List<Weighted<Generator<?>>> components) {
+    public CompositeGenerator(List<Weighted<Generator<?>>> composed) {
         super(Object.class);
 
-        this.components = new ArrayList<>(components);
+        this.composed = new ArrayList<>(composed);
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
-        Generator<?> choice = Items.chooseWeighted(components, random);
+        Generator<?> choice = Items.chooseWeighted(composed, random);
         return choice.generate(random, status);
     }
 
-    public Generator<?> componentGenerator(int index) {
-        return components.get(index).item;
+    @Override public boolean canShrink(Object larger) {
+        return composed.stream()
+            .map(w -> w.item)
+            .anyMatch(g -> g.canShrink(larger));
     }
 
-    public int numberOfComponentGenerators() {
-        return components.size();
+    @Override public List<Object> doShrink(SourceOfRandomness random, Object larger) {
+        List<Weighted<Generator<?>>> shrinkers =
+            composed.stream()
+                .filter(w -> w.item.canShrink(larger))
+                .collect(Collectors.toList());
+
+        Generator<?> choice = Items.chooseWeighted(shrinkers, random);
+        return new ArrayList<>(choice.shrink(random, larger));
+    }
+
+    public Generator<?> composed(int index) {
+        return composed.get(index).item;
+    }
+
+    public int numberOfComposedGenerators() {
+        return composed.size();
     }
 
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
 
-        for (Weighted<Generator<?>> each : components)
+        for (Weighted<Generator<?>> each : composed)
             each.item.provideRepository(provided);
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
-        for (Iterator<Weighted<Generator<?>>> it = components.iterator(); it.hasNext();) {
+        for (Iterator<Weighted<Generator<?>>> it = composed.iterator(); it.hasNext();) {
             try {
                 it.next().item.configure(annotatedType);
             } catch (GeneratorConfigurationException e) {
@@ -76,7 +92,7 @@ public class CompositeGenerator extends Generator<Object> {
             }
         }
 
-        if (components.isEmpty()) {
+        if (composed.isEmpty()) {
             throw new GeneratorConfigurationException(
                 String.format(
                     "No generator that can produce values of type %s"

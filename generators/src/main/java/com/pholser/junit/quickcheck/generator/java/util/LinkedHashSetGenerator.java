@@ -30,7 +30,7 @@ import java.util.LinkedHashSet;
 /**
  * Produces values for theory parameters of type {@link LinkedHashSet}.
  */
-public class LinkedHashSetGenerator extends CollectionGenerator<LinkedHashSet> {
+public class LinkedHashSetGenerator extends SetGenerator<LinkedHashSet> {
     public LinkedHashSetGenerator() {
         super(LinkedHashSet.class);
     }

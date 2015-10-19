@@ -25,8 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import java.math.BigDecimal;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import static java.util.Arrays.*;
 
+import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -37,12 +42,12 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 /**
  * Produces values for theory parameters of type {@code double} or {@link Double}.
  */
-public class DoubleGenerator extends Generator<Double> {
+public class DoubleGenerator extends DecimalGenerator<Double> {
     private double min = (Double) defaultValueOf(InRange.class, "minDouble");
     private double max = (Double) defaultValueOf(InRange.class, "maxDouble");
 
     @SuppressWarnings("unchecked") public DoubleGenerator() {
-        super(asList(double.class, Double.class));
+        super(asList(Double.class, double.class));
     }
 
     /**
@@ -61,5 +66,34 @@ public class DoubleGenerator extends Generator<Double> {
 
     @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextDouble(min, max);
+    }
+
+    @Override protected Function<Double, BigDecimal> widen() {
+        return BigDecimal::valueOf;
+    }
+
+    @Override protected Function<BigDecimal, Double> narrow() {
+        return BigDecimal::doubleValue;
+    }
+
+    @Override protected Predicate<Double> inRange() {
+        return d -> d >= min && d <= max;
+    }
+
+    @Override protected Double leastMagnitude() {
+        if (min > 0D)
+            return min;
+        if (max < 0D)
+            return max;
+
+        return 0D;
+    }
+
+    @Override protected boolean negative(Double target) {
+        return target < 0;
+    }
+
+    @Override protected Double negate(Double target) {
+        return -target;
     }
 }

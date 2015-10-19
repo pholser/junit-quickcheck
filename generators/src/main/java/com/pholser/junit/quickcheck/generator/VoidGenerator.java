@@ -34,7 +34,7 @@ import static java.util.Arrays.*;
  */
 public class VoidGenerator extends Generator<Void> {
     @SuppressWarnings("unchecked") public VoidGenerator() {
-        super(asList(void.class, Void.class));
+        super(asList(Void.class, void.class));
     }
 
     @Override public Void generate(SourceOfRandomness random, GenerationStatus status) {

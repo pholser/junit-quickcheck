@@ -30,7 +30,7 @@ import java.util.Vector;
 /**
  * Produces values for theory parameters of type {@link Vector}.
  */
-public class VectorGenerator extends CollectionGenerator<Vector> {
+public class VectorGenerator extends ListGenerator<Vector> {
     public VectorGenerator() {
         super(Vector.class);
     }

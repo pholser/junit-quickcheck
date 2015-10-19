@@ -51,4 +51,8 @@ public class EnumGenerator extends Generator<Enum> {
             : status.attempts() % values.length;
         return (Enum<?>) values[index];
     }
+
+    @Override public boolean canShrink(Object larger) {
+        return enumType.isInstance(larger);
+    }
 }

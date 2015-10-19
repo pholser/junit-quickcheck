@@ -25,25 +25,27 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.ACallable;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
+    @Rule public final MockitoRule mockito = MockitoJUnit.rule();
+
     private static Callable<?> callable;
     private static Object object;
 

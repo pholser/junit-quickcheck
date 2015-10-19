@@ -33,7 +33,7 @@ import static java.util.Arrays.*;
 
 public class AFloat extends Generator<Float> {
     @SuppressWarnings("unchecked") public AFloat() {
-        super(asList(float.class, Float.class));
+        super(asList(Float.class, float.class));
     }
 
     @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {

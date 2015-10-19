@@ -25,12 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import java.util.List;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 /**
  * Produces values for theory parameters of type {@code boolean} or {@link Boolean}.
@@ -39,7 +42,7 @@ public class BooleanGenerator extends Generator<Boolean> {
     private ValuesOf turnOffRandomness;
 
     @SuppressWarnings("unchecked") public BooleanGenerator() {
-        super(asList(boolean.class, Boolean.class));
+        super(asList(Boolean.class, boolean.class));
     }
 
     /**
@@ -56,5 +59,9 @@ public class BooleanGenerator extends Generator<Boolean> {
 
     @Override public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
         return turnOffRandomness == null ? random.nextBoolean() : status.attempts() % 2 != 0;
+    }
+
+    @Override public List<Boolean> doShrink(SourceOfRandomness random, Boolean larger) {
+        return larger ? singletonList(false) : emptyList();
     }
 }

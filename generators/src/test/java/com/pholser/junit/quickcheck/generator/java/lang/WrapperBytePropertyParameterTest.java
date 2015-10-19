@@ -23,40 +23,36 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.reflect;
+package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Type;
+import java.util.List;
 
-import com.google.common.base.Objects;
+import com.pholser.junit.quickcheck.Generating;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 
-public class GenericArrayTypeImpl implements GenericArrayType {
-    private final Type componentType;
+import static com.pholser.junit.quickcheck.Generating.*;
+import static java.util.Arrays.*;
+import static org.mockito.Mockito.*;
 
-    public GenericArrayTypeImpl(Type componentType) {
-        this.componentType = componentType;
+public class WrapperBytePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+    public static final Byte TYPE_BEARER = null;
+
+    @Override protected void primeSourceOfRandomness() {
+        when(Generating.bytes(randomForParameterGenerator))
+            .thenReturn((byte) -95).thenReturn((byte) -94)
+            .thenReturn((byte) -93).thenReturn((byte) -92);
     }
 
-    @Override public Type getGenericComponentType() {
-        return componentType;
+    @Override protected int trials() {
+        return 4;
     }
 
-    @Override public boolean equals(Object that) {
-        if (this == that)
-            return true;
-
-        if (!(that instanceof GenericArrayType))
-            return false;
-
-        GenericArrayType other = (GenericArrayType) that;
-        return Objects.equal(getGenericComponentType(), other.getGenericComponentType());
+    @Override protected List<?> randomValues() {
+        byte b = (byte) 0xA1;
+        return asList(b++, b++, b++, b);
     }
 
-    @Override public int hashCode() {
-        return Objects.hashCode(getGenericComponentType());
-    }
-
-    @Override public String toString() {
-        return getGenericComponentType().toString() + "[]";
+    @Override public void verifyInteractionWithRandomness() {
+        verifyBytes(randomForParameterGenerator, times(4));
     }
 }

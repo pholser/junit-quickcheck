@@ -33,7 +33,7 @@ import static java.util.Arrays.*;
 
 public class ADouble extends Generator<Double> {
     @SuppressWarnings("unchecked") public ADouble() {
-        super(asList(double.class, Double.class));
+        super(asList(Double.class, double.class));
     }
 
     @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {

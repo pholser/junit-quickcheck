@@ -91,6 +91,14 @@ public class CodePoints {
     }
 
     /**
+     * @param codePoint a code point
+     * @return Tells whether this code point set contains the given code point
+     */
+    public boolean contains(int codePoint) {
+        return ranges.stream().anyMatch(r -> r.contains(codePoint));
+    }
+
+    /**
      * Gives a set of the code points in the given charset.
      *
      * @param c a charset

@@ -25,34 +25,37 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.AFoo;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import com.pholser.junit.quickcheck.test.generator.X;
+import com.pholser.junit.quickcheck.test.generator.FooBoxOpener;
 import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
+import static com.pholser.junit.quickcheck.Functions.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class ComponentizedGeneratorsDoNotPassConfigurationOnToComponentsTest {
-    @Test public void boxOfFoo() throws Exception {
-        assertThat(testResult(BoxOfFoo.class), isSuccessful());
-        assertEquals(defaultSampleSize(), BoxOfFoo.iterations);
+public class LambdaPropertyParameterTypesTest {
+    @Test public void unboxingAFoo() throws Exception {
+        assertThat(testResult(UnboxingAFoo.class), isSuccessful());
+        assertEquals(defaultPropertyTrialCount(), UnboxingAFoo.iterations);
     }
 
-    @RunWith(Theories.class)
-    public static class BoxOfFoo {
+    @RunWith(JUnitQuickcheck.class)
+    public static class UnboxingAFoo {
         static int iterations;
 
-        @Theory public void holds(@ForAll @X Box<Foo> b) {
+        @Property public void shouldHold(FooBoxOpener b) {
             ++iterations;
 
-            assertFalse(b.contents().marked());
+            @SuppressWarnings("unchecked")
+            Foo value = functionValue(new AFoo(), new Object[] { new Box<>(new Foo(2)) });
+            for (int i = 0; i < 10000; ++i)
+                assertEquals(value, b.open(new Box<>(new Foo(2))));
         }
     }
 }

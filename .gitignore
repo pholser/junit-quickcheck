@@ -9,3 +9,4 @@ bin
 target
 *~
 .*~
+*.hs

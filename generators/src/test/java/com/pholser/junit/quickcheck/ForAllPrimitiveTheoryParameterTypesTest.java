@@ -37,6 +37,7 @@ import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.pholser.junit.quickcheck.Annotations.*;
 import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.number.OrderingComparison.*;
@@ -725,7 +726,7 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
 
     @Test public void voidParameter() throws Exception {
         assertThat(testResult(VoidParameter.class), isSuccessful());
-        assertEquals(Annotations.defaultSampleSize(), VoidParameter.iterations);
+        assertEquals(defaultSampleSize(), VoidParameter.iterations);
     }
 
     @RunWith(Theories.class)
