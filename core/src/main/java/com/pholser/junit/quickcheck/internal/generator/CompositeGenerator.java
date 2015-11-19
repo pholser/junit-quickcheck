@@ -27,13 +27,16 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CompositeGenerator extends Generator<Object> {
     private final List<Weighted<Generator<?>>> components;
@@ -65,7 +68,27 @@ public class CompositeGenerator extends Generator<Object> {
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
-        for (Weighted<Generator<?>> each : components)
-            each.item.configure(annotatedType);
+        for (Iterator<Weighted<Generator<?>>> it = components.iterator(); it.hasNext();) {
+            try {
+                it.next().item.configure(annotatedType);
+            } catch (GeneratorConfigurationException e) {
+                it.remove();
+            }
+        }
+
+        if (components.isEmpty()) {
+            throw new GeneratorConfigurationException(
+                String.format(
+                    "No generator that can produce values of type %s"
+                        + " understands all of the configuration annotations %s",
+                    annotatedType.getType().getTypeName(),
+                    configurationAnnotationNames(annotatedType)));
+        }
+    }
+
+    private static List<String> configurationAnnotationNames(AnnotatedType annotatedType) {
+        return configurationAnnotationsOn(annotatedType).stream()
+            .map(a -> a.annotationType().getName())
+            .collect(Collectors.toList());
     }
 }
