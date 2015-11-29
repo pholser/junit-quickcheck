@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import com.pholser.junit.quickcheck.test.generator.X;
 import org.junit.Test;
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -48,10 +49,10 @@ public class ComponentizedGeneratorsDoNotPassConfigurationOnToComponentsTest {
     public static class BoxOfFoo {
         static int iterations;
 
-        @Theory public void holds(@ForAll @Same(5) Box<Foo> b) {
+        @Theory public void holds(@ForAll @X Box<Foo> b) {
             ++iterations;
 
-            assertNotEquals(5, b.contents().i());
+            assertFalse(b.contents().marked());
         }
     }
 }

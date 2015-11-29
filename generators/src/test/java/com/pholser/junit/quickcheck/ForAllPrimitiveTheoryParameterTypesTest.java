@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.RangeAttributes;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
@@ -710,17 +711,15 @@ public class ForAllPrimitiveTheoryParameterTypesTest {
         }
     }
 
-    @Test public void valuesOfHasNoEffectOnNonBooleanNonEnum() throws Exception {
-        assertThat(testResult(ValuesOfOnInt.class), isSuccessful());
-        assertEquals(Annotations.defaultSampleSize(), ValuesOfOnInt.iterations);
+    @Test public void valuesOfNotApplicableOnNonBooleanNonEnum() throws Exception {
+        assertThat(
+            testResult(ValuesOfOnInt.class),
+            hasSingleFailureContaining(GeneratorConfigurationException.class.getName()));
     }
 
     @RunWith(Theories.class)
     public static class ValuesOfOnInt {
-        static int iterations;
-
         @Theory public void shouldHold(@ForAll @ValuesOf int i) {
-            ++iterations;
         }
     }
 

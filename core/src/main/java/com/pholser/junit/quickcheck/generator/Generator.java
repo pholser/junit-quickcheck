@@ -171,9 +171,7 @@ public abstract class Generator<T> {
      * @param annotatedType a type usage
      */
     public void configure(AnnotatedType annotatedType) {
-        List<Annotation> configs = allAnnotations(annotatedType).stream()
-                .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))
-                .collect(toList());
+        List<Annotation> configs = configurationAnnotationsOn(annotatedType);
 
         Map<Class<? extends Annotation>, Annotation> byType = new HashMap<>();
         for (Annotation each : configs)
@@ -193,7 +191,11 @@ public abstract class Generator<T> {
         try {
             configurer = findMethod(getClass(), "configure", annotationType);
         } catch (ReflectionException ex) {
-            return;
+            throw new GeneratorConfigurationException(
+                String.format("Generator %s does not understand configuration annotation %s",
+                    getClass().getName(),
+                    annotationType.getName()),
+                ex);
         }
 
         invoke(configurer, this, configuration);
@@ -205,5 +207,11 @@ public abstract class Generator<T> {
 
     Generator<?> generatorFor(ParameterTypeContext parameter) {
         return repo.produceGenerator(parameter);
+    }
+
+    protected static List<Annotation> configurationAnnotationsOn(AnnotatedType annotatedType) {
+        return allAnnotations(annotatedType).stream()
+            .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))
+            .collect(toList());
     }
 }

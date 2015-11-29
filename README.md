@@ -363,16 +363,18 @@ satisfy a given theory parameter based on its type:
     }
 ```
 
-Any available generators that can produce something that is
-`java.io.Serializable` might be called on to generate a value for parameter
-`s` above. Because of this, any configuration annotations on a parameter or
-type use are ignored by a generator that cannot support the annotation. This
-may or may not matter depending on the nature of the theory you're writing.
+Only the available generators that can produce something that is
+`java.io.Serializable` *and* that support all the configuration annotations
+on a theory parameter will be called on to generate a value for that
+theory parameter. So, for example, for parameter `s` above, generators for
+integral values might be called upon, whereas generators for `ArrayList`s
+would not. junit-quickcheck will complain loudly if there are no such
+generators available.
 
-Also, if you have a family of generators that can produce members of a
-hierarchy, you may want to ensure that all the generators respect the same
-attributes of a given configuration annotation. Not doing so could lead to
-surprising results.
+If you have a family of generators that can produce members of a hierarchy,
+you may want to ensure that all the generators respect the same attributes
+of a given configuration annotation. Not doing so could lead to surprising
+results.
 
 ###### Aggregating configuration
 
