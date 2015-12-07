@@ -44,9 +44,14 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class UsualJUnitMachineryOnPropertyBasedTest {
+public class UsualJUnitMachineryOnShrinkingPropertyBasedTest {
     private List<String> expectedStatements = asList(
         "class init", "class set up",
+        "second rule before", "first rule before",
+        "init", "set up",
+        "property",
+        "tear down", "reset",
+        "first rule after", "second rule after",
         "second rule before", "first rule before",
         "init", "set up",
         "property",
@@ -60,7 +65,7 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
         "class reset", "class tear down");
 
     @Test public void orderingOfStatements() throws Exception {
-        assertThat(testResult(PropertyBasedTests.class), isSuccessful());
+        assertThat(testResult(PropertyBasedTests.class), failureCountIs(1));
         assertEquals(expectedStatements, PropertyBasedTests.LOGS);
     }
 
@@ -122,8 +127,10 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
             LOGS.add("class reset");
         }
 
-        @Property(trials = 2) public void aProperty(Foo f) {
+        @Property(trials = 2, maxShrinks = 2) public void aProperty(Foo f) {
             LOGS.add("property");
+
+            fail();
         }
     }
 }
