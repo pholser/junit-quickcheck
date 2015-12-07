@@ -36,6 +36,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class SetOfEnumTest extends BasicGeneratorTheoryParameterTest {
     public static final Set<Ternary> TYPE_BEARER = null;
 

@@ -38,6 +38,12 @@ import static com.pholser.junit.quickcheck.internal.Sequences.*;
 import static java.util.Collections.*;
 import static java.util.stream.StreamSupport.*;
 
+/**
+ * Base class for generators of integral types, such as {@code int} and
+ * {@link BigInteger}.
+ *
+ * @param <T> type of values this generator produces
+ */
 public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
     protected IntegralGenerator(Class<T> type) {
         super(singletonList(type));

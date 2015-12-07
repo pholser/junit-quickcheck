@@ -39,7 +39,6 @@ public final class Lists {
         throw new UnsupportedOperationException();
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> List<List<T>> removeFrom(List<T> target, int howMany) {
         if (howMany > target.size())
             return emptyList();
@@ -62,7 +61,6 @@ public final class Lists {
         return removals;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> List<List<T>> shrinksOfOneItem(
         SourceOfRandomness random,
         List<T> target,

@@ -30,16 +30,17 @@ import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.Map;
 
+import com.pholser.junit.quickcheck.Property;
+
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked with
- * {@link com.pholser.junit.quickcheck.ForAll} with this annotation to constrain the values generated
- * for the parameter to a given size.</p>
+ * <p>Mark a parameter of a {@link Property} method with this annotation to
+ * constrain the size of values generated for the parameter.</p>
  *
- * <p>This annotation is recognized on array parameters and parameters of type {@link Collection#size()
- * Collection} and {@link Map#size() Map}.</p>
+ * <p>This annotation is recognized on array parameters and parameters of type
+ * {@link Collection#size() Collection} and {@link Map#size() Map}.</p>
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)

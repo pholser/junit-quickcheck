@@ -35,6 +35,7 @@ import java.util.List;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ExplicitGroupOfGeneratorsChosenWithDiscreteProbabilityTest extends CoreTheoryParameterTest {
     @From(value = FooGenerator.class, frequency = 1)
     @From(value = BarGenerator.class, frequency = 2)

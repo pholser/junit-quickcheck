@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.LinkedHashSet;
 
 /**
- * Produces values for theory parameters of type {@link LinkedHashSet}.
+ * Produces values of type {@link LinkedHashSet}.
  */
 public class LinkedHashSetGenerator extends SetGenerator<LinkedHashSet> {
     public LinkedHashSetGenerator() {

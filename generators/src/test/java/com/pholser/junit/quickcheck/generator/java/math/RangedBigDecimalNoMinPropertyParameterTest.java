@@ -36,7 +36,9 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RangedBigDecimalNoMinPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class RangedBigDecimalNoMinPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @InRange(max = "987654321987654321.09876")
     public static final BigDecimal TYPE_BEARER = null;
 

@@ -50,9 +50,10 @@ import static java.util.stream.StreamSupport.*;
 /**
  * <p>Base class for generators of {@link Map}s.</p>
  *
- * <p>The generated map has a number of entries limited by {@link GenerationStatus#size()}, or else
- * by the attributes of a {@link Size} marking. The individual keys and values will have types
- * corresponding to the theory parameter's type arguments.</p>
+ * <p>The generated map has a number of entries limited by
+ * {@link GenerationStatus#size()}, or else by the attributes of a {@link Size}
+ * marking. The individual keys and values will have types corresponding to the
+ * theory parameter's type arguments.</p>
  *
  * @param <T> the type of map generated
  */
@@ -64,11 +65,12 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
     }
 
     /**
-     * <p>Tells this generator to add key-value pairs to the generated map a number of times
-     * within a specified minimum and/or maximum, inclusive, chosen with uniform distribution.</p>
+     * <p>Tells this generator to add key-value pairs to the generated map a
+     * number of times within a specified minimum and/or maximum, inclusive,
+     * chosen with uniform distribution.</p>
      *
-     * <p>Note that maps disallow duplicate keys, so the number of pairs added may not be equal
-     * to the map's {@link Map#size()}.</p>
+     * <p>Note that maps disallow duplicate keys, so the number of pairs added
+     * may not be equal to the map's {@link Map#size()}.</p>
      *
      * @param sizeRange annotation that gives the size constraints
      */

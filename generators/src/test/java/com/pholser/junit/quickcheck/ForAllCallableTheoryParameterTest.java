@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllCallableTheoryParameterTest {
     @Test public void callable() throws Exception {
         assertThat(testResult(CallableOfInt.class), isSuccessful());

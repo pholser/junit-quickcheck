@@ -34,6 +34,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class WrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
     public static final Boolean TYPE_BEARER = null;
 

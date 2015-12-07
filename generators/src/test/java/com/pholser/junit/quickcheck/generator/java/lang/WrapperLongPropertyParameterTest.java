@@ -34,7 +34,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class WrapperLongPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class WrapperLongPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Long TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

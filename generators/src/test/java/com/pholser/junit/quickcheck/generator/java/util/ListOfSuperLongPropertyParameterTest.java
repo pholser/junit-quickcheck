@@ -39,7 +39,9 @@ import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 
-public class ListOfSuperLongPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class ListOfSuperLongPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final List<? super Long> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

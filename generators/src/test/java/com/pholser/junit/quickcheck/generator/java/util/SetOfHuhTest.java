@@ -34,6 +34,7 @@ import static com.google.common.collect.Sets.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class SetOfHuhTest extends BasicGeneratorTheoryParameterTest {
     public static final Set<?> TYPE_BEARER = null;
 

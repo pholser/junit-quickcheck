@@ -37,7 +37,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RangedDatePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class RangedDatePropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @InRange(min = "1/1/500", max = "12/31/2020", format = "MM/dd/yyyy")
     public static final Date TYPE_BEARER = null;
 

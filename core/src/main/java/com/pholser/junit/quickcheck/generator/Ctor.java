@@ -34,18 +34,22 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * <p>A generator that produces instances of a class by reflecting the class for a single accessible constructor,
- * generating values for the constructor's parameters, and invoking the constructor.</p>
+ * <p>Produces instances of a class by reflecting the class for a single
+ * accessible constructor, generating values for the constructor's parameters,
+ * and invoking the constructor.</p>
  *
- * <p>If a constructor parameter is marked with an annotation that influences the generation of a given kind of
- * value, it will be applied to the generation of values for that parameter.</p>
+ * <p>If a constructor parameter is marked with an annotation that influences
+ * the generation of a given kind of value, it will be applied to the
+ * generation of values for that parameter.</p>
  *
- * <p>This generator is intended to be used with {@link com.pholser.junit.quickcheck.From}, and not to be
- * loaded via the {@link com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource}.</p>
+ * <p>This generator is intended to be used with
+ * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
+ * {@link ServiceLoader} mechanism.</p>
  *
  * @param <T> the type of objects generated
  */
@@ -72,15 +76,6 @@ public class Ctor<T> extends Generator<T> {
         return false;
     }
 
-    private Object[] arguments(SourceOfRandomness random, GenerationStatus status) {
-        Object[] args = new Object[parameters.length];
-
-        for (int i = 0; i < args.length; ++i)
-            args[i] = parameterGenerators.get(i).generate(random, status);
-
-        return args;
-    }
-
     @Override public void provideRepository(GeneratorRepository provided) {
         super.provideRepository(provided);
 
@@ -94,6 +89,15 @@ public class Ctor<T> extends Generator<T> {
 
         for (int i = 0; i < parameters.length; ++i)
             parameterGenerators.get(i).configure(parameters[i].getAnnotatedType());
+    }
+
+    private Object[] arguments(SourceOfRandomness random, GenerationStatus status) {
+        Object[] args = new Object[parameters.length];
+
+        for (int i = 0; i < args.length; ++i)
+            args[i] = parameterGenerators.get(i).generate(random, status);
+
+        return args;
     }
 
     private ParameterTypeContext parameterTypeContext(Parameter parameter) {

@@ -144,7 +144,6 @@ class PropertyStatement extends Statement {
     }
 
     private List<PropertyParameterGenerationContext> parameters(int trials) {
-
         return Arrays.stream(method.getMethod().getParameters())
             .map(p -> parameterContextFor(p, trials))
             .map(p -> new PropertyParameterGenerationContext(

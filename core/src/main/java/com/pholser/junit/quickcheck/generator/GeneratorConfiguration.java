@@ -33,14 +33,16 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Apply this annotation to an annotation that marks theory parameters, in order that the marked annotation can be
- * used to configure {@linkplain Generator generators} for values of the theory parameter's type.</p>
+ * <p>Apply this annotation to an annotation that marks property parameters,
+ * in order that the marked annotation can be used to configure
+ * {@linkplain Generator generators} for values of the parameter's type.</p>
  *
- * <p>If a generator has a public instance method named {@code configure}, with a single parameter whose type is
- * an annotation that has this annotation applied, then when a theory method has a
- * {@link com.pholser.junit.quickcheck.ForAll} parameter also marked with that annotation, when the theory is executed
- * the generator that generates the value for that parameter will have its {@code configure} method called with
- * the annotation as the argument.</p>
+ * <p>If a generator has a public instance method named {@code configure},
+ * with a single parameter whose type is an annotation that has this annotation
+ * applied, then when a property that has a parameter marked with method that
+ * annotation is verified, the generator that generates the value for that
+ * parameter will have its {@code configure} method called with the annotation
+ * as the argument.</p>
  */
 @Target(ANNOTATION_TYPE)
 @Retention(RUNTIME)

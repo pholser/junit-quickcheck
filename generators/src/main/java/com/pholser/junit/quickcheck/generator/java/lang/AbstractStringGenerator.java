@@ -40,7 +40,7 @@ import static com.pholser.junit.quickcheck.internal.Sequences.*;
 import static java.util.stream.StreamSupport.*;
 
 /**
- * <p>Produces values for theory parameters of type {@link String}.</p>
+ * <p>Base class for generators of values of type {@link String}.</p>
  *
  * <p>The generated values will have {@linkplain String#length()} decided by
  * {@link GenerationStatus#size()}.</p>

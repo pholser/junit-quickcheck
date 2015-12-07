@@ -37,7 +37,7 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static java.util.Locale.getAvailableLocales;
 
 /**
- * Produces values for theory parameters of type {@link Locale}.
+ * Produces values of type {@link Locale}.
  */
 public class LocaleGenerator extends Generator<Locale> {
     public LocaleGenerator() {

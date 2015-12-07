@@ -12,7 +12,9 @@ import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RFC4122Version3PropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class RFC4122Version3PropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @From(Version3.class)
     @Namespace(Namespaces.DNS)
     public static final UUID TYPE_BEARER = null;

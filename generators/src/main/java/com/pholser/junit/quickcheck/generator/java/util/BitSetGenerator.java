@@ -37,7 +37,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Collections.*;
 
 /**
- * Produces values for theory parameters of type {@link BitSet}.
+ * Produces values of type {@link BitSet}.
  */
 public class BitSetGenerator extends Generator<BitSet> {
     public BitSetGenerator() {

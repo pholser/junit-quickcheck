@@ -37,6 +37,7 @@ import org.javaruntype.type.Types;
 import static com.google.common.collect.Lists.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class BoxOfSuperLongTest extends CoreTheoryParameterTest {
     public static final Box<? super Long> TYPE_BEARER = null;
 

@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Random;
 
+@Deprecated
 public class RandomValueSupplier extends ParameterSupplier {
     private final RandomTheoryParameterGenerator generator;
 

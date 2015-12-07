@@ -36,6 +36,7 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RangedBigDecimalNoMinTest extends BasicGeneratorTheoryParameterTest {
     @InRange(max = "987654321987654321.09876")
     public static final BigDecimal TYPE_BEARER = null;

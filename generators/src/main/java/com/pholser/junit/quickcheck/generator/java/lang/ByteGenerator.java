@@ -38,7 +38,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
 
 /**
- * Produces values for theory parameters of type {@code byte} or {@link Byte}.
+ * Produces values of type {@code byte} or {@link Byte}.
  */
 public class ByteGenerator extends IntegralGenerator<Byte> {
     private byte min = (Byte) defaultValueOf(InRange.class, "minByte");
@@ -49,11 +49,11 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
     }
 
     /**
-     * Tells this generator to produce values within a specified minimum and/or maximum, inclusive,
-     * with uniform distribution.
+     * Tells this generator to produce values within a specified minimum and/or
+     * maximum, inclusive, with uniform distribution.
      *
-     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minByte()} and
-     * {@link InRange#maxByte()}, if non-empty.
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minByte()} and {@link InRange#maxByte()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */

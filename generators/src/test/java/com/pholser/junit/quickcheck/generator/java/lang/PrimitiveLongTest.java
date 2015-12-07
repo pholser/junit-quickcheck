@@ -35,6 +35,7 @@ import static java.lang.Long.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class PrimitiveLongTest extends BasicGeneratorTheoryParameterTest {
     public static final long TYPE_BEARER = 0;
 

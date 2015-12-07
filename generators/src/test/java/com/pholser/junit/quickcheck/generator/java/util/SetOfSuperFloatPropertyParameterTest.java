@@ -39,7 +39,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
-public class SetOfSuperFloatPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class SetOfSuperFloatPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Set<? super Float> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

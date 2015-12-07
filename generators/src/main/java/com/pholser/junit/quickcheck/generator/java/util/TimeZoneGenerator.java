@@ -37,7 +37,7 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static java.util.TimeZone.*;
 
 /**
- * Produces values for theory parameters of type {@link TimeZone}.
+ * Produces values of type {@link TimeZone}.
  */
 public class TimeZoneGenerator extends Generator<TimeZone> {
     public TimeZoneGenerator() {

@@ -36,6 +36,7 @@ import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RFC4122Version4Test extends CoreTheoryParameterTest {
     @From(Version4.class)
     public static final UUID TYPE_BEARER = null;

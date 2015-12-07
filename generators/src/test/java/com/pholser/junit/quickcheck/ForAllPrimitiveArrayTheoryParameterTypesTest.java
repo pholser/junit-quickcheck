@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllPrimitiveArrayTheoryParameterTypesTest {
     @Test public void primitiveBooleanArray() {
         assertThat(testResult(PrimitiveBooleanArray.class), isSuccessful());

@@ -34,8 +34,10 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveFloatPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
-    public static final float TYPE_BEARER = 0;
+public class PrimitiveFloatPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
+    public static final float TYPE_BEARER = 0.5F;
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.floats(randomForParameterGenerator))

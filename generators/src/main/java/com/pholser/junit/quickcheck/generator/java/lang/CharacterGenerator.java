@@ -25,10 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -37,13 +34,10 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.lang.Character.*;
 import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
 
 /**
- * Produces values for theory parameters of type {@code char} or {@link Character}.
+ * Produces values of type {@code char} or {@link Character}.
  */
 public class CharacterGenerator extends Generator<Character> {
     private char min = (Character) defaultValueOf(InRange.class, "minChar");
@@ -54,11 +48,11 @@ public class CharacterGenerator extends Generator<Character> {
     }
 
     /**
-     * Tells this generator to produce values within a specified minimum and/or maximum, inclusive,
-     * with uniform distribution.
+     * Tells this generator to produce values within a specified minimum and/or
+     * maximum, inclusive, with uniform distribution.
      *
-     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minChar()} and
-     * {@link InRange#maxChar()}, if non-empty.
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minChar()} and {@link InRange#maxChar()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */
@@ -72,23 +66,10 @@ public class CharacterGenerator extends Generator<Character> {
     }
 
     @Override public List<Character> doShrink(SourceOfRandomness random, Character larger) {
-        List<Character> chars = new ArrayList<>();
-        addAll(chars, 'a', 'b', 'c');
-        if (isUpperCase(larger))
-            chars.add(Character.toLowerCase(larger));
-        addAll(chars, 'A', 'B', 'C', '1', '2', '3', ' ', '\n');
-
-        Comparator<Character> comparator =
-            comparing((Function<Character, Boolean>) Character::isLowerCase)
-                .thenComparing((Function<Character, Boolean>) Character::isUpperCase)
-                .thenComparing((Function<Character, Boolean>) Character::isDigit)
-                .thenComparing(ch -> Character.valueOf(' ').equals(ch))
-                .thenComparing((Function<Character, Boolean>) Character::isSpaceChar)
-                .thenComparing(naturalOrder());
-        return chars.stream()
-            .filter(ch -> ch >= min && ch <= max)
-            .filter(ch -> comparator.compare(ch, larger) < 0)
-            .distinct()
+        return new CodePointShrink(cp -> cp >= min && cp <= max)
+            .shrink(random, larger)
+            .stream()
+            .map((Integer cp) -> (char) cp.intValue())
             .collect(Collectors.toList());
     }
 }

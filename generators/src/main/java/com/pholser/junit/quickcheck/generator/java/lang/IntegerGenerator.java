@@ -38,7 +38,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
 
 /**
- * Produces values for theory parameters of type {@code int} or {@link Integer}.
+ * Produces values of type {@code int} or {@link Integer}.
  */
 public class IntegerGenerator extends IntegralGenerator<Integer> {
     private int min = (Integer) defaultValueOf(InRange.class, "minInt");
@@ -49,11 +49,11 @@ public class IntegerGenerator extends IntegralGenerator<Integer> {
     }
 
     /**
-     * Tells this generator to produce values within a specified minimum and/or maximum, inclusive,
-     * with uniform distribution.
+     * Tells this generator to produce values within a specified minimum and/or
+     * maximum, inclusive, with uniform distribution.
      *
-     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minInt()} and
-     * {@link InRange#maxInt()}, if non-empty.
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minInt()} and {@link InRange#maxInt()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */

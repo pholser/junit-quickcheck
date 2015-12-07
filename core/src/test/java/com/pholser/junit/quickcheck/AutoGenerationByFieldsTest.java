@@ -55,6 +55,7 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 import static org.junit.rules.ExpectedException.*;
 
+@Deprecated
 public class AutoGenerationByFieldsTest {
     @Rule public final ExpectedException thrown = none();
 

@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.internal;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import org.javaruntype.type.Types;
 
+@Deprecated
 class SampleSizer {
     private final int sampleSize;
 

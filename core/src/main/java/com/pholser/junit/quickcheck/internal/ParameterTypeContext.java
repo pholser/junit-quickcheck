@@ -25,23 +25,32 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.*;
-
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.AnnotatedArrayType;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.AnnotatedWildcardType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.pholser.junit.quickcheck.internal.Items.choose;
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
+
+import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.lang.String.format;
-import static java.util.Collections.unmodifiableList;
-import static org.javaruntype.type.Types.arrayComponentOf;
+import static java.lang.String.*;
+import static java.util.Collections.*;
+import static org.javaruntype.type.Types.*;
 
 public class ParameterTypeContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =

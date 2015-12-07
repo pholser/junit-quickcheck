@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
+import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints.CodePointRange;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -32,11 +33,11 @@ import static org.junit.Assert.*;
 public class CodePointRangeTest {
     @Test(expected = IllegalArgumentException.class)
     public void illegalRange() {
-        new CodePoints.CodePointRange(54, 53, 0);
+        new CodePointRange(54, 53, 0);
     }
 
     @Test public void rangeOfOne() {
-        CodePoints.CodePointRange range = new CodePoints.CodePointRange(55, 55, 0);
+        CodePointRange range = new CodePointRange(55, 55, 0);
 
         assertEquals(1, range.size());
         assertFalse(range.contains(54));
@@ -45,7 +46,7 @@ public class CodePointRangeTest {
     }
 
     @Test public void largerRange() {
-        CodePoints.CodePointRange range = new CodePoints.CodePointRange(55, 58, 0);
+        CodePointRange range = new CodePointRange(55, 58, 0);
 
         assertEquals(4, range.size());
         assertFalse(range.contains(54));

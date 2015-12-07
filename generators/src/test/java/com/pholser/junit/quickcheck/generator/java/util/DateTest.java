@@ -35,6 +35,7 @@ import static com.pholser.junit.quickcheck.Generating.verifyLongs;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class DateTest extends BasicGeneratorTheoryParameterTest {
     public static final Date TYPE_BEARER = null;
 

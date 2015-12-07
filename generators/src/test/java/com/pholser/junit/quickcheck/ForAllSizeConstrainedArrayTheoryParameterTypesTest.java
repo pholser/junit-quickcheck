@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllSizeConstrainedArrayTheoryParameterTypesTest {
     @Test public void oneD() {
         assertThat(testResult(OneD.class), isSuccessful());

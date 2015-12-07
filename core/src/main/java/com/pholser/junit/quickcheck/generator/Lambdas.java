@@ -45,22 +45,29 @@ public final class Lambdas {
     }
 
     /**
-     * <p>Creates an instance of a given "functional interface" type, whose single abstract method returns values of
-     * the type produced by the given generator. The arguments to the lambda's single method will be used to seed
-     * a random generator that will be used to generate the return value of that method.</p>
+     * <p>Creates an instance of a given "functional interface" type, whose
+     * single abstract method returns values of the type produced by the given
+     * generator. The arguments to the lambda's single method will be used to
+     * seed a random generator that will be used to generate the return value
+     * of that method.</p>
      *
-     * <p>junit-quickcheck uses this to create random values for theory parameters whose type is determined to be a
-     * "functional interface" (an interface with a single abstract method that does not override a method from
-     * {@link Object}. Custom generators for functional interface types can use this also.</p>
+     * <p>junit-quickcheck uses this to create random values for property
+     * parameters whose type is determined to be a
+     * {@linkplain FunctionalInterface functional interface}. Custom generators
+     * for functional interface types can use this also.</p>
      *
      * @param lambdaType a functional interface type token
-     * @param returnValueGenerator a generator for the return type of the functional interface's single method
-     * @param status an object to be passed along to the generator that will produce the functional interface's
-     * method return value
+     * @param returnValueGenerator a generator for the return type of the
+     * functional interface's single method
+     * @param status an object to be passed along to the generator that will
+     * produce the functional interface's method return value
      * @param <T> the functional interface type token
-     * @param <U> the type of the generated return value of the functional interface method
-     * @return an instance of the functional interface type, whose single method will return a generated value
-     * @throws IllegalArgumentException if {@code lambdaType} is not a functional interface type
+     * @param <U> the type of the generated return value of the functional
+     * interface method
+     * @return an instance of the functional interface type, whose single
+     * method will return a generated value
+     * @throws IllegalArgumentException if {@code lambdaType} is not a
+     * functional interface type
      */
     public static <T, U> T makeLambda(
         Class<T> lambdaType,
@@ -82,9 +89,9 @@ public final class Lambdas {
         private final GenerationStatus status;
 
         LambdaInvocationHandler(
-                Class<T> lambdaType,
-                Generator<U> returnValueGenerator,
-                GenerationStatus status) {
+            Class<T> lambdaType,
+            Generator<U> returnValueGenerator,
+            GenerationStatus status) {
 
             this.lambdaType = lambdaType;
             this.returnValueGenerator = returnValueGenerator;

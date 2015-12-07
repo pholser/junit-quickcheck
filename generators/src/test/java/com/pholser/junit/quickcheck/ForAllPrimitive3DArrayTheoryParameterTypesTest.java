@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllPrimitive3DArrayTheoryParameterTypesTest {
     @Test public void primitive3DBooleanArray() {
         assertThat(testResult(Primitive3DBooleanArray.class), isSuccessful());

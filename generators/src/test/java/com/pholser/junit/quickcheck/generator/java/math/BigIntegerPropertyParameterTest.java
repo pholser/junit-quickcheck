@@ -34,7 +34,9 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class BigIntegerPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class BigIntegerPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final BigInteger TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

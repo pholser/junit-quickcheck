@@ -8,8 +8,10 @@ import static java.util.Collections.*;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.*;
 
-public class LoggingSeedsForPropertyParameterGenerationTest extends CorePropertyParameterTest {
-    public static final int TYPE_BEARER = 0;
+public class LoggingSeedsForPropertyParameterGenerationTest
+    extends CorePropertyParameterTest {
+
+    public static final int TYPE_BEARER = 1;
 
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextInt()).thenReturn(-2);

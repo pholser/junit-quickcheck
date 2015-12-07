@@ -40,7 +40,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * Produces values for theory parameters of type {@code double} or {@link Double}.
+ * Produces values for theory parameters of type {@code double} or
+ * {@link Double}.
  */
 public class DoubleGenerator extends DecimalGenerator<Double> {
     private double min = (Double) defaultValueOf(InRange.class, "minDouble");
@@ -51,11 +52,12 @@ public class DoubleGenerator extends DecimalGenerator<Double> {
     }
 
     /**
-     * Tells this generator to produce values within a specified minimum (inclusive) and/or maximum (exclusive)
-     * with uniform distribution.
+     * Tells this generator to produce values within a specified minimum
+     * (inclusive) and/or maximum (exclusive) with uniform distribution.
      *
-     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minDouble()} and
-     * {@link InRange#maxDouble()}, if non-empty.
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minDouble()} and {@link InRange#maxDouble()},
+     * if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */

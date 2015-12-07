@@ -35,6 +35,7 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RangedBigIntegerNoMaxTest extends BasicGeneratorTheoryParameterTest {
     @InRange(min = "-987654321987654321")
     public static final BigInteger TYPE_BEARER = null;

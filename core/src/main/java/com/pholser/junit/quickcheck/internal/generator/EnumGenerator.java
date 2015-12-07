@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class EnumGenerator extends Generator<Enum> {
     private final Class<?> enumType;
+
     private ValuesOf turnOffRandomness;
 
     public EnumGenerator(Class<?> enumType) {

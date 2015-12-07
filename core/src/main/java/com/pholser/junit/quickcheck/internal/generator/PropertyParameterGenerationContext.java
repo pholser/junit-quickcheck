@@ -45,6 +45,7 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
     private final ConstraintEvaluator evaluator;
     private final SourceOfRandomness random;
     private final Generator<?> generator;
+
     private int successfulEvaluations;
     private int discards;
 

@@ -35,7 +35,9 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class ListOfWrapperLongPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class ListOfWrapperLongPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final List<Long> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

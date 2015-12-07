@@ -40,6 +40,12 @@ import static com.pholser.junit.quickcheck.internal.Sequences.*;
 import static java.util.Collections.*;
 import static java.util.stream.StreamSupport.*;
 
+/**
+ * Base class for generators of integral types, such as {@code double} and
+ * {@link BigDecimal}.
+ *
+ * @param <T> type of values this generator produces
+ */
 public abstract class DecimalGenerator<T extends Number> extends Generator<T> {
     protected DecimalGenerator(Class<T> type) {
         super(singletonList(type));

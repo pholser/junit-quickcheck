@@ -45,7 +45,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.Namespaces.*;
 
 /**
- * Home for machinery to produce {@link UUID}s according to <a href="http://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>.
+ * Home for machinery to produce {@link UUID}s according to
+ * <a href="http://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>.
  */
 public final class RFC4122 {
     private RFC4122() {
@@ -115,7 +116,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Produces values for theory parameters of type {@link UUID} that are RFC 4122 Version 3 identifiers.
+     * Produces values for theory parameters of type {@link UUID} that are
+     * RFC 4122 Version 3 identifiers.
      */
     public static class Version3 extends NameBasedUUIDGenerator {
         public Version3() {
@@ -123,7 +125,8 @@ public final class RFC4122 {
         }
 
         /**
-         * Tells this generator to prepend the given "namespace" UUID to the names it generates for UUID production.
+         * Tells this generator to prepend the given "namespace" UUID to the
+         * names it generates for UUID production.
          *
          * @param namespace a handle for a "namespace" UUID
          */
@@ -133,7 +136,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Produces values for theory parameters of type {@link UUID} that are RFC 4122 Version 4 identifiers.
+     * Produces values for theory parameters of type {@link UUID} that are
+     * RFC 4122 Version 4 identifiers.
      */
     public static class Version4 extends AbstractUUIDGenerator {
         @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
@@ -145,7 +149,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Produces values for theory parameters of type {@link UUID} that are RFC 4122 Version 5 identifiers.
+     * Produces values for theory parameters of type {@link UUID} that are
+     * RFC 4122 Version 5 identifiers.
      */
     public static class Version5 extends NameBasedUUIDGenerator {
         public Version5() {
@@ -153,7 +158,8 @@ public final class RFC4122 {
         }
 
         /**
-         * Tells this generator to prepend the given "namespace" UUID to the names it generates for UUID production.
+         * Tells this generator to prepend the given "namespace" UUID to the
+         * names it generates for UUID production.
          *
          * @param namespace a handle for a "namespace" UUID
          */
@@ -163,7 +169,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Used in version 3 and version 5 UUID generation to specify a "namespace" UUID for use in generation.
+     * Used in version 3 and version 5 UUID generation to specify a
+     * "namespace" UUID for use in generation.
      */
     @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
     @Retention(RUNTIME)

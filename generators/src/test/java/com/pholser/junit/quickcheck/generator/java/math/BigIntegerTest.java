@@ -34,6 +34,7 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class BigIntegerTest extends BasicGeneratorTheoryParameterTest {
     public static final BigInteger TYPE_BEARER = null;
 

@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.contrib.theories.PotentialAssignment;
 import org.slf4j.Logger;
 
+@Deprecated
 public class RandomTheoryParameterGenerator {
     private final SourceOfRandomness random;
     private final GeneratorRepository repository;

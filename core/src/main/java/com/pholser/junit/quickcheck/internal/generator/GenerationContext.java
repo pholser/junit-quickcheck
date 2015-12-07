@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.Math.*;
 
+@Deprecated
 public class GenerationContext implements GenerationStatus {
     private final ParameterContext parameter;
     private final GeometricDistribution distro;

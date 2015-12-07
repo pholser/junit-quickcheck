@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllSampleSizeTest {
     @Test public void shouldFeedADefaultNumberOfValuesToAMarkedParameter() throws Exception {
         assertThat(testResult(ForDefaultNumberOfValues.class), isSuccessful());

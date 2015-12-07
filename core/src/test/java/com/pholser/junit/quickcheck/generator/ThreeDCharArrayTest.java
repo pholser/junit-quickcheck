@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ThreeDCharArrayTest extends CoreTheoryParameterTest {
     public static final char[][][] TYPE_BEARER = null;
 

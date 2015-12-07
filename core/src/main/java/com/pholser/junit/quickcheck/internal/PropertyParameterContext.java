@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.lang.reflect.AnnotatedElement;
 
-import com.pholser.junit.quickcheck.ForAll;
 import com.pholser.junit.quickcheck.When;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -64,7 +63,7 @@ public class PropertyParameterContext {
     }
 
     public PropertyParameterContext addConstraint(When quantifier) {
-        if (quantifier != null && !defaultValueOf(ForAll.class, "suchThat").equals(quantifier.satisfies()))
+        if (quantifier != null && !defaultValueOf(When.class, "satisfies").equals(quantifier.satisfies()))
             constraint = quantifier.satisfies();
 
         return this;

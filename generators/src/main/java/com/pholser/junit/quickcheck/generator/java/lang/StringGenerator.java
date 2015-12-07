@@ -28,7 +28,8 @@ package com.pholser.junit.quickcheck.generator.java.lang;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * <p>Produces {@link String}s whose characters are in the interval [0x0000, 0xD7FF].</p>
+ * <p>Produces {@link String}s whose characters are in the interval
+ * {@code [0x0000, 0xD7FF]}.</p>
  */
 public class StringGenerator extends AbstractStringGenerator {
     @Override protected int nextCodePoint(SourceOfRandomness random) {

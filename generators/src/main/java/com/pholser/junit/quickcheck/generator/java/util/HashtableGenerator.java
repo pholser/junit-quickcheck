@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.Hashtable;
 
 /**
- * Produces values for theory parameters of type {@link Hashtable}.
+ * Produces values of type {@link Hashtable}.
  */
 public class HashtableGenerator extends MapGenerator<Hashtable> {
     public HashtableGenerator() {

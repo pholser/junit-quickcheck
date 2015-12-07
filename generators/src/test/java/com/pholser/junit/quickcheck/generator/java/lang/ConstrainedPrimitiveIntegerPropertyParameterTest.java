@@ -35,7 +35,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class ConstrainedPrimitiveIntegerPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class ConstrainedPrimitiveIntegerPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public void TYPE_BEARER(@When(satisfies = "#_ <= 0") Integer o) {
     }
 

@@ -40,6 +40,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllFunctionTheoryParameterTypesTest {
     @Test public void fooToZilch() throws Exception {
         assertThat(testResult(FooToZilch.class), isSuccessful());

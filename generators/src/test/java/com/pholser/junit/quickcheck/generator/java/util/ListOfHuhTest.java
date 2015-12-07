@@ -33,6 +33,7 @@ import static org.mockito.Mockito.*;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
 
+@Deprecated
 public class ListOfHuhTest extends BasicGeneratorTheoryParameterTest {
     public static final List<?> TYPE_BEARER = null;
 

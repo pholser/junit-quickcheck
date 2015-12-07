@@ -33,22 +33,26 @@ import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * <p>A generator that produces instances of a class by reflecting the class's fields and generating random
- * values for them.</p>
+ * <p>Produces instances of a class by reflecting the class's fields and
+ * generating random values for them.</p>
  *
  * <p>All fields of the class and its class hierarchy are auto-generated.</p>
  *
- * <p>In order for this generator to work, the type it is given must have an accessible zero-arg constructor.</p>
+ * <p>In order for this generator to work, the type it is given must have an
+ * accessible zero-arg constructor.</p>
  *
- * <p>If a field is marked with an annotation that influences the generation of a given kind of value, it will
- * be applied to the generation of values for that field.</p>
+ * <p>If a field is marked with an annotation that influences the generation of
+ * a given kind of value, it will be applied to the generation of values for
+ * that field.</p>
  *
- * <p>This generator is intended to be used with {@link com.pholser.junit.quickcheck.From}, and not to be
- * loaded via the {@link com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource}.</p>
+ * <p>This generator is intended to be used with
+ * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
+ * {@link ServiceLoader} mechanism.</p>
 
  * @param <T> the type of objects generated
  */

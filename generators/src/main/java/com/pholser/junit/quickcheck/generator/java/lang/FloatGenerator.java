@@ -41,7 +41,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * Produces values for theory parameters of type {@code float} or {@link Float}.
+ * Produces values of type {@code float} or {@link Float}.
  */
 public class FloatGenerator extends DecimalGenerator<Float> {
     private float min = (Float) defaultValueOf(InRange.class, "minFloat");
@@ -52,11 +52,11 @@ public class FloatGenerator extends DecimalGenerator<Float> {
     }
 
     /**
-     * Tells this generator to produce values within a specified minimum (inclusive) and/or maximum (exclusive)
-     * with uniform distribution.
+     * Tells this generator to produce values within a specified minimum
+     * (inclusive) and/or maximum (exclusive) with uniform distribution.
      *
-     * {@link InRange#min} and {@link InRange#max} take precedence over {@link InRange#minFloat()} and
-     * {@link InRange#maxFloat()}, if non-empty.
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minFloat()} and {@link InRange#maxFloat()}, if non-empty.
      *
      * @param range annotation that gives the range's constraints
      */

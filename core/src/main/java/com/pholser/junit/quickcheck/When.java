@@ -32,29 +32,33 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * Mark a parameter of a {@link Property} method with this annotation to specify metadata about
- * values generated for that parameter.
+ * Mark a parameter of a {@link Property} method with this annotation to
+ * specify metadata about values generated for that parameter.
  */
 @Target(PARAMETER)
 @Retention(RUNTIME)
 public @interface When {
     /**
-     * @return the ratio of discarded generated values to successful generated values above which values will no
-     * longer be generated. For a negative value, generation will cease immediately. For a zero value, generation
+     * @return the ratio of discarded generated values to successful generated
+     * values above which values for the annotated property parameter will
+     * no longer be generated. For a negative value, an
+     * {@link IllegalArgumentException} is raised. For a zero value, generation
      * will continue as long as needed.
      */
     int discardRatio() default 0;
 
     /**
-     * @return an <a href="http://commons.apache.org/ognl/">OGNL</a> expression used to constrain the values fed to
-     * the annotated property parameter. The expression should evaluate to a {@code boolean} value. Within the
+     * @return an <a href="http://commons.apache.org/ognl/">OGNL</a> expression
+     * used to constrain the values fed to the annotated property parameter.
+     * The expression should evaluate to a {@code boolean} value. Within the
      * expression, {@code "_"} refers to the property parameter.
      */
     String satisfies() default "";
 
     /**
-     * @return a value to be used as the initial seed for the random value generator. Not specifying a value
-     * causes the seed to be chosen in the usual JDK way.
+     * @return a value to be used as the initial seed for the random value
+     * generator. Not specifying a value causes the seed to be chosen in the
+     * usual JDK way.
      */
     long seed() default 0;
 }

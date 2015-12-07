@@ -28,17 +28,46 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.runner.RunWith;
+
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
-@Retention(RUNTIME)
+/**
+ * <p>Mark a method on a class that is {@linkplain RunWith run with} the
+ * {@link JUnitQuickcheck} runner with this annotation to have it run as a
+ * property-based test.</p>
+ *
+ * <p>A method marked with this annotation should be an instance method
+ * declared as {@code public} with a return type of {@code void}.</p>
+ */
 @Target(METHOD)
+@Retention(RUNTIME)
 public @interface Property {
+    /**
+     * @return how many sets of parameters to verify the property with
+     */
     int trials() default 100;
 
+    /**
+     * @return whether or not to attempt to {@linkplain Shrink shrink}
+     * a failing set of parameters
+     */
     boolean shrink() default true;
 
+    /**
+     * @return the maximum number of {@linkplain Shrink shrink} attempts
+     * to make on a failing set of parameters. In effect only when
+     * {@link #shrink()} is {@code true}.
+     */
     int maxShrinks() default 100;
 
+    /**
+     * @return the maximum depth of {@linkplain Shrink shrink} tree
+     * to make on a failing set of parameters. In effect only when
+     * {@link #shrink()} is {@code true}.
+     */
     int maxShrinkDepth() default 20;
 }

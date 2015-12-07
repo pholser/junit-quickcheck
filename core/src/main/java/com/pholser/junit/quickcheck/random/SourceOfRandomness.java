@@ -33,17 +33,20 @@ import java.util.Random;
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
- * A source of randomness, fed to {@link com.pholser.junit.quickcheck.generator.Generator}s so they can produce
- * random values for theory parameters.
+ * A source of randomness, fed to
+ * {@link com.pholser.junit.quickcheck.generator.Generator}s so they can
+ * produce random values for property parameters.
  */
 public class SourceOfRandomness {
     private final Random delegate;
+
     private long seed;
 
     /**
      * Makes a new source of randomness.
      *
-     * @param delegate a JDK source of randomness, to which the new instance will delegate
+     * @param delegate a JDK source of randomness, to which the new instance
+     * will delegate
      */
     public SourceOfRandomness(Random delegate) {
         this.delegate = delegate;
@@ -84,7 +87,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * @return a uniformly distributed random {@code double} value in the interval {@code [0.0, 1.0)}
+     * @return a uniformly distributed random {@code double} value in the
+     * interval {@code [0.0, 1.0)}
      * @see java.util.Random#nextDouble()
      */
     public double nextDouble() {
@@ -92,7 +96,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * @return a uniformly distributed random {@code float} value in the interval {@code [0.0, 1.0)}
+     * @return a uniformly distributed random {@code float} value in the
+     * interval {@code [0.0, 1.0)}
      * @see java.util.Random#nextFloat()
      */
     public float nextFloat() {
@@ -117,7 +122,8 @@ public class SourceOfRandomness {
 
     /**
      * @param n upper bound
-     * @return a uniformly distributed random {@code int} value in the interval {@code [0, n)}
+     * @return a uniformly distributed random {@code int} value in the interval
+     * {@code [0, n)}
      * @see java.util.Random#nextInt(int)
      */
     public int nextInt(int n) {
@@ -149,7 +155,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code byte} value, uniformly distributed across the interval {@code [min, max]}.
+     * Gives a random {@code byte} value, uniformly distributed across the
+     * interval {@code [min, max]}.
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -160,7 +167,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code char} value, uniformly distributed across the interval {@code [min, max]}.
+     * Gives a random {@code char} value, uniformly distributed across the
+     * interval {@code [min, max]}.
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -173,10 +181,12 @@ public class SourceOfRandomness {
     }
 
     /**
-     * <p>Gives a random {@code double} value in the interval {@code [min, max)}.</p>
+     * <p>Gives a random {@code double} value in the interval
+     * {@code [min, max)}.</p>
      *
-     * <p>This naive implementation takes a random {@code double} value from {@link Random#nextDouble()} and
-     * scales/shifts the value into the desired interval. This may give surprising results for large ranges.</p>
+     * <p>This naive implementation takes a random {@code double} value from
+     * {@link Random#nextDouble()} and scales/shifts the value into the desired
+     * interval. This may give surprising results for large ranges.</p>
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -188,10 +198,12 @@ public class SourceOfRandomness {
     }
 
     /**
-     * <p>Gives a random {@code float} value in the interval {@code [min, max)}.</p>
+     * <p>Gives a random {@code float} value in the interval
+     * {@code [min, max)}.</p>
      *
-     * <p>This naive implementation takes a random {@code float} value from {@link Random#nextFloat()} and
-     * scales/shifts the value into the desired interval. This may give surprising results for large ranges.</p>
+     * <p>This naive implementation takes a random {@code float} value from
+     * {@link Random#nextFloat()} and scales/shifts the value into the desired
+     * interval. This may give surprising results for large ranges.</p>
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -203,7 +215,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code int} value, uniformly distributed across the interval {@code [min, max]}.
+     * Gives a random {@code int} value, uniformly distributed across the
+     * interval {@code [min, max]}.
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -214,7 +227,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code long} value, uniformly distributed across the interval {@code [min, max]}.
+     * Gives a random {@code long} value, uniformly distributed across the
+     * interval {@code [min, max]}.
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -229,7 +243,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code short} value, uniformly distributed across the interval {@code [min, max]}.
+     * Gives a random {@code short} value, uniformly distributed across the
+     * interval {@code [min, max]}.
      *
      * @param min lower bound of the desired interval
      * @param max upper bound of the desired interval
@@ -240,7 +255,8 @@ public class SourceOfRandomness {
     }
 
     /**
-     * Gives a random {@code BigInteger} representable by the given number of bits.
+     * Gives a random {@code BigInteger} representable by the given number
+     * of bits.
      *
      * @param numberOfBits the desired number of bits
      * @return a random {@code BigInteger}

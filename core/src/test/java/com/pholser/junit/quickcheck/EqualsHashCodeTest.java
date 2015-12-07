@@ -37,6 +37,7 @@ import static org.junit.Assume.*;
 /**
  * Swiped from <a href="http://stackoverflow.com/questions/837484/junit-theory-for-hashcode-equals-contract">here</a>.
  */
+@Deprecated
 @Category(LongRunning.class)
 @RunWith(Theories.class)
 public class EqualsHashCodeTest {

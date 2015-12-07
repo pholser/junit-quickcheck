@@ -46,6 +46,7 @@ import java.lang.reflect.Parameter;
 import static java.util.Arrays.*;
 import static org.junit.rules.ExpectedException.*;
 
+@Deprecated
 @RunWith(MockitoJUnitRunner.class)
 public class GenerationContextTest {
     @Rule public final ExpectedException thrown = none();

@@ -38,6 +38,7 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ListOfSuperLongTest extends BasicGeneratorTheoryParameterTest {
     public static final List<? super Long> TYPE_BEARER = null;
 

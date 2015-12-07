@@ -34,6 +34,7 @@ import org.junit.runners.Parameterized;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Iterables.*;
 import static java.nio.charset.Charset.*;
@@ -52,11 +53,9 @@ public class LargeCharsetCodePointsTest {
 
     @Parameterized.Parameters(name = "charset {0}")
     public static Iterable<Charset> data() {
-        return filter(availableCharsets().values(), new Predicate<Charset>() {
-            @Override public boolean apply(Charset input) {
-                return input.canEncode();
-            }
-        });
+        return availableCharsets().values().stream()
+            .filter(Charset::canEncode)
+            .collect(Collectors.toList());
     }
 
     @Test public void nthElement() {

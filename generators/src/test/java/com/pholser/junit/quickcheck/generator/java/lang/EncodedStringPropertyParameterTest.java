@@ -36,7 +36,9 @@ import static com.pholser.junit.quickcheck.generator.java.lang.Encoded.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class EncodedStringPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class EncodedStringPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @From(Encoded.class)
     @InCharset("US-ASCII")
     public static final String TYPE_BEARER = null;

@@ -35,7 +35,9 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RangedBigIntegerNoMinPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class RangedBigIntegerNoMinPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @InRange(max = "987654321987654321")
     public static final BigInteger TYPE_BEARER = null;
 

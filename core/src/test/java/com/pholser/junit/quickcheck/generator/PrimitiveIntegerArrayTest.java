@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class PrimitiveIntegerArrayTest extends CoreTheoryParameterTest {
     public static final int[] TYPE_BEARER = null;
 

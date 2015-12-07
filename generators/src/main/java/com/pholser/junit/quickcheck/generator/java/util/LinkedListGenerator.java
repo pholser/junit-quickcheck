@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.LinkedList;
 
 /**
- * Produces values for theory parameters of type {@link LinkedList}.
+ * Produces values of type {@link LinkedList}.
  */
 public class LinkedListGenerator extends ListGenerator<LinkedList> {
     public LinkedListGenerator() {

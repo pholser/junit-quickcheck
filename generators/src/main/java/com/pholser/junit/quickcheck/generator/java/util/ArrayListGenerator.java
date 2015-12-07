@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.ArrayList;
 
 /**
- * Produces values for theory parameters of type {@link ArrayList}.
+ * Produces values of type {@link ArrayList}.
  */
 public class ArrayListGenerator extends ListGenerator<ArrayList> {
     public ArrayListGenerator() {

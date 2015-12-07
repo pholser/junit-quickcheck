@@ -36,6 +36,7 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class BigDecimalWithSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
     @Precision(scale = 5)
     public static final BigDecimal TYPE_BEARER = null;

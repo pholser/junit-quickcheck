@@ -46,13 +46,16 @@ import static java.util.stream.StreamSupport.*;
 /**
  * <p>Base class for generators of {@link Collection}s.</p>
  *
- * <p>The generated collection has a number of elements limited by {@link GenerationStatus#size()}, or else
- * by the attributes of a {@link Size} marking. The individual elements will have a type corresponding to the
- * theory parameter's type argument.</p>
+ * <p>The generated collection has a number of elements limited by
+ * {@link GenerationStatus#size()}, or else by the attributes of a {@link Size}
+ * marking. The individual elements will have a type corresponding to the
+ * collection's type argument.</p>
  *
  * @param <T> the type of collection generated
  */
-public abstract class CollectionGenerator<T extends Collection> extends ComponentizedGenerator<T> {
+public abstract class CollectionGenerator<T extends Collection>
+    extends ComponentizedGenerator<T> {
+
     private Size sizeRange;
 
     protected CollectionGenerator(Class<T> type) {
@@ -60,11 +63,13 @@ public abstract class CollectionGenerator<T extends Collection> extends Componen
     }
 
     /**
-     * <p>Tells this generator to add elements to the generated collection a number of times
-     * within a specified minimum and/or maximum, inclusive, chosen with uniform distribution.</p>
+     * <p>Tells this generator to add elements to the generated collection
+     * a number of times within a specified minimum and/or maximum, inclusive,
+     * chosen with uniform distribution.</p>
      *
-     * <p>Note that some kinds of collections disallow duplicates, so the number of elements added may not
-     * be equal to the collection's {@link Collection#size()}.</p>
+     * <p>Note that some kinds of collections disallow duplicates, so the
+     * number of elements added may not be equal to the collection's
+     * {@link Collection#size()}.</p>
      *
      * @param sizeRange annotation that gives the size constraints
      */

@@ -35,7 +35,8 @@ import java.util.Map;
 import static java.lang.String.format;
 
 /**
- * Maps ordinal values to corresponding Unicode code points in a {@link java.nio.charset.Charset}.
+ * Maps ordinal values to corresponding Unicode code points in a
+ * {@link java.nio.charset.Charset}.
  */
 public class CodePoints {
     private static final Map<Charset, CodePoints> ENCODABLES = new HashMap<>();
@@ -51,8 +52,6 @@ public class CodePoints {
     }
 
     /**
-     * Gives the {@code index}'th code point of this code point set.
-     *
      * @param index index to look up
      * @return this code point set's {@code index}'th code point
      * @throws IndexOutOfBoundsException if there is no such code point
@@ -92,7 +91,7 @@ public class CodePoints {
 
     /**
      * @param codePoint a code point
-     * @return Tells whether this code point set contains the given code point
+     * @return whether this code point set contains the given code point
      */
     public boolean contains(int codePoint) {
         return ranges.stream().anyMatch(r -> r.contains(codePoint));

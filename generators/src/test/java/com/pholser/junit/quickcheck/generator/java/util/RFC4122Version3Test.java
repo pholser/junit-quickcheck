@@ -12,6 +12,7 @@ import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RFC4122Version3Test extends CoreTheoryParameterTest {
     @From(Version3.class)
     @Namespace(Namespaces.DNS)

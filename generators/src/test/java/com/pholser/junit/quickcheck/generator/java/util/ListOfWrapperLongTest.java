@@ -35,6 +35,7 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ListOfWrapperLongTest extends BasicGeneratorTheoryParameterTest {
     public static final List<Long> TYPE_BEARER = null;
 

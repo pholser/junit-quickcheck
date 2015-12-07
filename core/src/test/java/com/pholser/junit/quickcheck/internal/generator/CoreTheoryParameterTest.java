@@ -53,6 +53,7 @@ import static com.pholser.junit.quickcheck.Objects.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public abstract class CoreTheoryParameterTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
 

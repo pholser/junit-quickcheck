@@ -46,71 +46,78 @@ import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 
 /**
- * Produces values for theory parameters.
+ * Produces values for property parameters.
  *
- * @param <T> type of theory parameter to apply this generator's values to
+ * @param <T> type of property parameter to apply this generator's values to
  */
 public abstract class Generator<T> implements Shrink<T> {
     private final List<Class<T>> types = new ArrayList<>();
     private GeneratorRepository repo;
 
     /**
-     * @param type class token for type of theory parameter this generator is applicable to
+     * @param type class token for type of property parameter this generator is
+     * applicable to
      */
     @SuppressWarnings("unchecked") protected Generator(Class<T> type) {
         this(singletonList(type));
     }
 
     /**
-     * Used for generators of primitives/their wrappers. For example, a {@code Generator<Integer>} can be used for
-     * theory parameters of type {@code Integer} or {@code int}.
+     * Used for generators of primitives and their wrappers. For example, a
+     * {@code Generator<Integer>} can be used for property parameters of type
+     * {@code Integer} or {@code int}.
      *
-     * @param types class tokens for type of theory parameter this generator is applicable to
+     * @param types class tokens for type of property parameter this generator
+     * is applicable to
      */
     protected Generator(List<Class<T>> types) {
         this.types.addAll(types);
     }
 
     /**
-     * @return class tokens for the types of theory parameters this generator is applicable to
+     * @return class tokens for the types of property parameters this generator
+     * is applicable to
      */
     public List<Class<T>> types() {
         return unmodifiableList(types);
     }
 
     /**
-     * Tells whether this generator is allowed to be used for theory parameters of the given type.
+     * Tells whether this generator is allowed to be used for property
+     * parameters of the given type.
      *
      * @param type type against which to test this generator
-     * @return {@code} true if the generator is allowed to participate in generating values for theory parameters
-     * of {@code type}.
+     * @return {@code} true if the generator is allowed to participate in
+     * generating values for property parameters of {@code type}.
      */
     public boolean canRegisterAsType(Class<?> type) {
         return true;
     }
 
     /**
-     * <p>Produces a value for a theory parameter.</p>
+     * <p>Produces a value for a property parameter.</p>
      *
-     * <p>A generator may raise an unchecked exception if some condition exists which would lead to a confusing
-     * generation -- for example, if a generator honored a range configuration, and the endpoints were transposed.</p>
+     * <p>A generator may raise an unchecked exception if some condition exists
+     * which would lead to a confusing generation -- for example, if a
+     * generator honored a range configuration, and the endpoints were
+     * transposed.</p>
      *
-     * @param random a source of randomness to be used when generating the value
-     * @param status an object that the generator can use to influence the value it produces. For example, a generator
-     * for lists can use the {@link GenerationStatus#size() size} method to generate lists with a given number of
-     * elements.
+     * @param random source of randomness to be used when generating the value
+     * @param status an object that the generator can use to influence the
+     * value it produces. For example, a generator for lists can use the
+     * {@link GenerationStatus#size() size} method to generate lists with a
+     * given number of elements.
      * @return the generated value
      */
     public abstract T generate(SourceOfRandomness random, GenerationStatus status);
 
-    public boolean canShrink(Object larger) {
-        return types().get(0).isInstance(larger);
-    }
-
-    private T narrow(Object o) {
-        return types().get(0).cast(o);
-    }
-
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Generators first ensure that they {@linkplain #canShrink(Object) can
+     * participate} in shrinking the given value, and if so, they
+     * {@linkplain #doShrink(SourceOfRandomness, Object) produce shrinks}.</p>
+     */
     public final List<T> shrink(SourceOfRandomness random, Object larger) {
         if (!canShrink(larger))
             throw new IllegalStateException(getClass() + " not capable of shrinking " + larger);
@@ -118,13 +125,45 @@ public abstract class Generator<T> implements Shrink<T> {
         return doShrink(random, narrow(larger));
     }
 
+    /**
+     * <p>Tells whether this generator is allowed to participate in the
+     * {@link Shrink} process for the given "larger" value.</p>
+     *
+     * <p>Unless overridden, the only criterion for whether a generator is
+     * allowed to participate in shrinking a value is if the value can be
+     * safely cast to the type of values the generator produces.</p>
+     *
+     * @param larger the "larger" value
+     * @return whether this generator can participate in "shrinking" the larger
+     * value
+     */
+    public boolean canShrink(Object larger) {
+        return types().get(0).isInstance(larger);
+    }
+
+    /**
+     * <p>Gives some objects that are "smaller" than a given "larger"
+     * object.</p>
+     *
+     * <p>Unless overridden, a generator will produce an empty list of
+     * "smaller" values.</p>
+     *
+     * @param random source of randomness to use in shrinking, if desired
+     * @param larger the larger object
+     * @return objects that are "smaller" than the larger object
+     */
     public List<T> doShrink(SourceOfRandomness random, T larger) {
         return emptyList();
     }
 
+    private T narrow(Object o) {
+        return types().get(0).cast(o);
+    }
+
     /**
-     * @return whether this generator has component generators, such as for those generators that produce lists or
-     * arrays.
+     * @return whether this generator has component generators, such as for
+     * those generators that produce lists or maps.
+     *
      * @see #addComponentGenerators(java.util.List)
      */
     public boolean hasComponents() {
@@ -142,8 +181,10 @@ public abstract class Generator<T> implements Shrink<T> {
     /**
      * <p>Adds component generators to this generator.</p>
      *
-     * <p>Some generators need component generators to create proper values. For example, lists require a single
-     * component generator in order to generate elements that have the type of the list parameter's type argument.</p>
+     * <p>Some generators need component generators to create proper values.
+     * For example, list generators require a single component generator in
+     * order to generate elements that have the type of the list parameter's
+     * type argument.</p>
      *
      * @param newComponents component generators to add
      */
@@ -153,8 +194,9 @@ public abstract class Generator<T> implements Shrink<T> {
 
     /**
      * @param typeParameters a list of generic type parameters
-     * @return whether this generator can be considered for generating values for theory parameters that have the
-     * given type parameters in their signatures
+     * @return whether this generator can be considered for generating values
+     * for property parameters that have the given type parameters in their
+     * signatures
      */
     public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
         return true;
@@ -172,22 +214,30 @@ public abstract class Generator<T> implements Shrink<T> {
     }
 
     /**
-     * <p>Configures this generator using annotations from a given annotated type.</p>
+     * <p>Configures this generator using annotations from a given annotated
+     * type.</p>
      *
-     * <p>This method considers only annotations that are themselves marked with {@link GeneratorConfiguration}.</p>
+     * <p>This method considers only annotations that are themselves marked
+     * with {@link GeneratorConfiguration}.</p>
      *
-     * <p>By default, the generator will configure itself by:</p>
+     * <p>By default, the generator will configure itself using this
+     * procedure:</p>
      * <ul>
-     *     <li>For each of the given annotations:
-     *         <ul>
-     *             <li>Find a {@code public} method on the generator named {@code configure}, that accepts a single
-     *             parameter of the annotation type</li>
-     *             <li>Invoke the {@code configure} method reflectively, passing the annotation as the argument</li>
-     *         </ul>
-     *     </li>
+     *   <li>For each of the given annotations:
+     *     <ul>
+     *       <li>Find a {@code public} method on the generator named
+     *       {@code configure}, that accepts a single parameter of the
+     *       annotation type</li>
+     *       <li>Invoke the {@code configure} method reflectively, passing the
+     *       annotation as the argument</li>
+     *     </ul>
+     *   </li>
      * </ul>
      *
      * @param annotatedType a type usage
+     * @throws GeneratorConfigurationException if the generator does not
+     * "understand" one of the generation configuration annotations on
+     * the annotated type
      */
     public void configure(AnnotatedType annotatedType) {
         List<Annotation> configs = configurationAnnotationsOn(annotatedType);
@@ -220,6 +270,11 @@ public abstract class Generator<T> implements Shrink<T> {
         invoke(configurer, this, configuration);
     }
 
+    /**
+     * Used to supply the available generators to this one.
+     *
+     * @param provided repository of available generators
+     */
     public void provideRepository(GeneratorRepository provided) {
         repo = provided;
     }
@@ -228,6 +283,13 @@ public abstract class Generator<T> implements Shrink<T> {
         return repo.produceGenerator(parameter);
     }
 
+    /**
+     * Gives a list of the {@link GeneratorConfiguration} annotations present
+     * on the given type
+     *
+     * @param annotatedType an annotated type
+     * @return what configuration annotations are present on that type
+     */
     protected static List<Annotation> configurationAnnotationsOn(AnnotatedType annotatedType) {
         return allAnnotations(annotatedType).stream()
             .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))

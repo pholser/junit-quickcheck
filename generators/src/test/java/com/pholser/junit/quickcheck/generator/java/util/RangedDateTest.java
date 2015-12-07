@@ -37,6 +37,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RangedDateTest extends BasicGeneratorTheoryParameterTest {
     @InRange(min = "1/1/500", max = "12/31/2020", format = "MM/dd/yyyy")
     public static final Date TYPE_BEARER = null;

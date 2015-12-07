@@ -65,7 +65,7 @@ public class RandomElementFromItemsTest {
     @Test public void singleWeightedItem() {
         when(random.nextInt(2)).thenReturn(1);
 
-        assertEquals("a", Items.chooseWeighted(asList(first), random));
+        assertEquals("a", Items.chooseWeighted(singletonList(first), random));
     }
 
     @Test public void choosingFirstOfManyWeightedItems() {

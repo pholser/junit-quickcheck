@@ -30,7 +30,8 @@ import java.util.List;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * Represents a strategy for producing objects "smaller than" a given object.
+ * <p>Represents a strategy for producing objects "smaller than" a given
+ * object.</p>
  *
  * @param <T> type of shrunken objects produced
  */

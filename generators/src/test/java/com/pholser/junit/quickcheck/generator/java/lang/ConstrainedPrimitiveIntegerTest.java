@@ -35,6 +35,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ConstrainedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     public void TYPE_BEARER(@ForAll(suchThat = "#_ <= 0") Integer o) {
     }

@@ -36,6 +36,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class CharsetGeneratorTest extends BasicGeneratorTheoryParameterTest {
     public static final Charset TYPE_BEARER = null;
 

@@ -29,23 +29,24 @@ import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.javaruntype.type.TypeParameter;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Collections.*;
 
 /**
- * Produces values for theory parameters of types that have parameterizations that would also need generation,
- * such as collections, maps, and predicates.
+ * Produces values for property parameters of types that have parameterizations
+ * that would also need generation, such as collections, maps, and predicates.
  *
- * @param <T> type of theory parameter to apply this generator's values to
+ * @param <T> type of property parameter to apply this generator's values to
  */
 public abstract class ComponentizedGenerator<T> extends Generator<T> {
     private final List<Generator<?>> components = new ArrayList<>();
 
     /**
-     * @param type class token for type of theory parameter this generator is applicable to
+     * @param type class token for type of property parameter this generator
+     * is applicable to
      */
     protected ComponentizedGenerator(Class<T> type) {
         super(type);
@@ -78,7 +79,7 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        List<AnnotatedType> annotatedComponentTypes = Reflection.annotatedComponentTypes(annotatedType);
+        List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
 
         if (annotatedComponentTypes.size() == components.size()) {
             for (int i = 0; i < components.size(); ++i)

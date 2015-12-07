@@ -33,7 +33,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
 
 /**
- * Produces values for theory parameters of type {@code Function}.
+ * Produces values of type {@code Function}.
  *
  * @param <F> parameter type of the generated functions
  * @param <T> return type of the generated functions

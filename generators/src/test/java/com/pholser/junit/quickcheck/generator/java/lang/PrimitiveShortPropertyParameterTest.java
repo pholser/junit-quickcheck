@@ -34,8 +34,10 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveShortPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
-    public static final short TYPE_BEARER = 0;
+public class PrimitiveShortPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
+    public static final short TYPE_BEARER = -1;
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.shorts(randomForParameterGenerator))

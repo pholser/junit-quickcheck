@@ -35,7 +35,9 @@ import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RFC4122Version4PropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class RFC4122Version4PropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @From(Version4.class)
     public static final UUID TYPE_BEARER = null;
 

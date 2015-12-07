@@ -34,7 +34,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class WrapperFloatPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class WrapperFloatPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Float TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

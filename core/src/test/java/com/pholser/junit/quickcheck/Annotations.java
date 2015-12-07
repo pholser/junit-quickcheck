@@ -37,6 +37,7 @@ public class Annotations {
         throw new UnsupportedOperationException();
     }
 
+    @Deprecated
     public static int defaultSampleSize() throws Exception {
         return (Integer) ForAll.class.getMethod("sampleSize").getDefaultValue();
     }

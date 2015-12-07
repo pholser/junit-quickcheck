@@ -36,7 +36,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static com.pholser.junit.quickcheck.internal.Items.*;
 
 /**
- * Produces values for theory parameters of type {@link java.nio.charset.Charset}.
+ * Produces values of type {@link java.nio.charset.Charset}.
  */
 public class CharsetGenerator extends Generator<Charset> {
     public CharsetGenerator() {

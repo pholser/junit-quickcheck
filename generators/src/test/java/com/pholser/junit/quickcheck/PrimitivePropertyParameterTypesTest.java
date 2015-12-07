@@ -96,8 +96,6 @@ public class PrimitivePropertyParameterTypesTest {
         }
     }
 
-    // TODO: core: shrinking tests that still run rules, before/after, etc.
-
     @Test public void shrinkingBooleanFromTrue() {
         assertThat(testResult(ShrinkingBooleanFromTrue.class), failureCountIs(1));
 

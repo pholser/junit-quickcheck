@@ -36,7 +36,7 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
 /**
- * Produces values for theory parameters of type {@code boolean} or {@link Boolean}.
+ * Produces values of type {@code boolean} or {@link Boolean}.
  */
 public class BooleanGenerator extends Generator<Boolean> {
     private ValuesOf turnOffRandomness;
@@ -46,12 +46,14 @@ public class BooleanGenerator extends Generator<Boolean> {
     }
 
     /**
-     * <p>Tells this generator to generate the values {@code true} and {@code false} on alternating requests.</p>
+     * <p>Tells this generator to generate the values {@code true} and
+     * {@code false} on alternating requests.</p>
      *
-     * <p>Without this configuration, {@code true} and {@code false} are generated with approximately equal
-     * probability.</p>
+     * <p>Without this configuration, {@code true} and {@code false} are
+     * generated with approximately equal probability.</p>
      *
-     * @param flag annotation to turn off random generation and replace it with alternating values
+     * @param flag annotation to turn off random generation and replace it
+     * with alternating values
      */
     public void configure(ValuesOf flag) {
         turnOffRandomness = flag;

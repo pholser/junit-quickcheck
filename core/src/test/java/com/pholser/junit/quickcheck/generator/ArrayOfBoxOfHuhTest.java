@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.test.generator.Box;
 
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ArrayOfBoxOfHuhTest extends CoreTheoryParameterTest {
     public static final Box<?>[] TYPE_BEARER = null;
 

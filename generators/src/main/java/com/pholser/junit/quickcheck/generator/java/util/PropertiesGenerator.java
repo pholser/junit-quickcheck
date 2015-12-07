@@ -40,7 +40,7 @@ import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
- * Produces values for theory parameters of type {@link Properties}.
+ * Produces values of type {@link Properties}.
  */
 public class PropertiesGenerator extends Generator<Properties> {
     private final StringGenerator stringGenerator = new StringGenerator();

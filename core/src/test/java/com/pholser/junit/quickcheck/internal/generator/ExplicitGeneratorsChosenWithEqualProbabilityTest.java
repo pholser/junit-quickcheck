@@ -35,6 +35,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class ExplicitGeneratorsChosenWithEqualProbabilityTest extends CoreTheoryParameterTest {
     @From(FooGenerator.class)
     @From(BarGenerator.class)

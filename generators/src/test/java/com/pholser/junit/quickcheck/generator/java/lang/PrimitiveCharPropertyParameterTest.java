@@ -34,8 +34,10 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveCharPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
-    public static final char TYPE_BEARER = 0;
+public class PrimitiveCharPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
+    public static final char TYPE_BEARER = 'a';
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.chars(randomForParameterGenerator)).thenReturn('t');

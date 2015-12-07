@@ -37,7 +37,9 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class MapOfIntegerToFloatPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class MapOfIntegerToFloatPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Map<Integer, Float> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

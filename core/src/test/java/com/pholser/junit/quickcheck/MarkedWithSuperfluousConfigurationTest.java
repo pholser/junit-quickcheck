@@ -44,6 +44,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class MarkedWithSuperfluousConfigurationTest {
     @Test public void parameterMarkedWithUnexpectedConfiguration() {
         assertThat(

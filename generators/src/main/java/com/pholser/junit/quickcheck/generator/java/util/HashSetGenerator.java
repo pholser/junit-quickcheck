@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.HashSet;
 
 /**
- * Produces values for theory parameters of type {@link HashSet}.
+ * Produces values of type {@link HashSet}.
  */
 public class HashSetGenerator extends SetGenerator<HashSet> {
     public HashSetGenerator() {

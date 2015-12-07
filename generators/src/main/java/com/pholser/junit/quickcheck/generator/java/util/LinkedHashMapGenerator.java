@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.LinkedHashMap;
 
 /**
- * Produces values for theory parameters of type {@link LinkedHashMap}.
+ * Produces values of type {@link LinkedHashMap}.
  */
 public class LinkedHashMapGenerator extends MapGenerator<LinkedHashMap> {
     public LinkedHashMapGenerator() {

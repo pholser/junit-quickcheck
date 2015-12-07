@@ -28,11 +28,13 @@ package com.pholser.junit.quickcheck.internal;
 import org.junit.Test;
 
 public class WeightedTest {
-    @Test(expected = IllegalArgumentException.class) public void disallowZero() {
+    @Test(expected = IllegalArgumentException.class)
+    public void disallowZero() {
         new Weighted<>(null, 0);
     }
 
-    @Test(expected = IllegalArgumentException.class) public void disallowNegative() {
+    @Test(expected = IllegalArgumentException.class)
+    public void disallowNegative() {
         new Weighted<>(null, -1);
     }
 }

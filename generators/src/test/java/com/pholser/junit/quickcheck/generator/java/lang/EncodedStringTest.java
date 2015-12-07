@@ -36,6 +36,7 @@ import static com.pholser.junit.quickcheck.generator.java.lang.Encoded.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class EncodedStringTest extends BasicGeneratorTheoryParameterTest {
     @From(Encoded.class)
     @InCharset("US-ASCII")

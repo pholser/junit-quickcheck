@@ -35,6 +35,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class StringTest extends BasicGeneratorTheoryParameterTest {
     @From(StringGenerator.class)
     public static final String TYPE_BEARER = null;

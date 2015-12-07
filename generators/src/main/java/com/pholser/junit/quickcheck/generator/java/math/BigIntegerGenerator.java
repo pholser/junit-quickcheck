@@ -41,9 +41,10 @@ import static java.math.BigInteger.*;
 import static java.util.function.Function.*;
 
 /**
- * <p>Produces values for theory parameters of type {@link BigInteger}.</p>
+ * <p>Produces values of type {@link BigInteger}.</p>
  *
- * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
+ * <p>With no additional configuration, the generated values are chosen from
+ * a range with a magnitude decided by
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
  */
 public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
@@ -55,15 +56,20 @@ public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max() maximum} inclusive, with uniform distribution.</p>
+     * <p>Tells this generator to produce values within a specified
+     * {@linkplain InRange#min() minimum} and/or
+     * {@linkplain InRange#max() maximum} inclusive, with uniform
+     * distribution.</p>
      *
-     * <p>If an endpoint of the range is not specified, its value takes on a magnitude influenced by
+     * <p>If an endpoint of the range is not specified, its value takes on
+     * a magnitude influenced by
      * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
 
      * @param range annotation that gives the range's constraints
-     * @throws NumberFormatException if the range's values cannot be converted to {@code BigInteger}
-     * @throws IllegalArgumentException if the range's values specify a nonsensical range
+     * @throws NumberFormatException if the range's values cannot be converted
+     * to {@code BigInteger}
+     * @throws IllegalArgumentException if the range's values specify a
+     * nonsensical range
      */
     public void configure(InRange range) {
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))

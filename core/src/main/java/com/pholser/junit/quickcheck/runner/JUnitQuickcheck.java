@@ -33,6 +33,11 @@ import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -40,6 +45,17 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>JUnit test runner for junit-quickcheck property-based tests.</p>
+ *
+ * <p>When this runner runs a given test class, it regards only
+ * {@code public} instance methods with a return type of {@code void} that are
+ * marked with the {@link Property} annotation.</p>
+ *
+ * <p>This runner honors {@link Rule}, {@link Before}, {@link After},
+ * {@link BeforeClass}, and {@link AfterClass}. Their execution is wrapped
+ * around the verification of a property in the expected order.</p>
+ */
 public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
@@ -56,12 +72,8 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
 
     @Override protected void validateTestMethods(List<Throwable> errors) {
         for (FrameworkMethod each : computeTestMethods()) {
-            if (each.getAnnotation(Property.class) != null) {
-                each.validatePublicVoid(false, errors);
-                each.validateNoTypeParametersOnArgs(errors);
-            } else {
-                each.validatePublicVoidNoArg(false, errors);
-            }
+            each.validatePublicVoid(false, errors);
+            each.validateNoTypeParametersOnArgs(errors);
         }
     }
 

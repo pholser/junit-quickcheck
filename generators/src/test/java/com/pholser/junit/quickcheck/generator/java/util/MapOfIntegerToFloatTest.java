@@ -37,6 +37,7 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class MapOfIntegerToFloatTest extends BasicGeneratorTheoryParameterTest {
     public static final Map<Integer, Float> TYPE_BEARER = null;
 

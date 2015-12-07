@@ -40,6 +40,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllLambdaTheoryParameterTypesTest {
     @Test public void unboxingAFoo() throws Exception {
         assertThat(testResult(UnboxingAFoo.class), isSuccessful());

@@ -35,7 +35,9 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class ListOfIntArrayPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class ListOfIntArrayPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final List<int[]> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {

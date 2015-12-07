@@ -35,6 +35,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RangedPrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     @InRange(min = "-4", max = "5")
     public static final int TYPE_BEARER = 0;

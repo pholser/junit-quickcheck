@@ -35,8 +35,10 @@ import static java.lang.Long.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveLongPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
-    public static final long TYPE_BEARER = 0;
+public class PrimitiveLongPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
+    public static final long TYPE_BEARER = 3;
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.longs(randomForParameterGenerator)).thenReturn(MIN_VALUE);

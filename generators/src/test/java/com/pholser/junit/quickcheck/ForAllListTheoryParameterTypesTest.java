@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllListTheoryParameterTypesTest {
     @Test public void huh() {
         assertThat(testResult(ListOfHuh.class), isSuccessful());

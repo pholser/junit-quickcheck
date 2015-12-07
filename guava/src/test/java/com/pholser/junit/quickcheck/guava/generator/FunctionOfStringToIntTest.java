@@ -39,6 +39,7 @@ import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.Types.typeOf;
 import static org.junit.Assert.*;
 
+@Deprecated
 public class FunctionOfStringToIntTest extends CoreTheoryParameterTest {
     public static final Function<String, Integer> TYPE_BEARER = null;
 

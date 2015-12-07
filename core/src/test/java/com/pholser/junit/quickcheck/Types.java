@@ -32,7 +32,8 @@ public class Types {
         throw new UnsupportedOperationException();
     }
 
-    public static ParameterTypeContext typeOf(Class<?> c, String fieldName) throws NoSuchFieldException {
+    public static ParameterTypeContext typeOf(Class<?> c, String fieldName)
+        throws NoSuchFieldException {
         return new ParameterTypeContext(
             fieldName,
             c.getDeclaredField(fieldName).getAnnotatedType(),

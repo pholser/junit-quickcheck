@@ -26,18 +26,20 @@
 package com.pholser.junit.quickcheck.generator;
 
 /**
- * {@link Generator}s are fed instances of this interface on each generation so that, if they choose, the generators
- * can use these instances to influence the results of a generation for a particular theory parameter.
+ * {@link Generator}s are fed instances of this interface on each generation
+ * so that, if they choose, the generators can use these instances to influence
+ * the results of a generation for a particular property parameter.
  */
 public interface GenerationStatus {
     /**
-     * @return an arbitrary "size" parameter; this value (probabilistically) increases for every successful generation,
-     * and certainly not greater than {@link #attempts()}.
+     * @return an arbitrary "size" parameter; this value (probabilistically)
+     * increases for every successful generation
      */
     int size();
 
     /**
-     * @return how many attempts have been made to generate a value for a theory parameter
+     * @return how many attempts have been made to generate a value for a
+     * property parameter
      */
     int attempts();
 }

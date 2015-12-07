@@ -35,7 +35,9 @@ import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class BigDecimalPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class BigDecimalPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final BigDecimal TYPE_BEARER = null;
 
     private BigDecimal first;

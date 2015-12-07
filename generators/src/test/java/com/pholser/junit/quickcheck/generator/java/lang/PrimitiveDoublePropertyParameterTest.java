@@ -34,8 +34,10 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveDoublePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
-    public static final double TYPE_BEARER = 0;
+public class PrimitiveDoublePropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
+    public static final double TYPE_BEARER = -1;
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.doubles(randomForParameterGenerator))

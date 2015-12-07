@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.Vector;
 
 /**
- * Produces values for theory parameters of type {@link Vector}.
+ * Produces values of type {@link Vector}.
  */
 public class VectorGenerator extends ListGenerator<Vector> {
     public VectorGenerator() {

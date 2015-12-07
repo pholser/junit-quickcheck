@@ -35,23 +35,24 @@ import static java.lang.annotation.RetentionPolicy.*;
 import com.pholser.junit.quickcheck.generator.Generator;
 
 /**
- * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked
- * with {@link ForAll} with this annotation to have random values supplied to it via the specified
+ * <p>Mark a parameter of a {@link Property} method with this annotation to
+ * have random values supplied to it via the specified
  * {@link Generator}.</p>
  *
- * <p>You may specify as many of these annotation as as you wish on a given parameter.
- * On a given generation, one of the specified generators will be chosen at random with probability
- * in proportion to {@link #frequency()}.</p>
+ * <p>You may specify as many of these annotations as as you wish on a given
+ * parameter. On a given generation, one of the specified generators will be
+ * chosen at random with probability in proportion to {@link #frequency()}.</p>
  *
- * <p>If any such generator produces values of a type incompatible with the type of the marked theory parameter,
- * {@link IllegalArgumentException} is raised.</p>
+ * <p>If any such generator produces values of a type incompatible with the
+ * type of the marked parameter, {@link IllegalArgumentException} is
+ * raised.</p>
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
 @Repeatable(Produced.class)
 public @interface From {
     /**
-     * @return the generator to be used for the annotated theory parameter
+     * @return the generator to be used for the annotated property parameter
      */
     Class<? extends Generator> value();
 

@@ -63,6 +63,7 @@ public abstract class CorePropertyParameterTest {
     @Mock protected Logger log;
     protected Iterable<Generator<?>> source;
     protected GeneratorRepository repository;
+
     @Mock private Property propertyMetadata;
     @Mock private When quantifier;
     @Mock private From explicitGenerators;

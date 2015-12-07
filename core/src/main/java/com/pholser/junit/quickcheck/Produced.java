@@ -28,20 +28,22 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.pholser.junit.quickcheck.generator.Generator;
+
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Mark a parameter of a {@link org.junit.contrib.theories.Theory Theory} method already marked
- * with {@link ForAll} with this annotation to have random values supplied to it via one of the
- * {@link com.pholser.junit.quickcheck.generator.Generator}s specified by the aggregated
- * {@link From} annotations.</p>
+ * <p>Mark a parameter of a {@link Property} method with this annotation to
+ * have random values supplied to it via one of the
+ * {@link com.pholser.junit.quickcheck.generator.Generator}s specified by the
+ * aggregated {@link From} annotations.</p>
  *
- * <p>Alternatively, you can specify many generators via many repetitions of {@link From}, without
- * using this container annotation.</p>
+ * <p>Alternatively, you can specify many generators via many repetitions of
+ * {@link From}, without using this container annotation.</p>
  *
- * <p>On a given generation, one of the specified generators will be chosen at random with probability
- * in proportion to {@link From#frequency()}.</p>
+ * <p>On a given generation, one of the specified generators will be chosen at
+ * random with probability in proportion to {@link From#frequency()}.</p>
  *
  * @see From
  */

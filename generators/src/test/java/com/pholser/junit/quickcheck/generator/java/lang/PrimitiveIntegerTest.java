@@ -34,6 +34,7 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class PrimitiveIntegerTest extends BasicGeneratorTheoryParameterTest {
     public static final int TYPE_BEARER = 0;
 

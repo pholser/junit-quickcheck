@@ -37,6 +37,7 @@ import static java.math.BigInteger.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class RangedBigDecimalWithLesserSpecifiedPrecisionTest extends BasicGeneratorTheoryParameterTest {
     @InRange(min = "-12345678123456781234567812345.678", max = "9876543219876543.21")
     @Precision(scale = 2)

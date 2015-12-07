@@ -44,8 +44,8 @@ public class PropertyParameterGenerationStatusTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SizeTheories {
-        public static class SizeTheoriesGenerator extends Generator<Object> {
-            public SizeTheoriesGenerator() {
+        public static class Gen extends Generator<Object> {
+            public Gen() {
                 super(Object.class);
             }
 
@@ -56,7 +56,7 @@ public class PropertyParameterGenerationStatusTest {
             }
         }
 
-        @Property(trials = 50) public void holds(@From(SizeTheoriesGenerator.class) Object o) {
+        @Property(trials = 50) public void holds(@From(Gen.class) Object o) {
             // yay, all good
         }
     }

@@ -62,7 +62,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * Produces values for theory parameters of type {@link Date}.
+ * Produces values of type {@link Date}.
  */
 public class DateGenerator extends Generator<Date> {
     private Date min = new Date(Integer.MIN_VALUE);
@@ -73,17 +73,22 @@ public class DateGenerator extends Generator<Date> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} and/or
-     * {@linkplain InRange#max() maximum}, inclusive, with uniform distribution, down to the millisecond.</p>
+     * <p>Tells this generator to produce values within a specified
+     * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
+     * maximum}, inclusive, with uniform distribution, down to the
+     * millisecond.</p>
      *
-     * <p>If an endpoint of the range is not specified, the generator will use dates with milliseconds-since-the-epoch
-     * values of either {@link Integer#MIN_VALUE} or {@link Long#MAX_VALUE} as appropriate.</p>
+     * <p>If an endpoint of the range is not specified, the generator will use
+     * dates with milliseconds-since-the-epoch values of either
+     * {@link Integer#MIN_VALUE} or {@link Long#MAX_VALUE} as appropriate.</p>
      *
-     * <p>{@link InRange#format()} describes {@linkplain SimpleDateFormat#parse(String) how the generator is to
+     * <p>{@link InRange#format()} describes
+     * {@linkplain SimpleDateFormat#parse(String) how the generator is to
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be converted to {@code Date}
+     * @throws IllegalArgumentException if the range's values cannot be
+     * converted to {@code Date}
      */
     public void configure(InRange range) {
         SimpleDateFormat formatter = new SimpleDateFormat(range.format());

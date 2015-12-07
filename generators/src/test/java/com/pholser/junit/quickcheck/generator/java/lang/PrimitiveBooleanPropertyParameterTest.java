@@ -34,7 +34,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveBooleanPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class PrimitiveBooleanPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final boolean TYPE_BEARER = false;
 
     @Override protected void primeSourceOfRandomness() {

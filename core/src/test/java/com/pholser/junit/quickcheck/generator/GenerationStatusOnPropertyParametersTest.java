@@ -23,44 +23,41 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator;
 
-import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-@Deprecated
-public class ForAllSizeConstrainedListTheoryParameterTypesTest {
-    @Test public void sizeConstrainedLists() {
-        assertThat(testResult(SizeConstrainedLists.class), isSuccessful());
+public class GenerationStatusOnPropertyParametersTest {
+    @Test public void sizeNeverExceedsSampleSize() throws Exception {
+        assertThat(testResult(SizeProperties.class), isSuccessful());
     }
 
-    @RunWith(Theories.class)
-    public static class SizeConstrainedLists {
-        @Theory public void shouldHold(@ForAll @Size(min = 2, max = 5) List<?> items) {
-            assertThat(items.size(), allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(5)));
+    @RunWith(JUnitQuickcheck.class)
+    public static class SizeProperties {
+        public static class Gen extends Generator<Object> {
+            public Gen() {
+                super(Object.class);
+            }
+
+            @Override
+            public Object generate(SourceOfRandomness random, GenerationStatus status) {
+                assertThat(status.size(), lessThanOrEqualTo(50));
+                return this;
+            }
         }
-    }
 
-    @Test public void outOfWhackSizeRange() {
-        assertThat(
-            testResult(OutOfWhackSizeRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(Theories.class)
-    public static class OutOfWhackSizeRange {
-        @Theory public void shouldHold(@ForAll @Size(min = 4, max = 3) List<?> items) {
-            assertThat(items.size(), allOf(greaterThanOrEqualTo(4), lessThanOrEqualTo(3)));
+        @Property(trials = 50) public void holds(@From(Gen.class) Object o) {
+            // yay, all good
         }
     }
 }

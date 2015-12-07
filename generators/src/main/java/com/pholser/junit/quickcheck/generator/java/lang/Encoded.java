@@ -37,8 +37,9 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Produces {@link String}s whose code points correspond to code points in a given
- * {@link java.nio.charset.Charset} ({@link java.nio.charset.Charset#defaultCharset() by default}).</p>
+ * <p>Produces {@link String}s whose code points correspond to code points in
+ * a given {@link java.nio.charset.Charset}
+ * ({@link java.nio.charset.Charset#defaultCharset() by default}).</p>
  */
 public class Encoded extends AbstractStringGenerator {
     private CodePoints charsetPoints;
@@ -47,6 +48,12 @@ public class Encoded extends AbstractStringGenerator {
         initialize(Charset.defaultCharset());
     }
 
+    /**
+     * Tells this generator to emit strings in the given charset.
+     *
+     * @param charset a charset to use as the source for characters of
+     * generated strings
+     */
     public void configure(InCharset charset) {
         initialize(Charset.forName(charset.value()));
     }

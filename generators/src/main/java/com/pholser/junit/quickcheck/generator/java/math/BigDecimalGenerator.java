@@ -44,9 +44,10 @@ import static java.math.BigDecimal.*;
 import static java.util.function.Function.*;
 
 /**
- * <p>Produces values for theory parameters of type {@link BigDecimal}.</p>
+ * <p>Produces values of type {@link BigDecimal}.</p>
  *
- * <p>With no additional configuration, the generated values are chosen from a range with a magnitude decided by
+ * <p>With no additional configuration, the generated values are chosen from
+ * a range with a magnitude decided by
  * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
  */
 public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
@@ -59,15 +60,20 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
     }
 
     /**
-     * <p>Tells this generator to produce values within a specified {@linkplain InRange#min() minimum} (inclusive)
-     * and/or {@linkplain InRange#max() maximum} (exclusive), with uniform distribution.</p>
+     * <p>Tells this generator to produce values within a specified
+     * {@linkplain InRange#min() minimum} (inclusive) and/or
+     * {@linkplain InRange#max() maximum} (exclusive), with uniform
+     * distribution.</p>
      *
-     * <p>If an endpoint of the range is not specified, its value takes on a magnitude influenced by
+     * <p>If an endpoint of the range is not specified, its value takes on
+     * a magnitude influenced by
      * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws NumberFormatException if the range's values cannot be converted to {@code BigDecimal}
-     * @throws IllegalArgumentException if the range's values specify a nonsensical range
+     * @throws NumberFormatException if the range's values cannot be converted
+     * to {@code BigDecimal}
+     * @throws IllegalArgumentException if the range's values specify a
+     * nonsensical range
      */
     public void configure(InRange range) {
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
@@ -80,15 +86,17 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
     }
 
     /**
-     * <p>Tells this generator to produce values that have a specified {@linkplain Precision#scale() scale}.</p>
+     * <p>Tells this generator to produce values that have a specified
+     * {@linkplain Precision#scale() scale}.</p>
      *
-     * <p>With no precision constraint and no {@linkplain #configure(InRange) min/max constraint}, the scale of the
-     * generated values is unspecified.</p>
+     * <p>With no precision constraint and no {@linkplain #configure(InRange)
+     * min/max constraint}, the scale of the generated values is unspecified.</p>
      *
-     * <p>Otherwise, the scale of the generated values is set as {@code max(0, precision.scale, range.min.scale,
-     * range.max.scale)}.</p>
+     * <p>Otherwise, the scale of the generated values is set as
+     * {@code max(0, precision.scale, range.min.scale, range.max.scale)}.</p>
      *
-     * @param configuration annotation that gives the desired scale of the generated values
+     * @param configuration annotation that gives the desired scale of the
+     * generated values
      */
     public void configure(Precision configuration) {
         precision = configuration;

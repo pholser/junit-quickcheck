@@ -34,6 +34,7 @@ import java.lang.reflect.Type;
 
 import static org.junit.Assert.*;
 
+@Deprecated
 public class SampleSizerTest {
     public static AnnotatedType from(Type type, Annotation... annotations) {
         return new AnnotatedType() {

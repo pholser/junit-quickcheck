@@ -31,6 +31,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
+@Deprecated
 public class ParameterContext {
     private final ParameterTypeContext typeContext;
 

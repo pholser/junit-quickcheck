@@ -35,9 +35,11 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class RangedPrimitiveIntegerPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class RangedPrimitiveIntegerPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     @InRange(min = "-4", max = "5")
-    public static final int TYPE_BEARER = 0;
+    public static final int TYPE_BEARER = 3;
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator, -4, 5))

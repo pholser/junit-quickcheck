@@ -34,8 +34,10 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class PrimitiveBytePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
-    public static final byte TYPE_BEARER = 0;
+public class PrimitiveBytePropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
+    public static final byte TYPE_BEARER = 2;
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))

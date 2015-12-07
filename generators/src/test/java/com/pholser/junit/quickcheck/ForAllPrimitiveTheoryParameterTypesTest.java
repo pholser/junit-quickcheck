@@ -45,6 +45,7 @@ import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+@Deprecated
 public class ForAllPrimitiveTheoryParameterTypesTest {
     @Test public void primitiveBoolean() {
         assertThat(testResult(PrimitiveBoolean.class), isSuccessful());
