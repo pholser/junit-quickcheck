@@ -34,8 +34,4 @@ public class HashSetGenerator extends SetGenerator<HashSet> {
     public HashSetGenerator() {
         super(HashSet.class);
     }
-
-    @Override protected HashSet<Object> empty() {
-        return new HashSet<>();
-    }
 }

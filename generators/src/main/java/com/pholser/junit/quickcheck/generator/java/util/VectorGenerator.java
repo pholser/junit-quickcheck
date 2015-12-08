@@ -34,8 +34,4 @@ public class VectorGenerator extends ListGenerator<Vector> {
     public VectorGenerator() {
         super(Vector.class);
     }
-
-    @Override protected Vector<Object> empty() {
-        return new Vector<>();
-    }
 }

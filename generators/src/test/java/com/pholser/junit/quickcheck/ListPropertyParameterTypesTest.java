@@ -218,4 +218,11 @@ public class ListPropertyParameterTypesTest {
             assertThat(ints.size(), greaterThan(0));
         }
     }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class IntegerLists {
+        @Property public void holds(List<@InRange(minInt = 0, maxInt = 100) Integer> ints) {
+            assertTrue(ints.stream().allMatch(i -> i != 5));
+        }
+    }
 }

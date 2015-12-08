@@ -35,10 +35,6 @@ public class HashtableGenerator extends MapGenerator<Hashtable> {
         super(Hashtable.class);
     }
 
-    @Override protected Hashtable<Object, Object> empty() {
-        return new Hashtable<>();
-    }
-
     @Override protected boolean okToAdd(Object key, Object value) {
         return key != null && value != null;
     }

@@ -34,8 +34,4 @@ public class StackGenerator extends ListGenerator<Stack> {
     public StackGenerator() {
         super(Stack.class);
     }
-
-    @Override protected Stack<Object> empty() {
-        return new Stack<>();
-    }
 }

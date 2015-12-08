@@ -34,8 +34,4 @@ public class ArrayListGenerator extends ListGenerator<ArrayList> {
     public ArrayListGenerator() {
         super(ArrayList.class);
     }
-
-    @Override protected ArrayList<Object> empty() {
-        return new ArrayList<>();
-    }
 }

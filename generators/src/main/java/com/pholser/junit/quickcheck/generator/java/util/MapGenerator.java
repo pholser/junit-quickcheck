@@ -123,7 +123,9 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         return !Object.class.equals(type);
     }
 
-    protected abstract T empty();
+    protected final T empty() {
+        return instantiate(findConstructor(types().get(0)));
+    }
 
     protected boolean okToAdd(Object key, Object value) {
         return true;
@@ -151,7 +153,7 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
 
     @SuppressWarnings("unchecked")
     private T convert(List<?> entries) {
-        T converted = instantiate(findConstructor(types().get(0)));
+        T converted = empty();
 
         for (Object each : entries) {
             Entry<?, ?> entry = (Entry<?, ?>) each;

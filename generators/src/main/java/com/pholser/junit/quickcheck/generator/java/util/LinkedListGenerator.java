@@ -34,8 +34,4 @@ public class LinkedListGenerator extends ListGenerator<LinkedList> {
     public LinkedListGenerator() {
         super(LinkedList.class);
     }
-
-    @Override protected LinkedList<Object> empty() {
-        return new LinkedList<>();
-    }
 }

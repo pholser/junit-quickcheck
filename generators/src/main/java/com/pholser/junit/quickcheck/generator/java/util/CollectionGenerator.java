@@ -116,7 +116,9 @@ public abstract class CollectionGenerator<T extends Collection>
         return !Object.class.equals(type);
     }
 
-    protected abstract T empty();
+    protected final T empty() {
+        return instantiate(findConstructor(types().get(0)));
+    }
 
     private boolean inSizeRange(T items) {
         return sizeRange == null
@@ -138,7 +140,10 @@ public abstract class CollectionGenerator<T extends Collection>
             .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
     private T convert(List<?> items) {
-        return instantiate(findConstructor(types().get(0), Collection.class), items);
+        T converted = empty();
+        converted.addAll(items);
+        return converted;
     }
 }

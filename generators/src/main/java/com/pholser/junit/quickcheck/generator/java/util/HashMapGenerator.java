@@ -34,8 +34,4 @@ public class HashMapGenerator extends MapGenerator<HashMap> {
     public HashMapGenerator() {
         super(HashMap.class);
     }
-
-    @Override protected HashMap<Object, Object> empty() {
-        return new HashMap<>();
-    }
 }
