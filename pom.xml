@@ -5,7 +5,7 @@
     <version>0.6-alpha-2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>junit-quickcheck</name>
-    <description>QuickCheck-style parameter suppliers for JUnit theories</description>
+    <description>Property-based testing, JUnit-style</description>
     <url>http://github.com/pholser/junit-quickcheck</url>
 
     <parent>
@@ -165,8 +165,8 @@
                     <configuration>
                         <check>
                             <haltOnFailure>true</haltOnFailure>
-                            <totalLineRate>1</totalLineRate>
-                            <totalBranchRate>1</totalBranchRate>
+                            <totalLineRate>99</totalLineRate>
+                            <totalBranchRate>99</totalBranchRate>
                         </check>
                     </configuration>
                     <dependencies>

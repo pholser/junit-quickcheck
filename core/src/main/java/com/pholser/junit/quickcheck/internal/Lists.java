@@ -40,6 +40,10 @@ public final class Lists {
     }
 
     public static <T> List<List<T>> removeFrom(List<T> target, int howMany) {
+        if (howMany < 0)
+            throw new IllegalArgumentException("Can't remove " + howMany + " elements from a list");
+        if (howMany == 0)
+            return singletonList(target);
         if (howMany > target.size())
             return emptyList();
 

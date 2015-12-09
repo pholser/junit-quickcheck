@@ -484,7 +484,7 @@ junit-quickcheck reports the seed used for a given property parameter by
 logging it to a [SLF4J](http://www.slf4j.org/) logger named
 `junit-quickcheck.seed-reporting`, at `DEBUG` level:
 
-    Seed for parameter com.your.TheoryClass.theoryMethod:parameterName is 8007238959251963394
+    Seed for parameter com.your.PropertiesClass.propertyMethod:parameterName is 8007238959251963394
 
 Add an SLF4J binding JAR file to your test class path and logging configuration
 for your chosen bound library to see the seed log messages.
@@ -659,36 +659,6 @@ and to validate those statements against lots of randomly generated inputs.
 
 junit-quickcheck began its life as a library that supplies JUnit
 theories with random values with which to test the validity of the theories.
-
-```java
-    import com.pholser.junit.quickcheck.ForAll;
-    import org.junit.contrib.theories.*;
-    import static org.hamcrest.Matchers.*;
-    import static org.junit.Assert.*;
-    import static org.junit.Assume.*;
-
-    // Imagining the existence of classes Money and Account...
-    @RunWith(Theories.class)
-    public class Accounts {
-        @Theory public void withdrawingReducesBalance(
-            @ForAll Money originalBalance,
-            @ForAll Money withdrawalAmount) {
-
-            assumeThat(originalBalance, greaterThan(Money.NONE));
-            assumeThat(
-                withdrawalAmount,
-                allOf(greaterThan(Money.NONE), lessThan(originalBalance)));
-
-            Account account = new Account(originalBalance);
-
-            account.withdraw(withdrawalAmount);
-
-            assertEquals(
-                originalBalance.minus(withdrawalAmount),
-                account.balance());
-        }
-    }
-```
 
 In this original incarnation, junit-quickcheck leveraged the
 `ParameterSupplier` feature of the JUnit theories machinery, via the
