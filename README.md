@@ -65,7 +65,7 @@ There is [a Google group for junit-quickcheck]
 (https://groups.google.com/d/forum/junit-quickcheck).
 
 
-### Using junit-quickcheck
+## Using junit-quickcheck
 
 - Create a class to host the properties you want to verify about a part of
 your system. Mark it with the annotation `@RunWith(JUnitQuickcheck.class)`.
@@ -99,7 +99,7 @@ methods.
 ```
 
 
-#### Supported types
+### Supported types
 
 Out of the box (core + generators), junit-quickcheck recognizes property
 parameters of the following types:
@@ -123,7 +123,7 @@ will choose one of the multiple generators at random with (roughly) equal
 probability.
 
 
-#### Generating values of other types
+### Generating values of other types
 
 To generate random values for property parameters of other types, or to
 override the default means of generation for a supported type, mark the
@@ -151,14 +151,14 @@ generators you supply and make available to the `ServiceLoader` complement
 these generators rather than override them.
 
 
-##### Functional interfaces
+#### Functional interfaces
 
 Custom generators for types that are functional interfaces override the
 built-in means of generation for such types. This is usually necessary for
 functional interfaces that involve generics.
 
 
-#### Configuring generators
+### Configuring generators
 
 If you mark a property parameter with an annotation that is itself marked as
 `@GeneratorConfiguration`, then if the `Generator` for that parameter's type
@@ -200,9 +200,9 @@ reflectively, passing it the annotation:
 A `Generator` can have many such `configure` methods.
 
 
-#### Constraining generated values
+### Constraining generated values
 
-##### Assumptions
+#### Assumptions
 
 Properties often use _assumptions_ to declare conditions under which they
 hold:
@@ -257,7 +257,7 @@ that meet the desired criteria:
 ```
 
 
-##### Generator configuration methods
+#### Generator configuration methods
 
 Generator configuration methods and annotations can constrain the values that
 a generator emits. For example, the `@InRange` annotation on property
@@ -278,7 +278,7 @@ meets the desired criteria -- no need to express the desired range of values
 as an assumption.
 
 
-###### Configuration on type uses
+#### Configuration on type uses
 
 Configuration annotations that can target type uses will be honored:
 
@@ -293,7 +293,7 @@ Configuration annotations that can target type uses will be honored:
 ```
 
 
-###### Configuration on types in a hierarchy
+#### Configuration on types in a hierarchy
 
 Recall that potentially many generators can satisfy a given property parameter
 based on its type:
@@ -321,7 +321,7 @@ of a given configuration annotation. Not doing so could lead to surprising
 results.
 
 
-###### Aggregating configuration
+#### Aggregating configuration
 
 Configuration annotations that are directly on a property parameter, and any
 configuration annotations on annotations that are directly on a property
@@ -351,7 +351,7 @@ parameter:
 ```
 
 
-###### Configuration methods vs. assumptions
+#### Configuration methods vs. assumptions
 
 When using assumptions with junit-quickcheck, every value fed to a property
 parameter counts against the sample size, even if it doesn't pass any
@@ -364,7 +364,7 @@ size, but will meet some conditions that assumptions would otherwise have
 tested.
 
 
-###### `ValuesOf`
+#### `ValuesOf`
 
 You can mark `boolean` and `enum` property parameters with `@ValuesOf` to
 force the generation to run through every value in the type's domain, instead
@@ -381,7 +381,7 @@ of choosing an element from the domain at random every time.
     }
 ```
 
-##### Constraint expressions
+#### Constraint expressions
 
 Constraint expressions allow you to filter the values that reach a property
 parameter. Mark the parameter with `@When` and give that annotation's
@@ -410,7 +410,7 @@ specified by `@When`, if any. Exceeding the discard ratio raises an
 exception and thus fails the property.
 
 
-#### Sample size
+### Sample size
 
 By default, junit-quickcheck generates 100 sets of random values for the
 parameter list of a property. To change this value, use the `trials` attribute
@@ -460,7 +460,7 @@ of the `@Property` annotation:
 ```
 
 
-#### Seed
+### Seed
 
 For each property parameter, junit-quickcheck uses a unique value as a seed
 for the source of randomness used to generate the parameter's values. To fix
@@ -490,7 +490,7 @@ Add an SLF4J binding JAR file to your test class path and logging configuration
 for your chosen bound library to see the seed log messages.
 
 
-#### Shrinking
+### Shrinking
 
 Version 0.6 of junit-quickcheck introduces one of the most compelling features
 of a proper QuickCheck: _shrinking_. When a property is disproved for a given
@@ -539,7 +539,7 @@ the shrinking process might find a smaller value such as:
     java.lang.AssertionError: Property primality falsified for args shrunken to [4]
 
 
-##### Producing "smaller" values
+#### Producing "smaller" values
 
 When a property fails for a set of parameter values, generators of those values
 can be called upon to offer "candidates" for smaller values that might also
@@ -589,7 +589,7 @@ Your custom generators can, of course, do the same:
 ```
 
 
-##### Influencing the shrinking process
+#### Influencing the shrinking process
 
 - By default, shrinking is enabled. To disable it, set the `shrink` attribute
 of a `@Property` annotation to `false`.
