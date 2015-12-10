@@ -37,7 +37,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-public class Classes {
+public final class Classes {
     private Classes() {
         throw new UnsupportedOperationException();
     }

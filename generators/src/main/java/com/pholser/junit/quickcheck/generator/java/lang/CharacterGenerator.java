@@ -67,7 +67,7 @@ public class CharacterGenerator extends Generator<Character> {
 
     @Override public List<Character> doShrink(SourceOfRandomness random, Character larger) {
         return new CodePointShrink(cp -> cp >= min && cp <= max)
-            .shrink(random, larger)
+            .shrink(random, (int) larger)
             .stream()
             .map((Integer cp) -> (char) cp.intValue())
             .collect(Collectors.toList());

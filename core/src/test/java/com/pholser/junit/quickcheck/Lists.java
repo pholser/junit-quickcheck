@@ -28,7 +28,7 @@ package com.pholser.junit.quickcheck;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lists {
+public final class Lists {
     private Lists() {
         throw new UnsupportedOperationException();
     }

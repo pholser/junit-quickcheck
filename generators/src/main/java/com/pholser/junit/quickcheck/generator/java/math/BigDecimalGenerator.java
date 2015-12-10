@@ -34,6 +34,7 @@ import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -153,11 +154,14 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
     }
 
     @Override protected Predicate<BigDecimal> inRange() {
-        return Ranges.inRange(min, max);
+        return Comparables.inRange(min, max);
     }
 
     @Override protected BigDecimal leastMagnitude() {
-        return Ranges.leastMagnitude(min, max, ZERO);
+        return Comparables.leastMagnitude(
+            min,
+            max,
+            ZERO);
     }
 
     @Override protected boolean negative(BigDecimal target) {

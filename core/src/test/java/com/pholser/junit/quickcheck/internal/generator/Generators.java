@@ -35,7 +35,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
-public class Generators {
+public final class Generators {
     private Generators() {
         throw new UnsupportedOperationException();
     }

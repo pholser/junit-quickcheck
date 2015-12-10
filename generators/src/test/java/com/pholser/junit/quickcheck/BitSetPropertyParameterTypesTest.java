@@ -55,7 +55,22 @@ public class BitSetPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingBitSet {
         @Property public void shouldHold(BitSet s) {
-            assertThat(s.size(), lessThan(10));
+            assumeThat(s.cardinality(), greaterThan(0));
+
+            assertThat(s.cardinality(), lessThan(10));
+        }
+    }
+
+    @Test public void shrinkingEmptyBitSet() {
+        assertThat(testResult(ShrinkingEmptyBitSet.class), failureCountIs(1));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinkingEmptyBitSet {
+        @Property public void shouldHold(BitSet s) {
+            assumeThat(s.size(), equalTo(0));
+
+            fail();
         }
     }
 }

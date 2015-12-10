@@ -29,7 +29,7 @@ import java.util.Map;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 
-public class RangeAttributes {
+public final class RangeAttributes {
     private static final Map<String, Object> attributes;
 
     static {

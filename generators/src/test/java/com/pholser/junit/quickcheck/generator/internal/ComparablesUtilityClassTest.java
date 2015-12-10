@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2015 Paul R. Holser, Jr.
+ Copyright (c) 2004-2011 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,22 +23,12 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator.internal;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
 
-import java.util.Arrays;
-import java.util.Random;
-
-public final class Functions {
-    private Functions() {
-        throw new UnsupportedOperationException();
-    }
-
-    public static <T> T functionValue(Generator<T> generator, Object[] args) {
-        SourceOfRandomness source = new SourceOfRandomness(new Random());
-        source.setSeed(Arrays.hashCode(args));
-        return generator.generate(source, null);
+public class ComparablesUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
+    public ComparablesUtilityClassTest() {
+        super(Comparables.class);
     }
 }

@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.IntegralGenerator;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -71,16 +72,11 @@ public class LongGenerator extends IntegralGenerator<Long> {
     }
 
     @Override protected Predicate<Long> inRange() {
-        return ell -> ell >= min && ell <= max;
+        return Comparables.inRange(min, max);
     }
 
     @Override protected Long leastMagnitude() {
-        if (min > 0)
-            return min;
-        if (max < 0)
-            return max;
-
-        return 0L;
+        return Comparables.leastMagnitude(min, max, 0L);
     }
 
     @Override protected boolean negative(Long target) {

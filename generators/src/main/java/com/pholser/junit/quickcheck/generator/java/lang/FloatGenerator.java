@@ -26,19 +26,18 @@
 package com.pholser.junit.quickcheck.generator.java.lang;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
+import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values of type {@code float} or {@link Float}.
@@ -78,16 +77,11 @@ public class FloatGenerator extends DecimalGenerator<Float> {
     }
 
     @Override protected Predicate<Float> inRange() {
-        return f -> f >= min && f <= max;
+        return Comparables.inRange(min, max);
     }
 
     @Override protected Float leastMagnitude() {
-        if (min > 0F)
-            return min;
-        if (max < 0F)
-            return max;
-
-        return 0F;
+        return Comparables.leastMagnitude(min, max, 0F);
     }
 
     @Override protected boolean negative(Float target) {

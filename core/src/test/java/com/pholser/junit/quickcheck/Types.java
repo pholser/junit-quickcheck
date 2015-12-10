@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 
-public class Types {
+public final class Types {
     private Types() {
         throw new UnsupportedOperationException();
     }

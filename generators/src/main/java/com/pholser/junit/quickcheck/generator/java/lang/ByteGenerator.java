@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.IntegralGenerator;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -71,16 +72,11 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
     }
 
     @Override protected Predicate<Byte> inRange() {
-        return b -> b >= min && b <= max;
+        return Comparables.inRange(min, max);
     }
 
     @Override protected Byte leastMagnitude() {
-        if (min > 0)
-            return min;
-        if (max < 0)
-            return max;
-
-        return 0;
+        return Comparables.leastMagnitude(min, max, (byte) 0);
     }
 
     @Override protected boolean negative(Byte target) {

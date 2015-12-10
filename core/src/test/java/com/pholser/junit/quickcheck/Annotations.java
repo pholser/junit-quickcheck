@@ -32,7 +32,7 @@ import java.util.Map;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
-public class Annotations {
+public final class Annotations {
     private Annotations() {
         throw new UnsupportedOperationException();
     }

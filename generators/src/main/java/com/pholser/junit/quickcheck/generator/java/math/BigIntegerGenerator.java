@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.IntegralGenerator;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -101,11 +102,11 @@ public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
     }
 
     @Override protected Predicate<BigInteger> inRange() {
-        return Ranges.inRange(min, max);
+        return Comparables.inRange(min, max);
     }
 
     @Override protected BigInteger leastMagnitude() {
-        return Ranges.leastMagnitude(min, max, ZERO);
+        return Comparables.leastMagnitude(min, max, ZERO);
     }
 
     @Override protected boolean negative(BigInteger target) {

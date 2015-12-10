@@ -23,22 +23,42 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.generator.internal;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.function.Predicate;
 
-import java.util.Arrays;
-import java.util.Random;
-
-public final class Functions {
-    private Functions() {
+public final class Comparables {
+    private Comparables() {
         throw new UnsupportedOperationException();
     }
 
-    public static <T> T functionValue(Generator<T> generator, Object[] args) {
-        SourceOfRandomness source = new SourceOfRandomness(new Random());
-        source.setSeed(Arrays.hashCode(args));
-        return generator.generate(source, null);
+    public static <T extends Comparable<? super T>> Predicate<T> inRange(T min, T max) {
+        return c -> {
+            if (min == null && max == null)
+                return true;
+            if (min == null)
+                return c.compareTo(max) <= 0;
+            if (max == null)
+                return c.compareTo(min) >= 0;
+            return c.compareTo(min) >= 0 && c.compareTo(max) <= 0;
+        };
+    }
+
+    public static <T extends Comparable<? super T>> T leastMagnitude(T min, T max, T zero) {
+        if (min == null && max == null)
+            return zero;
+
+        if (min == null)
+            return max.compareTo(zero) <= 0 ? max : zero;
+        if (max == null) {
+            return min.compareTo(zero) >= 0 ? min : zero;
+        }
+
+        if (min.compareTo(zero) > 0)
+            return min;
+        if (max.compareTo(zero) < 0)
+            return max;
+
+        return zero;
     }
 }

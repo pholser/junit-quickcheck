@@ -6,7 +6,7 @@ import org.mockito.verification.VerificationMode;
 import static com.pholser.junit.quickcheck.generator.RangeAttributes.*;
 import static org.mockito.Mockito.*;
 
-public class Generating {
+public final class Generating {
     private Generating() {
         throw new UnsupportedOperationException();
     }

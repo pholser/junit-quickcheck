@@ -29,15 +29,15 @@ import java.math.BigDecimal;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
+import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
 
 /**
  * Produces values for theory parameters of type {@code double} or
@@ -79,16 +79,11 @@ public class DoubleGenerator extends DecimalGenerator<Double> {
     }
 
     @Override protected Predicate<Double> inRange() {
-        return d -> d >= min && d <= max;
+        return Comparables.inRange(min, max);
     }
 
     @Override protected Double leastMagnitude() {
-        if (min > 0D)
-            return min;
-        if (max < 0D)
-            return max;
-
-        return 0D;
+        return Comparables.leastMagnitude(min, max, 0D);
     }
 
     @Override protected boolean negative(Double target) {
