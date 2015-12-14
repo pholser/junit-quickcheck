@@ -34,6 +34,7 @@ public final class Types {
 
     public static ParameterTypeContext typeOf(Class<?> c, String fieldName)
         throws NoSuchFieldException {
+
         return new ParameterTypeContext(
             fieldName,
             c.getDeclaredField(fieldName).getAnnotatedType(),

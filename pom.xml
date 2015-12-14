@@ -166,7 +166,7 @@
                         <check>
                             <haltOnFailure>true</haltOnFailure>
                             <totalLineRate>98</totalLineRate>
-                            <totalBranchRate>97</totalBranchRate>
+                            <totalBranchRate>96</totalBranchRate>
                         </check>
                     </configuration>
                     <dependencies>

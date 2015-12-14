@@ -266,4 +266,28 @@ public class PropertyParameterGenerationByConstructorTest {
             assertEquals(2, p.box().contents().i());
         }
     }
+
+    public static class Tuple3<A, B, C> {
+        public final A first;
+        public final B second;
+        public final C third;
+
+        public Tuple3(A first, B second, C third) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+        }
+    }
+
+    @Test public void autoGenerationOnUnresolvedGenericType() {
+        assertThat(
+            testResult(WithAutoGenerationOnUnresolvedGenericType.class),
+            hasSingleFailureContaining("No variable substitution established"));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class WithAutoGenerationOnUnresolvedGenericType<A, B, C>  {
+        @Property public void shouldHold(@From(Ctor.class) Tuple3<A, B, C> t) {
+        }
+    }
 }

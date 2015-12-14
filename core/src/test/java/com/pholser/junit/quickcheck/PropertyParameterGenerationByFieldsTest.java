@@ -197,4 +197,22 @@ public class PropertyParameterGenerationByFieldsTest {
             assertEquals(2, p.box.contents().i());
         }
     }
+
+    public static class Tuple3<A, B, C> {
+        public A first;
+        public B second;
+        public C third;
+    }
+
+    @Test public void autoGenerationWithUnresolvedTypeVariablesInFields() {
+        assertThat(
+            testResult(WithAutoGenerationWithUnresolvedTypeVariablesInFields.class),
+            hasSingleFailureContaining("No variable substitution established"));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class WithAutoGenerationWithUnresolvedTypeVariablesInFields<A, B, C> {
+        @Property public void shouldHold(@From(Fields.class) Tuple3<A, B, C> t) {
+        }
+    }
 }

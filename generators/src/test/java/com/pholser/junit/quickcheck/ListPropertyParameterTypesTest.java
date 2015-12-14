@@ -219,10 +219,23 @@ public class ListPropertyParameterTypesTest {
         }
     }
 
+    @Test public void listsOfNumbers() {
+        assertThat(testResult(NumberProperties.class), isSuccessful());
+    }
+
     @RunWith(JUnitQuickcheck.class)
-    public static class IntegerLists {
-        @Property public void holds(List<@InRange(minInt = 0, maxInt = 100) Integer> ints) {
-            assertTrue(ints.stream().allMatch(i -> i != 5));
+    public static class NumberProperties<N extends Number> {
+        @Property public void holds(List<@InRange(min = "0", max = "100") N> numbers) {
+            for (Number each : numbers)
+                assertThat(each.intValue(), allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(100)));
         }
+    }
+
+    @Test public void listsOfIntegers() {
+        assertThat(testResult(IntegerProperties.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class IntegerProperties extends NumberProperties<Integer> {
     }
 }

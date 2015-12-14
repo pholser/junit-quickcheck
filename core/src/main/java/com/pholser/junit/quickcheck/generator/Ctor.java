@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.generator;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.junit.contrib.theories.Theory;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
@@ -51,8 +52,12 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
  * {@link ServiceLoader} mechanism.</p>
  *
+ * @deprecated This was introduced to alleviate the difficulties of old
+ * {@link Theory} methods with many parameters, and will likely go away.
+ *
  * @param <T> the type of objects generated
  */
+@Deprecated
 public class Ctor<T> extends Generator<T> {
     private final Constructor<T> single;
     private final Parameter[] parameters;
