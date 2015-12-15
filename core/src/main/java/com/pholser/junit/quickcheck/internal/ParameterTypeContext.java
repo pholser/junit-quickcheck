@@ -33,6 +33,7 @@ import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -245,7 +246,7 @@ public class ParameterTypeContext {
                         annotatedType().getType().getTypeName(),
                         p.getType(),
                         typeVariables)
-                    .allowMixedTypes(true)
+                    .allowMixedTypes(!(a instanceof TypeVariable))
                     .annotate(a));
             } else if (p instanceof WildcardTypeParameter) {
                 typeParameterContexts.add(
