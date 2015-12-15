@@ -71,10 +71,8 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     }
 
     @Override protected void validateTestMethods(List<Throwable> errors) {
-        for (FrameworkMethod each : computeTestMethods()) {
+        for (FrameworkMethod each : computeTestMethods())
             each.validatePublicVoid(false, errors);
-            each.validateNoTypeParametersOnArgs(errors);
-        }
     }
 
     @Override protected List<FrameworkMethod> computeTestMethods() {

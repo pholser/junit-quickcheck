@@ -25,20 +25,9 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.test.generator.Foo;
+import org.junit.Ignore;
 
-public final class Types {
-    private Types() {
-        throw new UnsupportedOperationException();
-    }
-
-    public static ParameterTypeContext typeOf(Class<?> c, String fieldName)
-        throws NoSuchFieldException {
-
-        return new ParameterTypeContext(
-            fieldName,
-            c.getDeclaredField(fieldName).getAnnotatedType(),
-            c.getName())
-            .allowMixedTypes(true);
-    }
+@Ignore("Example only")
+public class FooEqualsHashCodeTest extends EqualsHashCodePropertiesTest<Foo> {
 }

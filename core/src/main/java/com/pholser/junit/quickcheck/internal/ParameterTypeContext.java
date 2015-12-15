@@ -35,7 +35,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -62,6 +64,8 @@ public class ParameterTypeContext {
     private final String declarerName;
     private final org.javaruntype.type.Type<?> token;
     private final List<Weighted<Generator<?>>> explicits = new ArrayList<>();
+    private final Map<String, org.javaruntype.type.Type<?>> typeVariables;
+
     private boolean allowMixedTypes;
 
     public ParameterTypeContext(
@@ -73,19 +77,44 @@ public class ParameterTypeContext {
             parameterName,
             parameterType,
             declarerName,
-            Types.forJavaLangReflectType(parameterType.getType()));
+            emptyMap());
     }
 
     public ParameterTypeContext(
         String parameterName,
         AnnotatedType parameterType,
         String declarerName,
-        org.javaruntype.type.Type<?> token) {
+        Map<String, Type> typeVariables) {
+
+        this(
+            parameterName,
+            parameterType,
+            declarerName,
+            Types.forJavaLangReflectType(parameterType.getType(), toTokens(typeVariables)),
+            toTokens(typeVariables));
+    }
+
+    public ParameterTypeContext(
+        String parameterName,
+        AnnotatedType parameterType,
+        String declarerName,
+        org.javaruntype.type.Type<?> token,
+        Map<String, org.javaruntype.type.Type<?>> typeVariables) {
 
         this.parameterName = parameterName;
         this.parameterType = parameterType;
         this.declarerName = declarerName;
         this.token = token;
+        this.typeVariables = typeVariables;
+    }
+
+    private static Map<String, org.javaruntype.type.Type<?>> toTokens(
+        Map<String, Type> typeVariables) {
+
+        return typeVariables.entrySet().stream()
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> Types.forJavaLangReflectType(e.getValue())));
     }
 
     public ParameterTypeContext annotate(AnnotatedElement element) {
@@ -131,7 +160,8 @@ public class ParameterTypeContext {
     }
 
     private void ensureCorrectType(Generator<?> generator) {
-        org.javaruntype.type.Type<?> parameterTypeToken = Types.forJavaLangReflectType(type());
+        org.javaruntype.type.Type<?> parameterTypeToken =
+            Types.forJavaLangReflectType(type(), typeVariables);
 
         for (Class<?> each : generator.types()) {
             if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
@@ -177,7 +207,8 @@ public class ParameterTypeContext {
             annotatedComponent.getType().getTypeName(),
             annotatedComponent,
             parameterType.getType().getTypeName(),
-            component)
+            component,
+            typeVariables)
             .annotate(annotatedComponent)
             .allowMixedTypes(true);
     }
@@ -212,7 +243,8 @@ public class ParameterTypeContext {
                         p.getType().getName(),
                         a,
                         annotatedType().getType().getTypeName(),
-                        p.getType())
+                        p.getType(),
+                        typeVariables)
                     .allowMixedTypes(true)
                     .annotate(a));
             } else if (p instanceof WildcardTypeParameter) {
@@ -221,7 +253,8 @@ public class ParameterTypeContext {
                         "Zilch",
                         a,
                         annotatedType().getType().getTypeName(),
-                        Types.forJavaLangReflectType(Zilch.class))
+                        Types.forJavaLangReflectType(Zilch.class),
+                        typeVariables)
                     .allowMixedTypes(true)
                     .annotate(a));
             } else if (p instanceof ExtendsTypeParameter<?>) {
@@ -230,7 +263,8 @@ public class ParameterTypeContext {
                         p.getType().getName(),
                         annotatedComponentTypes(a).get(0),
                         annotatedType().getType().getTypeName(),
-                        p.getType())
+                        p.getType(),
+                        typeVariables)
                     .allowMixedTypes(false)
                     .annotate(a));
             } else {
@@ -242,7 +276,8 @@ public class ParameterTypeContext {
                         p.getType().getName(),
                         annotatedComponentTypes(a).get(0),
                         annotatedType().getType().getTypeName(),
-                        choice)
+                        choice,
+                        typeVariables)
                     .allowMixedTypes(false)
                     .annotate(a));
             }

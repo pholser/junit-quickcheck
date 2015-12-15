@@ -25,14 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
-import com.pholser.junit.quickcheck.internal.Weighted;
-import com.pholser.junit.quickcheck.internal.Zilch;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -44,8 +36,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.Weighted;
+import com.pholser.junit.quickcheck.internal.Zilch;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Collections.*;
 
 public class GeneratorRepository {
     private final SourceOfRandomness random;
@@ -206,7 +207,12 @@ public class GeneratorRepository {
             if (componentGenerators.isEmpty()) {
                 List<Generator<?>> substitutes = new ArrayList<>();
                 Generator<?> zilch = generatorFor(
-                    new ParameterTypeContext("Zilch", null, getClass().getName(), token(Zilch.class))
+                    new ParameterTypeContext(
+                        "Zilch",
+                        null,
+                        getClass().getName(),
+                        token(Zilch.class),
+                        emptyMap())
                     .allowMixedTypes(true));
                 for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
                     substitutes.add(zilch);

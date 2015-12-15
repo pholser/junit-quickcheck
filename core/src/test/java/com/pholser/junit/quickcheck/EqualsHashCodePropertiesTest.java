@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
@@ -36,16 +37,15 @@ import static org.junit.Assume.*;
 /**
  * Swiped from <a href="http://stackoverflow.com/questions/837484/junit-theory-for-hashcode-equals-contract">here</a>.
  */
-@Category(LongRunning.class)
 @RunWith(JUnitQuickcheck.class)
-public class EqualsHashCodePropertiesTest {
-    @Property public void equalsIsReflexive(Object o) {
+public abstract class EqualsHashCodePropertiesTest<T> {
+    @Property public void equalsIsReflexive(T o) {
         assumeThat(o, not(equalTo(null)));
 
         assertTrue(o.equals(o));
     }
 
-    @Property public void equalsIsSymmetric(Object x, Object y) {
+    @Property public void equalsIsSymmetric(T x, T y) {
         assumeThat(x, not(equalTo(null)));
         assumeThat(y, not(equalTo(null)));
         assumeTrue(y.equals(x));
@@ -53,7 +53,7 @@ public class EqualsHashCodePropertiesTest {
         assertTrue(x.equals(y));
     }
 
-    @Property public void equalsIsTransitive(Object x, Object y, Object z) {
+    @Property public void equalsIsTransitive(T x, T y, T z) {
         assumeThat(x, not(equalTo(null)));
         assumeThat(y, not(equalTo(null)));
         assumeThat(z, not(equalTo(null)));
@@ -62,7 +62,7 @@ public class EqualsHashCodePropertiesTest {
         assertTrue(z.equals(x));
     }
 
-    @Property public void equalsIsConsistent(Object x, Object y) {
+    @Property public void equalsIsConsistent(T x, T y) {
         assumeThat(x, is(not(equalTo(null))));
         boolean alwaysTheSame = x.equals(y);
 
@@ -70,13 +70,13 @@ public class EqualsHashCodePropertiesTest {
             assertThat(x.equals(y), is(alwaysTheSame));
     }
 
-    @Property public void equalsReturnsFalseOnNull(Object x) {
+    @Property public void equalsReturnsFalseOnNull(T x) {
         assumeThat(x, not(equalTo(null)));
 
         assertFalse(x.equals(null));
     }
 
-    @Property public void hashCodeIsSelfConsistent(Object x) {
+    @Property public void hashCodeIsSelfConsistent(T x) {
         assumeThat(x, not(equalTo(null)));
         int alwaysTheSame = x.hashCode();
 
@@ -84,24 +84,25 @@ public class EqualsHashCodePropertiesTest {
             assertThat(x.hashCode(), is(alwaysTheSame));
     }
 
-    @Property public void hashCodeIsConsistentWithEquals(Object x, Object y) {
+    @Property public void hashCodeIsConsistentWithEquals(T x, T y) {
         assumeThat(x, not(equalTo(null)));
         assumeTrue(x.equals(y));
 
         assertEquals(x.hashCode(), y.hashCode());
     }
 
-    @Property public void equalsWorks(Object x, Object y) {
+    @Property public void equalsWorks(T x, T y) {
         assumeThat(x, not(equalTo(null)));
         assumeTrue(x == y);
 
         assertTrue(x.equals(y));
     }
 
-    @Property public void notEqualsWorks(Object x, Object y) {
+    @Property public void notEqualsWorks(T x, T y) {
         assumeThat(x, not(equalTo(null)));
         assumeTrue(x != y);
 
         assertFalse(x.equals(y));
     }
 }
+

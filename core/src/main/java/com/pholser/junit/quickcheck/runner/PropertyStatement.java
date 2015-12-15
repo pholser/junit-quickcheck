@@ -27,9 +27,11 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.lang.reflect.Executable;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.pholser.junit.quickcheck.Property;
@@ -46,6 +48,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
+import ru.vyarus.java.generics.resolver.GenericsResolver;
 
 import static java.util.stream.Collectors.*;
 import static org.junit.Assert.*;
@@ -144,8 +147,12 @@ class PropertyStatement extends Statement {
     }
 
     private List<PropertyParameterGenerationContext> parameters(int trials) {
+        Map<String, Type> typeVariables = GenericsResolver.resolve(testClass.getJavaClass())
+            .method(method.getMethod())
+            .genericsMap();
+
         return Arrays.stream(method.getMethod().getParameters())
-            .map(p -> parameterContextFor(p, trials))
+            .map(p -> parameterContextFor(p, trials, typeVariables))
             .map(p -> new PropertyParameterGenerationContext(
                 p,
                 repo,
@@ -155,12 +162,17 @@ class PropertyStatement extends Statement {
             .collect(toList());
     }
 
-    private PropertyParameterContext parameterContextFor(Parameter parameter, int trials) {
+    private PropertyParameterContext parameterContextFor(
+        Parameter parameter,
+        int trials,
+        Map<String, Type> typeVariables) {
+
         return new PropertyParameterContext(
             new ParameterTypeContext(
                 parameter.getName(),
                 parameter.getAnnotatedType(),
-                declarerName(parameter))
+                declarerName(parameter),
+                typeVariables)
                 .allowMixedTypes(true),
             trials
         ).annotate(parameter);
