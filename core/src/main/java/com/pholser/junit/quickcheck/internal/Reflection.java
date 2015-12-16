@@ -25,8 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import org.javaruntype.type.Type;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedElement;
@@ -37,7 +35,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +44,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.javaruntype.type.Type;
+
+import static java.lang.reflect.Modifier.*;
 import static java.security.AccessController.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
@@ -80,6 +80,16 @@ public final class Reflection {
             return type.getConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {
             return null;
+        }
+    }
+
+    public static <T> Constructor<T> findDeclaredConstructor(Class<T> type, Class<?>... parameterTypes) {
+        try {
+            Constructor<T> ctor = type.getDeclaredConstructor(parameterTypes);
+            ctor.setAccessible(true);
+            return ctor;
+        } catch (Exception ex) {
+            throw reflectionException(ex);
         }
     }
 
@@ -203,7 +213,7 @@ public final class Reflection {
         int abstractCount = 0;
         Method singleAbstractMethod = null;
         for (Method each : rawClass.getMethods()) {
-            if (Modifier.isAbstract(each.getModifiers()) && !overridesJavaLangObjectMethod(each)) {
+            if (isAbstract(each.getModifiers()) && !overridesJavaLangObjectMethod(each)) {
                 singleAbstractMethod = each;
                 ++abstractCount;
             }

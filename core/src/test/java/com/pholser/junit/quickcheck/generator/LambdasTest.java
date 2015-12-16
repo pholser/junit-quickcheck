@@ -25,7 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
+
 import com.pholser.junit.quickcheck.test.generator.ABool;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
@@ -41,8 +42,9 @@ public class LambdasTest {
     @Rule public final ExpectedException thrown = none();
 
     private ABool returnValueGenerator;
-    private Predicate<?> predicate;
+    private Predicate<Integer> predicate;
 
+    @SuppressWarnings("unchecked")
     @Before public void setUp() {
         returnValueGenerator = new ABool();
         predicate = makeLambda(Predicate.class, returnValueGenerator, null);
@@ -70,5 +72,15 @@ public class LambdasTest {
         thrown.expectMessage(Cloneable.class + " is not a functional interface");
 
         makeLambda(Cloneable.class, new AnInt(), null);
+    }
+
+    @Test public void invokingDefaultMethodOnFunctionalInterface() {
+        @SuppressWarnings("unchecked")
+        Predicate<Integer> another = makeLambda(Predicate.class, returnValueGenerator, null);
+
+        boolean firstResult = predicate.test(4);
+        boolean secondResult = another.test(4);
+
+        assertEquals(firstResult || secondResult, predicate.or(another).test(4));
     }
 }
