@@ -23,32 +23,41 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.guava.generator;
+package com.pholser.junit.quickcheck.generator.java.util.function;
 
-import com.google.common.base.Function;
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.function.BiConsumer;
 
-import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-/**
- * Produces values of type {@code Function}.
- *
- * @param <F> parameter type of the generated functions
- * @param <T> return type of the generated functions
- */
-public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
-    public FunctionGenerator() {
-        super(Function.class);
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
+
+public class BiConsumerPropertyParameterTest {
+    @Test public void check() {
+        assertThat(testResult(AnyOldConsumer.class), isSuccessful());
     }
 
-    @SuppressWarnings("unchecked")
-    @Override public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(Function.class, componentGenerators().get(1), status);
-    }
+    @RunWith(JUnitQuickcheck.class)
+    public static class AnyOldConsumer<T, U> {
+        @Property public void anyOld(
+            BiConsumer<? super T, ? super U> consumer,
+            T first,
+            U second) {
 
-    @Override public int numberOfNeededComponents() {
-        return 2;
+            consumer.accept(first, second);
+        }
+
+        @Property public void chained(
+            BiConsumer<T, U> first,
+            BiConsumer<? super T, ? super U> second,
+            T firstArg,
+            U secondArg) {
+
+            first.andThen(second).accept(firstArg, secondArg);
+        }
     }
 }

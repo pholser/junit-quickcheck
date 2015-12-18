@@ -23,29 +23,27 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.guava.generator;
+package com.pholser.junit.quickcheck.generator.java.util.function;
 
-import com.google.common.base.Function;
+import java.util.function.ToDoubleBiFunction;
+
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
-/**
- * Produces values of type {@code Function}.
- *
- * @param <F> parameter type of the generated functions
- * @param <T> return type of the generated functions
- */
-public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
-    public FunctionGenerator() {
-        super(Function.class);
+public class ToDoubleBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToDoubleBiFunction> {
+    private final DoubleGenerator doubleGenerator = new DoubleGenerator();
+
+    public ToDoubleBiFunctionGenerator() {
+        super(ToDoubleBiFunction.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(Function.class, componentGenerators().get(1), status);
+    @Override public ToDoubleBiFunction<T, U> generate(SourceOfRandomness random, GenerationStatus status) {
+        return makeLambda(ToDoubleBiFunction.class, doubleGenerator, status);
     }
 
     @Override public int numberOfNeededComponents() {

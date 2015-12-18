@@ -23,32 +23,31 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.guava.generator;
+package com.pholser.junit.quickcheck.generator.java.util.function;
 
-import com.google.common.base.Function;
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.function.ToIntFunction;
 
-import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-/**
- * Produces values of type {@code Function}.
- *
- * @param <F> parameter type of the generated functions
- * @param <T> return type of the generated functions
- */
-public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
-    public FunctionGenerator() {
-        super(Function.class);
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
+
+public class ToIntFunctionPropertyParameterTest {
+    @Test public void unresolvedArgType() {
+        assertThat(testResult(UnresolvedArgType.class), isSuccessful());
     }
 
-    @SuppressWarnings("unchecked")
-    @Override public Function<F, T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(Function.class, componentGenerators().get(1), status);
-    }
+    @RunWith(JUnitQuickcheck.class)
+    public static class UnresolvedArgType<A> {
+        @Property public void consistent(ToIntFunction<? super A> f, A arg) {
+            int result = f.applyAsInt(arg);
 
-    @Override public int numberOfNeededComponents() {
-        return 2;
+            for (int i = 0; i < 10000; ++i)
+                assertEquals(result, f.applyAsInt(arg));
+        }
     }
 }

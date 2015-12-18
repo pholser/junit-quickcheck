@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -32,14 +34,17 @@ import java.util.Random;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.System.*;
-import static java.lang.reflect.Proxy.newProxyInstance;
-import static com.pholser.junit.quickcheck.internal.Reflection.singleAbstractMethodOf;
+import static java.lang.reflect.Proxy.*;
 
 /**
  * Helper class for creating instances of "functional interfaces".
  */
 public final class Lambdas {
+    private static Constructor<MethodHandles.Lookup> methodLookupCtor =
+        findDeclaredConstructor(MethodHandles.Lookup.class, Class.class, int.class);
+
     private Lambdas() {
         throw new UnsupportedOperationException();
     }
@@ -98,9 +103,13 @@ public final class Lambdas {
             this.status = status;
         }
 
-        @Override public Object invoke(Object proxy, Method method, Object[] args) {
+        @Override public Object invoke(Object proxy, Method method, Object[] args)
+            throws Throwable {
+
             if (Object.class.equals(method.getDeclaringClass()))
                 return handleObjectMethod(proxy, method, args);
+            if (method.isDefault())
+                return handleDefaultMethod(proxy, method, args);
 
             SourceOfRandomness source = new SourceOfRandomness(new Random());
             source.setSeed(Arrays.hashCode(args));
@@ -119,6 +128,18 @@ public final class Lambdas {
 
         private String handleToString() {
             return "a randomly generated instance of " + lambdaType;
+        }
+
+        private Object handleDefaultMethod(Object proxy, Method method, Object[] args)
+            throws Throwable {
+
+            MethodHandles.Lookup lookup =
+                methodLookupCtor.newInstance(
+                    method.getDeclaringClass(),
+                    MethodHandles.Lookup.PRIVATE);
+            return lookup.unreflectSpecial(method, method.getDeclaringClass())
+                .bindTo(proxy)
+                .invokeWithArguments(args);
         }
     }
 }
