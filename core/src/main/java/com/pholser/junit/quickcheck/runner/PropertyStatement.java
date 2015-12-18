@@ -60,6 +60,7 @@ class PropertyStatement extends Statement {
     private final GeometricDistribution distro;
     private final Logger seedLog;
     private final List<AssumptionViolatedException> assumptionViolations = new ArrayList<>();
+    private int successes;
 
     PropertyStatement(
         FrameworkMethod method,
@@ -88,7 +89,7 @@ class PropertyStatement extends Statement {
         for (int i = 0; i < trials; ++i)
             verifyProperty(params, shrinkControl);
 
-        if (!assumptionViolations.isEmpty()) {
+        if (successes == 0 && !assumptionViolations.isEmpty()) {
             fail("No values satisfied property assumptions. Violated assumptions: "
                 + assumptionViolations);
         }
@@ -113,7 +114,7 @@ class PropertyStatement extends Statement {
             testClass,
             method,
             args,
-            s -> {},
+            s -> ++successes,
             assumptionViolations::add,
             e -> {
                 if (!shrinkControl.shouldShrink())
