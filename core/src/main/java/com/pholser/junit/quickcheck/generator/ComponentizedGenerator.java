@@ -61,7 +61,7 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         components.addAll(newComponents);
     }
 
-    public List<Generator<?>> componentGenerators() {
+    protected List<Generator<?>> componentGenerators() {
         return unmodifiableList(components);
     }
 
