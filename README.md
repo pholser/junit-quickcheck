@@ -418,7 +418,7 @@ of the `@Property` annotation:
 
 ```java
     @RunWith(JUnitQuickcheck.class)
-    public class GeographyTheories {
+    public class Geography {
         @Property(trials = 250) public void northernHemisphere(
             @From(Coordinates.class) Coordinate c) {
 
