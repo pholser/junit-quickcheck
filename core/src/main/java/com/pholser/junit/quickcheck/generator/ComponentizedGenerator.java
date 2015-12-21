@@ -83,6 +83,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         }
     }
 
+    /**
+     * @return this generator's component generators
+     */
     protected List<Generator<?>> componentGenerators() {
         return unmodifiableList(components);
     }
