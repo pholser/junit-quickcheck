@@ -11,8 +11,8 @@ junit-quickcheck is source/target-compatible with JDK 8.
 ## Basic example
 
 ```java
-    import com.pholser.junit.quickcheck.JUnitQuickcheck;
     import com.pholser.junit.quickcheck.Property;
+    import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
     import org.junit.runner.RunWith;
 
     import static org.junit.Assert.*;
@@ -77,7 +77,7 @@ several randomly generated values for each of the parameters on the properties'
 methods.
 
 ```java
-    import com.pholser.junit.quickcheck.JUnitQuickcheck;
+    import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
     import com.pholser.junit.quickcheck.Property;
 
     // Imagining the existence of class Crypto...
