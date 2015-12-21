@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import com.pholser.junit.quickcheck.internal.Ranges;
-
 import java.math.BigInteger;
 import java.util.Random;
+
+import com.pholser.junit.quickcheck.internal.Ranges;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
  * A source of randomness, fed to
- * {@link com.pholser.junit.quickcheck.generator.Generator}s so they can
- * produce random values for property parameters.
+ * {@link com.pholser.junit.quickcheck.generator.Generator generators} so they
+ * can produce random values for property parameters.
  */
 public class SourceOfRandomness {
     private final Random delegate;

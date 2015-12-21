@@ -34,6 +34,12 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
+/**
+ * Produces values of type {@link BiPredicate}.
+ *
+ * @param <T> type of first parameter of produced predicate
+ * @param <U> type of second parameter of produced predicate
+ */
 public class BiPredicateGenerator<T, U> extends ComponentizedGenerator<BiPredicate> {
     private final BooleanGenerator booleanGenerator = new BooleanGenerator();
 

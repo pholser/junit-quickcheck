@@ -61,6 +61,9 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     private final GeometricDistribution distro;
     private final Logger seedLog;
 
+    /**
+     * Invoked reflectively by JUnit.
+     */
     public JUnitQuickcheck(Class<?> clazz) throws InitializationError {
         super(clazz);
 

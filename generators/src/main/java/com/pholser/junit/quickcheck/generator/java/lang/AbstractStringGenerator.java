@@ -60,9 +60,7 @@ public abstract class AbstractStringGenerator extends Generator<String> {
     }
 
     @Override public boolean canShrink(Object larger) {
-        String s = (String) larger;
-
-        return super.canShrink(larger) && codePointsInRange(s);
+        return super.canShrink(larger) && codePointsInRange((String) larger);
     }
 
     @Override public List<String> doShrink(SourceOfRandomness random, String larger) {

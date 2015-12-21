@@ -36,6 +36,9 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Produces values of type {@link OptionalDouble}.
+ */
 public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
     private final DoubleGenerator doubleGenerator = new DoubleGenerator();
 
@@ -43,6 +46,17 @@ public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
         super(OptionalDouble.class);
     }
 
+    /**
+     * Tells this generator to produce values, when
+     * {@link OptionalDouble#isPresent() present}, within a specified minimum
+     * (inclusive) and/or maximum (exclusive) with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minDouble()} and {@link InRange#maxDouble()},
+     * if non-empty.
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         doubleGenerator.configure(range);
     }

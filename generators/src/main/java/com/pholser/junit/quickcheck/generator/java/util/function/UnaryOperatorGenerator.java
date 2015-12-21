@@ -33,6 +33,11 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
+/**
+ * Produces values of type {@link UnaryOperator}.
+ *
+ * @param <T> type of parameter and return type of produced operator
+ */
 public class UnaryOperatorGenerator<T> extends ComponentizedGenerator<UnaryOperator> {
     public UnaryOperatorGenerator() {
         super(UnaryOperator.class);

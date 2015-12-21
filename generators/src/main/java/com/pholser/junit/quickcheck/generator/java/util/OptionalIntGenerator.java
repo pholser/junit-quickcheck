@@ -36,6 +36,9 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Produces values of type {@link OptionalInt}.
+ */
 public class OptionalIntGenerator extends Generator<OptionalInt> {
     private final IntegerGenerator integerGenerator = new IntegerGenerator();
 
@@ -43,6 +46,16 @@ public class OptionalIntGenerator extends Generator<OptionalInt> {
         super(OptionalInt.class);
     }
 
+    /**
+     * Tells this generator to produce values, when
+     * {@link OptionalInt#isPresent() present}, within a specified minimum
+     * and/or maximum, inclusive, with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minInt()} and {@link InRange#maxInt()}, if non-empty.
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         integerGenerator.configure(range);
     }

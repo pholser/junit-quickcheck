@@ -52,6 +52,7 @@ import static java.util.stream.Collectors.*;
  */
 public abstract class Generator<T> implements Shrink<T> {
     private final List<Class<T>> types = new ArrayList<>();
+
     private GeneratorRepository repo;
 
     /**
@@ -87,8 +88,8 @@ public abstract class Generator<T> implements Shrink<T> {
      * parameters of the given type.
      *
      * @param type type against which to test this generator
-     * @return {@code} true if the generator is allowed to participate in
-     * generating values for property parameters of {@code type}.
+     * @return {@code true} if the generator is allowed to participate in
+     * generating values for property parameters of {@code type}
      */
     public boolean canRegisterAsType(Class<?> type) {
         return true;
@@ -99,7 +100,7 @@ public abstract class Generator<T> implements Shrink<T> {
      *
      * <p>A generator may raise an unchecked exception if some condition exists
      * which would lead to a confusing generation -- for example, if a
-     * generator honored a range configuration, and the endpoints were
+     * generator honored a "range" configuration, and the endpoints were
      * transposed.</p>
      *
      * @param random source of randomness to be used when generating the value
@@ -156,8 +157,16 @@ public abstract class Generator<T> implements Shrink<T> {
         return emptyList();
     }
 
-    private T narrow(Object o) {
-        return types().get(0).cast(o);
+    /**
+     * Attempts to "narrow" the given object to the type this generator
+     * produces.
+     *
+     * @param wider target of the narrowing
+     * @return narrowed the result of the narrowing
+     * @throws ClassCastException if the narrowing cannot be performed
+     */
+    protected final T narrow(Object wider) {
+        return types().get(0).cast(wider);
     }
 
     /**
@@ -285,7 +294,7 @@ public abstract class Generator<T> implements Shrink<T> {
 
     /**
      * Gives a list of the {@link GeneratorConfiguration} annotations present
-     * on the given type
+     * on the given type.
      *
      * @param annotatedType an annotated type
      * @return what configuration annotations are present on that type

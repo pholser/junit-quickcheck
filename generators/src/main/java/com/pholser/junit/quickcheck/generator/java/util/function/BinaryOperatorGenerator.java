@@ -33,6 +33,11 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
+/**
+ * Produces values of type {@link BinaryOperator}.
+ *
+ * @param <T> parameters type and return type of produced operator
+ */
 public class BinaryOperatorGenerator<T> extends ComponentizedGenerator<BinaryOperator> {
     public BinaryOperatorGenerator() {
         super(BinaryOperator.class);

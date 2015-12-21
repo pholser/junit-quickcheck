@@ -116,8 +116,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Produces values for theory parameters of type {@link UUID} that are
-     * RFC 4122 Version 3 identifiers.
+     * Produces values of type {@link UUID} that are RFC 4122 Version 3
+     * identifiers.
      */
     public static class Version3 extends NameBasedUUIDGenerator {
         public Version3() {
@@ -136,8 +136,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Produces values for theory parameters of type {@link UUID} that are
-     * RFC 4122 Version 4 identifiers.
+     * Produces values of type {@link UUID} that are RFC 4122 Version 4
+     * identifiers.
      */
     public static class Version4 extends AbstractUUIDGenerator {
         @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
@@ -149,8 +149,8 @@ public final class RFC4122 {
     }
 
     /**
-     * Produces values for theory parameters of type {@link UUID} that are
-     * RFC 4122 Version 5 identifiers.
+     * Produces values of type {@link UUID} that are RFC 4122 Version 5
+     * identifiers.
      */
     public static class Version5 extends NameBasedUUIDGenerator {
         public Version5() {

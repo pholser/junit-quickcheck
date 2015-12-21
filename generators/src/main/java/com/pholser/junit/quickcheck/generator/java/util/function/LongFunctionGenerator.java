@@ -33,6 +33,11 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
+/**
+ * Produces values of type {@link LongFunction}.
+ *
+ * @param <R> return type of produced function
+ */
 public class LongFunctionGenerator<R> extends ComponentizedGenerator<LongFunction> {
     public LongFunctionGenerator() {
         super(LongFunction.class);

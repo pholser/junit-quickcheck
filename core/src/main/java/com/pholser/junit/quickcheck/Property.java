@@ -59,14 +59,14 @@ public @interface Property {
 
     /**
      * @return the maximum number of {@linkplain Shrink shrink} attempts
-     * to make on a failing set of parameters. In effect only when
+     * to make on a failing set of parameters; in effect only when
      * {@link #shrink()} is {@code true}.
      */
     int maxShrinks() default 100;
 
     /**
      * @return the maximum depth of {@linkplain Shrink shrink} tree
-     * to make on a failing set of parameters. In effect only when
+     * to make on a failing set of parameters; in effect only when
      * {@link #shrink()} is {@code true}.
      */
     int maxShrinkDepth() default 20;

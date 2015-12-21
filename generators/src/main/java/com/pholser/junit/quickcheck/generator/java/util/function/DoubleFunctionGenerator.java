@@ -33,6 +33,11 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
+/**
+ * Produces values of type {@link DoubleFunction}.
+ *
+ * @param <R> return type of produced function
+ */
 public class DoubleFunctionGenerator<R> extends ComponentizedGenerator<DoubleFunction> {
     public DoubleFunctionGenerator() {
         super(DoubleFunction.class);

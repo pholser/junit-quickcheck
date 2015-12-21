@@ -36,6 +36,9 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.LongGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Produces values of type {@link OptionalLong}.
+ */
 public class OptionalLongGenerator extends Generator<OptionalLong> {
     private final LongGenerator longGenerator = new LongGenerator();
 
@@ -43,6 +46,16 @@ public class OptionalLongGenerator extends Generator<OptionalLong> {
         super(OptionalLong.class);
     }
 
+    /**
+     * Tells this generator to produce values, when
+     * {@link OptionalLong#isPresent() present}, within a specified minimum
+     * and/or maximum, inclusive, with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minLong()} and {@link InRange#maxLong()}, if non-empty.
+     *
+     * @param range annotation that gives the range's constraints
+     */
     public void configure(InRange range) {
         longGenerator.configure(range);
     }

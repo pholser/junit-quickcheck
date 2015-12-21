@@ -47,10 +47,6 @@ public class CodePoints {
         ranges = new ArrayList<>();
     }
 
-    void add(CodePointRange range) {
-        ranges.add(range);
-    }
-
     /**
      * @param index index to look up
      * @return this code point set's {@code index}'th code point
@@ -117,6 +113,10 @@ public class CodePoints {
             throw new IllegalArgumentException("Charset " + c.name() + " does not support encoding");
 
         return encodableCodePoints(c.newEncoder());
+    }
+
+    void add(CodePointRange range) {
+        ranges.add(range);
     }
 
     private static CodePoints encodableCodePoints(CharsetEncoder encoder) {

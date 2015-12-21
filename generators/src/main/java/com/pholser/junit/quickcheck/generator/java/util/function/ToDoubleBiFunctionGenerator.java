@@ -34,6 +34,12 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
+/**
+ * Produces values of type {@link ToDoubleBiFunction}.
+ *
+ * @param <T> type of first parameter of produced function
+ * @param <U> type of second parameter of produced function
+ */
 public class ToDoubleBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToDoubleBiFunction> {
     private final DoubleGenerator doubleGenerator = new DoubleGenerator();
 

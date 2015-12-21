@@ -34,6 +34,9 @@ import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Produces values of type {@link Optional}.
+ */
 public class OptionalGenerator extends ComponentizedGenerator<Optional> {
     public OptionalGenerator() {
         super(Optional.class);
