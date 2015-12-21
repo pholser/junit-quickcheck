@@ -27,40 +27,47 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.stream.Collectors;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.java.lang.LongGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class OptionalGenerator extends ComponentizedGenerator<Optional> {
-    public OptionalGenerator() {
-        super(Optional.class);
+public class OptionalLongGenerator extends Generator<OptionalLong> {
+    private final LongGenerator longGenerator = new LongGenerator();
+
+    public OptionalLongGenerator() {
+        super(OptionalLong.class);
     }
 
-    @Override public Optional<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    public void configure(InRange range) {
+        longGenerator.configure(range);
+    }
+
+    @Override public OptionalLong generate(SourceOfRandomness random, GenerationStatus status) {
         double trial = random.nextDouble();
         return trial < 0.25
-            ? Optional.empty()
-            : Optional.of(componentGenerators().get(0).generate(random, status));
+            ? OptionalLong.empty()
+            : OptionalLong.of(longGenerator.generate(random, status));
     }
 
-    @Override public List<Optional> doShrink(SourceOfRandomness random, Optional larger) {
+    @Override public List<OptionalLong> doShrink(
+        SourceOfRandomness random,
+        OptionalLong larger) {
+
         if (!larger.isPresent())
             return new ArrayList<>();
 
-        List<Optional> shrinks = new ArrayList<>();
-        shrinks.add(Optional.empty());
+        List<OptionalLong> shrinks = new ArrayList<>();
+        shrinks.add(OptionalLong.empty());
         shrinks.addAll(
-            componentGenerators().get(0).shrink(random, larger.get())
+            longGenerator.shrink(random, larger.getAsLong())
                 .stream()
-                .map(Optional::of)
+                .map(OptionalLong::of)
                 .collect(Collectors.toList()));
         return shrinks;
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 1;
     }
 }

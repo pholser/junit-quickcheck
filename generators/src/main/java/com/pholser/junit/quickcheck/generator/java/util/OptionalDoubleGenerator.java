@@ -27,40 +27,47 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class OptionalGenerator extends ComponentizedGenerator<Optional> {
-    public OptionalGenerator() {
-        super(Optional.class);
+public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
+    private final DoubleGenerator doubleGenerator = new DoubleGenerator();
+
+    public OptionalDoubleGenerator() {
+        super(OptionalDouble.class);
     }
 
-    @Override public Optional<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    public void configure(InRange range) {
+        doubleGenerator.configure(range);
+    }
+
+    @Override public OptionalDouble generate(SourceOfRandomness random, GenerationStatus status) {
         double trial = random.nextDouble();
         return trial < 0.25
-            ? Optional.empty()
-            : Optional.of(componentGenerators().get(0).generate(random, status));
+            ? OptionalDouble.empty()
+            : OptionalDouble.of(doubleGenerator.generate(random, status));
     }
 
-    @Override public List<Optional> doShrink(SourceOfRandomness random, Optional larger) {
+    @Override public List<OptionalDouble> doShrink(
+        SourceOfRandomness random,
+        OptionalDouble larger) {
+
         if (!larger.isPresent())
             return new ArrayList<>();
 
-        List<Optional> shrinks = new ArrayList<>();
-        shrinks.add(Optional.empty());
+        List<OptionalDouble> shrinks = new ArrayList<>();
+        shrinks.add(OptionalDouble.empty());
         shrinks.addAll(
-            componentGenerators().get(0).shrink(random, larger.get())
+            doubleGenerator.shrink(random, larger.getAsDouble())
                 .stream()
-                .map(Optional::of)
+                .map(OptionalDouble::of)
                 .collect(Collectors.toList()));
         return shrinks;
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 1;
     }
 }

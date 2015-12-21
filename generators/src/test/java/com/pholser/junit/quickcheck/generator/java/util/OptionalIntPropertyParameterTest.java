@@ -27,46 +27,43 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalInt;
 
-import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
-import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
+import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class OptionalPropertyParameterTest {
-    @Test public void maybeAString() {
-        assertThat(testResult(OptionalString.class), isSuccessful());
+public class OptionalIntPropertyParameterTest {
+    @Test public void maybeAnInt() {
+        assertThat(testResult(MaybeAnInt.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class OptionalString {
-        @Property public void works(
-            Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
-
-            assumeTrue(optional.isPresent());
-            assertTrue(optional.get().codePoints().allMatch(i -> i < 128));
+    public static class MaybeAnInt {
+        @Property public void works(@InRange(minInt = -2, maxInt = 3) OptionalInt i) {
+            assumeTrue(i.isPresent());
+            assertThat(i.getAsInt(), allOf(greaterThanOrEqualTo(-2), lessThanOrEqualTo(3)));
         }
     }
 
     @Test public void shrinking() {
-        assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
-        assertTrue(ShrinkingOptional.failed.stream().anyMatch(o -> !o.isPresent()));
+        assertThat(testResult(ShrinkingOptionalInt.class), failureCountIs(1));
+        assertTrue(ShrinkingOptionalInt.failed.stream().anyMatch(o -> !o.isPresent()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingOptional {
-        static List<Optional<Byte>> failed = new ArrayList<>();
+    public static class ShrinkingOptionalInt {
+        static List<OptionalInt> failed = new ArrayList<>();
 
-        @Property public void works(Optional<Byte> optional) {
+        @Property public void works(OptionalInt optional) {
             failed.add(optional);
 
             fail();

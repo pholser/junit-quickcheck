@@ -27,40 +27,44 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class OptionalGenerator extends ComponentizedGenerator<Optional> {
-    public OptionalGenerator() {
-        super(Optional.class);
+public class OptionalIntGenerator extends Generator<OptionalInt> {
+    private final IntegerGenerator integerGenerator = new IntegerGenerator();
+
+    public OptionalIntGenerator() {
+        super(OptionalInt.class);
     }
 
-    @Override public Optional<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    public void configure(InRange range) {
+        integerGenerator.configure(range);
+    }
+
+    @Override public OptionalInt generate(SourceOfRandomness random, GenerationStatus status) {
         double trial = random.nextDouble();
         return trial < 0.25
-            ? Optional.empty()
-            : Optional.of(componentGenerators().get(0).generate(random, status));
+            ? OptionalInt.empty()
+            : OptionalInt.of(integerGenerator.generate(random, status));
     }
 
-    @Override public List<Optional> doShrink(SourceOfRandomness random, Optional larger) {
+    @Override public List<OptionalInt> doShrink(SourceOfRandomness random, OptionalInt larger) {
         if (!larger.isPresent())
             return new ArrayList<>();
 
-        List<Optional> shrinks = new ArrayList<>();
-        shrinks.add(Optional.empty());
+        List<OptionalInt> shrinks = new ArrayList<>();
+        shrinks.add(OptionalInt.empty());
         shrinks.addAll(
-            componentGenerators().get(0).shrink(random, larger.get())
+            integerGenerator.shrink(random, larger.getAsInt())
                 .stream()
-                .map(Optional::of)
+                .map(OptionalInt::of)
                 .collect(Collectors.toList()));
         return shrinks;
-    }
-
-    @Override public int numberOfNeededComponents() {
-        return 1;
     }
 }

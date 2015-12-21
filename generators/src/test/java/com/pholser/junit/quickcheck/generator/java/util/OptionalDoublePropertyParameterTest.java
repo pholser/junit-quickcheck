@@ -27,46 +27,43 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalDouble;
 
-import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
-import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
+import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-public class OptionalPropertyParameterTest {
-    @Test public void maybeAString() {
-        assertThat(testResult(OptionalString.class), isSuccessful());
+public class OptionalDoublePropertyParameterTest {
+    @Test public void maybeADouble() {
+        assertThat(testResult(MaybeADouble.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class OptionalString {
-        @Property public void works(
-            Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
-
-            assumeTrue(optional.isPresent());
-            assertTrue(optional.get().codePoints().allMatch(i -> i < 128));
+    public static class MaybeADouble {
+        @Property public void works(@InRange(maxDouble = 0.5) OptionalDouble d) {
+            assumeTrue(d.isPresent());
+            assertThat(d.getAsDouble(), lessThanOrEqualTo(0.5));
         }
     }
 
     @Test public void shrinking() {
-        assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
-        assertTrue(ShrinkingOptional.failed.stream().anyMatch(o -> !o.isPresent()));
+        assertThat(testResult(ShrinkingOptionalDouble.class), failureCountIs(1));
+        assertTrue(ShrinkingOptionalDouble.failed.stream().anyMatch(o -> !o.isPresent()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingOptional {
-        static List<Optional<Byte>> failed = new ArrayList<>();
+    public static class ShrinkingOptionalDouble {
+        static List<OptionalDouble> failed = new ArrayList<>();
 
-        @Property public void works(Optional<Byte> optional) {
+        @Property public void works(OptionalDouble optional) {
             failed.add(optional);
 
             fail();
