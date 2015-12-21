@@ -181,7 +181,7 @@ reflectively, passing it the annotation:
             SourceOfRandomness random,
             GenerationStatus status) {
 
-            int value = random.nextInt(min, max);
+            int value = random.nextInt();
             return positive != null ? Math.abs(value) : value;
         }
 
