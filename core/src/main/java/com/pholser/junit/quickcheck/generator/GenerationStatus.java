@@ -27,8 +27,8 @@ package com.pholser.junit.quickcheck.generator;
 
 /**
  * {@link Generator}s are fed instances of this interface on each generation
- * so that, if they choose, the generators can use these instances to influence
- * the results of a generation for a particular property parameter.
+ * so that, if they choose, they can use these instances to influence the
+ * results of a generation for a particular property parameter.
  */
 public interface GenerationStatus {
     /**
