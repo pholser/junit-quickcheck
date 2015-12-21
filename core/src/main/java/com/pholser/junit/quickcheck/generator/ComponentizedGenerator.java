@@ -61,10 +61,6 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         components.addAll(newComponents);
     }
 
-    protected List<Generator<?>> componentGenerators() {
-        return unmodifiableList(components);
-    }
-
     @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
         return numberOfNeededComponents() == typeParameters.size();
     }
@@ -85,5 +81,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
             for (int i = 0; i < components.size(); ++i)
                 components.get(i).configure(annotatedComponentTypes.get(i));
         }
+    }
+
+    protected List<Generator<?>> componentGenerators() {
+        return unmodifiableList(components);
     }
 }
