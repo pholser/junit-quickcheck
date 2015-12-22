@@ -143,7 +143,7 @@ attribute (default is 1).
 
 To add a generator for a type without having to use `@From`, you can package it
 in a [ServiceLoader]
-(http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)
+(http://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
 JAR file and place the JAR on the class path. junit-quickcheck will make
 generators packaged in this way available for use. The generators in the module
 `junit-quickcheck-generators` are loaded via this mechanism also; any
