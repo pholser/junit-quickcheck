@@ -114,10 +114,6 @@ public class ArrayGenerator extends Generator<Object> {
         component.configure(annotatedComponentTypes(annotatedType).get(0));
     }
 
-    public Generator<?> componentGenerator() {
-        return component;
-    }
-
     private int length(SourceOfRandomness random, GenerationStatus status) {
         return lengthRange != null
             ? random.nextInt(lengthRange.min(), lengthRange.max())

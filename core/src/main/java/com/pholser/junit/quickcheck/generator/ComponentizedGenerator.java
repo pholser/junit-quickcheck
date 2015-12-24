@@ -52,6 +52,16 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         super(type);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Generators of this type do not get called upon to generate values
+     * for parameters of type {@link Object}.</p>
+     */
+    @Override public boolean canRegisterAsType(Class<?> type) {
+        return !Object.class.equals(type);
+    }
+
     @Override public final boolean hasComponents() {
         return true;
     }

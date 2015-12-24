@@ -112,10 +112,6 @@ public abstract class CollectionGenerator<T extends Collection>
         return 1;
     }
 
-    @Override public boolean canRegisterAsType(Class<?> type) {
-        return !Object.class.equals(type);
-    }
-
     protected final T empty() {
         return instantiate(findConstructor(types().get(0)));
     }

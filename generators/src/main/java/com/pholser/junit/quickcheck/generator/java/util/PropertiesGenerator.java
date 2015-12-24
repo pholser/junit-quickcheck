@@ -32,12 +32,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.Arrays.*;
 
 /**
  * Produces values of type {@link Properties}.
@@ -64,7 +64,8 @@ public class PropertiesGenerator extends Generator<Properties> {
 
     @SuppressWarnings("unchecked")
     @Override public boolean canRegisterAsType(Class<?> type) {
-        Set<Class<?>> exclusions = new HashSet<>(asList(Hashtable.class, Map.class, Dictionary.class));
+        Set<Class<?>> exclusions =
+            new HashSet<>(asList(Object.class, Hashtable.class, Map.class, Dictionary.class));
         return !exclusions.contains(type);
     }
 }

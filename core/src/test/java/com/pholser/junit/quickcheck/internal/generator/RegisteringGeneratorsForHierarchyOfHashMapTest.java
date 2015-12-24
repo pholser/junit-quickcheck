@@ -97,6 +97,6 @@ public class RegisteringGeneratorsForHierarchyOfHashMapTest {
     @Test public void object() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
-        assertGenerators(result, generator.getClass(), AnInt.class, ZilchGenerator.class);
+        assertGenerators(result, AnInt.class, ZilchGenerator.class);
     }
 }

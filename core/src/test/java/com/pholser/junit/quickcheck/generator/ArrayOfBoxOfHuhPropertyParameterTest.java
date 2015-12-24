@@ -38,11 +38,10 @@ public class ArrayOfBoxOfHuhPropertyParameterTest extends CorePropertyParameterT
     public static final Box<?>[] TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        int longIndex = 12;
         when(randomForParameterGenerator.nextLong())
             .thenReturn(1L).thenReturn(7L).thenReturn(63L);
-        when(randomForGeneratorRepo.nextInt(Iterables.size(source)))
-            .thenReturn(longIndex);
+        when(randomForGeneratorRepo.nextInt(12))
+            .thenReturn(8);
         when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
         when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
         when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
@@ -63,6 +62,6 @@ public class ArrayOfBoxOfHuhPropertyParameterTest extends CorePropertyParameterT
 
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3)).nextLong();
-        verify(randomForGeneratorRepo).nextInt(Iterables.size(source));
+        verify(randomForGeneratorRepo).nextInt(12);
     }
 }

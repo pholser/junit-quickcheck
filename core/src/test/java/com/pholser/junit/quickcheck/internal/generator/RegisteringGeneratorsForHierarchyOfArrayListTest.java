@@ -127,6 +127,6 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     @Test public void objectType() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
-        assertGenerators(result, AnInt.class, ZilchGenerator.class, AList.class);
+        assertGenerators(result, AnInt.class, ZilchGenerator.class);
     }
 }
