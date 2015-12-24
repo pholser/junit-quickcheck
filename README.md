@@ -98,6 +98,9 @@ methods.
     }
 ```
 
+The usual JUnit machinery is honored: `@Before`, `@After`, `@BeforeClass`,
+`@AfterClass`, `@Rule`.
+
 
 ### Supported types
 
