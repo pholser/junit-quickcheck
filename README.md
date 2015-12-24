@@ -46,12 +46,12 @@ elements in your POM like so:
       <dependency>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck-core</artifactId>
-        <version>0.6-alpha-1</version>
+        <version>0.6-alpha-2</version>
       </dependency>
       <dependency>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck-generators</artifactId>
-        <version>0.6-alpha-1</version>
+        <version>0.6-alpha-2</version>
       </dependency>
       ...
     </dependencies>
