@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>junit-quickcheck-core</artifactId>
-    <version>0.6-alpha-3-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>junit-quickcheck-core</name>
-    <description>QuickCheck-style parameter suppliers for JUnit theories: core functionality</description>
-    <url>http://github.com/pholser/junit-quickcheck</url>
-
     <parent>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck</artifactId>
         <version>0.6-alpha-3-SNAPSHOT</version>
     </parent>
+
+    <artifactId>junit-quickcheck-core</artifactId>
+    <version>0.6-alpha-3-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>junit-quickcheck-core</name>
+    <description>Property-based testing, JUnit-style: core functionality</description>
+    <url>http://github.com/pholser/junit-quickcheck</url>
 
     <dependencies>
         <dependency>
