@@ -8,24 +8,9 @@ basic Java types, such as primitives, arrays, and collections.
 There is also a module `junit-quickcheck-guava`, containing generators for
 [Guava](https://github.com/google/guava) types.
 
-Releases are synced to the central Maven repository. Declare `<dependency>`
-elements in your POM like so:
+Releases are synced to the central Maven repository. Here are the coordinates
+for the junit-quickcheck JAR files:
 
-```xml
-    ...
-    <dependencies>
-      ...
-      <dependency>
-        <groupId>com.pholser</groupId>
-        <artifactId>junit-quickcheck-core</artifactId>
-        <version>0.6-alpha-2</version>
-      </dependency>
-      <dependency>
-        <groupId>com.pholser</groupId>
-        <artifactId>junit-quickcheck-generators</artifactId>
-        <version>0.6-alpha-2</version>
-      </dependency>
-      ...
-    </dependencies>
-    ...
-```
+- [junit-quickcheck-core](junit-quickcheck-core/dependency-info.html)
+- [junit-quickcheck-generators](junit-quickcheck-generators/dependency-info.html)
+- [junit-quickcheck-guava](junit-quickcheck-guava/dependency-info.html)
