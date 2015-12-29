@@ -63,6 +63,9 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
 
     /**
      * Invoked reflectively by JUnit.
+     *
+     * @param clazz class containing properties to verify
+     * @throws InitializationError if there is a problem with the properties class
      */
     public JUnitQuickcheck(Class<?> clazz) throws InitializationError {
         super(clazz);
