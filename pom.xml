@@ -42,6 +42,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github</github.global.server>
     </properties>
 
     <modules>
@@ -254,11 +255,6 @@
                             <artifactId>doxia-module-markdown</artifactId>
                             <version>1.6</version>
                         </dependency>
-                        <dependency>
-                            <groupId>net.trajano.wagon</groupId>
-                            <artifactId>wagon-git</artifactId>
-                            <version>1.0.0</version>
-                        </dependency>
                     </dependencies>
                     <configuration>
                         <skipDeploy>true</skipDeploy>
@@ -273,27 +269,6 @@
         </pluginManagement>
 
         <plugins>
-            <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.12</version>
-                <configuration>
-                    <message>Creating site for ${project.artifactId}, ${project.version}</message>
-                    <!-- this does the trick to place every module in the correct subfolder -->
-                    <path>${project.distributionManagement.site.url}</path>
-                    <merge>true</merge>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>github-site</id>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <phase>site-deploy</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -319,6 +294,25 @@
                             </links>
                             <bottom><![CDATA[<i>&copy; Copyright 2010-2015 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <configuration>
+                    <message>Creating site for ${project.artifactId}, ${project.version}</message>
+                    <path>${project.distributionManagement.site.url}</path>
+                    <merge>true</merge>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>github-site</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>site-deploy</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -386,8 +380,7 @@
     <distributionManagement>
         <site>
             <id>github-pages-site</id>
-            <name>Deployment through GitHub's site deployment plugin</name>
-            <url>git:ssh://git@github.com/pholser/junit-quickcheck.git?gh-pages#</url>
+            <url>site/${project.version}/</url>
         </site>
     </distributionManagement>
 </project>
