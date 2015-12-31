@@ -28,8 +28,6 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 

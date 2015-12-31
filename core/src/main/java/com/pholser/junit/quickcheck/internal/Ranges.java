@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.math.BigInteger;
-import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 

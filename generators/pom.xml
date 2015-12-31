@@ -12,7 +12,7 @@
     <version>0.6-alpha-3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>junit-quickcheck-generators</name>
-    <description>QuickCheck-style parameter suppliers for JUnit theories: basic generators</description>
+    <description>Property-based testing, JUnit-style: basic generators</description>
     <url>http://github.com/pholser/junit-quickcheck</url>
 
     <dependencies>
