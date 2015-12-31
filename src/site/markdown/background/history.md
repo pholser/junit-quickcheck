@@ -100,6 +100,7 @@ the theory method 10,000 times (100 * 100).
 ```
 
 This led to mitigation strategies such as:
+
 - Using the `sampleSize` attribute of `@ForAll` to change the number of
 generated values for a given theory parameter
 - Collapsing the theory parameters into a class, and using a generator for the
