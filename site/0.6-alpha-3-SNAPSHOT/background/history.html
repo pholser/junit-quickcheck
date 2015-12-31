@@ -321,7 +321,14 @@
         }
     }
 </pre></div></div>
-<p>This led to mitigation strategies such as: - Using the <tt>sampleSize</tt> attribute of <tt>@ForAll</tt> to change the number of generated values for a given theory parameter - Collapsing the theory parameters into a class, and using a generator for the class. This approach can exert positive design pressure:</p>
+<p>This led to mitigation strategies such as:</p>
+
+<ul>
+  
+<li>Using the <tt>sampleSize</tt> attribute of <tt>@ForAll</tt> to change the number of generated values for a given theory parameter</li>
+  
+<li>Collapsing the theory parameters into a class, and using a generator for the class. This approach can exert positive design pressure:</li>
+</ul>
 
 <div class="source">
 <div class="source"><pre class="prettyprint">    public class Coordinate {
