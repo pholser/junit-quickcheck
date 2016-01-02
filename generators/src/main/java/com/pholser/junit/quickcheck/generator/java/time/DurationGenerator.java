@@ -41,7 +41,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
  * Produces values of type {@link Duration}.
  */
 public class DurationGenerator extends Generator<Duration> {
-    private Duration min = Duration.ofSeconds(Long.MIN_VALUE, 999_999_999);
+    private Duration min = Duration.ofSeconds(Long.MIN_VALUE, 0);
     private Duration max = Duration.ofSeconds(Long.MAX_VALUE, 999_999_999);
 
     public DurationGenerator() {
@@ -82,9 +82,6 @@ public class DurationGenerator extends Generator<Duration> {
 
     @Override
     public Duration generate(SourceOfRandomness random, GenerationStatus status) {
-        long seconds = random.nextLong(min.getSeconds(), max.getSeconds());
-        long nanoAdjustment = random.nextLong(min.getNano(), max.getNano());
-
-        return Duration.ofSeconds(seconds, nanoAdjustment);
+        return random.nextDuration(min, max);
     }
 }

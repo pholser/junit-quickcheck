@@ -30,9 +30,7 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -42,6 +40,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
  * Produces values of type {@link LocalDateTime}.
  */
 public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
+    private static final ZoneId zoneId = ZoneId.of("UTC");
     private LocalDateTime min = LocalDateTime.MIN;
     private LocalDateTime max = LocalDateTime.MAX;
 
@@ -84,9 +83,8 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
 
     @Override
     public LocalDateTime generate(SourceOfRandomness random, GenerationStatus status) {
-        long epochDay = random.nextLong(min.toLocalDate().toEpochDay(), max.toLocalDate().toEpochDay());
-        long nanoOfDay = random.nextLong(min.toLocalTime().toNanoOfDay(), max.toLocalTime().toNanoOfDay());
-
-        return LocalDateTime.of(LocalDate.ofEpochDay(epochDay), LocalTime.ofNanoOfDay(nanoOfDay));
+        return LocalDateTime.ofInstant(
+                random.nextInstant(min.atZone(zoneId).toInstant(), max.atZone(zoneId).toInstant()),
+                zoneId);
     }
 }

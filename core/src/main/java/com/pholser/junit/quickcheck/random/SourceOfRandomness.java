@@ -26,6 +26,8 @@
 package com.pholser.junit.quickcheck.random;
 
 import java.math.BigInteger;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
 
 import com.pholser.junit.quickcheck.internal.Ranges;
@@ -38,6 +40,8 @@ import static com.pholser.junit.quickcheck.internal.Ranges.*;
  * can produce random values for property parameters.
  */
 public class SourceOfRandomness {
+    private final static BigInteger NANOS_PER_SECOND = BigInteger.valueOf(1_000_000_000);
+
     private final Random delegate;
 
     private long seed;
@@ -264,5 +268,46 @@ public class SourceOfRandomness {
      */
     public BigInteger nextBigInteger(int numberOfBits) {
         return new BigInteger(numberOfBits, delegate);
+    }
+
+    /**
+     * Gives a random {@code Instant} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public Instant nextInstant(Instant min, Instant max) {
+        long[] next = nextSecondsAndNanos(min.getEpochSecond(), min.getNano(), max.getEpochSecond(), max.getNano());
+
+        return Instant.ofEpochSecond(next[0], next[1]);
+    }
+
+    /**
+     * Gives a random {@code Duration} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public Duration nextDuration(Duration min, Duration max) {
+        long[] next = nextSecondsAndNanos(min.getSeconds(), min.getNano(), max.getSeconds(), max.getNano());
+
+        return Duration.ofSeconds(next[0], next[1]);
+    }
+
+    private long[] nextSecondsAndNanos(long minSeconds, long minNanos, long maxSeconds, long maxNanos) {
+        BigInteger nanoMin = BigInteger.valueOf(minSeconds)
+                .multiply(NANOS_PER_SECOND)
+                .add(BigInteger.valueOf(minNanos));
+        BigInteger nanoMax = BigInteger.valueOf(maxSeconds)
+                .multiply(NANOS_PER_SECOND)
+                .add(BigInteger.valueOf(maxNanos));
+
+        BigInteger[] generated = choose(this, nanoMin, nanoMax).divideAndRemainder(NANOS_PER_SECOND);
+
+        return new long[] { generated[0].longValue(), generated[1].longValue() };
     }
 }

@@ -56,14 +56,14 @@ public class DurationPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class RangedDurationTheory {
         @Property public void shouldHold(
-            @InRange(min = "PT-2562047788015215H-30M-7.000000001S", max = "PT2562047788015215H30M7.999999999S")
+            @InRange(min = "PT-2562047788015215H-30M-8S", max = "PT2562047788015215H30M7.999999999S")
             Duration d)
             throws Exception {
 
             assertThat(
                 d,
                 allOf(
-                    greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-7.000000001S")),
+                    greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-8S")),
                     lessThanOrEqualTo(Duration.parse("PT2562047788015215H30M7.999999999S"))));
         }
     }
@@ -90,7 +90,7 @@ public class DurationPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxDurationTheory {
         @Property public void shouldHold(
-            @InRange(min = "PT-2562047788015215H-30M-7.000000001S", max = "*&@^#%$") Duration d) {
+            @InRange(min = "PT-2562047788015215H-30M-8S", max = "*&@^#%$") Duration d) {
         }
     }
 
@@ -113,10 +113,10 @@ public class DurationPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(@InRange(min = "PT-2562047788015215H-30M-7.000000001S") Duration d)
+        @Property public void shouldHold(@InRange(min = "PT-2562047788015215H-30M-8S") Duration d)
             throws Exception {
 
-            assertThat(d, greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-7.000000001S")));
+            assertThat(d, greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-8S")));
         }
     }
 
@@ -129,7 +129,7 @@ public class DurationPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
         @Property public void shouldHold(
-            @InRange(min = "PT2562047788015215H30M7.999999999S", max = "PT-2562047788015215H-30M-7.000000001S")
+            @InRange(min = "PT2562047788015215H30M7.999999999S", max = "PT-2562047788015215H-30M-8S")
             Duration d) {
         }
     }

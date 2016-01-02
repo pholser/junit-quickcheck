@@ -30,12 +30,12 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.LocalDate;
+import java.math.BigInteger;
 import java.time.Instant;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.choose;
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 /**
@@ -81,9 +81,6 @@ public class InstantGenerator extends Generator<Instant> {
 
     @Override
     public Instant generate(SourceOfRandomness random, GenerationStatus status) {
-        long epochSecond = random.nextLong(min.getEpochSecond(), max.getEpochSecond());
-        long nanoAdjustment = random.nextLong(min.getNano(), max.getNano());
-
-        return Instant.ofEpochSecond(epochSecond, nanoAdjustment);
+        return random.nextInstant(min, max);
     }
 }

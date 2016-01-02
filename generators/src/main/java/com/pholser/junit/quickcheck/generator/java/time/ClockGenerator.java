@@ -42,7 +42,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
  * Produces values of type {@link Clock}.
  */
 public class ClockGenerator extends Generator<Clock> {
-    private final ZoneId zoneId = ZoneId.of("UTC");
+    private static final ZoneId zoneId = ZoneId.of("UTC");
     private Instant min = Instant.MIN;
     private Instant max = Instant.MAX;
 
@@ -84,9 +84,6 @@ public class ClockGenerator extends Generator<Clock> {
 
     @Override
     public Clock generate(SourceOfRandomness random, GenerationStatus status) {
-        long epochSecond = random.nextLong(min.getEpochSecond(), max.getEpochSecond());
-        long nanoAdjustment = random.nextLong(min.getNano(), max.getNano());
-
-        return Clock.fixed(Instant.ofEpochSecond(epochSecond, nanoAdjustment), zoneId);
+        return Clock.fixed(random.nextInstant(min, max), zoneId);
     }
 }
