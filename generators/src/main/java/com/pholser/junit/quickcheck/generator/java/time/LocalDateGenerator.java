@@ -34,7 +34,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 /**
  * Produces values of type {@link LocalDate}.
