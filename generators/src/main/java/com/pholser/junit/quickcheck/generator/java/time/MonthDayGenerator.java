@@ -30,32 +30,31 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 /**
- * Produces values of type {@link LocalDateTime}.
+ * Produces values of type {@link MonthDay}.
  */
-public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
-    private static final ZoneId zoneId = ZoneId.of("UTC");
-    private LocalDateTime min = LocalDateTime.MIN;
-    private LocalDateTime max = LocalDateTime.MAX;
+public class MonthDayGenerator extends Generator<MonthDay> {
+    private MonthDay min = MonthDay.of(1, 1);
+    private MonthDay max = MonthDay.of(12, 31);
 
-    public LocalDateTimeGenerator() {
-        super(LocalDateTime.class);
+    public MonthDayGenerator() {
+        super(MonthDay.class);
     }
 
     /**
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
-     * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
+     * maximum}, inclusive, with uniform distribution.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * dates with values of either {@link LocalDateTime#MIN} or {@link LocalDateTime#MAX}
+     * dates with values of either {@code MonthDay(1, 1)} or {@code MonthDay(12, 31)}
      * as appropriate.</p>
      *
      * <p>{@link InRange#format()} describes
@@ -64,16 +63,16 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code LocalDateTime}
+     * converted to {@code MonthDay}
      */
     public void configure(InRange range) {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
 
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = LocalDateTime.parse(range.min(), formatter);
+                min = MonthDay.parse(range.min(), formatter);
             if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = LocalDateTime.parse(range.max(), formatter);
+                max = MonthDay.parse(range.max(), formatter);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(e);
         }
@@ -83,11 +82,13 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
     }
 
     @Override
-    public LocalDateTime generate(SourceOfRandomness random, GenerationStatus status) {
-        // Project the LocalDateTime to an Instant for easy long-based generation.  Any zone id
-        // will do as long as we use the same one throughout.
-        return LocalDateTime.ofInstant(
-                random.nextInstant(min.atZone(zoneId).toInstant(), max.atZone(zoneId).toInstant()),
-                zoneId);
+    public MonthDay generate(SourceOfRandomness random, GenerationStatus status) {
+        // Project the MonthDay to a LocalDate for easy long-based generation.  Any
+        // leap year will do here.
+        long minEpochDay = min.atYear(2000).toEpochDay();
+        long maxEpochDay = max.atYear(2000).toEpochDay();
+        LocalDate date = LocalDate.ofEpochDay(random.nextLong(minEpochDay, maxEpochDay));
+
+        return MonthDay.of(date.getMonthValue(), date.getDayOfMonth());
     }
 }

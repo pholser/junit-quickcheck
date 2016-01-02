@@ -42,6 +42,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
  * Produces values of type {@link Clock}.
  */
 public class ClockGenerator extends Generator<Clock> {
+    // Instants are always in UTC.
     private static final ZoneId zoneId = ZoneId.of("UTC");
     private Instant min = Instant.MIN;
     private Instant max = Instant.MAX;
