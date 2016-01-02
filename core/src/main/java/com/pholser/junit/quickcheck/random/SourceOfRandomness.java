@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import com.pholser.junit.quickcheck.internal.Ranges;
-
 import java.math.BigInteger;
 import java.util.Random;
+
+import com.pholser.junit.quickcheck.internal.Ranges;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
@@ -46,11 +46,8 @@ public class SourceOfRandomness {
      * @param delegate a JDK source of randomness, to which the new instance will delegate
      */
     public SourceOfRandomness(Random delegate) {
+        seed = delegate.nextLong();
         this.delegate = delegate;
-
-        // Swiped from java.util.Random
-        seed = (181783497276652981L * 8682522807148012L) ^ System.nanoTime();
-
         delegate.setSeed(seed);
     }
 
