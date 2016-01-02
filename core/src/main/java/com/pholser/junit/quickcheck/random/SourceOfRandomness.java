@@ -49,11 +49,8 @@ public class SourceOfRandomness {
      * will delegate
      */
     public SourceOfRandomness(Random delegate) {
+        seed = delegate.nextLong();
         this.delegate = delegate;
-
-        // Swiped from java.util.Random
-        seed = (181783497276652981L * 8682522807148012L) ^ System.nanoTime();
-
         delegate.setSeed(seed);
     }
 
