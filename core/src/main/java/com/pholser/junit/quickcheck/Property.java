@@ -70,4 +70,10 @@ public @interface Property {
      * {@link #shrink()} is {@code true}.
      */
     int maxShrinkDepth() default 20;
+
+    /**
+     * @return the maximum elapsed time for the shrinking process in
+     * milliseconds; in effect only when {@link #shrink()} is {@code true}.
+     */
+    int maxShrinkTime() default 60_000;
 }

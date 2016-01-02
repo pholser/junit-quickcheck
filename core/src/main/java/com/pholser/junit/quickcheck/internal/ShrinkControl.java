@@ -29,11 +29,13 @@ public class ShrinkControl {
     private final boolean shouldShrink;
     private final int maxShrinks;
     private final int maxShrinkDepth;
+    private final int maxShrinkTime;
 
-    public ShrinkControl(boolean shouldShrink, int maxShrinks, int maxShrinkDepth) {
+    public ShrinkControl(boolean shouldShrink, int maxShrinks, int maxShrinkDepth, int maxShrinkTime) {
         this.shouldShrink = shouldShrink;
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
+        this.maxShrinkTime = maxShrinkTime;
     }
 
     public boolean shouldShrink() {
@@ -46,5 +48,9 @@ public class ShrinkControl {
 
     public int maxShrinkDepth() {
         return maxShrinkDepth;
+    }
+
+    public int maxShrinkTime() {
+        return maxShrinkTime;
     }
 }

@@ -203,4 +203,19 @@ public class ShrinkingTest {
             assertThat(first.i(), lessThan(1));
         }
     }
+
+    @Test public void timeout() throws Exception {
+        assertThat(
+                testResult(ShrinkingTimeout.class),
+                hasSingleFailureContaining("shrunken to ["));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinkingTimeout {
+        @Property(maxShrinks = Integer.MAX_VALUE, maxShrinkDepth = Integer.MAX_VALUE, maxShrinkTime = 200)
+        public void shouldHold(Foo f) throws InterruptedException {
+            assumeThat(f.slow(), greaterThan(Integer.MAX_VALUE / 2));
+            assertThat(f.slow(), lessThan(Integer.MAX_VALUE / 2));
+        }
+    }
 }
