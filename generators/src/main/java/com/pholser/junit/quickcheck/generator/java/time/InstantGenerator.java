@@ -31,6 +31,7 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.time.LocalDate;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -38,14 +39,14 @@ import java.time.format.DateTimeParseException;
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 /**
- * Produces values of type {@link LocalTime}.
+ * Produces values of type {@link Instant}.
  */
-public class LocalTimeGenerator extends Generator<LocalTime> {
-    private LocalTime min = LocalTime.MIN;
-    private LocalTime max = LocalTime.MAX;
+public class InstantGenerator extends Generator<Instant> {
+    private Instant min = Instant.MIN;
+    private Instant max = Instant.MAX;
 
-    public LocalTimeGenerator() {
-        super(LocalTime.class);
+    public InstantGenerator() {
+        super(Instant.class);
     }
 
     /**
@@ -54,25 +55,22 @@ public class LocalTimeGenerator extends Generator<LocalTime> {
      * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * times with values of either {@link LocalTime#MIN} or {@link LocalTime#MAX}
+     * instants with values of either {@link Instant#MIN} or {@link Instant#MAX}
      * as appropriate.</p>
      *
-     * <p>{@link InRange#format()} describes
-     * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
-     * interpret the range's endpoints}.</p>
+     * <p>{@link InRange#format()} is ignored.  Instants are always parsed using
+     * {@linkplain DateTimeFormatter#ISO_INSTANT}.</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code LocalTime}
+     * converted to {@code Instant}
      */
     public void configure(InRange range) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
-
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = LocalTime.parse(range.min(), formatter);
+                min = Instant.parse(range.min());
             if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = LocalTime.parse(range.max(), formatter);
+                max = Instant.parse(range.max());
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(e);
         }
@@ -82,7 +80,10 @@ public class LocalTimeGenerator extends Generator<LocalTime> {
     }
 
     @Override
-    public LocalTime generate(SourceOfRandomness random, GenerationStatus status) {
-        return LocalTime.ofNanoOfDay(random.nextLong(min.toNanoOfDay(), max.toNanoOfDay()));
+    public Instant generate(SourceOfRandomness random, GenerationStatus status) {
+        long epochSecond = random.nextLong(min.getEpochSecond(), max.getEpochSecond());
+        long nanoAdjustment = random.nextLong(min.getNano(), max.getNano());
+
+        return Instant.ofEpochSecond(epochSecond, nanoAdjustment);
     }
 }
