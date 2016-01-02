@@ -40,8 +40,8 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * Produces values of type {@link LocalDate}.
  */
 public class LocalDateGenerator extends Generator<LocalDate> {
-    private long min = LocalDate.MIN.toEpochDay();
-    private long max = LocalDate.MAX.toEpochDay();
+    private LocalDate min = LocalDate.MIN;
+    private LocalDate max = LocalDate.MAX;
 
     public LocalDateGenerator() {
         super(LocalDate.class);
@@ -62,26 +62,26 @@ public class LocalDateGenerator extends Generator<LocalDate> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code Date}
+     * converted to {@code LocalDate}
      */
     public void configure(InRange range) {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
 
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = LocalDate.parse(range.min(), formatter).toEpochDay();
+                min = LocalDate.parse(range.min(), formatter);
             if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = LocalDate.parse(range.max(), formatter).toEpochDay();
+                max = LocalDate.parse(range.max(), formatter);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(e);
         }
 
-        if (min > max)
+        if (min.compareTo(max) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
     @Override
     public LocalDate generate(SourceOfRandomness random, GenerationStatus status) {
-        return LocalDate.ofEpochDay(random.nextLong(min, max));
+        return LocalDate.ofEpochDay(random.nextLong(min.toEpochDay(), max.toEpochDay()));
     }
 }
