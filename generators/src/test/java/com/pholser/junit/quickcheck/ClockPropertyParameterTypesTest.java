@@ -40,7 +40,7 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class ClockPropertyParameterTypesTest {
-    @Test public void date() {
+    @Test public void clock() {
         assertThat(testResult(ClockTheory.class), isSuccessful());
     }
 
@@ -50,7 +50,7 @@ public class ClockPropertyParameterTypesTest {
         }
     }
 
-    @Test public void rangedDate() {
+    @Test public void rangedClock() {
         assertThat(testResult(RangedClockTheory.class), isSuccessful());
     }
 
@@ -100,8 +100,7 @@ public class ClockPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(
-            @InRange(max = "2012-12-31T23:59:59.999999999Z", format = "MM/dd/yyyy'T'HH:mm:ss.n") Clock d)
+        @Property public void shouldHold(@InRange(max = "2012-12-31T23:59:59.999999999Z") Clock d)
             throws Exception {
 
             assertThat(d.instant(), lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));

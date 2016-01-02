@@ -30,24 +30,22 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 /**
- * Produces values of type {@link Clock}.
+ * Produces values of type {@link Duration}.
  */
-public class ClockGenerator extends Generator<Clock> {
-    private final ZoneId zoneId = ZoneId.of("UTC");
-    private Instant min = Instant.MIN;
-    private Instant max = Instant.MAX;
+public class DurationGenerator extends Generator<Duration> {
+    private Duration min = Duration.ofSeconds(Long.MIN_VALUE, 999_999_999);
+    private Duration max = Duration.ofSeconds(Long.MAX_VALUE, 999_999_999);
 
-    public ClockGenerator() {
-        super(Clock.class);
+    public DurationGenerator() {
+        super(Duration.class);
     }
 
     /**
@@ -55,25 +53,25 @@ public class ClockGenerator extends Generator<Clock> {
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
      * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
      *
-     * <p>{@link ClockGenerator} instances are configured using Instant strings.</p>
-     *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * instants with values of either {@link Instant#MIN} or {@link Instant#MAX}
-     * as appropriate.</p>
+     * durations with second values of either {@link Long#MIN_VALUE} or
+     * {@link Long#MAX_VALUE} (with nanoseconds set to 999,999,999) as appropriate.</p>
      *
-     * <p>{@linkplain InRange#format()} is ignored.  Instants are always parsed using
-     * {@link DateTimeFormatter#ISO_INSTANT}.</p>
+     * <p>{@linkplain InRange#format()} is ignored.  Durations are always parsed using
+     * formats based on the ISO-8601 duration format PnDTnHnMn.nS with days
+     * considered to be exactly 24 hours.  For more information, see
+     * {@link Duration#parse(CharSequence)}</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code Instant}
+     * converted to {@code Duration}
      */
     public void configure(InRange range) {
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = Instant.parse(range.min());
+                min = Duration.parse(range.min());
             if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = Instant.parse(range.max());
+                max = Duration.parse(range.max());
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(e);
         }
@@ -83,10 +81,10 @@ public class ClockGenerator extends Generator<Clock> {
     }
 
     @Override
-    public Clock generate(SourceOfRandomness random, GenerationStatus status) {
-        long epochSecond = random.nextLong(min.getEpochSecond(), max.getEpochSecond());
+    public Duration generate(SourceOfRandomness random, GenerationStatus status) {
+        long seconds = random.nextLong(min.getSeconds(), max.getSeconds());
         long nanoAdjustment = random.nextLong(min.getNano(), max.getNano());
 
-        return Clock.fixed(Instant.ofEpochSecond(epochSecond, nanoAdjustment), zoneId);
+        return Duration.ofSeconds(seconds, nanoAdjustment);
     }
 }

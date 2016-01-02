@@ -30,8 +30,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.Duration;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -39,72 +38,59 @@ import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
-public class LocalDatePropertyParameterTypesTest {
-    @Test public void localDate() {
-        assertThat(testResult(LocalDateTheory.class), isSuccessful());
+public class DurationPropertyParameterTypesTest {
+    @Test public void duration() {
+        assertThat(testResult(DurationTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class LocalDateTheory {
-        @Property public void shouldHold(LocalDate d) {
+    public static class DurationTheory {
+        @Property public void shouldHold(Duration d) {
         }
     }
 
-    @Test public void rangedLocalDate() {
-        assertThat(testResult(RangedLocalDateTheory.class), isSuccessful());
+    @Test public void rangedDuration() {
+        assertThat(testResult(RangedDurationTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedLocalDateTheory {
+    public static class RangedDurationTheory {
         @Property public void shouldHold(
-            @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) throws Exception {
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            @InRange(min = "PT-2562047788015215H-30M-7.000000001S", max = "PT2562047788015215H30M7.999999999S")
+            Duration d)
+            throws Exception {
 
             assertThat(
                 d,
                 allOf(
-                    greaterThanOrEqualTo(LocalDate.parse("01/01/2012", formatter)),
-                    lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter))));
+                    greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-7.000000001S")),
+                    lessThanOrEqualTo(Duration.parse("PT2562047788015215H30M7.999999999S"))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinLocalDateTheory.class),
+            testResult(MalformedMinDurationTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinLocalDateTheory {
+    public static class MalformedMinDurationTheory {
         @Property public void shouldHold(
-            @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
+            @InRange(min = "@#!@#@", max = "PT2562047788015215H30M7.999999999S") Duration d) {
         }
     }
 
     @Test public void malformedMax() {
         assertThat(
-            testResult(MalformedMaxLocalDateTheory.class),
+            testResult(MalformedMaxDurationTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxLocalDateTheory {
+    public static class MalformedMaxDurationTheory {
         @Property public void shouldHold(
-            @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") LocalDate d) {
-        }
-    }
-
-    @Test public void malformedFormat() {
-        assertThat(
-            testResult(MalformedFormatLocalDateTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatLocalDateTheory {
-        @Property public void shouldHold(
-            @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") LocalDate d) {
+            @InRange(min = "PT-2562047788015215H-30M-7.000000001S", max = "*&@^#%$") Duration d) {
         }
     }
 
@@ -114,11 +100,10 @@ public class LocalDatePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(@InRange(max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d)
+        @Property public void shouldHold(@InRange(max = "PT2562047788015215H30M7.999999999S") Duration d)
             throws Exception {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            assertThat(d, lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
+            assertThat(d, lessThanOrEqualTo(Duration.parse("PT2562047788015215H30M7.999999999S")));
         }
     }
 
@@ -128,11 +113,10 @@ public class LocalDatePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(@InRange(min = "12/31/2012", format = "MM/dd/yyyy") LocalDate d)
+        @Property public void shouldHold(@InRange(min = "PT-2562047788015215H-30M-7.000000001S") Duration d)
             throws Exception {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            assertThat(d, greaterThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
+            assertThat(d, greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-7.000000001S")));
         }
     }
 
@@ -145,7 +129,8 @@ public class LocalDatePropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
         @Property public void shouldHold(
-            @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") LocalDate d) {
+            @InRange(min = "PT2562047788015215H30M7.999999999S", max = "PT-2562047788015215H-30M-7.000000001S")
+            Duration d) {
         }
     }
 }

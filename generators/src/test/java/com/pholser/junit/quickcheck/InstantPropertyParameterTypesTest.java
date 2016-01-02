@@ -40,7 +40,7 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class InstantPropertyParameterTypesTest {
-    @Test public void date() {
+    @Test public void instant() {
         assertThat(testResult(InstantTheory.class), isSuccessful());
     }
 
@@ -50,7 +50,7 @@ public class InstantPropertyParameterTypesTest {
         }
     }
 
-    @Test public void rangedDate() {
+    @Test public void rangedInstant() {
         assertThat(testResult(RangedInstantTheory.class), isSuccessful());
     }
 
@@ -100,8 +100,7 @@ public class InstantPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(
-            @InRange(max = "2012-12-31T23:59:59.999999999Z", format = "MM/dd/yyyy'T'HH:mm:ss.n") Instant d)
+        @Property public void shouldHold(@InRange(max = "2012-12-31T23:59:59.999999999Z") Instant d)
             throws Exception {
 
             assertThat(d, lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));

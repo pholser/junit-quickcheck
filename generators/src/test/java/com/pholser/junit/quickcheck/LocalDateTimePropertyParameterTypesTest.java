@@ -40,7 +40,7 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class LocalDateTimePropertyParameterTypesTest {
-    @Test public void date() {
+    @Test public void localDateTime() {
         assertThat(testResult(LocalDateTimeTheory.class), isSuccessful());
     }
 
@@ -50,7 +50,7 @@ public class LocalDateTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void rangedDate() {
+    @Test public void rangedLocalDateTime() {
         assertThat(testResult(RangedLocalDateTimeTheory.class), isSuccessful());
     }
 

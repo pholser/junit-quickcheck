@@ -58,8 +58,8 @@ public class InstantGenerator extends Generator<Instant> {
      * instants with values of either {@link Instant#MIN} or {@link Instant#MAX}
      * as appropriate.</p>
      *
-     * <p>{@link InRange#format()} is ignored.  Instants are always parsed using
-     * {@linkplain DateTimeFormatter#ISO_INSTANT}.</p>
+     * <p>{@linkplain InRange#format()} is ignored.  Instants are always parsed using
+     * {@link DateTimeFormatter#ISO_INSTANT}.</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
