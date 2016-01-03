@@ -30,23 +30,21 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.math.BigInteger;
-import java.time.Period;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.choose;
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 /**
- * Produces values of type {@link Period}.
+ * Produces values of type {@link Year}.
  */
-public class PeriodGenerator extends Generator<Period> {
-    private Period min = Period.of(Year.MIN_VALUE, -12, -31);
-    private Period max = Period.of(Year.MAX_VALUE, 12, 31);
+public class YearGenerator extends Generator<Year> {
+    private Year min = Year.of(Year.MIN_VALUE);
+    private Year max = Year.of(Year.MAX_VALUE);
 
-    public PeriodGenerator() {
-        super(Period.class);
+    public YearGenerator() {
+        super(Year.class);
     }
 
     /**
@@ -55,54 +53,35 @@ public class PeriodGenerator extends Generator<Period> {
      * maximum}, inclusive, with uniform distribution.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * Periods with values of either {@code Period(Year#MIN_VALUE, -12, -31)}
-     * or {@code Period(Year#MAX_VALUE, 12, 31)} as appropriate.</p>
+     * Years with values of either {@code Year#MIN_VALUE} or {@code Year#MAX_VALUE}
+     * as appropriate.</p>
      *
-     * <p>{@linkplain InRange#format()} is ignored.  Periods are always parsed using
-     * formats based on the ISO-8601 period formats PnYnMnD and PnW.  For more
-     * information, see {@link Period#parse(CharSequence)}</p>
+     * <p>{@link InRange#format()} describes
+     * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
+     * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code Period}
+     * converted to {@code Year}
      */
     public void configure(InRange range) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = Period.parse(range.min());
+                min = Year.parse(range.min(), formatter);
             if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = Period.parse(range.max());
+                max = Year.parse(range.max(), formatter);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(e);
         }
 
-        if (toBigInteger(min).compareTo(toBigInteger(max)) > 0)
+        if (min.compareTo(max) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
     @Override
-    public Period generate(SourceOfRandomness random, GenerationStatus status) {
-        return fromBigInteger(choose(random, toBigInteger(min), toBigInteger(max)));
-    }
-
-    private static final BigInteger TWELVE = BigInteger.valueOf(12);
-    private static final BigInteger THIRTY_ONE = BigInteger.valueOf(31);
-
-    private BigInteger toBigInteger(Period period) {
-        return BigInteger.valueOf(period.getYears())
-                .multiply(TWELVE)
-                .add(BigInteger.valueOf(period.getMonths()))
-                .multiply(THIRTY_ONE)
-                .add(BigInteger.valueOf(period.getDays()));
-    }
-
-    private Period fromBigInteger(BigInteger period) {
-        BigInteger[] monthsAndDays = period.divideAndRemainder(THIRTY_ONE);
-        BigInteger[] yearsAndMonths = monthsAndDays[0].divideAndRemainder(TWELVE);
-
-        return Period.of(
-                yearsAndMonths[0].intValueExact(),
-                yearsAndMonths[1].intValueExact(),
-                monthsAndDays[1].intValueExact());
+    public Year generate(SourceOfRandomness random, GenerationStatus status) {
+        return Year.of(random.nextInt(min.getValue(), max.getValue()));
     }
 }
