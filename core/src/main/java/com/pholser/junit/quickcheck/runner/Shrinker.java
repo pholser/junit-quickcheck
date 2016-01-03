@@ -38,20 +38,24 @@ class Shrinker {
     private final AssertionError failure;
     private final int maxShrinks;
     private final int maxShrinkDepth;
+    private final int maxShrinkTime;
     private int shrinkAttempts;
+    private long shrinkTimeout;
 
     Shrinker(
         FrameworkMethod method,
         TestClass testClass,
         AssertionError failure,
         int maxShrinks,
-        int maxShrinkDepth) {
+        int maxShrinkDepth,
+        int maxShrinkTime) {
 
         this.method = method;
         this.testClass = testClass;
         this.failure = failure;
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
+        this.maxShrinkTime = maxShrinkTime;
     }
 
     void shrink(List<PropertyParameterGenerationContext> params, Object[] args)
@@ -60,6 +64,8 @@ class Shrinker {
         Stack<ShrinkNode> nodes = new Stack<>();
         ShrinkNode smallestFailure = ShrinkNode.root(method, testClass, params, args);
         smallestFailure.shrinks().forEach(nodes::push);
+
+        shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;
 
         while (shouldContinueShrinking(nodes)) {
             ShrinkNode next = nodes.pop();
@@ -89,6 +95,7 @@ class Shrinker {
 
     private boolean shouldContinueShrinking(Stack<ShrinkNode> nodes) {
         return shrinkAttempts < maxShrinks
+            && shrinkTimeout >= System.currentTimeMillis()
             && !nodes.empty()
             && !nodes.peek().deeperThan(maxShrinkDepth);
     }

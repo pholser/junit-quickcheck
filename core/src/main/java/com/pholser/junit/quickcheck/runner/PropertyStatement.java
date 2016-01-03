@@ -82,7 +82,8 @@ class PropertyStatement extends Statement {
         ShrinkControl shrinkControl = new ShrinkControl(
             marker.shrink(),
             marker.maxShrinks(),
-            marker.maxShrinkDepth());
+            marker.maxShrinkDepth(),
+            marker.maxShrinkTime());
 
         List<PropertyParameterGenerationContext> params = parameters(trials);
 
@@ -143,7 +144,8 @@ class PropertyStatement extends Statement {
             testClass,
             failure,
             shrinkControl.maxShrinks(),
-            shrinkControl.maxShrinkDepth())
+            shrinkControl.maxShrinkDepth(),
+            shrinkControl.maxShrinkTime())
             .shrink(params, args);
     }
 

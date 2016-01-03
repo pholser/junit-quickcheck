@@ -42,6 +42,11 @@ public class Foo {
         return i;
     }
 
+    public int slow() throws InterruptedException {
+        Thread.sleep(500);
+        return i;
+    }
+
     public boolean marked() {
         return marked;
     }
