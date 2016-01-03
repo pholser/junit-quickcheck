@@ -34,6 +34,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
@@ -43,21 +44,27 @@ import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
+import static org.junit.runners.MethodSorters.*;
 
 public class UsualJUnitMachineryOnPropertyBasedTest {
     private List<String> expectedStatements = asList(
-        "class init", "class set up",
+        "class set up", "class init",
         "second rule before", "first rule before",
-        "init", "set up",
-        "property",
-        "tear down", "reset",
+        "set up", "init",
+        "test",
+        "reset", "tear down",
         "first rule after", "second rule after",
         "second rule before", "first rule before",
-        "init", "set up",
+        "set up", "init",
         "property",
-        "tear down", "reset",
+        "reset", "tear down",
         "first rule after", "second rule after",
-        "class reset", "class tear down");
+        "second rule before", "first rule before",
+        "set up", "init",
+        "property",
+        "reset", "tear down",
+        "first rule after", "second rule after",
+        "class tear down", "class reset");
 
     @Test public void orderingOfStatements() throws Exception {
         assertThat(testResult(PropertyBasedTests.class), isSuccessful());
@@ -65,6 +72,7 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
     }
 
     @RunWith(JUnitQuickcheck.class)
+    @FixMethodOrder(NAME_ASCENDING)
     public static class PropertyBasedTests {
         static final List<String> LOGS = new ArrayList<>();
 
@@ -124,6 +132,10 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
 
         @Property(trials = 2) public void aProperty(Foo f) {
             LOGS.add("property");
+        }
+
+        @Test public void aTest() {
+            LOGS.add("test");
         }
     }
 }

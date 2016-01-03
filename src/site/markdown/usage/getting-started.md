@@ -41,4 +41,5 @@ methods.
 ```
 
 The usual JUnit machinery is honored: `@Before`, `@After`, `@BeforeClass`,
-`@AfterClass`, `@Rule`.
+`@AfterClass`, `@Rule`. Zero-arg `public` `void` methods annotated with
+`@Test` will also be run.
