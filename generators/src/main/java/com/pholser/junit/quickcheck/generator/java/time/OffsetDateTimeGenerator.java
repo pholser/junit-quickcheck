@@ -68,7 +68,7 @@ public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
      * converted to {@code OffsetDateTime}
      */
     public void configure(InRange range) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
 
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))

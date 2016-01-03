@@ -65,7 +65,7 @@ public class LocalDateGenerator extends Generator<LocalDate> {
      * converted to {@code LocalDate}
      */
     public void configure(InRange range) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
 
         try {
             if (!defaultValueOf(InRange.class, "min").equals(range.min()))
