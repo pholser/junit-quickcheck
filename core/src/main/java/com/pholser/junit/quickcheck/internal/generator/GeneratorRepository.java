@@ -104,6 +104,9 @@ public class GeneratorRepository {
         Generator<?> generator = generatorFor(parameter);
         generator.provideRepository(this);
         generator.configure(parameter.annotatedType());
+        if (parameter.topLevel())
+            generator.configure(parameter.annotatedElement());
+
         return generator;
     }
 
