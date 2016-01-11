@@ -42,7 +42,7 @@ import static java.lang.reflect.Proxy.*;
  * Helper class for creating instances of "functional interfaces".
  */
 public final class Lambdas {
-    private static Constructor<MethodHandles.Lookup> methodLookupCtor =
+    private static final Constructor<MethodHandles.Lookup> METHOD_LOOKUP_CTOR =
         findDeclaredConstructor(MethodHandles.Lookup.class, Class.class, int.class);
 
     private Lambdas() {
@@ -134,7 +134,7 @@ public final class Lambdas {
             throws Throwable {
 
             MethodHandles.Lookup lookup =
-                methodLookupCtor.newInstance(
+                METHOD_LOOKUP_CTOR.newInstance(
                     method.getDeclaringClass(),
                     MethodHandles.Lookup.PRIVATE);
             return lookup.unreflectSpecial(method, method.getDeclaringClass())

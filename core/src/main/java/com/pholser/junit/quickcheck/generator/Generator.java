@@ -26,12 +26,14 @@
 package com.pholser.junit.quickcheck.generator;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
@@ -249,34 +251,79 @@ public abstract class Generator<T> implements Shrink<T> {
      * the annotated type
      */
     public void configure(AnnotatedType annotatedType) {
-        List<Annotation> configs = configurationAnnotationsOn(annotatedType);
+        configureStrict(collectConfigurationAnnotations(annotatedType));
+    }
+
+    /**
+     * @deprecated This will likely go away when languages whose compilers
+     * and interpreters produce class files that support annotations on type
+     * uses.
+     * @see <a href="https://github.com/pholser/junit-quickcheck/issues/77">
+     * this issue</a>
+     * @param element an annotated program element
+     */
+    @Deprecated
+    public void configure(AnnotatedElement element) {
+        configureLenient(collectConfigurationAnnotations(element));
+    }
+
+    private Map<Class<? extends Annotation>, Annotation> collectConfigurationAnnotations(
+        AnnotatedElement element) {
+
+        List<Annotation> configs = configurationAnnotationsOn(element);
 
         Map<Class<? extends Annotation>, Annotation> byType = new HashMap<>();
         for (Annotation each : configs)
             byType.put(each.annotationType(), each);
-
-        configure(byType);
+        return byType;
     }
 
-    private void configure(Map<Class<? extends Annotation>, Annotation> byType) {
+    private void configureStrict(Map<Class<? extends Annotation>, Annotation> byType) {
         for (Map.Entry<Class<? extends Annotation>, Annotation> each : byType.entrySet())
-            configure(each.getKey(), each.getValue());
+            configureStrict(each.getKey(), each.getValue());
     }
 
-    private void configure(Class<? extends Annotation> annotationType, Annotation configuration) {
-        Method configurer;
+    private void configureStrict(
+        Class<? extends Annotation> annotationType,
+        Annotation configuration) {
+
+        configure(annotationType, configuration, ex -> {
+            throw new GeneratorConfigurationException(
+                String.format(
+                    "Generator %s does not understand configuration annotation %s",
+                    getClass().getName(),
+                    annotationType.getName()),
+                ex);
+        });
+    }
+
+    private void configureLenient(Map<Class<? extends Annotation>, Annotation> byType) {
+        for (Map.Entry<Class<? extends Annotation>, Annotation> each : byType.entrySet())
+            configureLenient(each.getKey(), each.getValue());
+    }
+
+    private void configureLenient(
+        Class<? extends Annotation> annotationType,
+        Annotation configuration) {
+
+        configure(annotationType, configuration, ex -> {});
+    }
+
+    private void configure(
+        Class<? extends Annotation> annotationType,
+        Annotation configuration,
+        Consumer<ReflectionException> exceptionHandler) {
+
+        Method configurer = null;
 
         try {
             configurer = findMethod(getClass(), "configure", annotationType);
         } catch (ReflectionException ex) {
-            throw new GeneratorConfigurationException(
-                String.format("Generator %s does not understand configuration annotation %s",
-                    getClass().getName(),
-                    annotationType.getName()),
-                ex);
+            exceptionHandler.accept(ex);
         }
 
-        invoke(configurer, this, configuration);
+        if (configurer != null)
+            invoke(configurer, this, configuration);
     }
 
     /**
@@ -294,13 +341,13 @@ public abstract class Generator<T> implements Shrink<T> {
 
     /**
      * Gives a list of the {@link GeneratorConfiguration} annotations present
-     * on the given type.
+     * on the given program element.
      *
-     * @param annotatedType an annotated type
-     * @return what configuration annotations are present on that type
+     * @param element an annotated program element
+     * @return what configuration annotations are present on that element
      */
-    protected static List<Annotation> configurationAnnotationsOn(AnnotatedType annotatedType) {
-        return allAnnotations(annotatedType).stream()
+    protected static List<Annotation> configurationAnnotationsOn(AnnotatedElement element) {
+        return allAnnotations(element).stream()
             .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))
             .collect(toList());
     }
