@@ -71,7 +71,7 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         if (parameter.fixedSeed())
             random.setSeed(parameter.seed());
 
-        seedLog.debug("Seed for parameter {} is {}", parameter.typeContext().name(), parameter.seed());
+        seedLog.debug("Seed for parameter {} is {}", parameter.typeContext().name(), random.seed());
         return random;
     }
 

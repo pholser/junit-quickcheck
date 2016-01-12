@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.6.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.4</version>
+    </skin>
+    <publishDate format="MMMM dd, yyyy" position="right"/>
+    <body>
+        <!-- TODO: Of the staged pages, decide:
+        1) which to include top-level only, module-level only, or both
+        2) add links here as desired.
+        -->
+        <menu name="junit-quickcheck">
+            <item name="Introduction" href="index.html"/>
+            <item name="Download" href="download.html"/>
+            <item name="Javadoc" href="javadoc.html"/>
+            <item name="Discuss" href="discuss.html"/>
+            <item name="License" href="license.html"/>
+        </menu>
+        <menu name="Use">
+            <item name="Getting Started" href="usage/getting-started.html"/>
+            <item name="Basic Types" href="usage/basic-types.html"/>
+            <item name="Generating Values of Other Types" href="usage/other-types.html"/>
+            <item name="Configuring Generators" href="usage/configuring.html"/>
+            <item name="Constraining Generated Values" href="usage/constraining.html"/>
+            <item name="Sample Size" href="usage/sample-size.html"/>
+            <item name="Seed" href="usage/seed.html"/>
+            <item name="Shrinking" href="usage/shrinking.html"/>
+        </menu>
+        <menu name="Background">
+            <item name="History" href="background/history.html"/>
+            <item name="Migrating from Theories" href="background/migrating.html"/>
+            <item name="Similar Projects" href="background/similar-projects.html"/>
+        </menu>
+        <menu name="Miscellaneous">
+            <item name="Source Repository" href="source-repository.html"/>
+            <item name="Issue Tracking" href="issue-tracking.html"/>
+            <item name="Team" href="team-list.html"/>
+            <item name="Dependency Management" href="dependency-management.html"/>
+            <item name="Distribution Management" href="distribution-management.html"/>
+            <item name="Plugin Management" href="plugin-management.html"/>
+            <item name="Plugins" href="plugins.html"/>
+        </menu>
+        <menu name="Reports">
+            <item name="junit-quickcheck-core" href="reports/reports-core.html"/>
+            <item name="junit-quickcheck-generators" href="reports/reports-generators.html"/>
+            <item name="junit-quickcheck-guava" href="reports/reports-guava.html"/>
+        </menu>
+    </body>
+</project>

@@ -14,16 +14,12 @@
     </module>
     <module name="FileLength"/>
     <module name="FileTabCharacter"/>
-    <module name="StrictDuplicateCode">
-        <property name="min" value="30"/>
-    </module>
     <module name="NewlineAtEndOfFile"/>
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
     </module>
 
     <module name="TreeWalker">
-        <property name="cacheFile" value="target/cachefile"/>
         <property name="tabWidth" value="4"/>
         <module name="AnnotationUseStyle"/>
         <module name="MissingDeprecated"/>
@@ -76,7 +72,6 @@
         </module>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
-        <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
         <module name="StringLiteralEquality"/>
@@ -90,7 +85,6 @@
         <module name="IllegalCatch"/>
         <module name="IllegalThrows"/>
         <module name="PackageDeclaration"/>
-        <!-- <module name="JUnitTestCase"/> -->
         <module name="ReturnCount">
             <property name="max" value="4"/>
         </module>

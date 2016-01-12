@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,6 +39,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -63,6 +65,9 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
 
     /**
      * Invoked reflectively by JUnit.
+     *
+     * @param clazz class containing properties to verify
+     * @throws InitializationError if there is a problem with the properties class
      */
     public JUnitQuickcheck(Class<?> clazz) throws InitializationError {
         super(clazz);
@@ -74,15 +79,25 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     }
 
     @Override protected void validateTestMethods(List<Throwable> errors) {
-        for (FrameworkMethod each : computeTestMethods())
+        validatePublicVoidNoArgMethods(Test.class, false, errors);
+        validatePropertyMethods(errors);
+    }
+
+    private void validatePropertyMethods(List<Throwable> errors) {
+        for (FrameworkMethod each : getTestClass().getAnnotatedMethods(Property.class))
             each.validatePublicVoid(false, errors);
     }
 
     @Override protected List<FrameworkMethod> computeTestMethods() {
-        return getTestClass().getAnnotatedMethods(Property.class);
+        List<FrameworkMethod> methods = new ArrayList<>();
+        methods.addAll(getTestClass().getAnnotatedMethods(Test.class));
+        methods.addAll(getTestClass().getAnnotatedMethods(Property.class));
+        return methods;
     }
 
     @Override public Statement methodBlock(FrameworkMethod method) {
-        return new PropertyStatement(method, getTestClass(), repo, distro, seedLog);
+        return method.getAnnotation(Test.class) != null
+            ? super.methodBlock(method)
+            : new PropertyStatement(method, getTestClass(), repo, distro, seedLog);
     }
 }
