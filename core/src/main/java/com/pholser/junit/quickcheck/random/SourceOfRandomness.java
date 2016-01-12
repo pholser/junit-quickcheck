@@ -25,14 +25,15 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import com.pholser.junit.quickcheck.internal.Ranges;
+
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
 
-import com.pholser.junit.quickcheck.internal.Ranges;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static com.pholser.junit.quickcheck.internal.Ranges.choose;
 
 /**
  * A source of randomness, fed to
@@ -297,14 +298,14 @@ public class SourceOfRandomness {
 
     private long[] nextSecondsAndNanos(long minSeconds, long minNanos, long maxSeconds, long maxNanos) {
         BigInteger nanoMin = BigInteger.valueOf(minSeconds)
-                .multiply(NANOS_PER_SECOND)
-                .add(BigInteger.valueOf(minNanos));
+            .multiply(NANOS_PER_SECOND)
+            .add(BigInteger.valueOf(minNanos));
         BigInteger nanoMax = BigInteger.valueOf(maxSeconds)
-                .multiply(NANOS_PER_SECOND)
-                .add(BigInteger.valueOf(maxNanos));
+            .multiply(NANOS_PER_SECOND)
+            .add(BigInteger.valueOf(maxNanos));
 
         BigInteger[] generated = choose(this, nanoMin, nanoMax).divideAndRemainder(NANOS_PER_SECOND);
 
-        return new long[] { generated[0].longValue(), generated[1].longValue() };
+        return new long[]{generated[0].longValue(), generated[1].longValue()};
     }
 }
