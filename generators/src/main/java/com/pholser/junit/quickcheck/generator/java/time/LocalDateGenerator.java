@@ -51,18 +51,18 @@ public class LocalDateGenerator extends Generator<LocalDate> {
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
      * maximum}, inclusive, with uniform distribution.</p>
-     *
+     * <p>
      * <p>If an endpoint of the range is not specified, the generator will use
      * dates with values of either {@link LocalDate#MIN} or {@link LocalDate#MAX}
      * as appropriate.</p>
-     *
+     * <p>
      * <p>{@link InRange#format()} describes
      * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code LocalDate}
+     *                                  converted to {@code LocalDate}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());

@@ -32,8 +32,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.time.DateTimeException;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
@@ -64,8 +62,8 @@ public class ZoneOffsetGenerator extends Generator<ZoneOffset> {
      * their zone id.  See {@link ZoneOffset#of(String)} for details.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code ZoneOffset}
+     * @throws IllegalArgumentException if the range's values cannot be converted to
+     *                                  {@code ZoneOffset}
      */
     public void configure(InRange range) {
         try {

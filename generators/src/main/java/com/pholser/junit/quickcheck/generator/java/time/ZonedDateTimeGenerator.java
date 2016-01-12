@@ -30,10 +30,9 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.Instant;
 import java.time.Year;
-import java.time.ZonedDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -67,7 +66,7 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code ZonedDateTime}
+     *                                  converted to {@code ZonedDateTime}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
@@ -89,7 +88,7 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
     public ZonedDateTime generate(SourceOfRandomness random, GenerationStatus status) {
         // Project the ZonedDateTime to an Instant for easy long-based generation.
         return ZonedDateTime.ofInstant(
-                random.nextInstant(min.toInstant(), max.toInstant()),
-                zoneId);
+            random.nextInstant(min.toInstant(), max.toInstant()),
+            zoneId);
     }
 }

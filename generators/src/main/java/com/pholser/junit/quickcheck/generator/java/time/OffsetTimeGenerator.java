@@ -64,7 +64,7 @@ public class OffsetTimeGenerator extends Generator<OffsetTime> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code OffsetTime}
+     *                                  converted to {@code OffsetTime}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
@@ -85,9 +85,9 @@ public class OffsetTimeGenerator extends Generator<OffsetTime> {
     @Override
     public OffsetTime generate(SourceOfRandomness random, GenerationStatus status) {
         LocalTime time = LocalTime.ofNanoOfDay(
-                random.nextLong(
-                        min.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime().toNanoOfDay(),
-                        max.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime().toNanoOfDay()));
+            random.nextLong(
+                min.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime().toNanoOfDay(),
+                max.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime().toNanoOfDay()));
 
         return OffsetTime.of(time, ZoneOffset.UTC);
     }

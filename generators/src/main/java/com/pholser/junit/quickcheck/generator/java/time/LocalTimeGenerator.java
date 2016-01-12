@@ -51,18 +51,18 @@ public class LocalTimeGenerator extends Generator<LocalTime> {
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
      * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
-     *
+     * <p>
      * <p>If an endpoint of the range is not specified, the generator will use
      * times with values of either {@link LocalTime#MIN} or {@link LocalTime#MAX}
      * as appropriate.</p>
-     *
+     * <p>
      * <p>{@link InRange#format()} describes
      * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code LocalTime}
+     *                                  converted to {@code LocalTime}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());

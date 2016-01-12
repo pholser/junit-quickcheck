@@ -39,23 +39,27 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class ZoneOffsetPropertyParameterTypesTest {
-    @Test public void zoneOffset() {
+    @Test
+    public void zoneOffset() {
         assertThat(testResult(ZoneOffsetTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ZoneOffsetTheory {
-        @Property public void shouldHold(ZoneOffset d) {
+        @Property
+        public void shouldHold(ZoneOffset d) {
         }
     }
 
-    @Test public void rangedZoneOffset() {
+    @Test
+    public void rangedZoneOffset() {
         assertThat(testResult(RangedZoneOffsetTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedZoneOffsetTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "+10:00", max = "-18:00") ZoneOffset d) throws Exception {
 
             assertThat(
@@ -66,7 +70,8 @@ public class ZoneOffsetPropertyParameterTypesTest {
         }
     }
 
-    @Test public void malformedMin() {
+    @Test
+    public void malformedMin() {
         assertThat(
             testResult(MalformedMinZoneOffsetTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -74,12 +79,14 @@ public class ZoneOffsetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinZoneOffsetTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "@#!@#@", max = "-12:00") ZoneOffset d) {
         }
     }
 
-    @Test public void malformedMax() {
+    @Test
+    public void malformedMax() {
         assertThat(
             testResult(MalformedMaxZoneOffsetTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -87,34 +94,40 @@ public class ZoneOffsetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxZoneOffsetTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "+12:00", max = "*&@^#%$") ZoneOffset d) {
         }
     }
 
-    @Test public void missingMin() {
+    @Test
+    public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(@InRange(max = "-12:00") ZoneOffset d) throws Exception {
+        @Property
+        public void shouldHold(@InRange(max = "-12:00") ZoneOffset d) throws Exception {
             assertThat(d, lessThanOrEqualTo(ZoneOffset.of("-12:00")));
         }
     }
 
-    @Test public void missingMax() {
+    @Test
+    public void missingMax() {
         assertThat(testResult(MissingMaxTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(@InRange(min = "+12:00") ZoneOffset d) throws Exception {
+        @Property
+        public void shouldHold(@InRange(min = "+12:00") ZoneOffset d) throws Exception {
             assertThat(d, greaterThanOrEqualTo(ZoneOffset.of("+12:00")));
         }
     }
 
-    @Test public void backwardsRange() {
+    @Test
+    public void backwardsRange() {
         assertThat(
             testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -122,7 +135,8 @@ public class ZoneOffsetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "-12:00", max = "+12:00") ZoneOffset d) {
         }
     }

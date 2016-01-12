@@ -30,7 +30,6 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +63,7 @@ public class YearMonthGenerator extends Generator<YearMonth> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code YearMonth}
+     *                                  converted to {@code YearMonth}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
@@ -85,8 +84,8 @@ public class YearMonthGenerator extends Generator<YearMonth> {
     @Override
     public YearMonth generate(SourceOfRandomness random, GenerationStatus status) {
         long generated = random.nextLong(
-                min.getYear() * 12L + min.getMonthValue() - 1,
-                max.getYear() * 12L + max.getMonthValue() - 1);
+            min.getYear() * 12L + min.getMonthValue() - 1,
+            max.getYear() * 12L + max.getMonthValue() - 1);
 
         return YearMonth.of((int) (generated / 12), (int) Math.abs(generated % 12) + 1);
     }

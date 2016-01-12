@@ -63,7 +63,7 @@ public class MonthDayGenerator extends Generator<MonthDay> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code MonthDay}
+     *                                  converted to {@code MonthDay}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());

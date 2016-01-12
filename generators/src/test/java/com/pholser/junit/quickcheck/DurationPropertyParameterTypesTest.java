@@ -39,23 +39,27 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class DurationPropertyParameterTypesTest {
-    @Test public void duration() {
+    @Test
+    public void duration() {
         assertThat(testResult(DurationTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class DurationTheory {
-        @Property public void shouldHold(Duration d) {
+        @Property
+        public void shouldHold(Duration d) {
         }
     }
 
-    @Test public void rangedDuration() {
+    @Test
+    public void rangedDuration() {
         assertThat(testResult(RangedDurationTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedDurationTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "PT-2562047788015215H-30M-8S", max = "PT2562047788015215H30M7.999999999S")
             Duration d)
             throws Exception {
@@ -68,7 +72,8 @@ public class DurationPropertyParameterTypesTest {
         }
     }
 
-    @Test public void malformedMin() {
+    @Test
+    public void malformedMin() {
         assertThat(
             testResult(MalformedMinDurationTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -76,12 +81,14 @@ public class DurationPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinDurationTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "@#!@#@", max = "PT2562047788015215H30M7.999999999S") Duration d) {
         }
     }
 
-    @Test public void malformedMax() {
+    @Test
+    public void malformedMax() {
         assertThat(
             testResult(MalformedMaxDurationTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -89,38 +96,44 @@ public class DurationPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxDurationTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "PT-2562047788015215H-30M-8S", max = "*&@^#%$") Duration d) {
         }
     }
 
-    @Test public void missingMin() {
+    @Test
+    public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(@InRange(max = "PT2562047788015215H30M7.999999999S") Duration d)
+        @Property
+        public void shouldHold(@InRange(max = "PT2562047788015215H30M7.999999999S") Duration d)
             throws Exception {
 
             assertThat(d, lessThanOrEqualTo(Duration.parse("PT2562047788015215H30M7.999999999S")));
         }
     }
 
-    @Test public void missingMax() {
+    @Test
+    public void missingMax() {
         assertThat(testResult(MissingMaxTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(@InRange(min = "PT-2562047788015215H-30M-8S") Duration d)
+        @Property
+        public void shouldHold(@InRange(min = "PT-2562047788015215H-30M-8S") Duration d)
             throws Exception {
 
             assertThat(d, greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-8S")));
         }
     }
 
-    @Test public void backwardsRange() {
+    @Test
+    public void backwardsRange() {
         assertThat(
             testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -128,7 +141,8 @@ public class DurationPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "PT2562047788015215H30M7.999999999S", max = "PT-2562047788015215H-30M-8S")
             Duration d) {
         }

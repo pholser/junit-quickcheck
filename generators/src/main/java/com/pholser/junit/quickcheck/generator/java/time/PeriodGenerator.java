@@ -64,7 +64,7 @@ public class PeriodGenerator extends Generator<Period> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code Period}
+     *                                  converted to {@code Period}
      */
     public void configure(InRange range) {
         try {
@@ -90,10 +90,10 @@ public class PeriodGenerator extends Generator<Period> {
 
     private BigInteger toBigInteger(Period period) {
         return BigInteger.valueOf(period.getYears())
-                .multiply(TWELVE)
-                .add(BigInteger.valueOf(period.getMonths()))
-                .multiply(THIRTY_ONE)
-                .add(BigInteger.valueOf(period.getDays()));
+            .multiply(TWELVE)
+            .add(BigInteger.valueOf(period.getMonths()))
+            .multiply(THIRTY_ONE)
+            .add(BigInteger.valueOf(period.getDays()));
     }
 
     private Period fromBigInteger(BigInteger period) {
@@ -101,8 +101,8 @@ public class PeriodGenerator extends Generator<Period> {
         BigInteger[] yearsAndMonths = monthsAndDays[0].divideAndRemainder(TWELVE);
 
         return Period.of(
-                yearsAndMonths[0].intValueExact(),
-                yearsAndMonths[1].intValueExact(),
-                monthsAndDays[1].intValueExact());
+            yearsAndMonths[0].intValueExact(),
+            yearsAndMonths[1].intValueExact(),
+            monthsAndDays[1].intValueExact());
     }
 }

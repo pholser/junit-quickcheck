@@ -33,32 +33,34 @@ import org.junit.runner.RunWith;
 import java.time.OffsetTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class OffsetTimePropertyParameterTypesTest {
-    @Test public void offsetTime() {
+    @Test
+    public void offsetTime() {
         assertThat(testResult(OffsetTimeTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OffsetTimeTheory {
-        @Property public void shouldHold(OffsetTime d) {
+        @Property
+        public void shouldHold(OffsetTime d) {
         }
     }
 
-    @Test public void rangedOffsetTime() {
+    @Test
+    public void rangedOffsetTime() {
         assertThat(testResult(RangedOffsetTimeTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedOffsetTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "00:00:00.0+00:00", max = "22:59:59.999999999+01:00", format = "HH:mm:ss.nxxx") OffsetTime d)
             throws Exception {
 
@@ -72,7 +74,8 @@ public class OffsetTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void malformedMin() {
+    @Test
+    public void malformedMin() {
         assertThat(
             testResult(MalformedMinOffsetTimeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -80,12 +83,14 @@ public class OffsetTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinOffsetTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "@#!@#@", max = "13:45.30.123456789+01:00", format = "HH:mm:ss.nxxx") OffsetTime d) {
         }
     }
 
-    @Test public void malformedMax() {
+    @Test
+    public void malformedMax() {
         assertThat(
             testResult(MalformedMaxOffsetTimeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -93,12 +98,14 @@ public class OffsetTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxOffsetTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "01:15:23.23929+01:00", max = "*&@^#%$", format = "HH:mm:ss.nxxx") OffsetTime d) {
         }
     }
 
-    @Test public void malformedFormat() {
+    @Test
+    public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatOffsetTimeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -106,19 +113,22 @@ public class OffsetTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedFormatOffsetTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "00:00:00.0+00:00", max = "22:59:59.999999999+01:00", format = "*@&^#$") OffsetTime d) {
         }
     }
 
-    @Test public void missingMin() {
+    @Test
+    public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(@InRange(max = "22:59:59.999999999+01:00", format = "HH:mm:ss.nxxx")
-                                         OffsetTime d)
+        @Property
+        public void shouldHold(@InRange(max = "22:59:59.999999999+01:00", format = "HH:mm:ss.nxxx")
+                               OffsetTime d)
             throws Exception {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
@@ -126,14 +136,16 @@ public class OffsetTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void missingMax() {
+    @Test
+    public void missingMax() {
         assertThat(testResult(MissingMaxTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(@InRange(min = "00:00:00.0+00:00", format = "HH:mm:ss.nxxx")
-                                         OffsetTime d)
+        @Property
+        public void shouldHold(@InRange(min = "00:00:00.0+00:00", format = "HH:mm:ss.nxxx")
+                               OffsetTime d)
             throws Exception {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
@@ -141,7 +153,8 @@ public class OffsetTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void backwardsRange() {
+    @Test
+    public void backwardsRange() {
         assertThat(
             testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -149,7 +162,8 @@ public class OffsetTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "22:59:59.999999999+01:00", max = "00:00:00.0+00:00", format = "HH:mm:ss.nxxx") OffsetTime d) {
         }
     }

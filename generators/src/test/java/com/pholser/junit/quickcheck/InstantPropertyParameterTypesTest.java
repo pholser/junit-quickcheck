@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,23 +39,27 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class InstantPropertyParameterTypesTest {
-    @Test public void instant() {
+    @Test
+    public void instant() {
         assertThat(testResult(InstantTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class InstantTheory {
-        @Property public void shouldHold(Instant d) {
+        @Property
+        public void shouldHold(Instant d) {
         }
     }
 
-    @Test public void rangedInstant() {
+    @Test
+    public void rangedInstant() {
         assertThat(testResult(RangedInstantTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedInstantTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "2012-01-01T00:00:00.0Z", max = "2012-12-31T23:59:59.999999999Z") Instant d)
             throws Exception {
 
@@ -68,7 +71,8 @@ public class InstantPropertyParameterTypesTest {
         }
     }
 
-    @Test public void malformedMin() {
+    @Test
+    public void malformedMin() {
         assertThat(
             testResult(MalformedMinInstantTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -76,12 +80,14 @@ public class InstantPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinInstantTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "@#!@#@", max = "2012-12-31T23:59:59.999999999Z") Instant d) {
         }
     }
 
-    @Test public void malformedMax() {
+    @Test
+    public void malformedMax() {
         assertThat(
             testResult(MalformedMaxInstantTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -89,38 +95,44 @@ public class InstantPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxInstantTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "06/01/2011T23:59:59.999999999Z", max = "*&@^#%$") Instant d) {
         }
     }
 
-    @Test public void missingMin() {
+    @Test
+    public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(@InRange(max = "2012-12-31T23:59:59.999999999Z") Instant d)
+        @Property
+        public void shouldHold(@InRange(max = "2012-12-31T23:59:59.999999999Z") Instant d)
             throws Exception {
 
             assertThat(d, lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
-    @Test public void missingMax() {
+    @Test
+    public void missingMax() {
         assertThat(testResult(MissingMaxTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(@InRange(min = "2012-12-31T23:59:59.999999999Z") Instant d)
+        @Property
+        public void shouldHold(@InRange(min = "2012-12-31T23:59:59.999999999Z") Instant d)
             throws Exception {
 
             assertThat(d, greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
-    @Test public void backwardsRange() {
+    @Test
+    public void backwardsRange() {
         assertThat(
             testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -128,7 +140,8 @@ public class InstantPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "2012-12-31T23:59:59.999999999Z", max = "12/01/2012T00:00:00.0Z") Instant d) {
         }
     }

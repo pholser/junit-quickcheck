@@ -50,11 +50,11 @@ public class DurationGenerator extends Generator<Duration> {
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
      * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
-     *
+     * <p>
      * <p>If an endpoint of the range is not specified, the generator will use
      * durations with second values of either {@link Long#MIN_VALUE} or
      * {@link Long#MAX_VALUE} (with nanoseconds set to 999,999,999) as appropriate.</p>
-     *
+     * <p>
      * <p>{@linkplain InRange#format()} is ignored.  Durations are always parsed using
      * formats based on the ISO-8601 duration format PnDTnHnMn.nS with days
      * considered to be exactly 24 hours.  For more information, see
@@ -62,7 +62,7 @@ public class DurationGenerator extends Generator<Duration> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code Duration}
+     *                                  converted to {@code Duration}
      */
     public void configure(InRange range) {
         try {

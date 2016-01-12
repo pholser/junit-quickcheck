@@ -65,7 +65,7 @@ public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code OffsetDateTime}
+     *                                  converted to {@code OffsetDateTime}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
@@ -87,7 +87,7 @@ public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
     public OffsetDateTime generate(SourceOfRandomness random, GenerationStatus status) {
         // Project the OffsetDateTime to an Instant for easy long-based generation.
         return OffsetDateTime.ofInstant(
-                random.nextInstant(min.toInstant(), max.toInstant()),
-                zoneId);
+            random.nextInstant(min.toInstant(), max.toInstant()),
+            zoneId);
     }
 }

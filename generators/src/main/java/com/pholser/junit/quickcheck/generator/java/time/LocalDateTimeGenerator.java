@@ -53,18 +53,18 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
      * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
-     *
+     * <p>
      * <p>If an endpoint of the range is not specified, the generator will use
      * dates with values of either {@link LocalDateTime#MIN} or {@link LocalDateTime#MAX}
      * as appropriate.</p>
-     *
+     * <p>
      * <p>{@link InRange#format()} describes
      * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
      * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code LocalDateTime}
+     *                                  converted to {@code LocalDateTime}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
@@ -87,7 +87,7 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
         // Project the LocalDateTime to an Instant for easy long-based generation.  Any zone id
         // will do as long as we use the same one throughout.
         return LocalDateTime.ofInstant(
-                random.nextInstant(min.atZone(zoneId).toInstant(), max.atZone(zoneId).toInstant()),
-                zoneId);
+            random.nextInstant(min.atZone(zoneId).toInstant(), max.atZone(zoneId).toInstant()),
+            zoneId);
     }
 }

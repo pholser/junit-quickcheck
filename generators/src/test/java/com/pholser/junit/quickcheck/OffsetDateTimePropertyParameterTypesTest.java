@@ -33,34 +33,36 @@ import org.junit.runner.RunWith;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class OffsetDateTimePropertyParameterTypesTest {
-    @Test public void offsetDateTime() {
+    @Test
+    public void offsetDateTime() {
         assertThat(testResult(OffsetDateTimeTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OffsetDateTimeTheory {
-        @Property public void shouldHold(OffsetDateTime d) {
+        @Property
+        public void shouldHold(OffsetDateTime d) {
         }
     }
 
-    @Test public void rangedOffsetDateTime() {
+    @Test
+    public void rangedOffsetDateTime() {
         assertThat(testResult(RangedOffsetDateTimeTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedOffsetDateTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "01/01/2012T00:00:00.0+01:00", max = "12/31/2012T23:59:59.999999999+01:00",
-                     format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) throws Exception {
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) throws Exception {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
 
@@ -72,7 +74,8 @@ public class OffsetDateTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void malformedMin() {
+    @Test
+    public void malformedMin() {
         assertThat(
             testResult(MalformedMinOffsetDateTimeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -80,13 +83,15 @@ public class OffsetDateTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinOffsetDateTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "@#!@#@", max = "12/31/2012T23:59:59.999999999+01:00",
-                     format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
         }
     }
 
-    @Test public void malformedMax() {
+    @Test
+    public void malformedMax() {
         assertThat(
             testResult(MalformedMaxOffsetDateTimeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -94,13 +99,15 @@ public class OffsetDateTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxOffsetDateTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "06/01/2011T23:59:59.999999999+01:00", max = "*&@^#%$",
-                     format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
         }
     }
 
-    @Test public void malformedFormat() {
+    @Test
+    public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatOffsetDateTimeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -108,19 +115,22 @@ public class OffsetDateTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedFormatOffsetDateTimeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "06/01/2011T23:59:59.999999999+01:00", max = "06/30/2011T23:59:59.999999999+01:00",
-                     format = "*@&^#$") OffsetDateTime d) {
+                format = "*@&^#$") OffsetDateTime d) {
         }
     }
 
-    @Test public void missingMin() {
+    @Test
+    public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(max = "12/31/2012T23:59:59.999999999+01:00", format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d)
             throws Exception {
 
@@ -129,13 +139,15 @@ public class OffsetDateTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void missingMax() {
+    @Test
+    public void missingMax() {
         assertThat(testResult(MissingMaxTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMaxTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "12/31/2012T23:59:59.999999999+01:00", format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d)
             throws Exception {
 
@@ -144,7 +156,8 @@ public class OffsetDateTimePropertyParameterTypesTest {
         }
     }
 
-    @Test public void backwardsRange() {
+    @Test
+    public void backwardsRange() {
         assertThat(
             testResult(BackwardsRangeTheory.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
@@ -152,9 +165,10 @@ public class OffsetDateTimePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
-        @Property public void shouldHold(
+        @Property
+        public void shouldHold(
             @InRange(min = "12/31/2012T23:59:59.999999999+01:00", max = "12/01/2012T00:00:00.0+01:00",
-                     format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
         }
     }
 }
