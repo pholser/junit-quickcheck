@@ -35,7 +35,8 @@ public final class Ranges {
     public enum Type {
         CHARACTER("c"),
         INTEGRAL("d"),
-        FLOAT("f");
+        FLOAT("f"),
+        STRING("s");
 
         private final String pattern;
 
