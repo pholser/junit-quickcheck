@@ -23,27 +23,28 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.java.time;
+package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.time.Month;
 
-import static com.pholser.junit.quickcheck.internal.Items.choose;
-import static java.util.Arrays.asList;
+import static org.junit.Assert.assertThat;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
-/**
- * Produces values of type {@link Month}.
- */
-public class MonthGenerator extends Generator<Month> {
-    public MonthGenerator() {
-        super(Month.class);
+public class MonthPropertyParameterTypesTest {
+    @Test
+    public void month() {
+        assertThat(testResult(MonthTheory.class), isSuccessful());
     }
 
-    @Override
-    public Month generate(SourceOfRandomness random, GenerationStatus status) {
-        return choose(asList(Month.values()), random);
+    @RunWith(JUnitQuickcheck.class)
+    public static class MonthTheory {
+        @Property
+        public void shouldHold(Month d) {
+        }
     }
 }
