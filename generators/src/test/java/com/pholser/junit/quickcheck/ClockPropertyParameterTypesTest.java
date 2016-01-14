@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,110 +41,111 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class ClockPropertyParameterTypesTest {
-    @Test
-    public void clock() {
-        assertThat(testResult(ClockTheory.class), isSuccessful());
+    @Test public void clock() {
+        assertThat(testResult(Clocks.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ClockTheory {
-        @Property
-        public void shouldHold(Clock d) {
+    public static class Clocks {
+        @Property public void shouldHold(Clock c) {
         }
     }
 
-    @Test
-    public void rangedClock() {
-        assertThat(testResult(RangedClockTheory.class), isSuccessful());
+    @Test public void rangedClock() {
+        assertThat(testResult(RangedClock.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedClockTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "2012-01-01T00:00:00.0Z", max = "2012-12-31T23:59:59.999999999Z") Clock d)
-            throws Exception {
+    public static class RangedClock {
+        @Property public void shouldHold(
+            @InRange(
+                min = "2012-01-01T00:00:00.0Z",
+                max = "2012-12-31T23:59:59.999999999Z")
+            Clock c) {
 
             assertThat(
-                d.instant(),
+                c.instant(),
                 allOf(
                     greaterThanOrEqualTo(Instant.parse("2012-01-01T00:00:00.0Z")),
                     lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z"))));
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinClockTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMinClock.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinClockTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "2012-12-31T23:59:59.999999999Z") Clock d) {
+    public static class MalformedMinClock {
+        @Property public void shouldHold(
+            @InRange(
+                min = "@#!@#@",
+                max = "2012-12-31T23:59:59.999999999Z")
+            Clock c) {
         }
     }
 
-    @Test
-    public void malformedMax() {
+    @Test public void malformedMax() {
         assertThat(
-            testResult(MalformedMaxClockTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMaxClock.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxClockTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999Z", max = "*&@^#%$") Clock d) {
+    public static class MalformedMaxClock {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011T23:59:59.999999999Z",
+                max = "*&@^#%$")
+            Clock c) {
         }
     }
 
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(@InRange(max = "2012-12-31T23:59:59.999999999Z") Clock d)
-            throws Exception {
+    public static class MissingMin {
+        @Property public void shouldHold(
+            @InRange(max = "2012-12-31T23:59:59.999999999Z") Clock c) {
 
-            assertThat(d.instant(), lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+            assertThat(
+                c.instant(),
+                lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(@InRange(min = "2012-12-31T23:59:59.999999999Z") Clock d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(min = "2012-12-31T23:59:59.999999999Z") Clock c) {
 
-            assertThat(d.instant(), greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+            assertThat(
+                c.instant(),
+                greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRangeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "2012-12-31T23:59:59.999999999Z", max = "12/01/2012T00:00:00.0Z") Clock d) {
+        @Property public void shouldHold(
+            @InRange(
+                min = "2012-12-31T23:59:59.999999999Z",
+                max = "12/01/2012T00:00:00.0Z")
+            Clock c) {
         }
     }
 }

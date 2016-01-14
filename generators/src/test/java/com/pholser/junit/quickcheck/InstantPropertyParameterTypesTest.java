@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -39,110 +40,106 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class InstantPropertyParameterTypesTest {
-    @Test
-    public void instant() {
-        assertThat(testResult(InstantTheory.class), isSuccessful());
+    @Test public void instant() {
+        assertThat(testResult(Instants.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class InstantTheory {
-        @Property
-        public void shouldHold(Instant d) {
+    public static class Instants {
+        @Property public void shouldHold(Instant i) {
         }
     }
 
-    @Test
-    public void rangedInstant() {
-        assertThat(testResult(RangedInstantTheory.class), isSuccessful());
+    @Test public void rangedInstant() {
+        assertThat(testResult(RangedInstant.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedInstantTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "2012-01-01T00:00:00.0Z", max = "2012-12-31T23:59:59.999999999Z") Instant d)
-            throws Exception {
+    public static class RangedInstant {
+        @Property public void shouldHold(
+            @InRange(
+                min = "2012-01-01T00:00:00.0Z",
+                max = "2012-12-31T23:59:59.999999999Z")
+            Instant i) {
 
             assertThat(
-                d,
+                i,
                 allOf(
                     greaterThanOrEqualTo(Instant.parse("2012-01-01T00:00:00.0Z")),
                     lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z"))));
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinInstantTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMinInstant.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinInstantTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "2012-12-31T23:59:59.999999999Z") Instant d) {
+    public static class MalformedMinInstant {
+        @Property public void shouldHold(
+            @InRange(min = "@#!@#@", max = "2012-12-31T23:59:59.999999999Z") Instant i) {
         }
     }
 
-    @Test
-    public void malformedMax() {
+    @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxInstantTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxInstantTheory {
+        @Property public void shouldHold(
+            @InRange(min = "06/01/2011T23:59:59.999999999Z", max = "*&@^#%$") Instant i) {
+        }
+    }
+
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MissingMin {
         @Property
         public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999Z", max = "*&@^#%$") Instant d) {
+            @InRange(max = "2012-12-31T23:59:59.999999999Z") Instant i) {
+
+            assertThat(
+                i,
+                lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(@InRange(max = "2012-12-31T23:59:59.999999999Z") Instant d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(min = "2012-12-31T23:59:59.999999999Z") Instant i) {
 
-            assertThat(d, lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+            assertThat(
+                i,
+                greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(@InRange(min = "2012-12-31T23:59:59.999999999Z") Instant d)
-            throws Exception {
-
-            assertThat(d, greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
-        }
-    }
-
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(BackwardsRange.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "2012-12-31T23:59:59.999999999Z", max = "12/01/2012T00:00:00.0Z") Instant d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(
+                min = "2012-12-31T23:59:59.999999999Z",
+                max = "12/01/2012T00:00:00.0Z")
+            Instant i) {
         }
     }
 }

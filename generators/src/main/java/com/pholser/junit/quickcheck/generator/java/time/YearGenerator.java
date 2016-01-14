@@ -32,7 +32,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
@@ -53,35 +52,28 @@ public class YearGenerator extends Generator<Year> {
      * maximum}, inclusive, with uniform distribution.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * Years with values of either {@code Year#MIN_VALUE} or {@code Year#MAX_VALUE}
-     * as appropriate.</p>
+     * Years with values of either {@code Year#MIN_VALUE} or
+     * {@code Year#MAX_VALUE} as appropriate.</p>
      *
      * <p>{@link InRange#format()} describes
      * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     *                                  converted to {@code Year}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
 
-        try {
-            if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = Year.parse(range.min(), formatter);
-            if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = Year.parse(range.max(), formatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = Year.parse(range.min(), formatter);
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = Year.parse(range.max(), formatter);
 
         if (min.compareTo(max) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
-    @Override
-    public Year generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Year generate(SourceOfRandomness random, GenerationStatus status) {
         return Year.of(random.nextInt(min.getValue(), max.getValue()));
     }
 }

@@ -33,7 +33,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.math.BigInteger;
 import java.time.Period;
 import java.time.Year;
-import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.choose;
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
@@ -42,6 +41,9 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
  * Produces values of type {@link Period}.
  */
 public class PeriodGenerator extends Generator<Period> {
+    private static final BigInteger TWELVE = BigInteger.valueOf(12);
+    private static final BigInteger THIRTY_ONE = BigInteger.valueOf(31);
+
     private Period min = Period.of(Year.MIN_VALUE, -12, -31);
     private Period max = Period.of(Year.MAX_VALUE, 12, 31);
 
@@ -58,35 +60,26 @@ public class PeriodGenerator extends Generator<Period> {
      * Periods with values of either {@code Period(Year#MIN_VALUE, -12, -31)}
      * or {@code Period(Year#MAX_VALUE, 12, 31)} as appropriate.</p>
      *
-     * <p>{@linkplain InRange#format()} is ignored.  Periods are always parsed using
-     * formats based on the ISO-8601 period formats PnYnMnD and PnW.  For more
-     * information, see {@link Period#parse(CharSequence)}</p>
+     * <p>{@linkplain InRange#format()} is ignored.  Periods are always parsed
+     * using formats based on the ISO-8601 period formats {@code PnYnMnD} and
+     * {@code PnW}.</p>
      *
+     * @see Period#parse(CharSequence)
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     *                                  converted to {@code Period}
      */
     public void configure(InRange range) {
-        try {
-            if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = Period.parse(range.min());
-            if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = Period.parse(range.max());
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = Period.parse(range.min());
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = Period.parse(range.max());
 
         if (toBigInteger(min).compareTo(toBigInteger(max)) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
-    @Override
-    public Period generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Period generate(SourceOfRandomness random, GenerationStatus status) {
         return fromBigInteger(choose(random, toBigInteger(min), toBigInteger(max)));
     }
-
-    private static final BigInteger TWELVE = BigInteger.valueOf(12);
-    private static final BigInteger THIRTY_ONE = BigInteger.valueOf(31);
 
     private BigInteger toBigInteger(Period period) {
         return BigInteger.valueOf(period.getYears())

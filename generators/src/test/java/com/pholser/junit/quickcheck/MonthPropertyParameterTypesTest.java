@@ -36,15 +36,13 @@ import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class MonthPropertyParameterTypesTest {
-    @Test
-    public void month() {
-        assertThat(testResult(MonthTheory.class), isSuccessful());
+    @Test public void month() {
+        assertThat(testResult(Months.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MonthTheory {
-        @Property
-        public void shouldHold(Month d) {
+    public static class Months {
+        @Property public void shouldHold(Month m) {
         }
     }
 }

@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,137 +41,154 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class ZonedDateTimePropertyParameterTypesTest {
-    @Test
-    public void zonedDateTime() {
-        assertThat(testResult(ZonedDateTimeTheory.class), isSuccessful());
+    @Test public void zonedDateTime() {
+        assertThat(testResult(ZonedDateTimes.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ZonedDateTimeTheory {
-        @Property
-        public void shouldHold(ZonedDateTime d) {
+    public static class ZonedDateTimes {
+        @Property public void shouldHold(ZonedDateTime t) {
         }
     }
 
-    @Test
-    public void rangedZonedDateTime() {
-        assertThat(testResult(RangedZonedDateTimeTheory.class), isSuccessful());
+    @Test public void rangedZonedDateTime() {
+        assertThat(testResult(RangedZonedDateTime.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedZonedDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "01/01/2012T00:00:00.0+01:00[America/Chicago]", max = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'") ZonedDateTime d) throws Exception {
+    public static class RangedZonedDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "01/01/2012T00:00:00.0+01:00[America/Chicago]",
+                max = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
+            ZonedDateTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
 
             assertThat(
-                d,
+                t,
                 allOf(
-                    greaterThanOrEqualTo(ZonedDateTime.parse("01/01/2012T00:00:00.0+01:00[America/Chicago]", formatter)),
-                    lessThanOrEqualTo(ZonedDateTime.parse("12/31/2012T23:59:59.999999999+01:00[America/Chicago]", formatter))));
+                    greaterThanOrEqualTo(
+                        ZonedDateTime.parse(
+                            "01/01/2012T00:00:00.0+01:00[America/Chicago]",
+                            formatter)),
+                    lessThanOrEqualTo(
+                        ZonedDateTime.parse(
+                            "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                            formatter))));
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinZonedDateTimeTheory.class),
+            testResult(MalformedMinZonedDateTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMinZonedDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "@#!@#@",
+                max = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
+            ZonedDateTime t) {
+        }
+    }
+
+    @Test public void malformedMax() {
+        assertThat(
+            testResult(MalformedMaxZonedDateTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMaxZonedDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011T23:59:59.999999999+01:00[America/Chicago]",
+                max = "*&@^#%$",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
+            ZonedDateTime t) {
+        }
+    }
+
+    @Test public void malformedFormat() {
+        assertThat(
+            testResult(MalformedFormatZonedDateTime.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinZonedDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'") ZonedDateTime d) {
+    public static class MalformedFormatZonedDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011T23:59:59.999999999+01:00[America/Chicago]",
+                max = "06/30/2011T23:59:59.999999999+01:00[America/Chicago]",
+                format = "*@&^#$")
+            ZonedDateTime t) {
         }
     }
 
-    @Test
-    public void malformedMax() {
-        assertThat(
-            testResult(MalformedMaxZonedDateTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxZonedDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999+01:00[America/Chicago]", max = "*&@^#%$",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'") ZonedDateTime d) {
-        }
-    }
-
-    @Test
-    public void malformedFormat() {
-        assertThat(
-            testResult(MalformedFormatZonedDateTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatZonedDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999+01:00[America/Chicago]", max = "06/30/2011T23:59:59.999999999+01:00[America/Chicago]",
-                format = "*@&^#$") ZonedDateTime d) {
-        }
-    }
-
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(
-            @InRange(max = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]", format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
-            ZonedDateTime d)
-            throws Exception {
+    public static class MissingMin {
+        @Property public void shouldHold(
+            @InRange(
+                max = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
+            ZonedDateTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
-            assertThat(d, lessThanOrEqualTo(ZonedDateTime.parse("12/31/2012T23:59:59.999999999+01:00[America/Chicago]", formatter)));
+            assertThat(
+                t,
+                lessThanOrEqualTo(
+                    ZonedDateTime.parse(
+                        "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                        formatter)));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]", format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
-            ZonedDateTime d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(
+                min = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
+            ZonedDateTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
-            assertThat(d, greaterThanOrEqualTo(ZonedDateTime.parse("12/31/2012T23:59:59.999999999+01:00[America/Chicago]", formatter)));
+            assertThat(
+                t,
+                greaterThanOrEqualTo(
+                    ZonedDateTime.parse(
+                        "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                        formatter)));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]", max = "12/01/2012T00:00:00.0+01:00[America/Chicago]",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'") ZonedDateTime d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(
+                min = "12/31/2012T23:59:59.999999999+01:00[America/Chicago]",
+                max = "12/01/2012T00:00:00.0+01:00[America/Chicago]",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
+            ZonedDateTime t) {
         }
     }
 }

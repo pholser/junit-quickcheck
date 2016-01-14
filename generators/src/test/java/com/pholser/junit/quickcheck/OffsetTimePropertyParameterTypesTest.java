@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.OffsetTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,131 +41,143 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class OffsetTimePropertyParameterTypesTest {
-    @Test
-    public void offsetTime() {
-        assertThat(testResult(OffsetTimeTheory.class), isSuccessful());
+    @Test public void offsetTime() {
+        assertThat(testResult(OffsetTimes.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class OffsetTimeTheory {
-        @Property
-        public void shouldHold(OffsetTime d) {
+    public static class OffsetTimes {
+        @Property public void shouldHold(OffsetTime t) {
         }
     }
 
-    @Test
-    public void rangedOffsetTime() {
-        assertThat(testResult(RangedOffsetTimeTheory.class), isSuccessful());
+    @Test public void rangedOffsetTime() {
+        assertThat(testResult(RangedOffsetTime.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedOffsetTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "00:00:00.0+00:00", max = "22:59:59.999999999+01:00", format = "HH:mm:ss.nxxx") OffsetTime d)
-            throws Exception {
+    public static class RangedOffsetTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "00:00:00.0+00:00",
+                max = "22:59:59.999999999+01:00",
+                format = "HH:mm:ss.nxxx")
+            OffsetTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
 
             assertThat(
-                d,
+                t,
                 allOf(
                     greaterThanOrEqualTo(OffsetTime.parse("00:00:00.0+01:00", formatter)),
                     lessThanOrEqualTo(OffsetTime.parse("23:59:59.999999999+01:00", formatter))));
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinOffsetTimeTheory.class),
+            testResult(MalformedMinOffsetTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMinOffsetTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "@#!@#@",
+                max = "13:45.30.123456789+01:00",
+                format = "HH:mm:ss.nxxx")
+            OffsetTime t) {
+        }
+    }
+
+    @Test public void malformedMax() {
+        assertThat(
+            testResult(MalformedMaxOffsetTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMaxOffsetTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "01:15:23.23929+01:00",
+                max = "*&@^#%$",
+                format = "HH:mm:ss.nxxx")
+            OffsetTime t) {
+        }
+    }
+
+    @Test public void malformedFormat() {
+        assertThat(
+            testResult(MalformedFormatOffsetTime.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinOffsetTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "13:45.30.123456789+01:00", format = "HH:mm:ss.nxxx") OffsetTime d) {
+    public static class MalformedFormatOffsetTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "00:00:00.0+00:00",
+                max = "22:59:59.999999999+01:00",
+                format = "*@&^#$")
+            OffsetTime t) {
         }
     }
 
-    @Test
-    public void malformedMax() {
-        assertThat(
-            testResult(MalformedMaxOffsetTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxOffsetTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "01:15:23.23929+01:00", max = "*&@^#%$", format = "HH:mm:ss.nxxx") OffsetTime d) {
-        }
-    }
-
-    @Test
-    public void malformedFormat() {
-        assertThat(
-            testResult(MalformedFormatOffsetTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatOffsetTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "00:00:00.0+00:00", max = "22:59:59.999999999+01:00", format = "*@&^#$") OffsetTime d) {
-        }
-    }
-
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(@InRange(max = "22:59:59.999999999+01:00", format = "HH:mm:ss.nxxx")
-                               OffsetTime d)
-            throws Exception {
+    public static class MissingMin {
+        @Property public void shouldHold(
+            @InRange(
+                max = "22:59:59.999999999+01:00",
+                format = "HH:mm:ss.nxxx")
+            OffsetTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
-            assertThat(d, lessThanOrEqualTo(OffsetTime.parse("23:59:59.999999999+01:00", formatter)));
+            assertThat(
+                t,
+                lessThanOrEqualTo(
+                    OffsetTime.parse("23:59:59.999999999+01:00", formatter)));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(@InRange(min = "00:00:00.0+00:00", format = "HH:mm:ss.nxxx")
-                               OffsetTime d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(
+                min = "00:00:00.0+00:00",
+                format = "HH:mm:ss.nxxx")
+            OffsetTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
-            assertThat(d, greaterThanOrEqualTo(OffsetTime.parse("00:00:00.0+00:00", formatter)));
+            assertThat(
+                t,
+                greaterThanOrEqualTo(OffsetTime.parse("00:00:00.0+00:00", formatter)));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "22:59:59.999999999+01:00", max = "00:00:00.0+00:00", format = "HH:mm:ss.nxxx") OffsetTime d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(
+                min = "22:59:59.999999999+01:00",
+                max = "00:00:00.0+00:00",
+                format = "HH:mm:ss.nxxx")
+            OffsetTime t) {
         }
     }
 }

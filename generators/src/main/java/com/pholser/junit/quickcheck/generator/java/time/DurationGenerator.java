@@ -31,7 +31,6 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.time.Duration;
-import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
@@ -49,37 +48,32 @@ public class DurationGenerator extends Generator<Duration> {
     /**
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
-     * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
-     * <p>
+     * maximum}, inclusive, with uniform distribution, down to the
+     * nanosecond.</p>
+     *
      * <p>If an endpoint of the range is not specified, the generator will use
      * durations with second values of either {@link Long#MIN_VALUE} or
-     * {@link Long#MAX_VALUE} (with nanoseconds set to 999,999,999) as appropriate.</p>
-     * <p>
-     * <p>{@linkplain InRange#format()} is ignored.  Durations are always parsed using
-     * formats based on the ISO-8601 duration format PnDTnHnMn.nS with days
-     * considered to be exactly 24 hours.  For more information, see
-     * {@link Duration#parse(CharSequence)}</p>
+     * {@link Long#MAX_VALUE} (with nanoseconds set to 999,999,999) as
+     * appropriate.</p>
      *
+     * <p>{@linkplain InRange#format()} is ignored. Durations are always
+     * parsed using formats based on the ISO-8601 duration format
+     * {@code PnDTnHnMn.nS} with days considered to be exactly 24 hours.
+     *
+     * @see Duration#parse(CharSequence)
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     *                                  converted to {@code Duration}
      */
     public void configure(InRange range) {
-        try {
-            if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = Duration.parse(range.min());
-            if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = Duration.parse(range.max());
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = Duration.parse(range.min());
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = Duration.parse(range.max());
 
         if (min.compareTo(max) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
-    @Override
-    public Duration generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Duration generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextDuration(min, max);
     }
 }

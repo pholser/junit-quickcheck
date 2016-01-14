@@ -33,7 +33,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
@@ -53,41 +52,37 @@ public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
     /**
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
-     * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
+     * maximum}, inclusive, with uniform distribution, down to the
+     * nanosecond.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * dates with values of either {@link OffsetDateTime#MIN} or {@link OffsetDateTime#MAX}
-     * as appropriate.</p>
+     * dates with values of either {@link OffsetDateTime#MIN} or
+     * {@link OffsetDateTime#MAX} as appropriate.</p>
      *
      * <p>{@link InRange#format()} describes
      * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     *                                  converted to {@code OffsetDateTime}
      */
     public void configure(InRange range) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
 
-        try {
-            if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = OffsetDateTime.parse(range.min(), formatter);
-            if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = OffsetDateTime.parse(range.max(), formatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = OffsetDateTime.parse(range.min(), formatter);
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = OffsetDateTime.parse(range.max(), formatter);
 
         if (min.compareTo(max) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
-    @Override
-    public OffsetDateTime generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public OffsetDateTime generate(SourceOfRandomness random, GenerationStatus status) {
         // Project the OffsetDateTime to an Instant for easy long-based generation.
         return OffsetDateTime.ofInstant(
-            random.nextInstant(min.toInstant(), max.toInstant()),
+            random.nextInstant(
+                min.toInstant(),
+                max.toInstant()),
             zoneId);
     }
 }

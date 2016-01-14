@@ -67,10 +67,6 @@ public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
      * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.</p>
 
      * @param range annotation that gives the range's constraints
-     * @throws NumberFormatException if the range's values cannot be converted
-     * to {@code BigInteger}
-     * @throws IllegalArgumentException if the range's values specify a
-     * nonsensical range
      */
     public void configure(InRange range) {
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))

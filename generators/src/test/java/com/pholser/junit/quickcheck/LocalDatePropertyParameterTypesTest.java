@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,28 +41,28 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class LocalDatePropertyParameterTypesTest {
-    @Test
-    public void localDate() {
-        assertThat(testResult(LocalDateTheory.class), isSuccessful());
+    @Test public void localDate() {
+        assertThat(testResult(LocalDates.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class LocalDateTheory {
-        @Property
-        public void shouldHold(LocalDate d) {
+    public static class LocalDates {
+        @Property public void shouldHold(LocalDate d) {
         }
     }
 
-    @Test
-    public void rangedLocalDate() {
-        assertThat(testResult(RangedLocalDateTheory.class), isSuccessful());
+    @Test public void rangedLocalDate() {
+        assertThat(testResult(RangedLocalDate.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedLocalDateTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) throws Exception {
+    public static class RangedLocalDate {
+        @Property public void shouldHold(
+            @InRange(
+                min = "01/01/2012",
+                max = "12/31/2012",
+                format = "MM/dd/yyyy")
+            LocalDate d) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
@@ -73,95 +74,99 @@ public class LocalDatePropertyParameterTypesTest {
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinLocalDateTheory.class),
+            testResult(MalformedMinLocalDate.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMinLocalDate {
+        @Property public void shouldHold(
+            @InRange(
+                min = "@#!@#@",
+                max = "12/31/2012",
+                format = "MM/dd/yyyy")
+            LocalDate d) {
+        }
+    }
+
+    @Test public void malformedMax() {
+        assertThat(
+            testResult(MalformedMaxLocalDate.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMaxLocalDate {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011",
+                max = "*&@^#%$",
+                format = "MM/dd/yyyy")
+            LocalDate d) {
+        }
+    }
+
+    @Test public void malformedFormat() {
+        assertThat(
+            testResult(MalformedFormatLocalDate.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinLocalDateTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
+    public static class MalformedFormatLocalDate {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011",
+                max = "06/30/2011",
+                format = "*@&^#$")
+            LocalDate d) {
         }
     }
 
-    @Test
-    public void malformedMax() {
-        assertThat(
-            testResult(MalformedMaxLocalDateTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxLocalDateTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") LocalDate d) {
-        }
-    }
-
-    @Test
-    public void malformedFormat() {
-        assertThat(
-            testResult(MalformedFormatLocalDateTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatLocalDateTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") LocalDate d) {
-        }
-    }
-
-    @Test
-    public void missingMin() {
+    @Test public void missingMin() {
         assertThat(testResult(MissingMinTheory.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMinTheory {
-        @Property
-        public void shouldHold(@InRange(max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d)
-            throws Exception {
+        @Property public void shouldHold(
+            @InRange(max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             assertThat(d, lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(@InRange(min = "12/31/2012", format = "MM/dd/yyyy") LocalDate d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(min = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             assertThat(d, greaterThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") LocalDate d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(
+                min = "12/31/2012",
+                max = "12/01/2012",
+                format = "MM/dd/yyyy")
+            LocalDate d) {
         }
     }
 }

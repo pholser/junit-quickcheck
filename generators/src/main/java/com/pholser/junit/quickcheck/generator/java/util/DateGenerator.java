@@ -87,8 +87,6 @@ public class DateGenerator extends Generator<Date> {
      * interpret the range's endpoints}.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     * converted to {@code Date}
      */
     public void configure(InRange range) {
         SimpleDateFormat formatter = new SimpleDateFormat(range.format());

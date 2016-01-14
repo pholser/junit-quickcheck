@@ -34,7 +34,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
@@ -54,37 +53,32 @@ public class ClockGenerator extends Generator<Clock> {
     /**
      * <p>Tells this generator to produce values within a specified
      * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
-     * maximum}, inclusive, with uniform distribution, down to the nanosecond.</p>
-     * <p>
-     * <p>{@link ClockGenerator} instances are configured using Instant strings.</p>
-     * <p>
+     * maximum}, inclusive, with uniform distribution, down to the
+     * nanosecond.</p>
+     *
+     * <p>{@link ClockGenerator} instances are configured using Instant
+     * strings.</p>
+     *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * instants with values of either {@link Instant#MIN} or {@link Instant#MAX}
-     * as appropriate.</p>
-     * <p>
-     * <p>{@linkplain InRange#format()} is ignored.  Instants are always parsed using
-     * {@link DateTimeFormatter#ISO_INSTANT}.</p>
+     * instants with values of either {@link Instant#MIN} or
+     * {@link Instant#MAX} as appropriate.</p>
+     *
+     * <p>{@linkplain InRange#format()} is ignored. Instants are always
+     * parsed using {@link DateTimeFormatter#ISO_INSTANT}.</p>
      *
      * @param range annotation that gives the range's constraints
-     * @throws IllegalArgumentException if the range's values cannot be
-     *                                  converted to {@code Instant}
      */
     public void configure(InRange range) {
-        try {
-            if (!defaultValueOf(InRange.class, "min").equals(range.min()))
-                min = Instant.parse(range.min());
-            if (!defaultValueOf(InRange.class, "max").equals(range.max()))
-                max = Instant.parse(range.max());
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+        if (!defaultValueOf(InRange.class, "min").equals(range.min()))
+            min = Instant.parse(range.min());
+        if (!defaultValueOf(InRange.class, "max").equals(range.max()))
+            max = Instant.parse(range.max());
 
         if (min.compareTo(max) > 0)
             throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
     }
 
-    @Override
-    public Clock generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Clock generate(SourceOfRandomness random, GenerationStatus status) {
         return Clock.fixed(random.nextInstant(min, max), zoneId);
     }
 }

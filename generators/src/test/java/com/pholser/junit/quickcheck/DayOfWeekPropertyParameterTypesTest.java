@@ -36,15 +36,13 @@ import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class DayOfWeekPropertyParameterTypesTest {
-    @Test
-    public void dayOfWeek() {
-        assertThat(testResult(DayOfWeekTheory.class), isSuccessful());
+    @Test public void dayOfWeek() {
+        assertThat(testResult(DaysOfWeek.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class DayOfWeekTheory {
-        @Property
-        public void shouldHold(DayOfWeek d) {
+    public static class DaysOfWeek {
+        @Property public void shouldHold(DayOfWeek d) {
         }
     }
 }

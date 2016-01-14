@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.math.BigInteger;
 import java.time.Period;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -42,25 +43,30 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class PeriodPropertyParameterTypesTest {
+    private static final BigInteger TWELVE = BigInteger.valueOf(12);
+    private static final BigInteger THIRTY_ONE = BigInteger.valueOf(31);
+
     @Test public void period() {
-        assertThat(testResult(PeriodTheory.class), isSuccessful());
+        assertThat(testResult(Periods.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class PeriodTheory {
-        @Property public void shouldHold(Period d) {
+    public static class Periods {
+        @Property public void shouldHold(Period p) {
         }
     }
 
     @Test public void rangedPeriod() {
-        assertThat(testResult(RangedPeriodTheory.class), isSuccessful());
+        assertThat(testResult(RangedPeriod.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedPeriodTheory {
-        @Property public void shouldHold(@InRange(min = "P1Y2M3D", max = "P36Y2M3D") Period d) throws Exception {
+    public static class RangedPeriod {
+        @Property public void shouldHold(
+            @InRange(min = "P1Y2M3D", max = "P36Y2M3D") Period p) {
+
             assertThat(
-                toBigInteger(d),
+                toBigInteger(p),
                 allOf(
                     greaterThanOrEqualTo(toBigInteger(Period.parse("P1Y2M3D"))),
                     lessThanOrEqualTo(toBigInteger(Period.parse("P36Y2M3D")))));
@@ -69,70 +75,74 @@ public class PeriodPropertyParameterTypesTest {
 
     @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinPeriodTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMinPeriod.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinPeriodTheory {
-        @Property public void shouldHold(@InRange(min = "@#!@#@", max = "P36Y2M3D") Period d) {
+    public static class MalformedMinPeriod {
+        @Property public void shouldHold(
+            @InRange(min = "@#!@#@", max = "P36Y2M3D") Period p) {
         }
     }
 
     @Test public void malformedMax() {
         assertThat(
-            testResult(MalformedMaxPeriodTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMaxPeriod.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxPeriodTheory {
-        @Property public void shouldHold(@InRange(min = "P1Y2M3D", max = "*&@^#%$") Period d) {
+    public static class MalformedMaxPeriod {
+        @Property public void shouldHold(
+            @InRange(min = "P1Y2M3D", max = "*&@^#%$") Period p) {
         }
     }
 
     @Test public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property public void shouldHold(@InRange(max = "P36Y2M3D") Period d) throws Exception {
-            assertThat(toBigInteger(d), lessThanOrEqualTo(toBigInteger(Period.parse("P36Y2M3D"))));
+    public static class MissingMin {
+        @Property public void shouldHold(@InRange(max = "P36Y2M3D") Period p) {
+            assertThat(
+                toBigInteger(p),
+                lessThanOrEqualTo(toBigInteger(Period.parse("P36Y2M3D"))));
         }
     }
 
     @Test public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-       @Property public void shouldHold(@InRange(min = "P36Y2M3D") Period d) throws Exception {
-            assertThat(toBigInteger(d), greaterThanOrEqualTo(toBigInteger(Period.parse("P36Y2M3D"))));
+    public static class MissingMax {
+       @Property public void shouldHold(@InRange(min = "P36Y2M3D") Period p) {
+            assertThat(
+                toBigInteger(p),
+                greaterThanOrEqualTo(toBigInteger(Period.parse("P36Y2M3D"))));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property public void shouldHold(@InRange(min = "P36Y2M3D", max = "P1Y2M3D") Period d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(min = "P36Y2M3D", max = "P1Y2M3D") Period p) {
         }
     }
 
-    private static final BigInteger TWELVE = BigInteger.valueOf(12);
-    private static final BigInteger THIRTY_ONE = BigInteger.valueOf(31);
-
     private static BigInteger toBigInteger(Period period) {
         return BigInteger.valueOf(period.getYears())
-                .multiply(TWELVE)
-                .add(BigInteger.valueOf(period.getMonths()))
-                .multiply(THIRTY_ONE)
-                .add(BigInteger.valueOf(period.getDays()));
+            .multiply(TWELVE)
+            .add(BigInteger.valueOf(period.getMonths()))
+            .multiply(THIRTY_ONE)
+            .add(BigInteger.valueOf(period.getDays()));
     }
 }

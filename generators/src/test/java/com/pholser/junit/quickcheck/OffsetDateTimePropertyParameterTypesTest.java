@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,135 +41,146 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class OffsetDateTimePropertyParameterTypesTest {
-    @Test
-    public void offsetDateTime() {
-        assertThat(testResult(OffsetDateTimeTheory.class), isSuccessful());
+    @Test public void offsetDateTime() {
+        assertThat(testResult(OffsetDateTimes.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class OffsetDateTimeTheory {
-        @Property
-        public void shouldHold(OffsetDateTime d) {
+    public static class OffsetDateTimes {
+        @Property public void shouldHold(OffsetDateTime t) {
         }
     }
 
-    @Test
-    public void rangedOffsetDateTime() {
-        assertThat(testResult(RangedOffsetDateTimeTheory.class), isSuccessful());
+    @Test public void rangedOffsetDateTime() {
+        assertThat(testResult(RangedOffsetDateTime.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedOffsetDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "01/01/2012T00:00:00.0+01:00", max = "12/31/2012T23:59:59.999999999+01:00",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) throws Exception {
+    public static class RangedOffsetDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "01/01/2012T00:00:00.0+01:00",
+                max = "12/31/2012T23:59:59.999999999+01:00",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
+            OffsetDateTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
 
             assertThat(
-                d,
+                t,
                 allOf(
                     greaterThanOrEqualTo(OffsetDateTime.parse("01/01/2012T00:00:00.0+01:00", formatter)),
                     lessThanOrEqualTo(OffsetDateTime.parse("12/31/2012T23:59:59.999999999+01:00", formatter))));
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinOffsetDateTimeTheory.class),
+            testResult(MalformedMinOffsetDateTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMinOffsetDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "@#!@#@",
+                max = "12/31/2012T23:59:59.999999999+01:00",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
+            OffsetDateTime t) {
+        }
+    }
+
+    @Test public void malformedMax() {
+        assertThat(
+            testResult(MalformedMaxOffsetDateTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMaxOffsetDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011T23:59:59.999999999+01:00",
+                max = "*&@^#%$",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
+            OffsetDateTime t) {
+        }
+    }
+
+    @Test public void malformedFormat() {
+        assertThat(
+            testResult(MalformedFormatOffsetDateTime.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinOffsetDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "12/31/2012T23:59:59.999999999+01:00",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
+    public static class MalformedFormatOffsetDateTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "06/01/2011T23:59:59.999999999+01:00",
+                max = "06/30/2011T23:59:59.999999999+01:00",
+                format = "*@&^#$")
+            OffsetDateTime t) {
         }
     }
 
-    @Test
-    public void malformedMax() {
-        assertThat(
-            testResult(MalformedMaxOffsetDateTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxOffsetDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999+01:00", max = "*&@^#%$",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
-        }
-    }
-
-    @Test
-    public void malformedFormat() {
-        assertThat(
-            testResult(MalformedFormatOffsetDateTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatOffsetDateTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999+01:00", max = "06/30/2011T23:59:59.999999999+01:00",
-                format = "*@&^#$") OffsetDateTime d) {
-        }
-    }
-
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(
-            @InRange(max = "12/31/2012T23:59:59.999999999+01:00", format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d)
-            throws Exception {
+    public static class MissingMin {
+        @Property public void shouldHold(
+            @InRange(
+                max = "12/31/2012T23:59:59.999999999+01:00",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
+            OffsetDateTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
-            assertThat(d, lessThanOrEqualTo(OffsetDateTime.parse("12/31/2012T23:59:59.999999999+01:00", formatter)));
+            assertThat(
+                t,
+                lessThanOrEqualTo(
+                    OffsetDateTime.parse(
+                        "12/31/2012T23:59:59.999999999+01:00",
+                        formatter)));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "12/31/2012T23:59:59.999999999+01:00", format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(
+                min = "12/31/2012T23:59:59.999999999+01:00",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
+            OffsetDateTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
-            assertThat(d, greaterThanOrEqualTo(OffsetDateTime.parse("12/31/2012T23:59:59.999999999+01:00", formatter)));
+            assertThat(
+                t,
+                greaterThanOrEqualTo(
+                    OffsetDateTime.parse("12/31/2012T23:59:59.999999999+01:00", formatter)));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "12/31/2012T23:59:59.999999999+01:00", max = "12/01/2012T00:00:00.0+01:00",
-                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx") OffsetDateTime d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(
+                min = "12/31/2012T23:59:59.999999999+01:00",
+                max = "12/01/2012T00:00:00.0+01:00",
+                format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
+            OffsetDateTime t) {
         }
     }
 }

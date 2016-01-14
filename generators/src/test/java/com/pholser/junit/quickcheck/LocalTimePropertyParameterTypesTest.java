@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,128 +41,136 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class LocalTimePropertyParameterTypesTest {
-    @Test
-    public void localTime() {
-        assertThat(testResult(LocalTimeTheory.class), isSuccessful());
+    @Test public void localTime() {
+        assertThat(testResult(LocalTimes.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class LocalTimeTheory {
-        @Property
-        public void shouldHold(LocalTime d) {
+    public static class LocalTimes {
+        @Property public void shouldHold(LocalTime t) {
         }
     }
 
-    @Test
-    public void rangedLocalTime() {
-        assertThat(testResult(RangedLocalTimeTheory.class), isSuccessful());
+    @Test public void rangedLocalTime() {
+        assertThat(testResult(RangedLocalTime.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedLocalTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "00:00:00.0", max = "23:59:59.999999999", format = "HH:mm:ss.n") LocalTime d) throws Exception {
+    public static class RangedLocalTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "00:00:00.0",
+                max = "23:59:59.999999999",
+                format = "HH:mm:ss.n")
+            LocalTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.n");
 
             assertThat(
-                d,
+                t,
                 allOf(
                     greaterThanOrEqualTo(LocalTime.parse("00:00:00.0", formatter)),
                     lessThanOrEqualTo(LocalTime.parse("23:59:59.999999999", formatter))));
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinLocalTimeTheory.class),
+            testResult(MalformedMinLocalTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMinLocalTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "@#!@#@",
+                max = "13:45.30.123456789",
+                format = "HH:mm:ss.n")
+            LocalTime t) {
+        }
+    }
+
+    @Test public void malformedMax() {
+        assertThat(
+            testResult(MalformedMaxLocalTime.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class MalformedMaxLocalTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "01:15:23.23929",
+                max = "*&@^#%$",
+                format = "HH:mm:ss.n")
+            LocalTime t) {
+        }
+    }
+
+    @Test public void malformedFormat() {
+        assertThat(
+            testResult(MalformedFormatLocalTime.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinLocalTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "@#!@#@", max = "13:45.30.123456789", format = "HH:mm:ss.n") LocalTime d) {
+    public static class MalformedFormatLocalTime {
+        @Property public void shouldHold(
+            @InRange(
+                min = "00:00:00.0",
+                max = "23:59:59.999999999",
+                format = "*@&^#$")
+            LocalTime t) {
         }
     }
 
-    @Test
-    public void malformedMax() {
-        assertThat(
-            testResult(MalformedMaxLocalTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxLocalTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "01:15:23.23929", max = "*&@^#%$", format = "HH:mm:ss.n") LocalTime d) {
-        }
-    }
-
-    @Test
-    public void malformedFormat() {
-        assertThat(
-            testResult(MalformedFormatLocalTimeTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatLocalTimeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "00:00:00.0", max = "23:59:59.999999999", format = "*@&^#$") LocalTime d) {
-        }
-    }
-
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(@InRange(max = "23:59:59.999999999", format = "HH:mm:ss.n") LocalTime d)
-            throws Exception {
+    public static class MissingMin {
+        @Property public void shouldHold(
+            @InRange(max = "23:59:59.999999999", format = "HH:mm:ss.n") LocalTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.n");
-            assertThat(d, lessThanOrEqualTo(LocalTime.parse("23:59:59.999999999", formatter)));
+            assertThat(
+                t,
+                lessThanOrEqualTo(LocalTime.parse("23:59:59.999999999", formatter)));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(@InRange(min = "23:59:59.999999999", format = "HH:mm:ss.n") LocalTime d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(min = "23:59:59.999999999", format = "HH:mm:ss.n") LocalTime t) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.n");
-            assertThat(d, greaterThanOrEqualTo(LocalTime.parse("23:59:59.999999999", formatter)));
+            assertThat(
+                t,
+                greaterThanOrEqualTo(LocalTime.parse("23:59:59.999999999", formatter)));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "23:59:59.999999999", max = "00:00:00.0", format = "HH:mm:ss.n") LocalTime d) {
+    public static class BackwardsRange {
+        @Property public void shouldHold(
+            @InRange(
+                min = "23:59:59.999999999",
+                max = "00:00:00.0",
+                format = "HH:mm:ss.n")
+            LocalTime t) {
         }
     }
 }

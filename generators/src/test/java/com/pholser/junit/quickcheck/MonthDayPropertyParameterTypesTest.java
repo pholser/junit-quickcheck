@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -40,28 +41,24 @@ import static org.junit.experimental.results.ResultMatchers.hasSingleFailureCont
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 public class MonthDayPropertyParameterTypesTest {
-    @Test
-    public void monthDay() {
-        assertThat(testResult(MonthDayTheory.class), isSuccessful());
+    @Test public void monthDay() {
+        assertThat(testResult(MonthDays.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MonthDayTheory {
-        @Property
-        public void shouldHold(MonthDay d) {
+    public static class MonthDays {
+        @Property public void shouldHold(MonthDay d) {
         }
     }
 
-    @Test
-    public void rangedMonthDay() {
-        assertThat(testResult(RangedMonthDayTheory.class), isSuccessful());
+    @Test public void rangedMonthDay() {
+        assertThat(testResult(RangedMonthDay.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedMonthDayTheory {
-        @Property
-        public void shouldHold(
-            @InRange(min = "01/01", max = "12/31", format = "MM/dd") MonthDay d) throws Exception {
+    public static class RangedMonthDay {
+        @Property public void shouldHold(
+            @InRange(min = "01/01", max = "12/31", format = "MM/dd") MonthDay d) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
 
@@ -73,94 +70,82 @@ public class MonthDayPropertyParameterTypesTest {
         }
     }
 
-    @Test
-    public void malformedMin() {
+    @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinMonthDayTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMinMonthDay.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinMonthDayTheory {
-        @Property
-        public void shouldHold(
+    public static class MalformedMinMonthDay {
+        @Property public void shouldHold(
             @InRange(min = "@#!@#@", max = "12/31", format = "MM/dd") MonthDay d) {
         }
     }
 
-    @Test
-    public void malformedMax() {
+    @Test public void malformedMax() {
         assertThat(
-            testResult(MalformedMaxMonthDayTheory.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            testResult(MalformedMaxMonthDay.class),
+            hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxMonthDayTheory {
-        @Property
-        public void shouldHold(
+    public static class MalformedMaxMonthDay {
+        @Property public void shouldHold(
             @InRange(min = "06/01", max = "*&@^#%$", format = "MM/dd") MonthDay d) {
         }
     }
 
-    @Test
-    public void malformedFormat() {
+    @Test public void malformedFormat() {
         assertThat(
-            testResult(MalformedFormatMonthDayTheory.class),
+            testResult(MalformedFormatMonthDay.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatMonthDayTheory {
-        @Property
-        public void shouldHold(
+    public static class MalformedFormatMonthDay {
+        @Property public void shouldHold(
             @InRange(min = "06/01", max = "06/30", format = "*@&^#$") MonthDay d) {
         }
     }
 
-    @Test
-    public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
+    @Test public void missingMin() {
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
-        @Property
-        public void shouldHold(@InRange(max = "12/31", format = "MM/dd") MonthDay d)
-            throws Exception {
+    public static class MissingMin {
+        @Property public void shouldHold(
+            @InRange(max = "12/31", format = "MM/dd") MonthDay d) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
             assertThat(d, lessThanOrEqualTo(MonthDay.parse("12/31", formatter)));
         }
     }
 
-    @Test
-    public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+    @Test public void missingMax() {
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
-        @Property
-        public void shouldHold(@InRange(min = "12/31", format = "MM/dd") MonthDay d)
-            throws Exception {
+    public static class MissingMax {
+        @Property public void shouldHold(
+            @InRange(min = "12/31", format = "MM/dd") MonthDay d) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
             assertThat(d, greaterThanOrEqualTo(MonthDay.parse("12/31", formatter)));
         }
     }
 
-    @Test
-    public void backwardsRange() {
+    @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
-        @Property
-        public void shouldHold(
+    public static class BackwardsRange {
+        @Property public void shouldHold(
             @InRange(min = "12/31", max = "12/01", format = "MM/dd") MonthDay d) {
         }
     }
