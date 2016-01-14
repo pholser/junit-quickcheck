@@ -292,7 +292,7 @@
                                 <link>http://junit.org/javadoc/latest/</link>
                                 <link>http://docs.guava-libraries.googlecode.com/git-history/v18.0/javadoc/</link>
                             </links>
-                            <bottom><![CDATA[<i>&copy; Copyright 2010-2015 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
+                            <bottom><![CDATA[<i>&copy; Copyright 2010-2016 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
                         </configuration>
                     </execution>
                 </executions>
