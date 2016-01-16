@@ -25,15 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.TimeZone;
-
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Items.*;
+import java.util.TimeZone;
+
 import static java.util.TimeZone.*;
 
 /**
@@ -45,6 +42,6 @@ public class TimeZoneGenerator extends Generator<TimeZone> {
     }
 
     @Override public TimeZone generate(SourceOfRandomness random, GenerationStatus status) {
-        return getTimeZone(choose(asList(getAvailableIDs()), random));
+        return getTimeZone(random.nextElement(getAvailableIDs()));
     }
 }

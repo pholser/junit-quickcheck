@@ -34,6 +34,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
+import static java.util.Arrays.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.runners.MethodSorters.*;
@@ -249,5 +250,13 @@ public class GeneratingRandomValuesTest {
             allOf(
                 greaterThanOrEqualTo(min),
                 lessThanOrEqualTo(max)));
+    }
+
+    @Test public void samplingArray() {
+        assertEquals("c", source.nextElement(new String[] { "a", "b", "c", "d" }));
+    }
+
+    @Test public void samplingCollection() {
+        assertEquals(Integer.valueOf(-1), source.nextElement(asList(-1, -2, -3, -4, -5)));
     }
 }

@@ -25,25 +25,26 @@
 
 package com.pholser.junit.quickcheck.generator.java.nio.charset;
 
-import java.nio.charset.Charset;
-import java.util.List;
-
-import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 
-import static com.google.common.collect.Lists.*;
-import static com.pholser.junit.quickcheck.Generating.*;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
 public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
     public static final Charset TYPE_BEARER = null;
 
-    private static final List<String> CHARSET_NAMES = newArrayList(Charset.availableCharsets().keySet());
+    private static final List<String> CHARSET_NAMES =
+        new ArrayList<>(Charset.availableCharsets().keySet());
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, CHARSET_NAMES.size()))
-            .thenReturn(2).thenReturn(0).thenReturn(1);
+        when(randomForParameterGenerator.nextElement(Charset.availableCharsets().keySet()))
+            .thenReturn(CHARSET_NAMES.get(2))
+            .thenReturn(CHARSET_NAMES.get(0))
+            .thenReturn(CHARSET_NAMES.get(1));
     }
 
     @Override protected int trials() {
@@ -58,6 +59,7 @@ public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParamete
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyInts(randomForParameterGenerator, times(3), CHARSET_NAMES.size());
+        verify(randomForParameterGenerator, times(3))
+            .nextElement(Charset.availableCharsets().keySet());
     }
 }

@@ -31,7 +31,6 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.time.ZoneId;
 
-import static com.pholser.junit.quickcheck.internal.Items.choose;
 import static java.time.ZoneId.getAvailableZoneIds;
 
 /**
@@ -42,8 +41,7 @@ public class ZoneIdGenerator extends Generator<ZoneId> {
         super(ZoneId.class);
     }
 
-    @Override
-    public ZoneId generate(SourceOfRandomness random, GenerationStatus status) {
-        return ZoneId.of(choose(getAvailableZoneIds(), random));
+    @Override public ZoneId generate(SourceOfRandomness random, GenerationStatus status) {
+        return ZoneId.of(random.nextElement(getAvailableZoneIds()));
     }
 }

@@ -41,7 +41,7 @@ import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class RandomElementFromItemsTest {
+public class ItemsTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
 
     @Mock private SourceOfRandomness random;

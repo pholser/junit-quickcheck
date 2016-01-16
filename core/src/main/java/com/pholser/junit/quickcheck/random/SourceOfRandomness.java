@@ -30,6 +30,7 @@ import com.pholser.junit.quickcheck.internal.Ranges;
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Random;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
@@ -310,6 +311,16 @@ public class SourceOfRandomness {
             max.getNano());
 
         return Duration.ofSeconds(next[0], next[1]);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T nextElement(Collection<T> items) {
+        Object[] array = items.toArray(new Object[items.size()]);
+        return (T) array[nextInt(array.length)];
+    }
+
+    public <T> T nextElement(T[] items) {
+        return items[nextInt(items.length)];
     }
 
     private long[] nextSecondsAndNanos(

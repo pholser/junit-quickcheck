@@ -33,8 +33,6 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Items.*;
-
 /**
  * Produces values of type {@link java.nio.charset.Charset}.
  */
@@ -44,6 +42,6 @@ public class CharsetGenerator extends Generator<Charset> {
     }
 
     @Override public Charset generate(SourceOfRandomness random, GenerationStatus status) {
-        return Charset.forName(choose(availableCharsets().keySet(), random));
+        return Charset.forName(random.nextElement(availableCharsets().keySet()));
     }
 }

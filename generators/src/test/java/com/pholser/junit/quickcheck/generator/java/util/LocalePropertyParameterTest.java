@@ -28,21 +28,19 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.util.List;
 import java.util.Locale;
 
-import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 
-import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class LocaleTheoryParameterTest extends BasicGeneratorPropertyParameterTest {
+public class LocalePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
     public static final Locale TYPE_BEARER = null;
 
     private static final Locale[] LOCALES = Locale.getAvailableLocales();
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator, LOCALES.length))
-            .thenReturn(1).thenReturn(0).thenReturn(2);
+        when(randomForParameterGenerator.nextElement(LOCALES))
+            .thenReturn(LOCALES[1]).thenReturn(LOCALES[0]).thenReturn(LOCALES[2]);
     }
 
     @Override protected int trials() {
@@ -54,6 +52,6 @@ public class LocaleTheoryParameterTest extends BasicGeneratorPropertyParameterTe
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyInts(randomForParameterGenerator, times(3), LOCALES.length);
+        verify(randomForParameterGenerator, times(3)).nextElement(LOCALES);
     }
 }

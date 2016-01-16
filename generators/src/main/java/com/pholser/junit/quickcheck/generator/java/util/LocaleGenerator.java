@@ -25,15 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.Locale;
-
-import static java.util.Arrays.*;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Items.*;
+import java.util.Locale;
+
 import static java.util.Locale.getAvailableLocales;
 
 /**
@@ -45,6 +42,6 @@ public class LocaleGenerator extends Generator<Locale> {
     }
 
     @Override public Locale generate(SourceOfRandomness random, GenerationStatus status) {
-        return choose(asList(getAvailableLocales()), random);
+        return random.nextElement(getAvailableLocales());
     }
 }
