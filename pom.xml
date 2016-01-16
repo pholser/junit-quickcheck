@@ -39,6 +39,32 @@
             <url>http://www.pholser.com</url>
         </developer>
     </developers>
+    <contributors>
+        <contributor>
+            <name>Javier Fernandez-Ivern</name>
+            <roles><role>java.time.* generators</role></roles>
+        </contributor>
+        <contributor>
+            <name>Michael S. Daines</name>
+            <roles><role>examples</role></roles>
+        </contributor>
+        <contributor>
+            <name>Florent Ramière</name>
+            <roles><role>code highlighting in markdown</role></roles>
+        </contributor>
+        <contributor>
+            <name>Thomas Heilbronner</name>
+            <roles><role>markdown correction</role></roles>
+        </contributor>
+        <contributor>
+            <name>Peter Kofler</name>
+            <roles><role>examples corrections</role></roles>
+        </contributor>
+        <contributor>
+            <name>davidhart82</name>
+            <roles><role>several patches</role></roles>
+        </contributor>
+    </contributors>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
