@@ -52,11 +52,13 @@ import org.slf4j.LoggerFactory;
  *
  * <p>When this runner runs a given test class, it regards only
  * {@code public} instance methods with a return type of {@code void} that are
- * marked with the {@link Property} annotation.</p>
+ * marked with either the {@link Property} annotation or the {@code Test}
+ * annotation.</p>
  *
  * <p>This runner honors {@link Rule}, {@link Before}, {@link After},
  * {@link BeforeClass}, and {@link AfterClass}. Their execution is wrapped
- * around the verification of a property in the expected order.</p>
+ * around the verification of a property or execution of a test in the
+ * expected order.</p>
  */
 public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     private final GeneratorRepository repo;
