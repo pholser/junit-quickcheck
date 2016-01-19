@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
+import java.time.ZoneId;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import java.time.ZoneId;
 
 import static java.time.ZoneId.getAvailableZoneIds;
 

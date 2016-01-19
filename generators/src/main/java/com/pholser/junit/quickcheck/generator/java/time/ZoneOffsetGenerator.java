@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
+import java.time.ZoneOffset;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.ZoneOffset;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@link ZoneOffset}.

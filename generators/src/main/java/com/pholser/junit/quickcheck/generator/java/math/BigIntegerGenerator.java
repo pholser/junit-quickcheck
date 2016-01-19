@@ -36,10 +36,11 @@ import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.math.BigInteger.*;
 import static java.util.function.Function.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>Produces values of type {@link BigInteger}.</p>

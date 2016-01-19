@@ -25,24 +25,23 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@link Clock}.
  */
 public class ClockGenerator extends Generator<Clock> {
-    // Instants are always in UTC.
-    private static final ZoneId zoneId = ZoneId.of("UTC");
+    private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
+
     private Instant min = Instant.MIN;
     private Instant max = Instant.MAX;
 
@@ -56,7 +55,7 @@ public class ClockGenerator extends Generator<Clock> {
      * maximum}, inclusive, with uniform distribution, down to the
      * nanosecond.</p>
      *
-     * <p>{@link ClockGenerator} instances are configured using Instant
+     * <p>Instances of this class are configured using {@link Instant}
      * strings.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
@@ -64,7 +63,7 @@ public class ClockGenerator extends Generator<Clock> {
      * {@link Instant#MAX} as appropriate.</p>
      *
      * <p>{@linkplain InRange#format()} is ignored. Instants are always
-     * parsed using {@link DateTimeFormatter#ISO_INSTANT}.</p>
+     * parsed using {@link java.time.format.DateTimeFormatter#ISO_INSTANT}.</p>
      *
      * @param range annotation that gives the range's constraints
      */
@@ -79,6 +78,6 @@ public class ClockGenerator extends Generator<Clock> {
     }
 
     @Override public Clock generate(SourceOfRandomness random, GenerationStatus status) {
-        return Clock.fixed(random.nextInstant(min, max), zoneId);
+        return Clock.fixed(random.nextInstant(min, max), UTC_ZONE_ID);
     }
 }

@@ -28,14 +28,13 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.Property;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Mark a parameter of a {@link Property} method with this annotation to
- * constrain the values generated for the parameter to a given precision.</p>
+ * <p>Mark a parameter of a {@link com.pholser.junit.quickcheck.Property}
+ * method with this annotation to constrain the values generated for the
+ * parameter to a given precision.</p>
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)

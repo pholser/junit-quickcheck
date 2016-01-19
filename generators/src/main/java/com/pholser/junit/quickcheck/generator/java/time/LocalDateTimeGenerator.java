@@ -25,22 +25,24 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@link LocalDateTime}.
  */
 public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
-    private static final ZoneId zoneId = ZoneId.of("UTC");
+    private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
+
     private LocalDateTime min = LocalDateTime.MIN;
     private LocalDateTime max = LocalDateTime.MAX;
 
@@ -81,8 +83,8 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
            Any zone id will do as long as we use the same one throughout. */
         return LocalDateTime.ofInstant(
             random.nextInstant(
-                min.atZone(zoneId).toInstant(),
-                max.atZone(zoneId).toInstant()),
-            zoneId);
+                min.atZone(UTC_ZONE_ID).toInstant(),
+                max.atZone(UTC_ZONE_ID).toInstant()),
+            UTC_ZONE_ID);
     }
 }

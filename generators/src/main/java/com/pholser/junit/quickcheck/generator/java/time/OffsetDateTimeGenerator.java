@@ -25,23 +25,23 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@link OffsetDateTime}.
  */
 public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
-    // Use UTC for OffsetDateTime generation.
-    private static final ZoneId zoneId = ZoneId.of("UTC");
+    private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
+
     private OffsetDateTime min = OffsetDateTime.MIN;
     private OffsetDateTime max = OffsetDateTime.MAX;
 
@@ -83,6 +83,6 @@ public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
             random.nextInstant(
                 min.toInstant(),
                 max.toInstant()),
-            zoneId);
+            UTC_ZONE_ID);
     }
 }

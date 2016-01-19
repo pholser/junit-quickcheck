@@ -50,9 +50,8 @@ public final class Comparables {
 
         if (min == null)
             return max.compareTo(zero) <= 0 ? max : zero;
-        if (max == null) {
+        if (max == null)
             return min.compareTo(zero) >= 0 ? min : zero;
-        }
 
         if (min.compareTo(zero) > 0)
             return min;

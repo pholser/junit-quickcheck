@@ -25,29 +25,28 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import java.time.Instant;
 import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@link ZonedDateTime}.
  */
 public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
-    // Use UTC for ZonedDateTime generation.
-    private static final ZoneId zoneId = ZoneId.of("UTC");
+    private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
+
     private ZonedDateTime min =
-        ZonedDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0, 0, 0, zoneId);
+        ZonedDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0, 0, 0, UTC_ZONE_ID);
     private ZonedDateTime max =
-        ZonedDateTime.of(Year.MAX_VALUE, 12, 31, 23, 59, 59, 999_999_999, zoneId);
+        ZonedDateTime.of(Year.MAX_VALUE, 12, 31, 23, 59, 59, 999_999_999, UTC_ZONE_ID);
 
     public ZonedDateTimeGenerator() {
         super(ZonedDateTime.class);
@@ -60,8 +59,8 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
      * nanosecond.</p>
      *
      * <p>If an endpoint of the range is not specified, the generator will use
-     * dates with values of either {@link Instant#MIN} or {@link Instant#MAX}
-     * and UTC zone as appropriate.</p>
+     * dates with values of either {@link java.time.Instant#MIN} or
+     * {@link java.time.Instant#MAX} and UTC zone as appropriate.</p>
      *
      * <p>{@link InRange#format()} describes
      * {@linkplain DateTimeFormatter#ofPattern(String) how the generator is to
@@ -74,11 +73,11 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min())) {
             min = ZonedDateTime.parse(range.min(), formatter)
-                .withZoneSameInstant(zoneId);
+                .withZoneSameInstant(UTC_ZONE_ID);
         }
         if (!defaultValueOf(InRange.class, "max").equals(range.max())) {
             max = ZonedDateTime.parse(range.max(), formatter)
-                .withZoneSameInstant(zoneId);
+                .withZoneSameInstant(UTC_ZONE_ID);
         }
 
         if (min.compareTo(max) > 0)
@@ -89,6 +88,6 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
         // Project the ZonedDateTime to an Instant for easy long-based generation.
         return ZonedDateTime.ofInstant(
             random.nextInstant(min.toInstant(), max.toInstant()),
-            zoneId);
+            UTC_ZONE_ID);
     }
 }

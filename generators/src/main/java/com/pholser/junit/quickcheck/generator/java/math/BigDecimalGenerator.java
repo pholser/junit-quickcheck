@@ -38,11 +38,12 @@ import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.Math.*;
 import static java.math.BigDecimal.*;
 import static java.util.function.Function.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>Produces values of type {@link BigDecimal}.</p>

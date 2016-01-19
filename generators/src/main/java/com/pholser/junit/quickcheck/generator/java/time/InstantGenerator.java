@@ -25,15 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
+import java.time.Instant;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@link Instant}.
@@ -57,7 +56,7 @@ public class InstantGenerator extends Generator<Instant> {
      * {@link Instant#MAX} as appropriate.</p>
      *
      * <p>{@linkplain InRange#format()} is ignored. Instants are always
-     * parsed using {@link DateTimeFormatter#ISO_INSTANT}.</p>
+     * parsed using {@link java.time.format.DateTimeFormatter#ISO_INSTANT}.</p>
      *
      * @param range annotation that gives the range's constraints
      */
