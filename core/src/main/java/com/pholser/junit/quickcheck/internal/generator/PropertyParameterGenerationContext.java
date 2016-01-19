@@ -64,15 +64,15 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
     }
 
     private SourceOfRandomness initializeRandomness(
-        PropertyParameterContext parameter,
-        SourceOfRandomness random,
+        PropertyParameterContext p,
+        SourceOfRandomness r,
         Logger seedLog) {
 
-        if (parameter.fixedSeed())
-            random.setSeed(parameter.seed());
+        if (p.fixedSeed())
+            r.setSeed(p.seed());
 
-        seedLog.debug("Seed for parameter {} is {}", parameter.typeContext().name(), random.seed());
-        return random;
+        seedLog.debug("Seed for parameter {} is {}", p.typeContext().name(), r.seed());
+        return r;
     }
 
     public Object generate() {

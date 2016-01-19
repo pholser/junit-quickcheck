@@ -43,9 +43,10 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values for property parameters.
@@ -121,7 +122,7 @@ public abstract class Generator<T> implements Shrink<T> {
      * participate} in shrinking the given value, and if so, they
      * {@linkplain #doShrink(SourceOfRandomness, Object) produce shrinks}.</p>
      */
-    public final List<T> shrink(SourceOfRandomness random, Object larger) {
+    @Override public final List<T> shrink(SourceOfRandomness random, Object larger) {
         if (!canShrink(larger))
             throw new IllegalStateException(getClass() + " not capable of shrinking " + larger);
 

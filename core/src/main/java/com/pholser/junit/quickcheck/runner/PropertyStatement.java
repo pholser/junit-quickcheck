@@ -51,6 +51,7 @@ import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
 import static java.util.stream.Collectors.*;
+
 import static org.junit.Assert.*;
 
 class PropertyStatement extends Statement {

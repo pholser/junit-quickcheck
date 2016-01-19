@@ -28,17 +28,13 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.generator.Shrink;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.runner.RunWith;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * <p>Mark a method on a class that is {@linkplain RunWith run with} the
- * {@link JUnitQuickcheck} runner with this annotation to have it run as a
- * property-based test.</p>
+ * <p>Mark a method on a class that is {@linkplain org.junit.runner.RunWith
+ * run with} the {@link com.pholser.junit.quickcheck.runner.JUnitQuickcheck}
+ * runner with this annotation to have it run as a property-based test.</p>
  *
  * <p>A method marked with this annotation should be an instance method
  * declared as {@code public} with a return type of {@code void}.</p>
@@ -52,28 +48,31 @@ public @interface Property {
     int trials() default 100;
 
     /**
-     * @return whether or not to attempt to {@linkplain Shrink shrink}
-     * a failing set of parameters
+     * @return whether or not to attempt to {@linkplain
+     * com.pholser.junit.quickcheck.generator.Shrink shrink} a failing set
+     * of parameters
      */
     boolean shrink() default true;
 
     /**
-     * @return the maximum number of {@linkplain Shrink shrink} attempts
-     * to make on a failing set of parameters; in effect only when
-     * {@link #shrink()} is {@code true}.
+     * @return the maximum number of {@linkplain
+     * com.pholser.junit.quickcheck.generator.Shrink shrink} attempts to make
+     * on a failing set of parameters; in effect only when {@link #shrink()}
+     * is {@code true}
      */
     int maxShrinks() default 100;
 
     /**
-     * @return the maximum depth of {@linkplain Shrink shrink} tree
-     * to make on a failing set of parameters; in effect only when
-     * {@link #shrink()} is {@code true}.
+     * @return the maximum depth of {@linkplain
+     * com.pholser.junit.quickcheck.generator.Shrink shrink} tree to make on
+     * a failing set of parameters; in effect only when {@link #shrink()} is
+     * {@code true}
      */
     int maxShrinkDepth() default 20;
 
     /**
      * @return the maximum elapsed time for the shrinking process in
-     * milliseconds; in effect only when {@link #shrink()} is {@code true}.
+     * milliseconds; in effect only when {@link #shrink()} is {@code true}
      */
     int maxShrinkTime() default 60_000;
 }

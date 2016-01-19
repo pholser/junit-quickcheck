@@ -44,9 +44,10 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 
+import static java.util.Collections.*;
+
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.util.Collections.*;
 
 public class GeneratorRepository {
     private final SourceOfRandomness random;

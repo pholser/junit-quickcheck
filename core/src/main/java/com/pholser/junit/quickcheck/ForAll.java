@@ -29,21 +29,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.pholser.junit.quickcheck.internal.RandomValueSupplier;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.contrib.theories.ParametersSuppliedBy;
-import org.junit.contrib.theories.Theory;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * Mark a parameter of a {@link Theory} method with this annotation to have
- * random values supplied to it.
+ * Mark a parameter of a {@link org.junit.contrib.theories.Theory} method
+ * with this annotation to have random values supplied to it.
  *
- * @deprecated Rather than writing property-based tests as {@link Theory}
+ * @deprecated Rather than writing property-based tests as {@code Theory}
  * methods with parameters marked with this annotation, write them as
- * {@link Property} methods on classes run with the {@link JUnitQuickcheck}
- * runner.
+ * {@link Property} methods on classes run with the
+ * {@link com.pholser.junit.quickcheck.runner.JUnitQuickcheck} runner.
  */
 @Deprecated
 @Target(PARAMETER)

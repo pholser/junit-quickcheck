@@ -87,10 +87,13 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         // do nothing
     }
 
-    @Override protected Statement methodInvoker(FrameworkMethod method, Object test) {
+    @Override protected Statement methodInvoker(
+        FrameworkMethod frameworkMethod,
+        Object test) {
+
         return new Statement() {
             @Override public void evaluate() throws Throwable {
-                method.invokeExplosively(test, args);
+                frameworkMethod.invokeExplosively(test, args);
             }
         };
     }

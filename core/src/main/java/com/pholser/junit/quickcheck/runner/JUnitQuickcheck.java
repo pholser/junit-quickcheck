@@ -34,11 +34,6 @@ import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -52,13 +47,14 @@ import org.slf4j.LoggerFactory;
  *
  * <p>When this runner runs a given test class, it regards only
  * {@code public} instance methods with a return type of {@code void} that are
- * marked with either the {@link Property} annotation or the {@code Test}
- * annotation.</p>
+ * marked with either the {@link com.pholser.junit.quickcheck.Property}
+ * annotation or the {@code org.junit.Test} annotation.</p>
  *
- * <p>This runner honors {@link Rule}, {@link Before}, {@link After},
- * {@link BeforeClass}, and {@link AfterClass}. Their execution is wrapped
- * around the verification of a property or execution of a test in the
- * expected order.</p>
+ * <p>This runner honors {@link org.junit.Rule}, {@link org.junit.Before},
+ * {@link org.junit.After}, {@link org.junit.BeforeClass}, and
+ * {@link org.junit.AfterClass}. Their execution is wrapped around the
+ * verification of a property or execution of a test in the expected
+ * order.</p>
  */
 public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     private final GeneratorRepository repo;

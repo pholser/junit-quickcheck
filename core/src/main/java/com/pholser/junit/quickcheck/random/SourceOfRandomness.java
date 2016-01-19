@@ -25,16 +25,15 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import com.pholser.junit.quickcheck.internal.Ranges;
-
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Random;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
-import static com.pholser.junit.quickcheck.internal.Ranges.choose;
+import com.pholser.junit.quickcheck.internal.Ranges;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
  * A source of randomness, fed to

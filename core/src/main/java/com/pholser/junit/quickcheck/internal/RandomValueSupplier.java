@@ -25,6 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.util.List;
+import java.util.Random;
+
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.RandomTheoryParameterGenerator;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
@@ -33,9 +36,6 @@ import org.junit.contrib.theories.ParameterSignature;
 import org.junit.contrib.theories.ParameterSupplier;
 import org.junit.contrib.theories.PotentialAssignment;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Random;
 
 @Deprecated
 public class RandomValueSupplier extends ParameterSupplier {

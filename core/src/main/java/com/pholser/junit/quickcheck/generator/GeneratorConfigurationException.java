@@ -22,15 +22,14 @@
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.pholser.junit.quickcheck.generator;
 
-import java.lang.reflect.AnnotatedType;
+package com.pholser.junit.quickcheck.generator;
 
 /**
  * Raised if a problem arises when attempting to configure a generator with
  * annotations from a property parameter.
  *
- * @see Generator#configure(AnnotatedType)
+ * @see Generator#configure(java.lang.reflect.AnnotatedType)
  */
 public class GeneratorConfigurationException extends RuntimeException {
     public GeneratorConfigurationException(String message) {

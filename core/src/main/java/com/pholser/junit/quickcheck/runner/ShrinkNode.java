@@ -36,22 +36,13 @@ import org.junit.runners.model.TestClass;
 
 import static java.util.Arrays.*;
 
-class ShrinkNode {
+final class ShrinkNode {
     private final FrameworkMethod method;
     private final TestClass testClass;
     private final List<PropertyParameterGenerationContext> params;
     private final Object[] args;
     private final int argIndex;
     private final int depth;
-
-    static ShrinkNode root(
-        FrameworkMethod method,
-        TestClass testClass,
-        List<PropertyParameterGenerationContext> params,
-        Object[] args) {
-
-        return new ShrinkNode(method, testClass, params, args, 0, 0);
-    }
 
     private ShrinkNode(
         FrameworkMethod method,
@@ -67,6 +58,15 @@ class ShrinkNode {
         this.args = args;
         this.argIndex = argIndex;
         this.depth = depth;
+    }
+
+    static ShrinkNode root(
+        FrameworkMethod method,
+        TestClass testClass,
+        List<PropertyParameterGenerationContext> params,
+        Object[] args) {
+
+        return new ShrinkNode(method, testClass, params, args, 0, 0);
     }
 
     List<ShrinkNode> shrinks() {

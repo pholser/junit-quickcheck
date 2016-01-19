@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import com.pholser.junit.quickcheck.ForAll;
-
 import java.lang.reflect.AnnotatedElement;
+
+import com.pholser.junit.quickcheck.ForAll;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 

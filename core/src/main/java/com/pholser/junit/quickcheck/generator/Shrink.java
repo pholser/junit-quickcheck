@@ -1,5 +1,3 @@
-package com.pholser.junit.quickcheck.generator;
-
 /*
  The MIT License
 
@@ -24,6 +22,8 @@ package com.pholser.junit.quickcheck.generator;
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
+package com.pholser.junit.quickcheck.generator;
 
 import java.util.List;
 

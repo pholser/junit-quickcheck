@@ -38,12 +38,13 @@ import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.util.stream.StreamSupport.*;
+
 import static com.pholser.junit.quickcheck.internal.Lists.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
-import static java.util.stream.StreamSupport.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
@@ -62,11 +63,11 @@ public class ArrayGenerator extends Generator<Object> {
      * Tells this generator to produce values with a length within a specified
      * minimum and/or maximum, inclusive, chosen with uniform distribution.
      *
-     * @param lengthRange annotation that gives the length constraints
+     * @param size annotation that gives the length constraints
      */
-    public void configure(Size lengthRange) {
-        this.lengthRange = lengthRange;
-        checkRange(INTEGRAL, lengthRange.min(), lengthRange.max());
+    public void configure(Size size) {
+        this.lengthRange = size;
+        checkRange(INTEGRAL, size.min(), size.max());
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {

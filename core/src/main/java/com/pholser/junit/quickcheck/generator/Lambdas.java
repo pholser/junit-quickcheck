@@ -34,9 +34,10 @@ import java.util.Random;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.System.*;
 import static java.lang.reflect.Proxy.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Helper class for creating instances of "functional interfaces".

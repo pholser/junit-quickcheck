@@ -25,19 +25,19 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
-import com.pholser.junit.quickcheck.internal.Items;
-import com.pholser.junit.quickcheck.internal.Weighted;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
+import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Weighted;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class CompositeGenerator extends Generator<Object> {
     private final List<Weighted<Generator<?>>> composed;
