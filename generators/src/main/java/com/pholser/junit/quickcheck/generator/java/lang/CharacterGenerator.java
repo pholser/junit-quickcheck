@@ -33,8 +33,9 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@code char} or {@link Character}.
