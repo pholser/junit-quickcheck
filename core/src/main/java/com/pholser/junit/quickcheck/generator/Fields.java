@@ -30,7 +30,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -74,10 +73,8 @@ public class Fields<T> extends Generator<T> {
         Class<T> type = types().get(0);
         Object generated = instantiate(type);
 
-        for (Field each : fields) {
-            ParameterTypeContext parameter = parameterContext(each);
-            setField(each, generated, generatorFor(parameter).generate(random, status), true);
-        }
+        for (Field each : fields)
+            setField(each, generated, generatorFor(each).generate(random, status), true);
 
         return type.cast(generated);
     }
@@ -91,7 +88,7 @@ public class Fields<T> extends Generator<T> {
 
         fieldGenerators.clear();
         for (Field each : fields)
-            fieldGenerators.add(generatorFor(parameterContext(each)));
+            fieldGenerators.add(generatorFor(each));
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -99,13 +96,5 @@ public class Fields<T> extends Generator<T> {
 
         for (int i = 0; i < fields.size(); ++i)
             fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());
-    }
-
-    private ParameterTypeContext parameterContext(Field field) {
-        return new ParameterTypeContext(
-            field.getName(),
-            field.getAnnotatedType(),
-            field.getDeclaringClass().getName())
-            .annotate(field);
     }
 }

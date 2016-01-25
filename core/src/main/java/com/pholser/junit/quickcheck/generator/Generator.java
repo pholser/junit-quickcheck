@@ -28,7 +28,9 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -336,8 +338,26 @@ public abstract class Generator<T> implements Shrink<T> {
         repo = provided;
     }
 
-    Generator<?> generatorFor(ParameterTypeContext parameter) {
+    protected Generator<?> generatorFor(ParameterTypeContext parameter) {
         return repo.produceGenerator(parameter);
+    }
+
+    protected Generator<?> generatorFor(Parameter parameter) {
+        return repo.produceGenerator(
+            new ParameterTypeContext(
+                parameter.getName(),
+                parameter.getAnnotatedType(),
+                parameter.getDeclaringExecutable().getName()
+            ).annotate(parameter));
+    }
+
+    protected Generator<?> generatorFor(Field field) {
+        return repo.produceGenerator(
+            new ParameterTypeContext(
+                field.getName(),
+                field.getAnnotatedType(),
+                field.getDeclaringClass().getName()
+            ).annotate(field));
     }
 
     /**

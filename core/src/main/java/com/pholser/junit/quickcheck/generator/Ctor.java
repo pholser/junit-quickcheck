@@ -31,7 +31,6 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -80,7 +79,7 @@ public class Ctor<T> extends Generator<T> {
 
         parameterGenerators.clear();
         for (Parameter each : parameters)
-            parameterGenerators.add(generatorFor(parameterTypeContext(each)));
+            parameterGenerators.add(generatorFor(each));
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -97,13 +96,5 @@ public class Ctor<T> extends Generator<T> {
             args[i] = parameterGenerators.get(i).generate(random, status);
 
         return args;
-    }
-
-    private ParameterTypeContext parameterTypeContext(Parameter parameter) {
-        return new ParameterTypeContext(
-            parameter.getName(),
-            parameter.getAnnotatedType(),
-            single.getName())
-            .annotate(parameter);
     }
 }
