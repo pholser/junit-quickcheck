@@ -53,13 +53,8 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
  * {@link java.util.ServiceLoader} mechanism.</p>
  *
- * @deprecated This was introduced to alleviate the difficulties of old
- * {@link org.junit.contrib.theories.Theory} methods with many parameters,
- * and will likely go away.
- *
  * @param <T> the type of objects generated
  */
-@Deprecated
 public class Fields<T> extends Generator<T> {
     private final List<Field> fields;
     private final List<Generator<?>> fieldGenerators = new ArrayList<>();

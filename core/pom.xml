@@ -20,11 +20,6 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.junit.contrib</groupId>
-            <artifactId>junit-theories</artifactId>
-            <version>5.0-alpha-3</version>
-        </dependency>
-        <dependency>
             <groupId>org.javaruntype</groupId>
             <artifactId>javaruntype</artifactId>
             <version>1.2</version>
