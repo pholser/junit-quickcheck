@@ -59,6 +59,19 @@ public class ReflectionTest {
         assertNull(findConstructor(Integer.class, Object.class));
     }
 
+    @Test public void findingDeclaredConstructorQuietly() {
+        Constructor<Integer> ctor = findDeclaredConstructor(Integer.class, int.class);
+
+        assertEquals(int.class, ctor.getParameterTypes()[0]);
+    }
+
+    @Test public void findingDeclaredConstructorQuietlyWhenNoSuchConstructor() {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(NoSuchMethodException.class.getName());
+
+        assertNull(findDeclaredConstructor(Integer.class, Object.class));
+    }
+
     @Test public void findingSingleAccessibleConstructorSuccessfully() {
         Constructor<Object> ctor = singleAccessibleConstructor(Object.class);
 
@@ -316,6 +329,19 @@ public class ReflectionTest {
         assertEquals(2, fields.size());
         assertThat(fields, hasItem(Child.class.getDeclaredField("s")));
         assertThat(fields, hasItem(Parent.class.getDeclaredField("i")));
+    }
+
+    @Test public void findingField() {
+        Field i = findField(Parent.class, "i");
+
+        assertEquals(int.class, i.getType());
+    }
+
+    @Test public void findingNonExistentField() {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(NoSuchFieldException.class.getName());
+
+        findField(Parent.class, "missing");
     }
 
     public static class Parent {

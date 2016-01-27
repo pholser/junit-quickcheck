@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -77,11 +78,11 @@ public class CompositeGenerator extends Generator<Object> {
         return composed.size();
     }
 
-    @Override public void provideRepository(GeneratorRepository provided) {
-        super.provideRepository(provided);
+    @Override public void provide(Generators provided) {
+        super.provide(provided);
 
         for (Weighted<Generator<?>> each : composed)
-            each.item.provideRepository(provided);
+            each.item.provide(provided);
     }
 
     @Override public void configure(AnnotatedType annotatedType) {

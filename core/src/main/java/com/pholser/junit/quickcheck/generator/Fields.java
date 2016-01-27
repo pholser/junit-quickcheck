@@ -30,7 +30,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -45,8 +44,8 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * accessible zero-arg constructor.</p>
  *
  * <p>If a field is marked with an annotation that influences the generation of
- * a given kind of value, it will be applied to the generation of values for
- * that field.</p>
+ * a given kind of value, that annotation will be applied to the generation of
+ * values for that field.</p>
  *
  * <p>This generator is intended to be used with
  * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
@@ -74,7 +73,7 @@ public class Fields<T> extends Generator<T> {
         Object generated = instantiate(type);
 
         for (Field each : fields)
-            setField(each, generated, generatorFor(each).generate(random, status), true);
+            setField(each, generated, gen().field(each).generate(random, status), true);
 
         return type.cast(generated);
     }
@@ -83,12 +82,12 @@ public class Fields<T> extends Generator<T> {
         return false;
     }
 
-    @Override public void provideRepository(GeneratorRepository provided) {
-        super.provideRepository(provided);
+    @Override public void provide(Generators provided) {
+        super.provide(provided);
 
         fieldGenerators.clear();
         for (Field each : fields)
-            fieldGenerators.add(generatorFor(each));
+            fieldGenerators.add(gen().field(each));
     }
 
     @Override public void configure(AnnotatedType annotatedType) {

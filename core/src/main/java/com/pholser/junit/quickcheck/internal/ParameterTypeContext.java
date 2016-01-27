@@ -113,6 +113,16 @@ public class ParameterTypeContext {
         this.typeVariables = typeVariables;
     }
 
+    public ParameterTypeContext(Type type) {
+        this(
+            type.getTypeName(),
+            null,
+            type.getTypeName(),
+            Types.forJavaLangReflectType(type),
+            emptyMap()
+        );
+    }
+
     private static Map<String, org.javaruntype.type.Type<?>> toTokens(
         Map<String, Type> typeVariables) {
 
