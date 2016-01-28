@@ -108,38 +108,11 @@ public class GeneratorRepository implements Generators {
         forType.add(generator);
     }
 
-    /**
-     * <p>Gives a generator that can produce an instance of the type described
-     * by the field with the given name and containing type.</p>
-     *
-     * <p>If the field is marked with an annotation that influences the
-     * generation of a given kind of value, that annotation will be applied to
-     * the resulting generator's values.</p>
-     *
-     * @param type containing type for a field
-     * @param fieldName name of a field
-     * @return generator that can produce values of the field's type
-     */
-    public Generator<?> field(Class<?> type, String fieldName) {
+    @Override public Generator<?> field(Class<?> type, String fieldName) {
         return field(findField(type, fieldName));
     }
 
-    /**
-     * <p>Gives a generator that can produce an instance of the type described
-     * by a constructor of a given type that accepts the given types of
-     * arguments. It will generate values for the parameters of the given
-     * constructor, and then invoke the constructor.</p>
-     *
-     * <p>If the constructor's parameters are marked with annotations that
-     * influence the generation of a given kind of value, those annotations
-     * will be applied to the generators that will produce values to be used
-     * as arguments to the constructor.</p>
-     *
-     * @param type containing type for a constructor
-     * @param argumentTypes types of arguments to the constructor
-     * @return generator that can produce values using the constructor
-     */
-    public <U> Generator<U> constructor(
+    @Override public <U> Generator<U> constructor(
         Class<U> type,
         Class<?>... argumentTypes) {
 
@@ -157,22 +130,7 @@ public class GeneratorRepository implements Generators {
         return ctor;
     }
 
-    /**
-     * <p>Gives a a generator that can produce an instance of the given type
-     * by reflecting the class's fields on up its class hierarchy and
-     * generating random values for them.</p>
-     *
-     * <p>The given type must have an accessible zero-arg constructor.</p>
-     *
-     * <p>If a field of the given type is marked with an annotation that
-     * influences the generation of a given kind of value, that annotation
-     * will be applied to the generation of values for that field.</p>
-     *
-     * @param <U> type of object produced by the resulting generator
-     * @param type a type
-     * @return generator that can produce values of that type
-     */
-    public final <U> Generator<U> fieldsOf(Class<U> type) {
+    @Override public <U> Generator<U> fieldsOf(Class<U> type) {
         Fields<U> fields = new Fields<>(type);
 
         fields.provide(this);
@@ -182,12 +140,12 @@ public class GeneratorRepository implements Generators {
     }
 
     @SuppressWarnings("unchecked")
-    public final <T> Generator<T> type(Class<T> type) {
-        return (Generator<T>) type(new ParameterTypeContext(type));
+    @Override public <T> Generator<T> type(Class<T> type) {
+        return (Generator<T>) produceGenerator(new ParameterTypeContext(type));
     }
 
-    public final Generator<?> parameter(Parameter parameter) {
-        return type(
+    @Override public Generator<?> parameter(Parameter parameter) {
+        return produceGenerator(
             new ParameterTypeContext(
                 parameter.getName(),
                 parameter.getAnnotatedType(),
@@ -195,17 +153,13 @@ public class GeneratorRepository implements Generators {
             ).annotate(parameter));
     }
 
-    public Generator<?> field(Field field) {
-        return type(
+    @Override public Generator<?> field(Field field) {
+        return produceGenerator(
             new ParameterTypeContext(
                 field.getName(),
                 field.getAnnotatedType(),
                 field.getDeclaringClass().getName()
             ).annotate(field));
-    }
-
-    private Generator<?> type(ParameterTypeContext parameter) {
-        return produceGenerator(parameter);
     }
 
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {
