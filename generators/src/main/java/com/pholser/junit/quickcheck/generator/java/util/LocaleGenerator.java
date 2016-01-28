@@ -42,6 +42,6 @@ public class LocaleGenerator extends Generator<Locale> {
     }
 
     @Override public Locale generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.nextElement(getAvailableLocales());
+        return random.choose(getAvailableLocales());
     }
 }

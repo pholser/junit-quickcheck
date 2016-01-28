@@ -241,7 +241,7 @@ public class SourceOfRandomness {
         if (comparison == 0)
             return min;
 
-        return choose(this, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
+        return Ranges.choose(this, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
     }
 
     /**
@@ -312,13 +312,27 @@ public class SourceOfRandomness {
         return Duration.ofSeconds(next[0], next[1]);
     }
 
+    /**
+     * Gives a random element of the given collection.
+     *
+     * @param <T> type of items in the collection
+     * @param items a collection
+     * @return a randomly chosen element from the collection
+     */
     @SuppressWarnings("unchecked")
-    public <T> T nextElement(Collection<T> items) {
+    public <T> T choose(Collection<T> items) {
         Object[] array = items.toArray(new Object[items.size()]);
         return (T) array[nextInt(array.length)];
     }
 
-    public <T> T nextElement(T[] items) {
+    /**
+     * Gives a random element of the given array.
+     *
+     * @param <T> type of items in the array
+     * @param items an array
+     * @return a randomly chosen element from the array
+     */
+    public <T> T choose(T[] items) {
         return items[nextInt(items.length)];
     }
 
@@ -335,7 +349,7 @@ public class SourceOfRandomness {
             .multiply(NANOS_PER_SECOND)
             .add(BigInteger.valueOf(maxNanos));
 
-        BigInteger[] generated = choose(this, nanoMin, nanoMax)
+        BigInteger[] generated = Ranges.choose(this, nanoMin, nanoMax)
             .divideAndRemainder(NANOS_PER_SECOND);
 
         return new long[] { generated[0].longValue(), generated[1].longValue() };

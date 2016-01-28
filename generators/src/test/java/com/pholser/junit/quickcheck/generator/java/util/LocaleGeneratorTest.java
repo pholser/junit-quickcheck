@@ -40,7 +40,7 @@ public class LocaleGeneratorTest extends BasicGeneratorTheoryParameterTest {
     private static final Locale[] LOCALES = Locale.getAvailableLocales();
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextElement(LOCALES))
+        when(randomForParameterGenerator.choose(LOCALES))
             .thenReturn(LOCALES[1]).thenReturn(LOCALES[0]).thenReturn(LOCALES[2]);
     }
 
@@ -53,6 +53,6 @@ public class LocaleGeneratorTest extends BasicGeneratorTheoryParameterTest {
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextElement(LOCALES);
+        verify(randomForParameterGenerator, times(3)).choose(LOCALES);
     }
 }

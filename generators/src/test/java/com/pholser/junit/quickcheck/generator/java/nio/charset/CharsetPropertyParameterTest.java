@@ -41,7 +41,7 @@ public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParamete
         new ArrayList<>(Charset.availableCharsets().keySet());
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextElement(Charset.availableCharsets().keySet()))
+        when(randomForParameterGenerator.choose(Charset.availableCharsets().keySet()))
             .thenReturn(CHARSET_NAMES.get(2))
             .thenReturn(CHARSET_NAMES.get(0))
             .thenReturn(CHARSET_NAMES.get(1));
@@ -60,6 +60,6 @@ public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParamete
 
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator, times(3))
-            .nextElement(Charset.availableCharsets().keySet());
+            .choose(Charset.availableCharsets().keySet());
     }
 }

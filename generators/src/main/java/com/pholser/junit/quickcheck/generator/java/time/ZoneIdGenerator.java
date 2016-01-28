@@ -42,6 +42,6 @@ public class ZoneIdGenerator extends Generator<ZoneId> {
     }
 
     @Override public ZoneId generate(SourceOfRandomness random, GenerationStatus status) {
-        return ZoneId.of(random.nextElement(getAvailableZoneIds()));
+        return ZoneId.of(random.choose(getAvailableZoneIds()));
     }
 }
