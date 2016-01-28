@@ -1,6 +1,6 @@
 # Supported types
 
-Out of the box (core + generators), junit-quickcheck recognizes property
+"Out of the box" (core + generators), junit-quickcheck recognizes property
 parameters of the following types:
 
 * all Java primitives and primitive wrappers

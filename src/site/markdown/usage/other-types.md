@@ -8,6 +8,15 @@ one on every generation with probability in proportion to its `frequency`
 attribute (default is 1).
 
 ```java
+    public class Version5 extends Generator<UUID> {
+        @Override public UUID generate(
+            SourceOfRandomness r,
+            GenerationStatus status) {
+
+            // ...
+        }
+    }
+
     @RunWith(JUnitQuickcheck.class)
     public class IdentificationProperties {
         @Property public void shouldHold(@From(Version5.class) UUID u) {

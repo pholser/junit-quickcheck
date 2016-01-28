@@ -59,9 +59,9 @@ and to validate those statements against lots of randomly generated inputs.
 junit-quickcheck began its life as a library that supplies JUnit
 theories with random values with which to test the validity of the theories.
 
-In this original incarnation, junit-quickcheck leveraged the
-`ParameterSupplier` feature of the JUnit theories machinery, via the
-annotation `@ForAll` marking theory parameters.
+Prior to version 0.6, junit-quickcheck leveraged the `ParameterSupplier`
+feature of the JUnit theories machinery, via the annotation `@ForAll` marking
+theory parameters.
 
 By default, when the `Theories` runner executes a theory, it attempts to
 scrape _data points_ off the theory class to feed to the theories. Data points
