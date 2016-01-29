@@ -1,5 +1,7 @@
 # Generating values of other types
 
+## Explicit generators
+
 To generate random values for property parameters of other types, or to
 override the default means of generation for a supported type, mark the
 property parameter with `@From` and supply the class of the `Generator` to be
@@ -25,7 +27,9 @@ attribute (default is 1).
     }
 ```
 
-To add a generator for a type without having to use `@From`, you can package it
+## Implied generators via `ServiceLoader`
+
+To use a generator for a type without having to use `@From`, you can package it
 in a [ServiceLoader]
 (http://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
 JAR file and place the JAR on the class path. junit-quickcheck will make
