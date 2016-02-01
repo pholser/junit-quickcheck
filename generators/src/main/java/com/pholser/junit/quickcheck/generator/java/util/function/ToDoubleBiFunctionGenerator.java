@@ -29,7 +29,6 @@ import java.util.function.ToDoubleBiFunction;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
@@ -41,15 +40,13 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <U> type of second parameter of produced function
  */
 public class ToDoubleBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToDoubleBiFunction> {
-    private final DoubleGenerator doubleGenerator = new DoubleGenerator();
-
     public ToDoubleBiFunctionGenerator() {
         super(ToDoubleBiFunction.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override public ToDoubleBiFunction<T, U> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(ToDoubleBiFunction.class, doubleGenerator, status);
+        return makeLambda(ToDoubleBiFunction.class, gen().type(double.class), status);
     }
 
     @Override public int numberOfNeededComponents() {
