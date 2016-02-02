@@ -8,3 +8,4 @@ Java or Scala code using Scala.
 * [fj.test package of FunctionalJava (formerly Reductio)]
 (http://functionaljava.org/)
 * [JCheck](http://www.jcheck.org/)
+* [QuickTheories](https://github.com/NCR-CoDE/QuickTheories)
