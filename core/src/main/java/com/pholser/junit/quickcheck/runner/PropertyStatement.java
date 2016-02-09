@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.pholser.junit.quickcheck.OnFailingSetHook;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
@@ -80,11 +81,13 @@ class PropertyStatement extends Statement {
     @Override public void evaluate() throws Throwable {
         Property marker = method.getAnnotation(Property.class);
         int trials = marker.trials();
+        OnFailingSetHook onFailingSetHook = marker.onFailingSet().newInstance();
         ShrinkControl shrinkControl = new ShrinkControl(
             marker.shrink(),
             marker.maxShrinks(),
             marker.maxShrinkDepth(),
-            marker.maxShrinkTime());
+            marker.maxShrinkTime(),
+            onFailingSetHook::handle);
 
         List<PropertyParameterGenerationContext> params = parameters(trials);
 
@@ -119,8 +122,10 @@ class PropertyStatement extends Statement {
             s -> ++successes,
             assumptionViolations::add,
             e -> {
-                if (!shrinkControl.shouldShrink())
+                if (!shrinkControl.shouldShrink()) {
+                    shrinkControl.onFailingSetHook().accept(args);
                     throw e;
+                }
 
                 try {
                     shrink(params, args, shrinkControl, e);
@@ -146,7 +151,8 @@ class PropertyStatement extends Statement {
             failure,
             shrinkControl.maxShrinks(),
             shrinkControl.maxShrinkDepth(),
-            shrinkControl.maxShrinkTime())
+            shrinkControl.maxShrinkTime(),
+            shrinkControl.onFailingSetHook())
             .shrink(params, args);
     }
 

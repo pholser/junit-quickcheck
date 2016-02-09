@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.util.List;
 import java.util.Stack;
+import java.util.function.Consumer;
 
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
@@ -41,6 +42,7 @@ class Shrinker {
     private final int maxShrinkTime;
     private int shrinkAttempts;
     private long shrinkTimeout;
+    private final Consumer<Object[]> onFailingSetHook;
 
     Shrinker(
         FrameworkMethod method,
@@ -48,7 +50,8 @@ class Shrinker {
         AssertionError failure,
         int maxShrinks,
         int maxShrinkDepth,
-        int maxShrinkTime) {
+        int maxShrinkTime,
+        Consumer<Object[]> onFailingSetHook) {
 
         this.method = method;
         this.testClass = testClass;
@@ -56,6 +59,7 @@ class Shrinker {
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
         this.maxShrinkTime = maxShrinkTime;
+        this.onFailingSetHook = onFailingSetHook;
     }
 
     void shrink(List<PropertyParameterGenerationContext> params, Object[] args)
@@ -90,6 +94,7 @@ class Shrinker {
             }
         }
 
+        onFailingSetHook.accept(args);
         throw smallestFailure.fail(failure);
     }
 

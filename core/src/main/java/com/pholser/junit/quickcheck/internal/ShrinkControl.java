@@ -25,17 +25,22 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import java.util.function.Consumer;
+
 public class ShrinkControl {
     private final boolean shouldShrink;
     private final int maxShrinks;
     private final int maxShrinkDepth;
     private final int maxShrinkTime;
+    private final Consumer<Object[]> onFailingSetHook;
 
-    public ShrinkControl(boolean shouldShrink, int maxShrinks, int maxShrinkDepth, int maxShrinkTime) {
+    public ShrinkControl(boolean shouldShrink, int maxShrinks, int maxShrinkDepth, int maxShrinkTime,
+                         Consumer<Object[]> onFailingSetHook) {
         this.shouldShrink = shouldShrink;
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
         this.maxShrinkTime = maxShrinkTime;
+        this.onFailingSetHook = onFailingSetHook;
     }
 
     public boolean shouldShrink() {
@@ -52,5 +57,9 @@ public class ShrinkControl {
 
     public int maxShrinkTime() {
         return maxShrinkTime;
+    }
+
+    public Consumer<Object[]> onFailingSetHook() {
+        return onFailingSetHook;
     }
 }

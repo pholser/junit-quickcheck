@@ -75,4 +75,10 @@ public @interface Property {
      * milliseconds; in effect only when {@link #shrink()} is {@code true}
      */
     int maxShrinkTime() default 60_000;
+
+    /**
+     * @return callback that it is executed if a minimal counter example is found
+     * (after shrinking)
+     */
+    Class<? extends OnFailingSetHook> onFailingSet() default DisableOnFailingSetHook.class;
 }
