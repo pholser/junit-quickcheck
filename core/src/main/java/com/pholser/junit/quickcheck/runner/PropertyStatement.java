@@ -121,9 +121,9 @@ class PropertyStatement extends Statement {
             args,
             s -> ++successes,
             assumptionViolations::add,
-            e -> {
+            (e, repeatTestOption) -> {
                 if (!shrinkControl.shouldShrink()) {
-                    shrinkControl.onFailingSetHook().accept(args);
+                    shrinkControl.onFailingSetHook().handle(args, repeatTestOption);
                     throw e;
                 }
 

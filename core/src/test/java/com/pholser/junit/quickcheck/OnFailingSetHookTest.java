@@ -31,6 +31,11 @@ import static org.junit.Assume.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +55,7 @@ public class OnFailingSetHookTest {
         }
 
         @Override
-        public void handle(Object[] counterExample) {
+        public void handle(Object[] counterExample, Runnable repeatTestOption) {
             this.counterExample = counterExample;
             this.counter++;
         }
@@ -117,4 +122,83 @@ public class OnFailingSetHookTest {
             assertThat(f.i(), lessThan(Integer.MAX_VALUE / 2));
         }
     }
+
+    @Test public void shouldBeAbleToRepeatFailedTestsWithShrinkingEnabled() throws Exception {
+        assumeThat(FailingTestWhichIsRepeatedThreeTimesAfterFailure.calls, iterableWithSize(0));
+        assumeThat(
+                testResult(FailingTestWhichIsRepeatedThreeTimesAfterFailure.class),
+                not(isSuccessful()));
+
+        List<Integer> calls = FailingTestWhichIsRepeatedThreeTimesAfterFailure.calls;
+        assertThat(calls.size(), greaterThanOrEqualTo(3));
+
+        // at least the last three calls should be equal
+        assertEquals(calls.get(calls.size() - 1), calls.get(calls.size() - 2));
+        assertEquals(calls.get(calls.size() - 1), calls.get(calls.size() - 3));
+    }
+
+    public static class RepeatFailingTestThreeTimes implements OnFailingSetHook {
+
+        @Override
+        public void handle(Object[] counterExample, Runnable repeatTestOption) {
+            for (int i = 0; i < 3; i++) {
+                try {
+                    repeatTestOption.run();
+                } catch (Exception | AssertionError e) {}
+            }
+        }
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class FailingTestWhichIsRepeatedThreeTimesAfterFailure {
+
+        static List<Integer> calls = new ArrayList<>();
+
+        static void reset() {
+            calls = new ArrayList<>();
+        }
+
+        @Property(onFailingSet = RepeatFailingTestThreeTimes.class)
+        public void shouldHold(Foo f) {
+            calls.add(f.i());
+            fail();
+        }
+    }
+
+    @Before public void resetFailingTestWhichIsRepeatedThreeTimesAfterFailure() {
+        FailingTestWhichIsRepeatedThreeTimesAfterFailure.reset();
+    }
+
+    @Test public void shouldBeAbleToRepeatFailedTestsWithShrinkingDisabled() throws Exception {
+        assumeThat(FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.calls, iterableWithSize(0));
+        assumeThat(
+                testResult(FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.class),
+                not(isSuccessful()));
+
+        // should result in four identical calls (the first try immediately fails, followed by three repetitions)
+        List<Integer> calls = FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.calls;
+        assertEquals(4, calls.size());
+        assertEquals(1, new HashSet<>(calls).size());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking {
+
+        static List<Integer> calls = new ArrayList<>();
+
+        static void reset() {
+            calls = new ArrayList<>();
+        }
+
+        @Property(onFailingSet = RepeatFailingTestThreeTimes.class, shrink = false)
+        public void shouldHold(Foo f) {
+            calls.add(f.i());
+            fail();
+        }
+    }
+
+    @Before public void resetFailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking() {
+        FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.reset();
+    }
+
 }

@@ -31,6 +31,8 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
+import com.pholser.junit.quickcheck.hook.DisableOnFailingSetHook;
+
 /**
  * <p>Mark a method on a class that is {@linkplain org.junit.runner.RunWith
  * run with} the {@link com.pholser.junit.quickcheck.runner.JUnitQuickcheck}

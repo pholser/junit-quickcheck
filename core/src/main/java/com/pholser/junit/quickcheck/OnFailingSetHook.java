@@ -10,7 +10,9 @@ public interface OnFailingSetHook {
 
     /**
      * @param counterExample the minimal counter example (after shrinking)
+     * @param repeatTestOption allows to repeat the test with the minimal counter example
+     * (can be safely called multiple times)
      */
-    void handle(Object[] counterExample);
+    void handle(Object[] counterExample, Runnable repeatTestOption);
 
 }

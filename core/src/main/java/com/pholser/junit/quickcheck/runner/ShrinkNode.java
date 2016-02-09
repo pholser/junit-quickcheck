@@ -60,6 +60,10 @@ final class ShrinkNode {
         this.depth = depth;
     }
 
+    Object[] getArgs() {
+        return args;
+    }
+
     static ShrinkNode root(
         FrameworkMethod method,
         TestClass testClass,
@@ -116,7 +120,7 @@ final class ShrinkNode {
             args,
             s -> result[0] = true,
             v -> result[0] = true,
-            e -> result[0] = false);
+            (e, repeatTestOption) -> result[0] = false);
     }
 
     private ShrinkNode shrinkNodeFor(Object shrunk) {
