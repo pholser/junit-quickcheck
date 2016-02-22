@@ -113,7 +113,9 @@ public class ArrayGenerator extends Generator<Object> {
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        component.configure(annotatedComponentTypes(annotatedType).get(0));
+        List<AnnotatedType> annotated = annotatedComponentTypes(annotatedType);
+        if (!annotated.isEmpty())
+            component.configure(annotated.get(0));
     }
 
     private int length(SourceOfRandomness random, GenerationStatus status) {

@@ -214,4 +214,85 @@ public class ComposedObjectsTest {
         @Property public void holds(@From(MakeA.class) A a) {
         }
     }
+
+    @Test
+    public void askingForArrayGenerator() {
+        assertThat(testResult(AskingForArrayGenerator.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class AskingForArrayGenerator {
+        static class A {
+            Foo[][] foos;
+        }
+
+        public static class MakeA extends Generator<A> {
+            public MakeA() {
+                super(A.class);
+            }
+
+            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+                A a = new A();
+                a.foos = gen().type(Foo[][].class).generate(random, status);
+                return a;
+            }
+        }
+
+        @Property public void holds(@From(MakeA.class) A a) {
+        }
+    }
+
+    @Test
+    public void askingForRawComponentizedType() {
+        assertThat(testResult(AskingForRawComponentizedType.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class AskingForRawComponentizedType {
+        static class A {
+            Box b;
+        }
+
+        public static class MakeA extends Generator<A> {
+            public MakeA() {
+                super(A.class);
+            }
+
+            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+                A a = new A();
+                a.b = gen().type(Box.class).generate(random, status);
+                return a;
+            }
+        }
+
+        @Property public void holds(@From(MakeA.class) A a) {
+        }
+    }
+
+    @Test
+    public void askingForArrayOfRawComponentizedType() {
+        assertThat(testResult(AskingForArrayOfRawComponentizedType.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class AskingForArrayOfRawComponentizedType {
+        static class A {
+            Box[] b;
+        }
+
+        public static class MakeA extends Generator<A> {
+            public MakeA() {
+                super(A.class);
+            }
+
+            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+                A a = new A();
+                a.b = gen().type(Box[].class).generate(random, status);
+                return a;
+            }
+        }
+
+        @Property public void holds(@From(MakeA.class) A a) {
+        }
+    }
 }

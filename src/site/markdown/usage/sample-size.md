@@ -2,7 +2,7 @@
 
 By default, junit-quickcheck generates 100 sets of random values for the
 parameter list of a property. To change this value, use the `trials` attribute
-of the `@Property` annotation:
+of the `@Property` annotation.
 
 ```java
     @RunWith(JUnitQuickcheck.class)

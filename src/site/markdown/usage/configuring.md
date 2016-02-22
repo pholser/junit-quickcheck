@@ -4,7 +4,7 @@ If you mark a property parameter with an annotation that is itself marked as
 `@GeneratorConfiguration`, then if the `Generator` for that parameter's type
 has a public method named `configure` that accepts a single argument of the
 annotation type, junit-quickcheck will call the `configure` method
-reflectively, passing it the annotation:
+reflectively, passing it the annotation.
 
 ```java
     @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
@@ -42,7 +42,7 @@ A `Generator` can have many such `configure` methods.
 
 ## Configuration on type uses
 
-Configuration annotations that can target type uses will be honored:
+Configuration annotations that can target type uses will be honored.
 
 ```java
     @RunWith(JUnitQuickcheck.class)
@@ -88,7 +88,7 @@ results.
 Configuration annotations that are directly on a property parameter, and any
 configuration annotations on annotations that are directly on a property
 parameter (and so on...) are collected to configure the generator(s) for the
-parameter:
+parameter.
 
 ```java
     @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
