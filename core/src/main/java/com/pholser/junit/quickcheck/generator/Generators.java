@@ -65,7 +65,7 @@ public interface Generators {
     <T> Generator<T> constructor(Class<T> type, Class<?>... argumentTypes);
 
     /**
-     * <p>Gives a a generator that can produce an instance of the given type
+     * <p>Gives a generator that can produce an instance of the given type
      * by reflecting the class's fields on up its class hierarchy and
      * generating random values for them.</p>
      *
@@ -90,7 +90,29 @@ public interface Generators {
      */
     <T> Generator<T> type(Class<T> type);
 
+    /**
+     * <p>Gives a generator that can produce instances of the type of the
+     * given reflected method parameter.</p>
+     *
+     * <p>If the parameter is marked with an annotation that influences the
+     * generation of its value, that annotation will be applied to the
+     * generation of values for that parameter's type.</p>
+     *
+     * @param parameter a reflected method parameter
+     * @return generator that can produce values of the parameter's type
+     */
     Generator<?> parameter(Parameter parameter);
 
+    /**
+     * <p>Gives a generator that can produce instances of the type of the
+     * given reflected field.</p>
+     *
+     * <p>If the field is marked with an annotation that influences the
+     * generation of its value, that annotation will be applied to the
+     * generation of values for that field's type.</p>
+     *
+     * @param field a reflected field
+     * @return generator that can produce values of the field's type
+     */
     Generator<?> field(Field field);
 }

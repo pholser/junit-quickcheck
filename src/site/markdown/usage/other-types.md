@@ -48,7 +48,6 @@ generators packaged in this way available for use. The generators in the module
 generators you supply and make available to the `ServiceLoader` complement
 these generators rather than override them.
 
-
 ## `Ctor`
 
 You can generate values for a type that has a single accessible constructor
@@ -59,14 +58,14 @@ by using the `Ctor` generator with `@From`.
         private final BigDecimal amount;
 
         public Money(BigDecimal amount) {
-            this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+           this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
 
         // ...
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public class Monies {
+    public class DollarsAndCentsProperties {
         @Property public void rounding(@From(Ctor.class) DollarsAndCents d) {
             // ...
         }
@@ -104,7 +103,7 @@ by using the `Fields` generator with `@From`.
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public class Counters {
+    public class CounterProperties {
         @Property public void incrementing(@From(Fields.class) Counter c) {
             int count = c.count();
             assertEquals(count + 1, c.increment().count());
