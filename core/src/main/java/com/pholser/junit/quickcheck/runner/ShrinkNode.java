@@ -41,7 +41,7 @@ final class ShrinkNode {
     private final TestClass testClass;
     private final List<PropertyParameterGenerationContext> params;
     private final Object[] args;
-    private final Long[] initialSeeds;
+    private final long[] initialSeeds;
     private final int argIndex;
     private final int depth;
 
@@ -50,7 +50,7 @@ final class ShrinkNode {
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        Long[] initialSeeds,
+        long[] initialSeeds,
         int argIndex,
         int depth) {
 
@@ -71,7 +71,8 @@ final class ShrinkNode {
         FrameworkMethod method,
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
-        Object[] args, Long[] initialSeeds) {
+        Object[] args,
+        long[] initialSeeds) {
 
         return new ShrinkNode(method, testClass, params, args, initialSeeds, 0, 0);
     }

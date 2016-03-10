@@ -124,7 +124,7 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         return successfulEvaluations + discards;
     }
 
-    public long getEffectiveSeed() {
+    public long effectiveSeed() {
         return random.seed();
     }
 

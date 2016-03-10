@@ -108,14 +108,14 @@ class PropertyStatement extends Statement {
 
         List<SeededValue> seededValues = argumentsFor(params);
         Object[] args = seededValues.stream().map(v -> v.value).toArray();
-        Long[] seeds = seededValues.stream().map(v -> v.seed).collect(Collectors.toList()).toArray(new Long[args.length]);
+        long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();
         property(params, args, seeds, shrinkControl).verify();
     }
 
     private PropertyVerifier property(
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        Long[] initialSeeds,
+        long[] initialSeeds,
         ShrinkControl shrinkControl)
         throws InitializationError {
 
@@ -146,7 +146,7 @@ class PropertyStatement extends Statement {
     private void shrink(
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        Long[] initialSeeds,
+        long[] initialSeeds,
         ShrinkControl shrinkControl,
         AssertionError failure)
         throws Throwable {
@@ -201,17 +201,25 @@ class PropertyStatement extends Statement {
 
     private List<SeededValue> argumentsFor(List<PropertyParameterGenerationContext> params) {
         return params.stream()
-            .map(p -> new SeededValue(p.generate(), p.getEffectiveSeed()))
+            .map(p -> new SeededValue(p.generate(), p.effectiveSeed()))
             .collect(toList());
     }
 
     private class SeededValue {
-        Object value;
-        Long seed;
+        private Object value;
+        private long seed;
 
-        public SeededValue(Object value, Long seed) {
+        public SeededValue(Object value, long seed) {
             this.value = value;
             this.seed = seed;
+        }
+
+        Object value() {
+            return value;
+        }
+
+        long seed() {
+            return seed;
         }
     }
 }

@@ -41,7 +41,7 @@ import static java.util.Arrays.*;
 class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final FrameworkMethod method;
     private final Object[] args;
-    private final Long[] initialSeeds;
+    private final long[] initialSeeds;
     private final Consumer<Void> onSuccess;
     private final Consumer<AssumptionViolatedException> onAssumptionViolated;
 
@@ -52,7 +52,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         TestClass clazz,
         FrameworkMethod method,
         Object[] args,
-        Long[] initialSeeds,
+        long[] initialSeeds,
         Consumer<Void> onSuccess,
         Consumer<AssumptionViolatedException> onAssumptionViolated,
         BiConsumer<AssertionError, Runnable> onFailure)

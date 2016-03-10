@@ -63,7 +63,7 @@ class Shrinker {
         this.onFailingSetHook = onFailingSetHook;
     }
 
-    void shrink(List<PropertyParameterGenerationContext> params, Object[] args, Long[] initialSeeds)
+    void shrink(List<PropertyParameterGenerationContext> params, Object[] args, long[] initialSeeds)
         throws Throwable {
 
         Stack<ShrinkNode> nodes = new Stack<>();
