@@ -124,6 +124,10 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         return successfulEvaluations + discards;
     }
 
+    public long getEffectiveSeed() {
+        return random.seed();
+    }
+
     public static class DiscardRatioExceededException extends RuntimeException {
         static final String MESSAGE_TEMPLATE =
             "For parameter [%s] with discard ratio [%d], %d unsuccessful values and %d successes"
