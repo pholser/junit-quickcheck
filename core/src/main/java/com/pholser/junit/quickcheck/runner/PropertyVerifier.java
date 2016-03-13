@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.runner;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.junit.AssumptionViolatedException;
@@ -42,7 +43,9 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final Object[] args;
     private final Consumer<Void> onSuccess;
     private final Consumer<AssumptionViolatedException> onAssumptionViolated;
-    private final Consumer<AssertionError> onFailure;
+
+    /** the exception plus the option to repeat the test */
+    private final BiConsumer<AssertionError, Runnable> onFailure;
 
     PropertyVerifier(
         TestClass clazz,
@@ -50,7 +53,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         Object[] args,
         Consumer<Void> onSuccess,
         Consumer<AssumptionViolatedException> onAssumptionViolated,
-        Consumer<AssertionError> onFailure)
+        BiConsumer<AssertionError, Runnable> onFailure)
         throws InitializationError {
 
         super(clazz.getJavaClass());
@@ -75,7 +78,12 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
                 } catch (AssumptionViolatedException e) {
                     onAssumptionViolated.accept(e);
                 } catch (AssertionError e) {
-                    onFailure.accept(e);
+                    Runnable repeatTestOption = () -> {
+                        try {
+                            statement.evaluate();
+                        } catch (Throwable throwable) {}
+                    };
+                    onFailure.accept(e, repeatTestOption);
                 } catch (Throwable e) {
                     reportErrorWithArguments(e);
                 }

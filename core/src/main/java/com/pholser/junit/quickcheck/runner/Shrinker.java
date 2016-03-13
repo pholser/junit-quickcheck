@@ -27,7 +27,9 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.util.List;
 import java.util.Stack;
+import java.util.function.Consumer;
 
+import com.pholser.junit.quickcheck.OnFailingSetHook;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
@@ -41,6 +43,7 @@ class Shrinker {
     private final int maxShrinkTime;
     private int shrinkAttempts;
     private long shrinkTimeout;
+    private final OnFailingSetHook onFailingSetHook;
 
     Shrinker(
         FrameworkMethod method,
@@ -48,7 +51,8 @@ class Shrinker {
         AssertionError failure,
         int maxShrinks,
         int maxShrinkDepth,
-        int maxShrinkTime) {
+        int maxShrinkTime,
+        OnFailingSetHook onFailingSetHook) {
 
         this.method = method;
         this.testClass = testClass;
@@ -56,6 +60,7 @@ class Shrinker {
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
         this.maxShrinkTime = maxShrinkTime;
+        this.onFailingSetHook = onFailingSetHook;
     }
 
     void shrink(List<PropertyParameterGenerationContext> params, Object[] args)
@@ -90,7 +95,17 @@ class Shrinker {
             }
         }
 
+        callOptionalUserDefinedHook(smallestFailure);
         throw smallestFailure.fail(failure);
+    }
+
+    private void callOptionalUserDefinedHook(ShrinkNode smallestFailure) {
+        Runnable repeatTestOption = () -> {
+            try {
+                smallestFailure.verifyProperty();
+            } catch (Throwable e) {}
+        };
+        onFailingSetHook.handle(smallestFailure.getArgs(), repeatTestOption);
     }
 
     private boolean shouldContinueShrinking(Stack<ShrinkNode> nodes) {
