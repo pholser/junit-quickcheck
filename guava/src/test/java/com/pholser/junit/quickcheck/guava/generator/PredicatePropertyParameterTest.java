@@ -23,36 +23,27 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.java.lang;
+package com.pholser.junit.quickcheck.guava.generator;
 
-import com.pholser.junit.quickcheck.Generating;
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.google.common.base.Predicate;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import java.util.List;
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-import static com.pholser.junit.quickcheck.Generating.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
-
-@Deprecated
-public class PrimitiveByteTest extends BasicGeneratorTheoryParameterTest {
-    public static final byte TYPE_BEARER = 0;
-
-    @Override protected void primeSourceOfRandomness() {
-        when(Generating.bytes(randomForParameterGenerator))
-            .thenReturn((byte) -12).thenReturn((byte) -11).thenReturn((byte) -10);
+public class PredicatePropertyParameterTest {
+    @Test public void definiteArgType() {
+        assertThat(testResult(DefiniteArgType.class), isSuccessful());
     }
 
-    @Override protected int sampleSize() {
-        return 3;
-    }
-
-    @Override protected List<?> randomValues() {
-        byte b = (byte) 0xF4;
-        return asList(b++, b++, b);
-    }
-
-    @Override public void verifyInteractionWithRandomness() {
-        verifyBytes(randomForParameterGenerator, times(3));
+    @RunWith(JUnitQuickcheck.class)
+    public static class DefiniteArgType {
+        @Property public void x(Predicate<String> p) {
+            p.apply("abc");
+        }
     }
 }

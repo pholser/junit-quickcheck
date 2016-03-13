@@ -59,9 +59,9 @@ and to validate those statements against lots of randomly generated inputs.
 junit-quickcheck began its life as a library that supplies JUnit
 theories with random values with which to test the validity of the theories.
 
-In this original incarnation, junit-quickcheck leveraged the
-`ParameterSupplier` feature of the JUnit theories machinery, via the
-annotation `@ForAll` marking theory parameters.
+Prior to version 0.6, junit-quickcheck leveraged the `ParameterSupplier`
+feature of the JUnit theories machinery, via the annotation `@ForAll` marking
+theory parameters.
 
 By default, when the `Theories` runner executes a theory, it attempts to
 scrape _data points_ off the theory class to feed to the theories. Data points
@@ -102,9 +102,9 @@ the theory method 10,000 times (100 * 100).
 This led to mitigation strategies such as:
 
 - Using the `sampleSize` attribute of `@ForAll` to change the number of
-generated values for a given theory parameter
+generated values for a given theory parameter.
 - Collapsing the theory parameters into a class, and using a generator for the
-class. This approach can exert positive design pressure:
+class. This approach can exert positive design pressure.
 
 ```java
     public class Coordinate {
@@ -129,7 +129,7 @@ class. This approach can exert positive design pressure:
 
 - Sometimes, there is no domain concept underlying the theory's parameters.
 In this case, you could create an artificial "tuple" class and use the `Ctor`
-or `Fields` generator to produce values:
+or `Fields` generator to produce values.
 
 ```java
     @RunWith(Theories.class)

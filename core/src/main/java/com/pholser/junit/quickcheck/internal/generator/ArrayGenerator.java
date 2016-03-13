@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -103,16 +104,18 @@ public class ArrayGenerator extends Generator<Object> {
         return shrinks;
     }
 
-    @Override public void provideRepository(GeneratorRepository provided) {
-        super.provideRepository(provided);
+    @Override public void provide(Generators provided) {
+        super.provide(provided);
 
-        component.provideRepository(provided);
+        component.provide(provided);
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        component.configure(annotatedComponentTypes(annotatedType).get(0));
+        List<AnnotatedType> annotated = annotatedComponentTypes(annotatedType);
+        if (!annotated.isEmpty())
+            component.configure(annotated.get(0));
     }
 
     private int length(SourceOfRandomness random, GenerationStatus status) {

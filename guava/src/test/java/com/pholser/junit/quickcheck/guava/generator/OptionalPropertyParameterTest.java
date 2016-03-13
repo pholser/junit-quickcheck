@@ -23,43 +23,53 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.guava.generator;
 
-import com.pholser.junit.quickcheck.ForAll;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.base.Optional;
 import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
+import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
-import org.junit.contrib.theories.Theories;
-import org.junit.contrib.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
-@Deprecated
-public class GenerationStatusTest {
-    @Test public void sizeNeverExceedsSampleSize() throws Exception {
-        assertThat(testResult(SizeTheories.class), isSuccessful());
+public class OptionalPropertyParameterTest {
+    @Test public void maybeAString() {
+        assertThat(testResult(OptionalString.class), isSuccessful());
     }
 
-    @RunWith(Theories.class)
-    public static class SizeTheories {
-        public static class SizeTheoriesGenerator extends Generator<Object> {
-            public SizeTheoriesGenerator() {
-                super(Object.class);
-            }
+    @RunWith(JUnitQuickcheck.class)
+    public static class OptionalString {
+        @Property public void works(
+            Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
 
-            @Override
-            public Object generate(SourceOfRandomness random, GenerationStatus status) {
-                assertThat(status.size(), lessThanOrEqualTo(50));
-                return this;
-            }
+            assumeTrue(optional.isPresent());
+            assertTrue(optional.get().codePoints().allMatch(i -> i < 128));
         }
+    }
 
-        @Theory public void holds(@ForAll(sampleSize = 50) @From(SizeTheoriesGenerator.class) Object o) {
-            // yay, all good
+    @Test public void shrinking() {
+        assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
+        assertTrue(ShrinkingOptional.failed.stream().anyMatch(o -> !o.isPresent()));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinkingOptional {
+        static List<Optional<Byte>> failed = new ArrayList<>();
+
+        @Property public void works(Optional<Byte> optional) {
+            failed.add(optional);
+
+            fail();
         }
     }
 }

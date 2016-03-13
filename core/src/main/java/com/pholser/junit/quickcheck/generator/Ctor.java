@@ -31,61 +31,66 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * <p>Produces instances of a class by reflecting the class for a single
- * accessible constructor, generating values for the constructor's parameters,
- * and invoking the constructor.</p>
+ * <p>Produces instances of a class by generating values for the parameters of
+ * one of the constructors on the class, and invoking the constructor.</p>
  *
  * <p>If a constructor parameter is marked with an annotation that influences
- * the generation of a given kind of value, it will be applied to the
- * generation of values for that parameter.</p>
+ * the generation of a given kind of value, that annotation will be applied to
+ * the generation of values for that parameter.</p>
  *
  * <p>This generator is intended to be used with
  * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
  * {@link java.util.ServiceLoader} mechanism.</p>
  *
- * @deprecated This was introduced to alleviate the difficulties of old
- * {@link org.junit.contrib.theories.Theory} methods with many parameters,
- * and will likely go away.
- *
  * @param <T> the type of objects generated
  */
-@Deprecated
 public class Ctor<T> extends Generator<T> {
-    private final Constructor<T> single;
+    private final Constructor<T> ctor;
     private final Parameter[] parameters;
     private final List<Generator<?>> parameterGenerators = new ArrayList<>();
 
     /**
+     * Reflects the given type for a single accessible constructor to be used
+     * to generate values of that type.
+     *
      * @param type the type of objects to be generated
      */
     public Ctor(Class<T> type) {
-        super(type);
+        this(singleAccessibleConstructor(type));
+    }
 
-        this.single = singleAccessibleConstructor(type);
-        this.parameters = single.getParameters();
+    /**
+     * Uses the given constructor to generate values of the declaring type.
+     *
+     * @param ctor the constructor to reflect on to generate constructor
+     * parameter values
+     */
+    public Ctor(Constructor<T> ctor) {
+        super(ctor.getDeclaringClass());
+
+        this.ctor = ctor;
+        this.parameters = ctor.getParameters();
     }
 
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
-        return instantiate(single, arguments(random, status));
+        return instantiate(ctor, arguments(random, status));
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {
         return false;
     }
 
-    @Override public void provideRepository(GeneratorRepository provided) {
-        super.provideRepository(provided);
+    @Override public void provide(Generators provided) {
+        super.provide(provided);
 
         parameterGenerators.clear();
         for (Parameter each : parameters)
-            parameterGenerators.add(generatorFor(parameterTypeContext(each)));
+            parameterGenerators.add(gen().parameter(each));
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -102,13 +107,5 @@ public class Ctor<T> extends Generator<T> {
             args[i] = parameterGenerators.get(i).generate(random, status);
 
         return args;
-    }
-
-    private ParameterTypeContext parameterTypeContext(Parameter parameter) {
-        return new ParameterTypeContext(
-            parameter.getName(),
-            parameter.getAnnotatedType(),
-            single.getName())
-            .annotate(parameter);
     }
 }

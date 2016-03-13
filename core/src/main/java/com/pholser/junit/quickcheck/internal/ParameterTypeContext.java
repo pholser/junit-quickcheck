@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
@@ -111,6 +110,16 @@ public class ParameterTypeContext {
         this.declarerName = declarerName;
         this.token = token;
         this.typeVariables = typeVariables;
+    }
+
+    public ParameterTypeContext(Type type) {
+        this(
+            type.getTypeName(),
+            null,
+            type.getTypeName(),
+            Types.forJavaLangReflectType(type),
+            emptyMap()
+        );
     }
 
     private static Map<String, org.javaruntype.type.Type<?>> toTokens(
@@ -224,10 +233,6 @@ public class ParameterTypeContext {
         return unmodifiableList(explicits);
     }
 
-    public boolean annotatedWith(Class<? extends Annotation> annotationType) {
-        return parameterType.getAnnotation(annotationType) != null;
-    }
-
     public boolean isArray() {
         return token.isArray();
     }
@@ -235,15 +240,24 @@ public class ParameterTypeContext {
     public ParameterTypeContext arrayComponentContext() {
         @SuppressWarnings("unchecked")
         org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) token);
-        AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();
+        if (parameterType != null) {
+            AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();
+            return new ParameterTypeContext(
+                annotatedComponent.getType().getTypeName(),
+                annotatedComponent,
+                parameterType.getType().getTypeName(),
+                component,
+                typeVariables)
+                .annotate(annotatedComponent)
+                .allowMixedTypes(true);
+        }
         return new ParameterTypeContext(
-            annotatedComponent.getType().getTypeName(),
-            annotatedComponent,
-            parameterType.getType().getTypeName(),
+            component.getName(),
+            null,
+            token.getName(),
             component,
-            typeVariables)
-            .annotate(annotatedComponent)
-            .allowMixedTypes(true);
+            typeVariables
+        ).allowMixedTypes(true);
     }
 
     public Class<?> getRawClass() {
@@ -305,15 +319,17 @@ public class ParameterTypeContext {
         List<ParameterTypeContext> typeParameterContexts,
         AnnotatedType a) {
 
-        typeParameterContexts.add(
-            new ParameterTypeContext(
-                "Zilch",
-                a,
-                annotatedType().getType().getTypeName(),
-                Types.forJavaLangReflectType(Zilch.class),
-                typeVariables)
-                .allowMixedTypes(true)
-                .annotate(a));
+        if (annotatedType() != null) {
+            typeParameterContexts.add(
+                new ParameterTypeContext(
+                    "Zilch",
+                    a,
+                    annotatedType().getType().getTypeName(),
+                    Types.forJavaLangReflectType(Zilch.class),
+                    typeVariables)
+                    .allowMixedTypes(true)
+                    .annotate(a));
+        }
     }
 
     private void addExtendsTypeParameterContext(

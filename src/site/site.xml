@@ -9,10 +9,6 @@
     </skin>
     <publishDate format="MMMM dd, yyyy" position="right"/>
     <body>
-        <!-- TODO: Of the staged pages, decide:
-        1) which to include top-level only, module-level only, or both
-        2) add links here as desired.
-        -->
         <menu name="junit-quickcheck">
             <item name="Introduction" href="index.html"/>
             <item name="Download" href="download.html"/>
@@ -26,6 +22,7 @@
             <item name="Generating Values of Other Types" href="usage/other-types.html"/>
             <item name="Configuring Generators" href="usage/configuring.html"/>
             <item name="Constraining Generated Values" href="usage/constraining.html"/>
+            <item name="Generating Values of Complex Types" href="usage/complex-types.html"/>
             <item name="Sample Size" href="usage/sample-size.html"/>
             <item name="Seed" href="usage/seed.html"/>
             <item name="Shrinking" href="usage/shrinking.html"/>

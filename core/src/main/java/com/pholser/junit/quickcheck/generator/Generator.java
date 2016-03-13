@@ -35,9 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
@@ -56,7 +54,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
 public abstract class Generator<T> implements Shrink<T> {
     private final List<Class<T>> types = new ArrayList<>();
 
-    private GeneratorRepository repo;
+    private Generators repo;
 
     /**
      * @param type class token for type of property parameter this generator is
@@ -123,8 +121,10 @@ public abstract class Generator<T> implements Shrink<T> {
      * {@linkplain #doShrink(SourceOfRandomness, Object) produce shrinks}.</p>
      */
     @Override public final List<T> shrink(SourceOfRandomness random, Object larger) {
-        if (!canShrink(larger))
-            throw new IllegalStateException(getClass() + " not capable of shrinking " + larger);
+        if (!canShrink(larger)) {
+            throw new IllegalStateException(
+                getClass() + " not capable of shrinking " + larger);
+        }
 
         return doShrink(random, narrow(larger));
     }
@@ -256,20 +256,46 @@ public abstract class Generator<T> implements Shrink<T> {
     }
 
     /**
-     * @deprecated This will likely go away when languages whose compilers
-     * and interpreters produce class files that support annotations on type
-     * uses.
-     * @see <a href="https://github.com/pholser/junit-quickcheck/issues/77">
-     * this issue</a>
      * @param element an annotated program element
      */
-    @Deprecated
     public void configure(AnnotatedElement element) {
         configureLenient(collectConfigurationAnnotations(element));
     }
 
+    /**
+     * Used to supply the available generators to this one.
+     *
+     * @param provided repository of available generators
+     */
+    public void provide(Generators provided) {
+        repo = provided;
+    }
+
+    /**
+     * @return an access point for the available generators
+     */
+    protected Generators gen() {
+        return repo;
+    }
+
+    /**
+     * Gives a list of the {@link GeneratorConfiguration} annotations present
+     * on the given program element.
+     *
+     * @param element an annotated program element
+     * @return what configuration annotations are present on that element
+     */
+    protected static List<Annotation> configurationAnnotationsOn(AnnotatedElement element) {
+        return allAnnotations(element).stream()
+            .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))
+            .collect(toList());
+    }
+
     private Map<Class<? extends Annotation>, Annotation> collectConfigurationAnnotations(
         AnnotatedElement element) {
+
+        if (element == null)
+            return emptyMap();
 
         List<Annotation> configs = configurationAnnotationsOn(element);
 
@@ -325,31 +351,5 @@ public abstract class Generator<T> implements Shrink<T> {
 
         if (configurer != null)
             invoke(configurer, this, configuration);
-    }
-
-    /**
-     * Used to supply the available generators to this one.
-     *
-     * @param provided repository of available generators
-     */
-    public void provideRepository(GeneratorRepository provided) {
-        repo = provided;
-    }
-
-    Generator<?> generatorFor(ParameterTypeContext parameter) {
-        return repo.produceGenerator(parameter);
-    }
-
-    /**
-     * Gives a list of the {@link GeneratorConfiguration} annotations present
-     * on the given program element.
-     *
-     * @param element an annotated program element
-     * @return what configuration annotations are present on that element
-     */
-    protected static List<Annotation> configurationAnnotationsOn(AnnotatedElement element) {
-        return allAnnotations(element).stream()
-            .filter(a -> a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))
-            .collect(toList());
     }
 }

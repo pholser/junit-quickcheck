@@ -29,7 +29,6 @@ import java.util.function.Predicate;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.java.lang.BooleanGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
@@ -40,15 +39,13 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <T> type of parameter of produced predicate
  */
 public class PredicateGenerator<T> extends ComponentizedGenerator<Predicate> {
-    private final BooleanGenerator booleanGenerator = new BooleanGenerator();
-
     public PredicateGenerator() {
         super(Predicate.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override public Predicate<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(Predicate.class, booleanGenerator, status);
+        return makeLambda(Predicate.class, gen().type(boolean.class), status);
     }
 
     @Override public int numberOfNeededComponents() {

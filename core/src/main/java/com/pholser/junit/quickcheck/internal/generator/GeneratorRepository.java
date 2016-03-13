@@ -25,9 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -36,7 +40,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.pholser.junit.quickcheck.generator.Ctor;
+import com.pholser.junit.quickcheck.generator.Fields;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.internal.Zilch;
@@ -49,7 +56,7 @@ import static java.util.Collections.*;
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
-public class GeneratorRepository {
+public class GeneratorRepository implements Generators {
     private final SourceOfRandomness random;
     private final Map<Class<?>, Set<Generator<?>>> generators = new HashMap<>();
 
@@ -101,9 +108,63 @@ public class GeneratorRepository {
         forType.add(generator);
     }
 
+    @Override public Generator<?> field(Class<?> type, String fieldName) {
+        return field(findField(type, fieldName));
+    }
+
+    @Override public <U> Generator<U> constructor(
+        Class<U> type,
+        Class<?>... argumentTypes) {
+
+        Constructor<U> constructor = findConstructor(type, argumentTypes);
+        if (constructor == null) {
+            throw new IllegalArgumentException(
+                "No constructor found for " + type
+                    + " with argument types " + Arrays.asList(argumentTypes));
+        }
+
+        Ctor<U> ctor = new Ctor<>(constructor);
+        ctor.provide(this);
+        ctor.configure(constructor.getAnnotatedReturnType());
+
+        return ctor;
+    }
+
+    @Override public <U> Generator<U> fieldsOf(Class<U> type) {
+        Fields<U> fields = new Fields<>(type);
+
+        fields.provide(this);
+        fields.configure(type);
+
+        return fields;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override public <T> Generator<T> type(Class<T> type) {
+        return (Generator<T>) produceGenerator(new ParameterTypeContext(type));
+    }
+
+    @Override public Generator<?> parameter(Parameter parameter) {
+        return produceGenerator(
+            new ParameterTypeContext(
+                parameter.getName(),
+                parameter.getAnnotatedType(),
+                parameter.getDeclaringExecutable().getName()
+            ).annotate(parameter));
+    }
+
+    @Override public Generator<?> field(Field field) {
+        return produceGenerator(
+            new ParameterTypeContext(
+                field.getName(),
+                field.getAnnotatedType(),
+                field.getDeclaringClass().getName()
+            ).annotate(field));
+    }
+
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {
         Generator<?> generator = generatorFor(parameter);
-        generator.provideRepository(this);
+        generator.provide(this);
         generator.configure(parameter.annotatedType());
         if (parameter.topLevel())
             generator.configure(parameter.annotatedElement());

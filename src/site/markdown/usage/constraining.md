@@ -3,7 +3,7 @@
 ## Assumptions
 
 Properties often use _assumptions_ to declare conditions under which they
-hold:
+hold.
 
 ```java
     @RunWith(JUnitQuickcheck.class)
@@ -39,7 +39,7 @@ hold:
 ```
 
 Sometimes, using assumptions with junit-quickcheck can yield too few values
-that meet the desired criteria:
+that meet the desired criteria.
 
 ```java
     @RunWith(JUnitQuickcheck.class)
@@ -60,7 +60,7 @@ that meet the desired criteria:
 Generator configuration methods and annotations can constrain the values that
 a generator emits. For example, the `@InRange` annotation on property
 parameters of integral, floating-point, and `Date` types causes the generators
-for those types to emit values that fall within a configured minimum/maximum:
+for those types to emit values that fall within a configured minimum/maximum.
 
 ```java
     @RunWith(JUnitQuickcheck.class)

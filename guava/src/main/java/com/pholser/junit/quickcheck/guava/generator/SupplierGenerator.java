@@ -23,14 +23,31 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck.guava.generator;
 
-import com.pholser.junit.quickcheck.internal.generator.CoreTheoryParameterTest;
-import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
+import com.google.common.base.Supplier;
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-@Deprecated
-public abstract class BasicGeneratorTheoryParameterTest extends CoreTheoryParameterTest {
-    @Override protected Iterable<Generator<?>> generatorSource() {
-        return new ServiceLoaderGeneratorSource();
+import static com.pholser.junit.quickcheck.generator.Lambdas.*;
+
+/**
+ * Produces values of type {@code Supplier}.
+ *
+ * @param <T> the type of the values produced by the generated instances
+ */
+public class SupplierGenerator<T> extends ComponentizedGenerator<Supplier> {
+    public SupplierGenerator() {
+        super(Supplier.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override public Supplier<T> generate(SourceOfRandomness random, GenerationStatus status) {
+        return makeLambda(Supplier.class, componentGenerators().get(0), status);
+    }
+
+    @Override public int numberOfNeededComponents() {
+        return 1;
     }
 }

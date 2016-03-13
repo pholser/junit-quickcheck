@@ -23,29 +23,44 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.java.util.function;
+package com.pholser.junit.quickcheck.guava.generator;
 
-import java.util.function.ToLongFunction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.google.common.base.Optional;
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
-
 /**
- * Produces values of type {@link ToLongFunction}.
- *
- * @param <T> type of parameter of produced function
+ * Produces values of type {@link Optional}.
  */
-public class ToLongFunctionGenerator<T> extends ComponentizedGenerator<ToLongFunction> {
-    public ToLongFunctionGenerator() {
-        super(ToLongFunction.class);
+public class OptionalGenerator extends ComponentizedGenerator<Optional> {
+    public OptionalGenerator() {
+        super(Optional.class);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override public ToLongFunction<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(ToLongFunction.class, gen().type(long.class), status);
+    @Override public Optional<?> generate(SourceOfRandomness random, GenerationStatus status) {
+        double trial = random.nextDouble();
+        return trial < 0.25
+            ? Optional.absent()
+            : Optional.fromNullable(componentGenerators().get(0).generate(random, status));
+    }
+
+    @Override public List<Optional> doShrink(SourceOfRandomness random, Optional larger) {
+        if (!larger.isPresent())
+            return new ArrayList<>();
+
+        List<Optional> shrinks = new ArrayList<>();
+        shrinks.add(Optional.absent());
+        shrinks.addAll(
+            componentGenerators().get(0).shrink(random, larger.get())
+                .stream()
+                .map(Optional::fromNullable)
+                .collect(Collectors.toList()));
+        return shrinks;
     }
 
     @Override public int numberOfNeededComponents() {

@@ -23,35 +23,31 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.java.lang;
+package com.pholser.junit.quickcheck.guava.generator;
 
-import com.pholser.junit.quickcheck.Generating;
-import com.pholser.junit.quickcheck.generator.BasicGeneratorTheoryParameterTest;
+import com.google.common.base.Predicate;
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import java.util.List;
+import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
-import static com.pholser.junit.quickcheck.Generating.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
-
-@Deprecated
-public class WrapperBooleanTest extends BasicGeneratorTheoryParameterTest {
-    public static final Boolean TYPE_BEARER = null;
-
-    @Override protected void primeSourceOfRandomness() {
-        when(Generating.booleans(randomForParameterGenerator))
-            .thenReturn(true).thenReturn(false);
+/**
+ * Produces values of type {@link Predicate}.
+ *
+ * @param <T> type of parameter of produced predicate
+ */
+public class PredicateGenerator<T> extends ComponentizedGenerator<Predicate> {
+    public PredicateGenerator() {
+        super(Predicate.class);
     }
 
-    @Override protected int sampleSize() {
-        return 2;
+    @SuppressWarnings("unchecked")
+    @Override public Predicate<T> generate(SourceOfRandomness random, GenerationStatus status) {
+        return makeLambda(Predicate.class, gen().type(boolean.class), status);
     }
 
-    @Override protected List<?> randomValues() {
-        return asList(true, false);
-    }
-
-    @Override public void verifyInteractionWithRandomness() {
-        verifyBooleans(randomForParameterGenerator, times(2));
+    @Override public int numberOfNeededComponents() {
+        return 1;
     }
 }
