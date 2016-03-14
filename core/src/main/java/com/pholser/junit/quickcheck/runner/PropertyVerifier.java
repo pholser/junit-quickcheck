@@ -44,8 +44,6 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final long[] initialSeeds;
     private final Consumer<Void> onSuccess;
     private final Consumer<AssumptionViolatedException> onAssumptionViolated;
-
-    /** the exception plus the option to repeat the test */
     private final BiConsumer<AssertionError, Runnable> onFailure;
 
     PropertyVerifier(
@@ -81,12 +79,12 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
                 } catch (AssumptionViolatedException e) {
                     onAssumptionViolated.accept(e);
                 } catch (AssertionError e) {
-                    Runnable repeatTestOption = () -> {
+                    Runnable repeat = () -> {
                         try {
                             statement.evaluate();
                         } catch (Throwable throwable) {}
                     };
-                    onFailure.accept(e, repeatTestOption);
+                    onFailure.accept(e, repeat);
                 } catch (Throwable e) {
                     reportErrorWithArguments(e);
                 }

@@ -33,9 +33,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import com.pholser.junit.quickcheck.OnFailingSetHook;
+import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
@@ -82,13 +81,13 @@ class PropertyStatement extends Statement {
     @Override public void evaluate() throws Throwable {
         Property marker = method.getAnnotation(Property.class);
         int trials = marker.trials();
-        OnFailingSetHook onFailingSetHook = marker.onFailingSet().newInstance();
+        MinimalCounterexampleHook hook = marker.onMinimalCounterexample().newInstance();
         ShrinkControl shrinkControl = new ShrinkControl(
             marker.shrink(),
             marker.maxShrinks(),
             marker.maxShrinkDepth(),
             marker.maxShrinkTime(),
-            onFailingSetHook::handle);
+            hook::handle);
 
         List<PropertyParameterGenerationContext> params = parameters(trials);
 
@@ -126,9 +125,9 @@ class PropertyStatement extends Statement {
             initialSeeds,
             s -> ++successes,
             assumptionViolations::add,
-            (e, repeatTestOption) -> {
+            (e, action) -> {
                 if (!shrinkControl.shouldShrink()) {
-                    shrinkControl.onFailingSetHook().handle(args, repeatTestOption);
+                    shrinkControl.onMinimalCounterexample().handle(args, action);
                     throw e;
                 }
 
@@ -158,7 +157,7 @@ class PropertyStatement extends Statement {
             shrinkControl.maxShrinks(),
             shrinkControl.maxShrinkDepth(),
             shrinkControl.maxShrinkTime(),
-            shrinkControl.onFailingSetHook())
+            shrinkControl.onMinimalCounterexample())
             .shrink(params, args, initialSeeds);
     }
 
@@ -205,11 +204,11 @@ class PropertyStatement extends Statement {
             .collect(toList());
     }
 
-    private class SeededValue {
-        private Object value;
-        private long seed;
+    private static class SeededValue {
+        private final Object value;
+        private final long seed;
 
-        public SeededValue(Object value, long seed) {
+        SeededValue(Object value, long seed) {
             this.value = value;
             this.seed = seed;
         }

@@ -25,25 +25,27 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-import com.pholser.junit.quickcheck.OnFailingSetHook;
+import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
 
 public class ShrinkControl {
     private final boolean shouldShrink;
     private final int maxShrinks;
     private final int maxShrinkDepth;
     private final int maxShrinkTime;
-    private final OnFailingSetHook onFailingSetHook;
+    private final MinimalCounterexampleHook onMinimalCounterexample;
 
-    public ShrinkControl(boolean shouldShrink, int maxShrinks, int maxShrinkDepth, int maxShrinkTime,
-                         OnFailingSetHook onFailingSetHook) {
+    public ShrinkControl(
+        boolean shouldShrink,
+        int maxShrinks,
+        int maxShrinkDepth,
+        int maxShrinkTime,
+        MinimalCounterexampleHook onMinimalCounterexample) {
+
         this.shouldShrink = shouldShrink;
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
         this.maxShrinkTime = maxShrinkTime;
-        this.onFailingSetHook = onFailingSetHook;
+        this.onMinimalCounterexample = onMinimalCounterexample;
     }
 
     public boolean shouldShrink() {
@@ -62,7 +64,7 @@ public class ShrinkControl {
         return maxShrinkTime;
     }
 
-    public OnFailingSetHook onFailingSetHook() {
-        return onFailingSetHook;
+    public MinimalCounterexampleHook onMinimalCounterexample() {
+        return onMinimalCounterexample;
     }
 }

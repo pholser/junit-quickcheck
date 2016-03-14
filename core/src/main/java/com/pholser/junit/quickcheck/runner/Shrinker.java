@@ -27,9 +27,8 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.util.List;
 import java.util.Stack;
-import java.util.function.Consumer;
 
-import com.pholser.junit.quickcheck.OnFailingSetHook;
+import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
@@ -41,9 +40,10 @@ class Shrinker {
     private final int maxShrinks;
     private final int maxShrinkDepth;
     private final int maxShrinkTime;
+    private final MinimalCounterexampleHook onMinimalCounterexample;
+
     private int shrinkAttempts;
     private long shrinkTimeout;
-    private final OnFailingSetHook onFailingSetHook;
 
     Shrinker(
         FrameworkMethod method,
@@ -52,7 +52,7 @@ class Shrinker {
         int maxShrinks,
         int maxShrinkDepth,
         int maxShrinkTime,
-        OnFailingSetHook onFailingSetHook) {
+        MinimalCounterexampleHook onMinimalCounterexample) {
 
         this.method = method;
         this.testClass = testClass;
@@ -60,52 +60,57 @@ class Shrinker {
         this.maxShrinks = maxShrinks;
         this.maxShrinkDepth = maxShrinkDepth;
         this.maxShrinkTime = maxShrinkTime;
-        this.onFailingSetHook = onFailingSetHook;
+        this.onMinimalCounterexample = onMinimalCounterexample;
     }
 
-    void shrink(List<PropertyParameterGenerationContext> params, Object[] args, long[] initialSeeds)
+    void shrink(
+        List<PropertyParameterGenerationContext> params,
+        Object[] args,
+        long[] initialSeeds)
         throws Throwable {
 
         Stack<ShrinkNode> nodes = new Stack<>();
-        ShrinkNode smallestFailure = ShrinkNode.root(method, testClass, params, args, initialSeeds);
-        smallestFailure.shrinks().forEach(nodes::push);
+        ShrinkNode counterexample =
+            ShrinkNode.root(method, testClass, params, args, initialSeeds);
+        counterexample.shrinks().forEach(nodes::push);
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;
 
         while (shouldContinueShrinking(nodes)) {
             ShrinkNode next = nodes.pop();
-            if (next.mightBePast(smallestFailure)) {
+            if (next.mightBePast(counterexample)) {
                 boolean result = next.verifyProperty();
                 ++shrinkAttempts;
 
                 if (!result) {
-                    smallestFailure = next;
+                    counterexample = next;
 
                     List<ShrinkNode> shrinks = next.shrinks();
                     if (shrinks.isEmpty())
-                        smallestFailure = smallestFailure.advanceToNextArg();
+                        counterexample = counterexample.advanceToNextArg();
                     else
                         shrinks.forEach(nodes::push);
                 }
 
                 if (nodes.empty()) {
-                    smallestFailure = smallestFailure.advanceToNextArg();
-                    smallestFailure.shrinks().forEach(nodes::push);
+                    counterexample = counterexample.advanceToNextArg();
+                    counterexample.shrinks().forEach(nodes::push);
                 }
             }
         }
 
-        callOptionalUserDefinedHook(smallestFailure);
-        throw smallestFailure.fail(failure);
+        handleMinimalCounterexample(counterexample);
+        throw counterexample.fail(failure);
     }
 
-    private void callOptionalUserDefinedHook(ShrinkNode smallestFailure) {
-        Runnable repeatTestOption = () -> {
+    private void handleMinimalCounterexample(ShrinkNode counterexample) {
+        Runnable repeat = () -> {
             try {
-                smallestFailure.verifyProperty();
+                counterexample.verifyProperty();
             } catch (Throwable e) {}
         };
-        onFailingSetHook.handle(smallestFailure.getArgs(), repeatTestOption);
+
+        onMinimalCounterexample.handle(counterexample.getArgs(), repeat);
     }
 
     private boolean shouldContinueShrinking(Stack<ShrinkNode> nodes) {

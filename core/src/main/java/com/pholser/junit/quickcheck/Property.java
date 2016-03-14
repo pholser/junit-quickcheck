@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
-import com.pholser.junit.quickcheck.hook.DisableOnFailingSetHook;
+import com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook;
 
 /**
  * <p>Mark a method on a class that is {@linkplain org.junit.runner.RunWith
@@ -79,8 +79,9 @@ public @interface Property {
     int maxShrinkTime() default 60_000;
 
     /**
-     * @return callback that it is executed if a minimal counter example is found
+     * @return callback that it is executed if a minimal counterexample is found
      * (after shrinking)
      */
-    Class<? extends OnFailingSetHook> onFailingSet() default DisableOnFailingSetHook.class;
+    Class<? extends MinimalCounterexampleHook> onMinimalCounterexample()
+        default NilMinimalCounterexampleHook.class;
 }
