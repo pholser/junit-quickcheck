@@ -63,11 +63,11 @@ class Shrinker {
         this.onFailingSetHook = onFailingSetHook;
     }
 
-    void shrink(List<PropertyParameterGenerationContext> params, Object[] args)
+    void shrink(List<PropertyParameterGenerationContext> params, Object[] args, long[] initialSeeds)
         throws Throwable {
 
         Stack<ShrinkNode> nodes = new Stack<>();
-        ShrinkNode smallestFailure = ShrinkNode.root(method, testClass, params, args);
+        ShrinkNode smallestFailure = ShrinkNode.root(method, testClass, params, args, initialSeeds);
         smallestFailure.shrinks().forEach(nodes::push);
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;

@@ -41,6 +41,7 @@ final class ShrinkNode {
     private final TestClass testClass;
     private final List<PropertyParameterGenerationContext> params;
     private final Object[] args;
+    private final long[] initialSeeds;
     private final int argIndex;
     private final int depth;
 
@@ -49,6 +50,7 @@ final class ShrinkNode {
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
         Object[] args,
+        long[] initialSeeds,
         int argIndex,
         int depth) {
 
@@ -56,6 +58,7 @@ final class ShrinkNode {
         this.testClass = testClass;
         this.params = params;
         this.args = args;
+        this.initialSeeds = initialSeeds;
         this.argIndex = argIndex;
         this.depth = depth;
     }
@@ -68,9 +71,10 @@ final class ShrinkNode {
         FrameworkMethod method,
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
-        Object[] args) {
+        Object[] args,
+        long[] initialSeeds) {
 
-        return new ShrinkNode(method, testClass, params, args, 0, 0);
+        return new ShrinkNode(method, testClass, params, args, initialSeeds, 0, 0);
     }
 
     List<ShrinkNode> shrinks() {
@@ -92,15 +96,16 @@ final class ShrinkNode {
     }
 
     ShrinkNode advanceToNextArg() {
-        return new ShrinkNode(method, testClass, params, args, argIndex + 1, depth);
+        return new ShrinkNode(method, testClass, params, args, initialSeeds, argIndex + 1, depth);
     }
 
     AssertionError fail(AssertionError originalFailure) {
         AssertionError minimumFailure = new AssertionError(
             String.format(
-                "Property %s falsified for args shrunken to %s",
+                "Property %s falsified for args shrunken to %s using initial seeds %s",
                 method.getName(),
-                asList(args)));
+                asList(args),
+                asList(initialSeeds)));
         minimumFailure.setStackTrace(originalFailure.getStackTrace());
         throw minimumFailure;
     }
@@ -118,6 +123,7 @@ final class ShrinkNode {
             testClass,
             method,
             args,
+            initialSeeds,
             s -> result[0] = true,
             v -> result[0] = true,
             (e, repeatTestOption) -> result[0] = false);
@@ -128,6 +134,6 @@ final class ShrinkNode {
         System.arraycopy(args, 0, shrunkArgs, 0, args.length);
         shrunkArgs[argIndex] = shrunk;
 
-        return new ShrinkNode(method, testClass, params, shrunkArgs, argIndex, depth + 1);
+        return new ShrinkNode(method, testClass, params, shrunkArgs, initialSeeds, argIndex, depth + 1);
     }
 }
