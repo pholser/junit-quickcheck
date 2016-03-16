@@ -57,8 +57,8 @@ public @interface When {
 
     /**
      * @return a value to be used as the initial seed for the random value
-     * generator. Not specifying a value causes the seed to be chosen in the
-     * usual JDK way.
+     * generator. Not specifying a value causes the seed to be chosen
+     * randomly.
      */
     long seed() default 0;
 }
