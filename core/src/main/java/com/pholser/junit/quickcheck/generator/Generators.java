@@ -115,4 +115,6 @@ public interface Generators {
      * @return generator that can produce values of the field's type
      */
     Generator<?> field(Field field);
+
+    <T> Generator<T> oneOf(Class<? extends T> first, Class<? extends T>... rest);
 }

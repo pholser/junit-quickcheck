@@ -32,6 +32,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -160,6 +161,23 @@ public class GeneratorRepository implements Generators {
                 field.getAnnotatedType(),
                 field.getDeclaringClass().getName()
             ).annotate(field));
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
+    @Override public final <T> Generator<T> oneOf(
+        Class<? extends T> first,
+        Class<? extends T>... rest) {
+
+        List<Generator<T>> generators = new ArrayList<>();
+        generators.add((Generator<T>) type(first));
+        Arrays.stream(rest).forEach(c -> generators.add((Generator<T>) type(c)));
+
+        List<Weighted<Generator<?>>> weightings = generators.stream()
+            .map(g -> new Weighted<Generator<?>>(g, 1))
+            .collect(Collectors.toList());
+
+        return (Generator<T>) new CompositeGenerator(weightings);
     }
 
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {

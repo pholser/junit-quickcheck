@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.util.Objects;
+
 /**
  * {@link Generator}s are fed instances of this interface on each generation
  * so that, if they choose, they can use these instances to influence the
@@ -42,4 +44,41 @@ public interface GenerationStatus {
      * property parameter
      */
     int attempts();
+
+    <T> GenerationStatus setValue(Key<T> key, T value);
+
+    <T> T getValue(Key<T> key);
+
+    public final class Key<T> {
+        private final String name;
+        private final Class<T> type;
+
+        public Key(String name, Class<T> type) {
+            if (name == null)
+                throw new NullPointerException("name must not be null");
+            if (type == null)
+                throw new NullPointerException("type must not be null");
+
+            this.name = name;
+            this.type = type;
+        }
+
+        public T cast(Object o) {
+            return type.cast(o);
+        }
+
+        @Override public boolean equals(Object o) {
+            if (o == this)
+                return true;
+            if (!(o instanceof Key<?>))
+                return false;
+
+            Key<?> other = (Key<?>) o;
+            return name.equals(other.name) && type.equals(other.type);
+        }
+
+        @Override public int hashCode() {
+            return Objects.hash(name, type);
+        }
+    }
 }

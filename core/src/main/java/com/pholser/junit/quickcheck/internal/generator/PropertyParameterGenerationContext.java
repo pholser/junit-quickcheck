@@ -26,7 +26,9 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -45,6 +47,7 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
     private final ConstraintEvaluator evaluator;
     private final SourceOfRandomness random;
     private final Generator<?> generator;
+    private final Map<Key<?>, Object> contextValues = new HashMap<>();
 
     private int successfulEvaluations;
     private int discards;
@@ -122,6 +125,15 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
 
     @Override public int attempts() {
         return successfulEvaluations + discards;
+    }
+
+    @Override public <T> GenerationStatus setValue(Key<T> key, T value) {
+        contextValues.put(key, value);
+        return this;
+    }
+
+    @Override public <T> T getValue(Key<T> key) {
+        return key.cast(contextValues.get(key));
     }
 
     public long effectiveSeed() {
