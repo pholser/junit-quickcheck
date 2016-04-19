@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -35,8 +36,6 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
-
-import static java.util.Arrays.*;
 
 class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final FrameworkMethod method;
@@ -112,8 +111,8 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
             String.format(
                 "Unexpected error in property %s with args %s and initial seeds %s",
                 method.getName(),
-                asList(args),
-                asList(initialSeeds)),
+                Arrays.toString(args),
+                Arrays.toString(initialSeeds)),
             e);
     }
 }

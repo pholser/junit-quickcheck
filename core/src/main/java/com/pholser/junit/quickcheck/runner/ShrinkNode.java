@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,8 +34,6 @@ import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerati
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.TestClass;
-
-import static java.util.Arrays.*;
 
 final class ShrinkNode {
     private final FrameworkMethod method;
@@ -104,8 +103,8 @@ final class ShrinkNode {
             String.format(
                 "Property %s falsified for args shrunken to %s using initial seeds %s",
                 method.getName(),
-                asList(args),
-                asList(initialSeeds)));
+                Arrays.toString(args),
+                Arrays.toString(initialSeeds)));
         minimumFailure.setStackTrace(originalFailure.getStackTrace());
         throw minimumFailure;
     }
