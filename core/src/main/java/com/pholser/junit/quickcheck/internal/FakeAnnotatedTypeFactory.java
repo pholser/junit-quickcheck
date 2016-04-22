@@ -36,9 +36,7 @@ class FakeAnnotatedTypeFactory {
     }
 
     static AnnotatedType makeFrom(Class<?> clazz) {
-        if (clazz.isArray())
-            return makeArrayType(clazz);
-        return makePlainType(clazz);
+        return clazz.isArray() ? makeArrayType(clazz) : makePlainType(clazz);
     }
 
     private static AnnotatedArrayType makeArrayType(Class<?> type) {
