@@ -112,12 +112,12 @@ public class ParameterTypeContext {
         this.typeVariables = typeVariables;
     }
 
-    public ParameterTypeContext(Type type) {
+    public ParameterTypeContext(Class<?> clazz) {
         this(
-            type.getTypeName(),
-            null,
-            type.getTypeName(),
-            Types.forJavaLangReflectType(type),
+            clazz.getTypeName(),
+            FakeAnnotatedTypeFactory.makeFrom(clazz),
+            clazz.getTypeName(),
+            Types.forJavaLangReflectType(clazz),
             emptyMap()
         );
     }
