@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,16 +39,13 @@ import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-class CompositeGenerator extends Generator<Object> {
+public class CompositeGenerator extends Generator<Object> {
     private final List<Weighted<Generator<?>>> composed;
 
-    CompositeGenerator(List<Weighted<Generator<?>>> composed) {
+    public CompositeGenerator(List<Weighted<Generator<?>>> composed) {
         super(Object.class);
 
         this.composed = new ArrayList<>(composed);
-        Collections.sort(
-            this.composed,
-            (first, second) -> first.getClass().getName().compareTo(second.getClass().getName()));
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
@@ -73,11 +69,11 @@ class CompositeGenerator extends Generator<Object> {
         return new ArrayList<>(choice.shrink(random, larger));
     }
 
-    Generator<?> composed(int index) {
+    public Generator<?> composed(int index) {
         return composed.get(index).item;
     }
 
-    int numberOfComposedGenerators() {
+    public int numberOfComposedGenerators() {
         return composed.size();
     }
 
