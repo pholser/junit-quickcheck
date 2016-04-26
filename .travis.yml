@@ -1,6 +1,7 @@
 language: java
 jdk:
     - oraclejdk8
+install: mvn install -DskipTests=true -Dcobertura.skip -Dmaven.javadoc.skip=true -B -V
 script: mvn clean test -Dcobertura.skip=true
 cache:
     directories:
