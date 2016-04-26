@@ -49,7 +49,7 @@ public class ListOfHuhTest extends BasicGeneratorTheoryParameterTest {
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), singletonList(false), asList(false, false));
+        return asList(emptyList(), singletonList(null), asList(null, null));
     }
 
     @Override public void verifyInteractionWithRandomness() {
