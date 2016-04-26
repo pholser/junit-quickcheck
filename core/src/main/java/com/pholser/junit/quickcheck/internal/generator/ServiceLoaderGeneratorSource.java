@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -46,6 +47,10 @@ public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
 
         for (Generator<?> each : loader)
             generators.add(each);
+
+        Collections.sort(
+            generators,
+            (first, second) -> first.getClass().getName().compareTo(second.getClass().getName()));
 
         return unmodifiableList(generators).iterator();
     }
