@@ -1,3 +1,6 @@
+[![Build Status - master](https://travis-ci.org/pholser/junit-quickcheck.svg?branch=master)](https://travis-ci.org/pholser/junit-quickcheck)
+[![Build Status - 0.6](https://travis-ci.org/pholser/junit-quickcheck.svg?branch=0.6-branch)](https://travis-ci.org/pholser/junit-quickcheck)
+
 # junit-quickcheck: Property-based testing, JUnit-style
 
 junit-quickcheck is a library that supports writing and running property-based
