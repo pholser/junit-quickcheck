@@ -1,8 +1,7 @@
 language: java
 jdk:
     - oraclejdk8
-script:
-    - mvn clean test -Dcobertura.skip=true
+script: mvn clean test -Dcobertura.skip=true
 cache:
     directories:
     - $HOME/.m2
