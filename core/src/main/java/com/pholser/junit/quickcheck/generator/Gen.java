@@ -29,21 +29,22 @@ import java.util.function.Function;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+/**
+ * Represents a strategy for generating random values.
+ *
+ * @param <T> type of values generated
+ */
 @FunctionalInterface
 public interface Gen<T> {
     /**
-     * <p>Produces a value for a property parameter.</p>
-     *
-     * <p>A generator may raise an unchecked exception if some condition exists
-     * which would lead to a confusing generation -- for example, if a
-     * generator honored a "range" configuration, and the endpoints were
-     * transposed.</p>
+     * Generates a value, possibly influenced by a source of randomness and
+     * metadata about the generation.
      *
      * @param random source of randomness to be used when generating the value
-     * @param status an object that the generator can use to influence the
-     * value it produces. For example, a generator for lists can use the
-     * {@link GenerationStatus#size() size} method to generate lists with a
-     * given number of elements.
+     * @param status an object that can be used to influence the generated
+     * value. For example, generating lists can use the {@link
+     * GenerationStatus#size() size} method to generate lists with a given
+     * number of elements.
      * @return the generated value
      */
     T generate(SourceOfRandomness random, GenerationStatus status);
