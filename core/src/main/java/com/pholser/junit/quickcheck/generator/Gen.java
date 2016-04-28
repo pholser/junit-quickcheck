@@ -25,24 +25,34 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.List;
+import java.util.function.Function;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-/**
- * <p>Represents a strategy for producing objects "smaller than" a given
- * object.</p>
- *
- * @param <T> type of shrunken objects produced
- */
 @FunctionalInterface
-public interface Shrink<T> {
+public interface Gen<T> {
     /**
-     * Gives some objects that are "smaller" than a given object.
+     * <p>Produces a value for a property parameter.</p>
      *
-     * @param random source of randomness to use in shrinking, if desired
-     * @param larger the larger object
-     * @return objects that are "smaller" than the larger object
+     * <p>A generator may raise an unchecked exception if some condition exists
+     * which would lead to a confusing generation -- for example, if a
+     * generator honored a "range" configuration, and the endpoints were
+     * transposed.</p>
+     *
+     * @param random source of randomness to be used when generating the value
+     * @param status an object that the generator can use to influence the
+     * value it produces. For example, a generator for lists can use the
+     * {@link GenerationStatus#size() size} method to generate lists with a
+     * given number of elements.
+     * @return the generated value
      */
-    List<T> shrink(SourceOfRandomness random, Object larger);
+    T generate(SourceOfRandomness random, GenerationStatus status);
+
+    default <U> Gen<U> map(Function<? super T, ? extends U> f) {
+        return (random, status) -> f.apply(Gen.this.generate(random, status));
+    }
+
+    default <U> Gen<U> flatMap(Function<? super T, Gen<? extends U>> f) {
+        return (random, status) -> f.apply(Gen.this.generate(random, status)).generate(random, status);
+    }
 }

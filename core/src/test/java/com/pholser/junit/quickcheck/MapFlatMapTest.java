@@ -23,26 +23,40 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
+package com.pholser.junit.quickcheck;
 
-import java.util.List;
+import com.pholser.junit.quickcheck.generator.Gen;
+import org.junit.Test;
 
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import static org.junit.Assert.*;
 
-/**
- * <p>Represents a strategy for producing objects "smaller than" a given
- * object.</p>
- *
- * @param <T> type of shrunken objects produced
- */
-@FunctionalInterface
-public interface Shrink<T> {
-    /**
-     * Gives some objects that are "smaller" than a given object.
-     *
-     * @param random source of randomness to use in shrinking, if desired
-     * @param larger the larger object
-     * @return objects that are "smaller" than the larger object
-     */
-    List<T> shrink(SourceOfRandomness random, Object larger);
+public class MapFlatMapTest {
+    @Test public void map() {
+        Gen<Integer> five = (random, status) -> 5;
+
+        Gen<String> mapped = five.map(String::valueOf);
+
+        assertEquals("5", mapped.generate(null, null));
+    }
+
+    @Test public void flatMap() {
+        class Coordinate {
+            final int x;
+            final int y;
+
+            private Coordinate(int x, int y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        Gen<Integer> five = (random, status) -> 5;
+        Gen<Integer> six = (random, status) -> 6;
+        Gen<Coordinate> flatMapped = five.flatMap(i -> six.map(j -> new Coordinate(i, j)));
+
+        Coordinate generated = flatMapped.generate(null, null);
+
+        assertEquals(5, generated.x);
+        assertEquals(6, generated.y);
+    }
 }
