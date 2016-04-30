@@ -1,0 +1,4 @@
+com.pholser.junit.quickcheck
+com.pholser.junit.quickcheck.generator
+com.pholser.junit.quickcheck.random
+com.pholser.junit.quickcheck.runner
