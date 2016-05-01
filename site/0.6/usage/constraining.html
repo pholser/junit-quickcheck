@@ -259,7 +259,7 @@
             <h1>Constraining generated values</h1>
 <div class="section">
 <h2><a name="Assumptions"></a>Assumptions</h2>
-<p>Properties often use <i>assumptions</i> to declare conditions under which they hold:</p>
+<p>JUnit allows to use <i>assumptions</i> to declare conditions under which property assertions hold:</p>
 
 <div class="source">
 <div class="source"><pre class="prettyprint">    @RunWith(JUnitQuickcheck.class)
@@ -293,7 +293,7 @@
         }
     }
 </pre></div></div>
-<p>Sometimes, using assumptions with junit-quickcheck can yield too few values that meet the desired criteria:</p>
+<p>Alas, sometimes using JUnit assumptions with junit-quickcheck can yield too few values that meet the desired criteria:</p>
 
 <div class="source">
 <div class="source"><pre class="prettyprint">    @RunWith(JUnitQuickcheck.class)
@@ -306,10 +306,11 @@
             // ...
         }
     }
-</pre></div></div></div>
+</pre></div></div>
+<p>Usage of JUnit assumptions is therefore discouraged in the JUnit-Quickcheck context, in favour of an own mechanism.</div>
 <div class="section">
 <h2><a name="Generator_configuration_methods"></a>Generator configuration methods</h2>
-<p>Generator configuration methods and annotations can constrain the values that a generator emits. For example, the <tt>@InRange</tt> annotation on property parameters of integral, floating-point, and <tt>Date</tt> types causes the generators for those types to emit values that fall within a configured minimum/maximum:</p>
+<p>JUnit-Quickcheck's own generator configuration methods and annotations can constrain the values that a generator emits. For example, the <tt>@InRange</tt> annotation on property parameters of integral, floating-point, and <tt>Date</tt> types causes the generators for those types to emit values that fall within a configured minimum/maximum:</p>
 
 <div class="source">
 <div class="source"><pre class="prettyprint">    @RunWith(JUnitQuickcheck.class)
@@ -319,11 +320,11 @@
         }
     }
 </pre></div></div>
-<p>Now, the generator will be configured to ensure that every value generated meets the desired criteria &#x2013; no need to express the desired range of values as an assumption.</p></div>
+<p>Now, the generator will be configured to ensure that every value generated meets the desired criteria &#x2013; no need to express the desired range of values as a JUnit assumption.</p></div>
 <div class="section">
-<h2><a name="Configuration_methods_vs._assumptions"></a>Configuration methods vs. assumptions</h2>
-<p>When using assumptions with junit-quickcheck, every value fed to a property parameter counts against the sample size, even if it doesn&#x2019;t pass any assumptions made against it in the property. You could end up with no values passing the assumption.</p>
-<p>Using generator configurations, assumptions aren&#x2019;t very important, if needed at all &#x2013; every value fed to a property parameter counts against the sample size, but will meet some conditions that assumptions would otherwise have tested.</p></div>
+<h2><a name="Configuration_methods_vs._assumptions"></a>Configuration methods vs. JUnit assumptions</h2>
+<p>When using JUnit assumptions with junit-quickcheck, every value fed to a property parameter counts against the sample size, even if it doesn&#x2019;t pass any assumptions made against it in the test method. You could end up with no values passing the assumption only because they were all stopped before verification of the actual property assertion could be attempted.</p>
+<p>Using generator configurations, JUnit assumptions aren&#x2019;t very important, if needed at all &#x2013; every value fed to a property parameter counts against the sample size, but will meet any condition beforehand that assumptions would otherwise have tested.</p></div>
 <div class="section">
 <h2><a name="ValuesOf"></a><tt>ValuesOf</tt></h2>
 <p>You can mark <tt>boolean</tt> and <tt>enum</tt> property parameters with <tt>@ValuesOf</tt> to force the generation to run through every value in the type&#x2019;s domain, instead of choosing an element from the domain at random every time.</p>

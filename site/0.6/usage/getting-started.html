@@ -260,9 +260,9 @@
 
 <ul>
   
-<li>Create a class to host the properties you want to verify about a part of your system. Mark it with the annotation <tt>@RunWith(JUnitQuickcheck.class)</tt>.</li>
+<li>Create a test class to host the properties you want to verify about a part of your system. Mark it with the annotation <tt>@RunWith(JUnitQuickcheck.class)</tt>.</li>
   
-<li>Add <tt>public</tt> methods with a return type of <tt>void</tt> on your class, to represent the individual properties. Mark each of them with the annotation <tt>@Property</tt>.</li>
+<li>Add the usual <tt>public</tt> test methods with a return type of <tt>void</tt> on your class, to represent the individual properties. Mark each of them with the annotation <tt>@Property</tt>.</li>
   
 <li>Run your class using JUnit. Each of your properties will be verified against several randomly generated values for each of the parameters on the properties&#x2019; methods.</li>
 </ul>
@@ -297,6 +297,9 @@
         }
     }
 </pre></div></div>
+<p>In this case the property we are verifying is that every text is equal to itself after being encrypted and then decrypted by our custom code. Such properties can be described through any JUnit assertion.</p>
+<p>In this example JUnitQuickcheck will generate random strings for the field <tt>plaintext</tt> using its own string value generation mechanism. 
+As far as the custom <tt>Key</tt> class is concerned, you will need to instruct JUnitQuickcheck how to generate random samples of it. This will be explained in the next pages.</p>
 <p>The usual JUnit machinery is honored: <tt>@Before</tt>, <tt>@After</tt>, <tt>@BeforeClass</tt>, <tt>@AfterClass</tt>, <tt>@Rule</tt>. Zero-arg <tt>public</tt> <tt>void</tt> methods annotated with <tt>@Test</tt> will also be run.</p>
                   </div>
             </div>
