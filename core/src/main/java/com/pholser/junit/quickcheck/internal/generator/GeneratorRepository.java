@@ -169,9 +169,22 @@ public class GeneratorRepository implements Generators {
         Class<? extends T> first,
         Class<? extends T>... rest) {
 
-        List<Generator<T>> generators = new ArrayList<>();
-        generators.add((Generator<T>) type(first));
-        Arrays.stream(rest).forEach(c -> generators.add((Generator<T>) type(c)));
+        return oneOf(
+            type(first),
+            Arrays.stream(rest)
+                .map(this::type)
+                .toArray(Generator[]::new));
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
+    @Override public final <T> Generator<T> oneOf(
+        Generator<? extends T> first,
+        Generator<? extends T>... rest) {
+
+        List<Generator<? extends T>> generators = new ArrayList<>();
+        generators.add(first);
+        Collections.addAll(generators, rest);
 
         List<Weighted<Generator<?>>> weightings = generators.stream()
             .map(g -> new Weighted<Generator<?>>(g, 1))

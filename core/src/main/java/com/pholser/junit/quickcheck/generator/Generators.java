@@ -132,4 +132,8 @@ public interface Generators {
     <T> Generator<T> oneOf(
         Class<? extends T> first,
         Class<? extends T>... rest);
+
+    <T> Generator<T> oneOf(
+        Generator<? extends T> first,
+        Generator<? extends T>... rest);
 }
