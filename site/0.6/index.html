@@ -271,11 +271,13 @@
 
     @RunWith(JUnitQuickcheck.class)
     public class StringProperties {
-        @Property public void concatenationLength(String s1, String s2) {
+        @Property
+        public void concatenationLength(String s1, String s2) {
             assertEquals(s1.length() + s2.length(), (s1 + s2).length());
         }
     }
 </pre></div></div></div>
+<p>This test method verifies the property that the length of the sum of two strings is always equal to the sum of the individual string lengths. The properties tested by JUnit-Quickcheck can be expressed through any available JUnit assertion.</p><p/>A JUnit-Quickcheck test method can actually verify multiple properties at a single time. Just write more assertions inside the same method and they will all be verified.</p>
                   </div>
             </div>
           </div>
