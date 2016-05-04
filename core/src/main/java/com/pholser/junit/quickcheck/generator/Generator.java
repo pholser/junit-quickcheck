@@ -51,7 +51,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  *
  * @param <T> type of property parameter to apply this generator's values to
  */
-public abstract class Generator<T> implements Shrink<T> {
+public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     private final List<Class<T>> types = new ArrayList<>();
 
     private Generators repo;
@@ -95,23 +95,6 @@ public abstract class Generator<T> implements Shrink<T> {
     public boolean canRegisterAsType(Class<?> type) {
         return true;
     }
-
-    /**
-     * <p>Produces a value for a property parameter.</p>
-     *
-     * <p>A generator may raise an unchecked exception if some condition exists
-     * which would lead to a confusing generation -- for example, if a
-     * generator honored a "range" configuration, and the endpoints were
-     * transposed.</p>
-     *
-     * @param random source of randomness to be used when generating the value
-     * @param status an object that the generator can use to influence the
-     * value it produces. For example, a generator for lists can use the
-     * {@link GenerationStatus#size() size} method to generate lists with a
-     * given number of elements.
-     * @return the generated value
-     */
-    public abstract T generate(SourceOfRandomness random, GenerationStatus status);
 
     /**
      * {@inheritDoc}
