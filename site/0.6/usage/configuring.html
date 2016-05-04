@@ -257,7 +257,8 @@
         <div id="bodyColumn"  class="span10" >
                                   
             <h1>Configuring generators</h1>
-<p>If you mark a property parameter with an annotation that is itself marked as <tt>@GeneratorConfiguration</tt>, then if the <tt>Generator</tt> for that parameter&#x2019;s type has a public method named <tt>configure</tt> that accepts a single argument of the annotation type, JUnit-Quickcheck will call the <tt>configure</tt> method reflectively, passing it the annotation. The call will take place **before** the call to <tt>generate</tt>, ensuring that the configured value will be in position so to influence the behavior of the generator at the next run.</p>
+<p>If you mark a property parameter with an annotation that is itself marked as <tt>@GeneratorConfiguration</tt>, then if the <tt>Generator</tt> for that parameter&#x2019;s type has a public method named <tt>configure</tt> that accepts a single argument of the annotation type, JUnit-Quickcheck will call the <tt>configure</tt> method reflectively, passing it the annotation. 
+The call will take place **before** the call to <tt>generate</tt>, ensuring that the configured value will be in position so to influence the behavior of the generator at the next run.</p>
 
 <div class="source">
 <div class="source"><pre class="prettyprint">    
@@ -266,6 +267,11 @@
 
     public class PositiveGenerator extends Generator&lt;Integer&gt; {
         private Positive positive;
+
+        // NB: every custom generator needs a no-args constructor!
+        public PositiveGenerator() {
+            super(Integer.class);
+        }
 
         @Override
         public Integer generate(
@@ -284,7 +290,7 @@
     @RunWith(JUnitQuickcheck.class)
     public class Numbers {
         @Property
-        public void holds(@Positive int i) {
+        public void holds(@From(positiveGenerator.class) @Positive int i) {
             assertTrue(i > 0);
         }
     }
@@ -296,9 +302,12 @@
 <li>Annotation interface <tt>Positive</tt> is marked as a <tt>@GeneratorConfiguration</tt>.</li>
 <li></li>
 </ol><br/>
-All this leads to JUnit-Quickcheck understanding that the <tt>public Integer generate</tt> method of <tt>PositiveGenerator</tt> class has to be used to generate <tt>Positive</tt> values for the test method <tt>Numbers.holds</tt>.</p>
+<p></p>All this leads to JUnit-Quickcheck understanding that the <tt>public Integer generate</tt> method of <tt>PositiveGenerator</tt> class has to be used to generate <tt>Positive</tt> values for the test method <tt>Numbers.holds</tt>.</p>
+<p>Had we not placed the <tt>@From</tt> annotation in the test method, <tt>PositiveGenerator</tt> would have been added 
+to the list of eligible generators (<tt>Generator<Integer></tt> and <tt>Generator<Number></tt>) and chosen randomically for the task along with the other ones.</p>
 <p>A <tt>Generator</tt> can have many such <tt>configure</tt> methods.</p>
-<p>Please note that the generation mechanism for the Positive interface can be specified and focused also using annotations, as the following "Aggregating configuration" paragraph illustrates.</p>
+<p>Please note that when building custom generators, each class must have a no-args constructor invoking `super()`</p>
+<p>Be aware that the generation mechanism for the Positive interface can be specified and focused also using annotations, as the following "Aggregating configuration" paragraph illustrates.</p>
 
 <div class="section">
 <h2><a name="Configuration_on_type_uses"></a>Configuration on type uses</h2>
