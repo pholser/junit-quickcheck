@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.generator;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * {@link Generator}s are fed instances of this interface on each generation
@@ -45,11 +46,33 @@ public interface GenerationStatus {
      */
     int attempts();
 
+    /**
+     * Associates the given value with the given key for the duration of the
+     * generation of a value for a property parameter, or until overwritten.
+     *
+     * @param <T> type of the value
+     * @param key a key to associate with a value
+     * @param value the associated value
+     * @return self, so that calls to this method can be chained
+     */
     <T> GenerationStatus setValue(Key<T> key, T value);
 
-    <T> T getValue(Key<T> key);
+    /**
+     * Retrieves the value associated with the given key.
+     *
+     * @param <T> type of the value associated with the key
+     * @param key key to look up
+     * @return the (optional) associated value
+     */
+    <T> Optional<T> valueOf(Key<T> key);
 
-    public final class Key<T> {
+    /**
+     * Type-safe keys for {@link GenerationStatus#setValue(Key, Object)
+     * setValue} and {@link GenerationStatus#valueOf(Key) valueOf}.
+     *
+     * @param <T> type of value that can be associated with the key
+     */
+    final class Key<T> {
         private final String name;
         private final Class<T> type;
 
@@ -79,6 +102,10 @@ public interface GenerationStatus {
 
         @Override public int hashCode() {
             return Objects.hash(name, type);
+        }
+
+        @Override public String toString() {
+            return name + ": " + type;
         }
     }
 }
