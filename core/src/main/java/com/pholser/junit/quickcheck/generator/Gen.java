@@ -49,11 +49,34 @@ public interface Gen<T> {
      */
     T generate(SourceOfRandomness random, GenerationStatus status);
 
-    default <U> Gen<U> map(Function<? super T, ? extends U> f) {
-        return (random, status) -> f.apply(Gen.this.generate(random, status));
+    /**
+     * Gives a generation strategy that produces a random value by having this
+     * strategy produce a random value, then applying the given function to
+     * that value, and returning the result.
+     *
+     * @param <U> type of values produced by the mapped generation strategy
+     * @param mapper function that converts receiver's random values to
+     * result's values
+     * @return a new generation strategy
+     */
+    default <U> Gen<U> map(Function<? super T, ? extends U> mapper) {
+        return (random, status) ->
+            mapper.apply(Gen.this.generate(random, status));
     }
 
-    default <U> Gen<U> flatMap(Function<? super T, Gen<? extends U>> f) {
-        return (random, status) -> f.apply(Gen.this.generate(random, status)).generate(random, status);
+    /**
+     * Gives a generation strategy that produces a random value by having this
+     * strategy produce a random value, then applying the given function to
+     * that value, and asking the result to produce a value.
+     *
+     * @param <U> type of values produced by the mapped generation strategy
+     * @param mapper function that converts receiver's random values to
+     * another kind of generation strategy
+     * @return a new generation strategy
+     */
+    default <U> Gen<U> flatMap(Function<? super T, ? extends Gen<? extends U>> mapper) {
+        return (random, status) ->
+            mapper.apply(Gen.this.generate(random, status))
+                .generate(random, status);
     }
 }
