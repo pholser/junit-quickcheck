@@ -87,7 +87,7 @@ class PropertyStatement extends Statement {
             marker.maxShrinks(),
             marker.maxShrinkDepth(),
             marker.maxShrinkTime(),
-            hook::handle);
+            hook);
 
         List<PropertyParameterGenerationContext> params = parameters(trials);
 
@@ -106,7 +106,7 @@ class PropertyStatement extends Statement {
         throws Throwable {
 
         List<SeededValue> seededValues = argumentsFor(params);
-        Object[] args = seededValues.stream().map(v -> v.value).toArray();
+        Object[] args = seededValues.stream().map(SeededValue::value).toArray();
         long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();
         property(params, args, seeds, shrinkControl).verify();
     }

@@ -240,24 +240,15 @@ public class ParameterTypeContext {
     public ParameterTypeContext arrayComponentContext() {
         @SuppressWarnings("unchecked")
         org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) token);
-        if (parameterType != null) {
-            AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();
-            return new ParameterTypeContext(
-                annotatedComponent.getType().getTypeName(),
-                annotatedComponent,
-                parameterType.getType().getTypeName(),
-                component,
-                typeVariables)
-                .annotate(annotatedComponent)
-                .allowMixedTypes(true);
-        }
+        AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();
         return new ParameterTypeContext(
-            component.getName(),
-            null,
-            token.getName(),
+            annotatedComponent.getType().getTypeName(),
+            annotatedComponent,
+            parameterType.getType().getTypeName(),
             component,
-            typeVariables
-        ).allowMixedTypes(true);
+            typeVariables)
+            .annotate(annotatedComponent)
+            .allowMixedTypes(true);
     }
 
     public Class<?> getRawClass() {
@@ -319,17 +310,15 @@ public class ParameterTypeContext {
         List<ParameterTypeContext> typeParameterContexts,
         AnnotatedType a) {
 
-        if (annotatedType() != null) {
-            typeParameterContexts.add(
-                new ParameterTypeContext(
-                    "Zilch",
-                    a,
-                    annotatedType().getType().getTypeName(),
-                    Types.forJavaLangReflectType(Zilch.class),
-                    typeVariables)
-                    .allowMixedTypes(true)
-                    .annotate(a));
-        }
+        typeParameterContexts.add(
+            new ParameterTypeContext(
+                "Zilch",
+                a,
+                annotatedType().getType().getTypeName(),
+                Types.forJavaLangReflectType(Zilch.class),
+                typeVariables)
+                .allowMixedTypes(true)
+                .annotate(a));
     }
 
     private void addExtendsTypeParameterContext(
