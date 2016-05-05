@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -132,8 +133,8 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         return this;
     }
 
-    @Override public <T> T getValue(Key<T> key) {
-        return key.cast(contextValues.get(key));
+    @Override public <T> Optional<T> valueOf(Key<T> key) {
+        return Optional.ofNullable(key.cast(contextValues.get(key)));
     }
 
     public long effectiveSeed() {

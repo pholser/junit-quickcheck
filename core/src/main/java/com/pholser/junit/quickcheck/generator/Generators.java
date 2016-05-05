@@ -116,5 +116,24 @@ public interface Generators {
      */
     Generator<?> field(Field field);
 
-    <T> Generator<T> oneOf(Class<? extends T> first, Class<? extends T>... rest);
+    /**
+     * <p>Gives a generator that can produce instances of one of a given set of
+     * related types on every generation.</p>
+     *
+     * <p>On each generation, one of the available generators that can produce
+     * one of the named types will be chosen with (approximately) equal
+     * probability.</p>
+     *
+     * @param <T> type of objects produced by the resulting generator
+     * @param first first type of generated value
+     * @param rest other (related) types of generated values
+     * @return generator that can produce values of the given types
+     */
+    <T> Generator<T> oneOf(
+        Class<? extends T> first,
+        Class<? extends T>... rest);
+
+    <T> Generator<T> oneOf(
+        Generator<? extends T> first,
+        Generator<? extends T>... rest);
 }
