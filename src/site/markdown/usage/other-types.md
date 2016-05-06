@@ -1,5 +1,26 @@
 # Generating values of other types
 
+Extend class `Generator` to create a generator for a type. So that
+junit-quickcheck can instantiate your generator, ensure that it has a
+`public` zero-arg constructor:
+
+```java
+    import java.awt.Dimension;
+
+    public class Dimensions extends Generator<Dimension> {
+        public Dimensions() {
+            super(Dimension.class);
+        }
+
+        @Override public Dimension generate(
+            SourceOfRandomness r,
+            GenerationStatus status) {
+
+            // ...
+        }
+    }
+```
+
 
 ## Explicit generators
 
@@ -11,7 +32,13 @@ one on every generation with probability in proportion to its `frequency`
 attribute (default is 1).
 
 ```java
+    import java.util.UUID;
+
     public class Version5 extends Generator<UUID> {
+        public Version5() {
+            super(UUID.class);
+        }
+
         @Override public UUID generate(
             SourceOfRandomness r,
             GenerationStatus status) {
@@ -40,13 +67,24 @@ functional interfaces that involve generics.
 ## Implied generators via `ServiceLoader`
 
 To use a generator for your own type without having to use `@From`, you can
-package it in a [ServiceLoader]
+arrange for a [ServiceLoader]
 (http://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
-JAR file and place the JAR on the class path. junit-quickcheck will make
-generators packaged in this way available for use. The generators in the module
-`junit-quickcheck-generators` are loaded via this mechanism also; any
-generators you supply and make available to the `ServiceLoader` complement
-these generators rather than override them.
+to discover it.
+
+- Create a provider configuration file in a resource directory
+`META-INF/services`, called
+`com.pholser.junit.quickcheck.generator.Generator`.
+- Each line of this file should contain the fully-qualified name of a
+concrete generator class.
+
+Ensure your generator class and the provider configuration file are on the
+class path. junit-quickcheck will make generators packaged in this way
+available for use.
+
+The generators in the module `junit-quickcheck-generators` are loaded via
+this mechanism also. Any generators you supply and make available to the
+`ServiceLoader` complement these generators rather than override them.
+
 
 ## `Ctor`
 

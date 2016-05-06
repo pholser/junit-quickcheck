@@ -4,35 +4,45 @@ If you mark a property parameter with an annotation that is itself marked as
 `@GeneratorConfiguration`, then if the `Generator` for that parameter's type
 has a public method named `configure` that accepts a single argument of the
 annotation type, junit-quickcheck will call the `configure` method
-reflectively, passing it the annotation.
+reflectively, passing it the annotation. The generator can then retain the
+annotation to influence the results of `generate()`.
+
+*Note*: Remember to mark your configuration annotation as
+`@Retention(RetentionPolicy.RUNTIME)`. Otherwise, junit-quickcheck will not
+detect it.
 
 ```java
     @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
     @Retention(RUNTIME)
     @GeneratorConfiguration
-    public @interface Positive {
+    public @interface NonNegative {
         // ...
     }
 
     public class IntegralGenerator extends Generator<Integer> {
-        private Positive positive;
+        private NonNegative nonNegative;
+
+        public IntegralGenerator() {
+            super(Arrays.asList(Integer.class, int.class));
+        }
 
         @Override public Integer generate(
             SourceOfRandomness random,
             GenerationStatus status) {
 
             int value = random.nextInt();
-            return positive != null ? Math.abs(value) : value;
+            return nonNegative != null ? Math.abs(value) : value;
         }
 
-        public void configure(Positive positive) {
-            this.positive = positive;
+        public void configure(NonNegative nonNegative) {
+            this.nonNegative = nonNegative;
         }
     }
 
     @RunWith(JUnitQuickcheck.class)
     public class Numbers {
-        @Property public void holds(@Positive int i) {
+        @Property public void nonNegativity(@NonNegative int i) {
+            assertThat(i, greaterThanOrEqualTo(0));
         }
     }
 ```

@@ -40,6 +40,11 @@ methods.
     }
 ```
 
+*Note*: The example above presumes the existence and availability of generators
+for classes `String` and `Key`. Find out more about generators in
+[Basic Types](usage/basic-types.html) and
+[Generating Values of Other Types](usage/other-types.html).
+
 The usual JUnit machinery is honored: `@Before`, `@After`, `@BeforeClass`,
 `@AfterClass`, `@Rule`. Zero-arg `public` `void` methods annotated with
 `@Test` will also be run.

@@ -7,7 +7,13 @@ values.
 ## Using the `SourceOfRandomness` handed to the generator directly
 
 ```java
+    import java.awt.Polygon;
+
     public class PolygonGenerator extends Generator<Polygon> {
+        public PolygonGenerator() {
+           super(Polygon.class);
+        }
+
         @Override public Polygon generate(
             SourceOfRandomness r,
             GenerationStatus status) {
@@ -33,7 +39,9 @@ necessary
 
 ```java
     public class NonNegativeInts extends Generator<Integer> {
-        // ...
+        public NonNegativeInts() {
+            super(Arrays.asList(Integer.class, int.class));
+        }
 
         @Override public Integer generate(
             SourceOfRandomness random,
@@ -57,7 +65,9 @@ necessary
         private final Generator<Integer> nonNegatives =
             new NonNegativeInts();
 
-        // ...
+        public Counters() {
+            super(Counter.class);
+        }
 
         @Override public Counter generate(
             SourceOfRandomness random,
@@ -91,14 +101,16 @@ given type.
     }
 
     public class Counters extends Generator<Counter> {
-        // ...
+        public Counters() {
+            super(Counter.class);
+        }
+
         @Override public Counter generate(
             SourceOfRandomness random,
             GenerationStatus status) {
 
             return new Counter(
-                Math.abs(gen().type(int.class).generate(random, status))
-            );
+                Math.abs(gen().type(int.class).generate(random, status)));
         }
     }
 ```
@@ -132,7 +144,10 @@ will be honored.
     }
 
     public class TrafficTrackers extends Generator<TrafficTracker> {
-        // ...
+        public TrafficTrackers() {
+            super(TrafficTracker.class);
+        }
+
         @Override public Counter generate(
             SourceOfRandomness random,
             GenerationStatus status) {
@@ -168,7 +183,10 @@ like annotating a property parameter with `@From(Fields.class)`. Any
     }
 
     public class TrafficTrackers extends Generator<TrafficTracker> {
-        // ...
+        public TrafficTrackers() {
+            super(TrafficTracker.class);
+        }
+
         @Override public Counter generate(
             SourceOfRandomness random,
             GenerationStatus status) {
@@ -200,10 +218,10 @@ on the field.
 
 # Generators for types with component types: `ComponentizedGenerator`
 
-Extend `ComponentizedGenerator` instead of `Generator` when the type of values
-you need to generate have component types; for example, collections, maps.
-This is usually necessary for generating values for types that involve
-generics.
+Extend class `ComponentizedGenerator` instead of `Generator` when the type
+of values you need to generate have component types; for example, collections
+and maps. This is usually necessary for generating values for types that
+involve generics.
 
 ```java
     public final class Either<L, R> {
