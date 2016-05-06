@@ -50,17 +50,17 @@ public class OptionalGenerator extends ComponentizedGenerator&lt;Optional&gt; {
     }
 
     @Override public List&lt;Optional&gt; doShrink(SourceOfRandomness random, Optional larger) {
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (!larger.isPresent())</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (!larger.isPresent())</span>
 <span class="fc" id="L54">            return new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L56">        List&lt;Optional&gt; shrinks = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L57">        shrinks.add(Optional.empty());</span>
-<span class="fc" id="L58">        shrinks.addAll(</span>
-<span class="fc" id="L59">            componentGenerators().get(0).shrink(random, larger.get())</span>
-<span class="fc" id="L60">                .stream()</span>
-<span class="fc" id="L61">                .map(Optional::of)</span>
-<span class="fc" id="L62">                .collect(Collectors.toList()));</span>
-<span class="fc" id="L63">        return shrinks;</span>
+<span class="nc" id="L56">        List&lt;Optional&gt; shrinks = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L57">        shrinks.add(Optional.empty());</span>
+<span class="nc" id="L58">        shrinks.addAll(</span>
+<span class="nc" id="L59">            componentGenerators().get(0).shrink(random, larger.get())</span>
+<span class="nc" id="L60">                .stream()</span>
+<span class="nc" id="L61">                .map(Optional::of)</span>
+<span class="nc" id="L62">                .collect(Collectors.toList()));</span>
+<span class="nc" id="L63">        return shrinks;</span>
     }
 
     @Override public int numberOfNeededComponents() {
