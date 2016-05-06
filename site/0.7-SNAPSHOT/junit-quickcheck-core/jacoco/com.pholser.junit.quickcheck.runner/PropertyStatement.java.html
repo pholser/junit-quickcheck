@@ -87,7 +87,7 @@ class PropertyStatement extends Statement {
 <span class="fc" id="L87">            marker.maxShrinks(),</span>
 <span class="fc" id="L88">            marker.maxShrinkDepth(),</span>
 <span class="fc" id="L89">            marker.maxShrinkTime(),</span>
-            hook::handle);
+            hook);
 
 <span class="fc" id="L92">        List&lt;PropertyParameterGenerationContext&gt; params = parameters(trials);</span>
 
@@ -106,7 +106,7 @@ class PropertyStatement extends Statement {
         throws Throwable {
 
 <span class="fc" id="L108">        List&lt;SeededValue&gt; seededValues = argumentsFor(params);</span>
-<span class="fc" id="L109">        Object[] args = seededValues.stream().map(v -&gt; v.value).toArray();</span>
+<span class="fc" id="L109">        Object[] args = seededValues.stream().map(SeededValue::value).toArray();</span>
 <span class="fc" id="L110">        long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();</span>
 <span class="fc" id="L111">        property(params, args, seeds, shrinkControl).verify();</span>
 <span class="fc" id="L112">    }</span>
@@ -214,7 +214,7 @@ class PropertyStatement extends Statement {
 <span class="fc" id="L214">        }</span>
 
         Object value() {
-<span class="nc" id="L217">            return value;</span>
+<span class="fc" id="L217">            return value;</span>
         }
 
         long seed() {

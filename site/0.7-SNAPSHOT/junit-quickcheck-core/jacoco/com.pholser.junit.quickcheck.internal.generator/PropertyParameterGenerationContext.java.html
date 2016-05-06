@@ -26,7 +26,10 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -45,6 +48,7 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
     private final ConstraintEvaluator evaluator;
     private final SourceOfRandomness random;
     private final Generator&lt;?&gt; generator;
+<span class="fc" id="L51">    private final Map&lt;Key&lt;?&gt;, Object&gt; contextValues = new HashMap&lt;&gt;();</span>
 
     private int successfulEvaluations;
     private int discards;
@@ -54,78 +58,87 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         GeneratorRepository repository,
         GeometricDistribution distro,
         SourceOfRandomness random,
-<span class="fc" id="L57">        Logger seedLog) {</span>
+<span class="fc" id="L61">        Logger seedLog) {</span>
 
-<span class="fc" id="L59">        this.parameter = parameter;</span>
-<span class="fc" id="L60">        this.distro = distro;</span>
-<span class="fc" id="L61">        this.evaluator = new ConstraintEvaluator(parameter.constraint());</span>
-<span class="fc" id="L62">        this.random = initializeRandomness(parameter, random, seedLog);</span>
-<span class="fc" id="L63">        this.generator = repository.produceGenerator(parameter.typeContext());</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L63">        this.parameter = parameter;</span>
+<span class="fc" id="L64">        this.distro = distro;</span>
+<span class="fc" id="L65">        this.evaluator = new ConstraintEvaluator(parameter.constraint());</span>
+<span class="fc" id="L66">        this.random = initializeRandomness(parameter, random, seedLog);</span>
+<span class="fc" id="L67">        this.generator = repository.produceGenerator(parameter.typeContext());</span>
+<span class="fc" id="L68">    }</span>
 
     private SourceOfRandomness initializeRandomness(
         PropertyParameterContext p,
         SourceOfRandomness r,
         Logger seedLog) {
 
-<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (p.fixedSeed())</span>
-<span class="fc" id="L72">            r.setSeed(p.seed());</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (p.fixedSeed())</span>
+<span class="fc" id="L76">            r.setSeed(p.seed());</span>
 
-<span class="fc" id="L74">        seedLog.debug(&quot;Seed for parameter {} is {}&quot;, p.typeContext().name(), r.seed());</span>
-<span class="fc" id="L75">        return r;</span>
+<span class="fc" id="L78">        seedLog.debug(&quot;Seed for parameter {} is {}&quot;, p.typeContext().name(), r.seed());</span>
+<span class="fc" id="L79">        return r;</span>
     }
 
     public Object generate() {
         Object nextValue;
 
-<span class="fc" id="L81">        for (nextValue = generator.generate(random, this);</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">            !evaluate(nextValue);</span>
-<span class="fc" id="L83">            nextValue = generator.generate(random, this));</span>
+<span class="fc" id="L85">        for (nextValue = generator.generate(random, this);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            !evaluate(nextValue);</span>
+<span class="fc" id="L87">            nextValue = generator.generate(random, this));</span>
 
-<span class="fc" id="L85">        return nextValue;</span>
+<span class="fc" id="L89">        return nextValue;</span>
     }
 
     public List&lt;Object&gt; shrink(Object larger) {
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        return generator.canShrink(larger)</span>
-<span class="fc" id="L90">            ? new ArrayList&lt;&gt;(generator.shrink(random, larger))</span>
-<span class="fc" id="L91">            : emptyList();</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        return generator.canShrink(larger)</span>
+<span class="fc" id="L94">            ? new ArrayList&lt;&gt;(generator.shrink(random, larger))</span>
+<span class="fc" id="L95">            : emptyList();</span>
     }
 
     private boolean evaluate(Object value) {
-<span class="fc" id="L95">        evaluator.bind(value);</span>
-<span class="fc" id="L96">        boolean result = evaluator.evaluate();</span>
+<span class="fc" id="L99">        evaluator.bind(value);</span>
+<span class="fc" id="L100">        boolean result = evaluator.evaluate();</span>
 
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (result)</span>
-<span class="fc" id="L99">            ++successfulEvaluations;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (result)</span>
+<span class="fc" id="L103">            ++successfulEvaluations;</span>
         else
-<span class="fc" id="L101">            ++discards;</span>
+<span class="fc" id="L105">            ++discards;</span>
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (tooManyDiscards())</span>
-<span class="fc" id="L104">            throw new DiscardRatioExceededException(parameter, discards, successfulEvaluations);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (tooManyDiscards())</span>
+<span class="fc" id="L108">            throw new DiscardRatioExceededException(parameter, discards, successfulEvaluations);</span>
 
-<span class="fc" id="L106">        return result;</span>
+<span class="fc" id="L110">        return result;</span>
     }
 
     private boolean tooManyDiscards() {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (parameter.discardRatio() == 0)</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">            return discards &gt; parameter.sampleSize();</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (parameter.discardRatio() == 0)</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            return discards &gt; parameter.sampleSize();</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        return successfulEvaluations == 0</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">            ? discards &gt; parameter.discardRatio()</span>
-<span class="fc bfc" id="L115" title="All 2 branches covered.">            : (discards / successfulEvaluations) &gt;= parameter.discardRatio();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        return successfulEvaluations == 0</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            ? discards &gt; parameter.discardRatio()</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            : (discards / successfulEvaluations) &gt;= parameter.discardRatio();</span>
     }
 
     @Override public int size() {
-<span class="fc" id="L119">        int sample = distro.sampleWithMean(attempts() + 1, random);</span>
-<span class="fc" id="L120">        return min(sample, parameter.sampleSize());</span>
+<span class="fc" id="L123">        int sample = distro.sampleWithMean(attempts() + 1, random);</span>
+<span class="fc" id="L124">        return min(sample, parameter.sampleSize());</span>
     }
 
     @Override public int attempts() {
-<span class="fc" id="L124">        return successfulEvaluations + discards;</span>
+<span class="fc" id="L128">        return successfulEvaluations + discards;</span>
+    }
+
+    @Override public &lt;T&gt; GenerationStatus setValue(Key&lt;T&gt; key, T value) {
+<span class="fc" id="L132">        contextValues.put(key, value);</span>
+<span class="fc" id="L133">        return this;</span>
+    }
+
+    @Override public &lt;T&gt; Optional&lt;T&gt; valueOf(Key&lt;T&gt; key) {
+<span class="fc" id="L137">        return Optional.ofNullable(key.cast(contextValues.get(key)));</span>
     }
 
     public long effectiveSeed() {
-<span class="fc" id="L128">        return random.seed();</span>
+<span class="fc" id="L141">        return random.seed();</span>
     }
 
     public static class DiscardRatioExceededException extends RuntimeException {
@@ -140,14 +153,14 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
             int discards,
             int successfulEvaluations) {
 
-<span class="fc" id="L143">            super(String.format(</span>
+<span class="fc" id="L156">            super(String.format(</span>
                 MESSAGE_TEMPLATE,
-<span class="fc" id="L145">                parameter.typeContext().name(),</span>
-<span class="fc" id="L146">                parameter.discardRatio(),</span>
-<span class="fc" id="L147">                discards,</span>
-<span class="fc" id="L148">                successfulEvaluations,</span>
-<span class="fc" id="L149">                (double) discards / successfulEvaluations));</span>
-<span class="fc" id="L150">        }</span>
+<span class="fc" id="L158">                parameter.typeContext().name(),</span>
+<span class="fc" id="L159">                parameter.discardRatio(),</span>
+<span class="fc" id="L160">                discards,</span>
+<span class="fc" id="L161">                successfulEvaluations,</span>
+<span class="fc" id="L162">                (double) discards / successfulEvaluations));</span>
+<span class="fc" id="L163">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

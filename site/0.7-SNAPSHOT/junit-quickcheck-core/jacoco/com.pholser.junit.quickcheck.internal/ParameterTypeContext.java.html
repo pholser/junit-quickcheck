@@ -112,12 +112,12 @@ public class ParameterTypeContext {
 <span class="fc" id="L112">        this.typeVariables = typeVariables;</span>
 <span class="fc" id="L113">    }</span>
 
-    public ParameterTypeContext(Type type) {
+    public ParameterTypeContext(Class&lt;?&gt; clazz) {
 <span class="fc" id="L116">        this(</span>
-<span class="fc" id="L117">            type.getTypeName(),</span>
-            null,
-<span class="fc" id="L119">            type.getTypeName(),</span>
-<span class="fc" id="L120">            Types.forJavaLangReflectType(type),</span>
+<span class="fc" id="L117">            clazz.getTypeName(),</span>
+<span class="fc" id="L118">            FakeAnnotatedTypeFactory.makeFrom(clazz),</span>
+<span class="fc" id="L119">            clazz.getTypeName(),</span>
+<span class="fc" id="L120">            Types.forJavaLangReflectType(clazz),</span>
 <span class="fc" id="L121">            emptyMap()</span>
         );
 <span class="fc" id="L123">    }</span>
@@ -240,63 +240,54 @@ public class ParameterTypeContext {
     public ParameterTypeContext arrayComponentContext() {
         @SuppressWarnings(&quot;unchecked&quot;)
 <span class="fc" id="L242">        org.javaruntype.type.Type&lt;?&gt; component = arrayComponentOf((org.javaruntype.type.Type&lt;Object[]&gt;) token);</span>
-<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (parameterType != null) {</span>
-<span class="fc" id="L244">            AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();</span>
-<span class="fc" id="L245">            return new ParameterTypeContext(</span>
-<span class="fc" id="L246">                annotatedComponent.getType().getTypeName(),</span>
-                annotatedComponent,
-<span class="fc" id="L248">                parameterType.getType().getTypeName(),</span>
-                component,
-                typeVariables)
-<span class="fc" id="L251">                .annotate(annotatedComponent)</span>
-<span class="fc" id="L252">                .allowMixedTypes(true);</span>
-        }
-<span class="fc" id="L254">        return new ParameterTypeContext(</span>
-<span class="fc" id="L255">            component.getName(),</span>
-            null,
-<span class="fc" id="L257">            token.getName(),</span>
+<span class="fc" id="L243">        AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();</span>
+<span class="fc" id="L244">        return new ParameterTypeContext(</span>
+<span class="fc" id="L245">            annotatedComponent.getType().getTypeName(),</span>
+            annotatedComponent,
+<span class="fc" id="L247">            parameterType.getType().getTypeName(),</span>
             component,
-            typeVariables
-<span class="fc" id="L260">        ).allowMixedTypes(true);</span>
+            typeVariables)
+<span class="fc" id="L250">            .annotate(annotatedComponent)</span>
+<span class="fc" id="L251">            .allowMixedTypes(true);</span>
     }
 
     public Class&lt;?&gt; getRawClass() {
-<span class="fc" id="L264">        return token.getRawClass();</span>
+<span class="fc" id="L255">        return token.getRawClass();</span>
     }
 
     public boolean isEnum() {
-<span class="fc" id="L268">        return getRawClass().isEnum();</span>
+<span class="fc" id="L259">        return getRawClass().isEnum();</span>
     }
 
     public List&lt;TypeParameter&lt;?&gt;&gt; getTypeParameters() {
-<span class="fc" id="L272">        return token.getTypeParameters();</span>
+<span class="fc" id="L263">        return token.getTypeParameters();</span>
     }
 
     public List&lt;ParameterTypeContext&gt; typeParameterContexts(SourceOfRandomness random) {
-<span class="fc" id="L276">        List&lt;ParameterTypeContext&gt; typeParameterContexts = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L277">        List&lt;TypeParameter&lt;?&gt;&gt; typeParameters = getTypeParameters();</span>
-<span class="fc" id="L278">        List&lt;AnnotatedType&gt; annotatedTypeParameters = annotatedComponentTypes(annotatedType());</span>
+<span class="fc" id="L267">        List&lt;ParameterTypeContext&gt; typeParameterContexts = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L268">        List&lt;TypeParameter&lt;?&gt;&gt; typeParameters = getTypeParameters();</span>
+<span class="fc" id="L269">        List&lt;AnnotatedType&gt; annotatedTypeParameters = annotatedComponentTypes(annotatedType());</span>
 
-<span class="fc bfc" id="L280" title="All 2 branches covered.">        for (int i = 0; i &lt; typeParameters.size(); ++i) {</span>
-<span class="fc" id="L281">            TypeParameter&lt;?&gt; p = typeParameters.get(i);</span>
-<span class="fc" id="L282">            AnnotatedType a =</span>
-<span class="fc bfc" id="L283" title="All 2 branches covered.">                annotatedTypeParameters.size() &gt; i</span>
-<span class="fc" id="L284">                    ? annotatedTypeParameters.get(i)</span>
-<span class="fc" id="L285">                    : zilch();</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        for (int i = 0; i &lt; typeParameters.size(); ++i) {</span>
+<span class="fc" id="L272">            TypeParameter&lt;?&gt; p = typeParameters.get(i);</span>
+<span class="fc" id="L273">            AnnotatedType a =</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">                annotatedTypeParameters.size() &gt; i</span>
+<span class="fc" id="L275">                    ? annotatedTypeParameters.get(i)</span>
+<span class="fc" id="L276">                    : zilch();</span>
 
-<span class="fc bfc" id="L287" title="All 2 branches covered.">            if (p instanceof StandardTypeParameter&lt;?&gt;)</span>
-<span class="fc" id="L288">                addStandardTypeParameterContext(typeParameterContexts, p, a);</span>
-<span class="fc bfc" id="L289" title="All 2 branches covered.">            else if (p instanceof WildcardTypeParameter)</span>
-<span class="fc" id="L290">                addWildcardTypeParameterContext(typeParameterContexts, a);</span>
-<span class="fc bfc" id="L291" title="All 2 branches covered.">            else if (p instanceof ExtendsTypeParameter&lt;?&gt;)</span>
-<span class="fc" id="L292">                addExtendsTypeParameterContext(typeParameterContexts, p, a);</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            if (p instanceof StandardTypeParameter&lt;?&gt;)</span>
+<span class="fc" id="L279">                addStandardTypeParameterContext(typeParameterContexts, p, a);</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            else if (p instanceof WildcardTypeParameter)</span>
+<span class="fc" id="L281">                addWildcardTypeParameterContext(typeParameterContexts, a);</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            else if (p instanceof ExtendsTypeParameter&lt;?&gt;)</span>
+<span class="fc" id="L283">                addExtendsTypeParameterContext(typeParameterContexts, p, a);</span>
             else {
                 // must be &quot;? super X&quot;
-<span class="fc" id="L295">                addSuperTypeParameterContext(random, typeParameterContexts, p, a);</span>
+<span class="fc" id="L286">                addSuperTypeParameterContext(random, typeParameterContexts, p, a);</span>
             }
         }
 
-<span class="fc" id="L299">        return typeParameterContexts;</span>
+<span class="fc" id="L290">        return typeParameterContexts;</span>
     }
 
     private void addStandardTypeParameterContext(
@@ -304,49 +295,47 @@ public class ParameterTypeContext {
         TypeParameter&lt;?&gt; p,
         AnnotatedType a) {
 
-<span class="fc" id="L307">        typeParameterContexts.add(</span>
+<span class="fc" id="L298">        typeParameterContexts.add(</span>
             new ParameterTypeContext(
-<span class="fc" id="L309">                p.getType().getName(),</span>
+<span class="fc" id="L300">                p.getType().getName(),</span>
                 a,
-<span class="fc" id="L311">                annotatedType().getType().getTypeName(),</span>
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">                p.getType(),</span>
+<span class="fc" id="L302">                annotatedType().getType().getTypeName(),</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">                p.getType(),</span>
                 typeVariables)
-<span class="fc" id="L314">            .allowMixedTypes(!(a instanceof TypeVariable))</span>
-<span class="fc" id="L315">            .annotate(a));</span>
-<span class="fc" id="L316">    }</span>
+<span class="fc" id="L305">            .allowMixedTypes(!(a instanceof TypeVariable))</span>
+<span class="fc" id="L306">            .annotate(a));</span>
+<span class="fc" id="L307">    }</span>
 
     private void addWildcardTypeParameterContext(
         List&lt;ParameterTypeContext&gt; typeParameterContexts,
         AnnotatedType a) {
 
-<span class="fc bfc" id="L322" title="All 2 branches covered.">        if (annotatedType() != null) {</span>
-<span class="fc" id="L323">            typeParameterContexts.add(</span>
-                new ParameterTypeContext(
-                    &quot;Zilch&quot;,
-                    a,
-<span class="fc" id="L327">                    annotatedType().getType().getTypeName(),</span>
-<span class="fc" id="L328">                    Types.forJavaLangReflectType(Zilch.class),</span>
-                    typeVariables)
-<span class="fc" id="L330">                    .allowMixedTypes(true)</span>
-<span class="fc" id="L331">                    .annotate(a));</span>
-        }
-<span class="fc" id="L333">    }</span>
+<span class="fc" id="L313">        typeParameterContexts.add(</span>
+            new ParameterTypeContext(
+                &quot;Zilch&quot;,
+                a,
+<span class="fc" id="L317">                annotatedType().getType().getTypeName(),</span>
+<span class="fc" id="L318">                Types.forJavaLangReflectType(Zilch.class),</span>
+                typeVariables)
+<span class="fc" id="L320">                .allowMixedTypes(true)</span>
+<span class="fc" id="L321">                .annotate(a));</span>
+<span class="fc" id="L322">    }</span>
 
     private void addExtendsTypeParameterContext(
         List&lt;ParameterTypeContext&gt; typeParameterContexts,
         TypeParameter&lt;?&gt; p,
         AnnotatedType a) {
 
-<span class="fc" id="L340">        typeParameterContexts.add(</span>
+<span class="fc" id="L329">        typeParameterContexts.add(</span>
             new ParameterTypeContext(
-<span class="fc" id="L342">                p.getType().getName(),</span>
-<span class="fc" id="L343">                annotatedComponentTypes(a).get(0),</span>
-<span class="fc" id="L344">                annotatedType().getType().getTypeName(),</span>
-<span class="fc" id="L345">                p.getType(),</span>
+<span class="fc" id="L331">                p.getType().getName(),</span>
+<span class="fc" id="L332">                annotatedComponentTypes(a).get(0),</span>
+<span class="fc" id="L333">                annotatedType().getType().getTypeName(),</span>
+<span class="fc" id="L334">                p.getType(),</span>
                 typeVariables)
-<span class="fc" id="L347">                .allowMixedTypes(false)</span>
-<span class="fc" id="L348">                .annotate(a));</span>
-<span class="fc" id="L349">    }</span>
+<span class="fc" id="L336">                .allowMixedTypes(false)</span>
+<span class="fc" id="L337">                .annotate(a));</span>
+<span class="fc" id="L338">    }</span>
 
     private void addSuperTypeParameterContext(
         SourceOfRandomness random,
@@ -354,25 +343,25 @@ public class ParameterTypeContext {
         TypeParameter&lt;?&gt; p,
         AnnotatedType a) {
 
-<span class="fc" id="L357">        Set&lt;org.javaruntype.type.Type&lt;?&gt;&gt; supertypes = supertypes(p.getType());</span>
-<span class="fc" id="L358">        org.javaruntype.type.Type&lt;?&gt; choice = choose(supertypes, random);</span>
+<span class="fc" id="L346">        Set&lt;org.javaruntype.type.Type&lt;?&gt;&gt; supertypes = supertypes(p.getType());</span>
+<span class="fc" id="L347">        org.javaruntype.type.Type&lt;?&gt; choice = choose(supertypes, random);</span>
 
-<span class="fc" id="L360">        typeParameterContexts.add(</span>
+<span class="fc" id="L349">        typeParameterContexts.add(</span>
             new ParameterTypeContext(
-<span class="fc" id="L362">                p.getType().getName(),</span>
-<span class="fc" id="L363">                annotatedComponentTypes(a).get(0),</span>
-<span class="fc" id="L364">                annotatedType().getType().getTypeName(),</span>
+<span class="fc" id="L351">                p.getType().getName(),</span>
+<span class="fc" id="L352">                annotatedComponentTypes(a).get(0),</span>
+<span class="fc" id="L353">                annotatedType().getType().getTypeName(),</span>
                 choice,
                 typeVariables)
-<span class="fc" id="L367">                .allowMixedTypes(false)</span>
-<span class="fc" id="L368">                .annotate(a));</span>
-<span class="fc" id="L369">    }</span>
+<span class="fc" id="L356">                .allowMixedTypes(false)</span>
+<span class="fc" id="L357">                .annotate(a));</span>
+<span class="fc" id="L358">    }</span>
 
     private static AnnotatedType zilch() {
         try {
-<span class="fc" id="L373">            return ParameterTypeContext.class.getDeclaredField(&quot;zilch&quot;).getAnnotatedType();</span>
-<span class="nc" id="L374">        } catch (NoSuchFieldException e) {</span>
-<span class="nc" id="L375">            throw new AssertionError(e);</span>
+<span class="fc" id="L362">            return ParameterTypeContext.class.getDeclaredField(&quot;zilch&quot;).getAnnotatedType();</span>
+<span class="nc" id="L363">        } catch (NoSuchFieldException e) {</span>
+<span class="nc" id="L364">            throw new AssertionError(e);</span>
         }
     }
 }

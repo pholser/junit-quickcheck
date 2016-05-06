@@ -25,9 +25,9 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2016</copyright>
     <item>
-      <title>File: 45,
+      <title>File: 47,
              Errors: 0,
-             Warnings: 40,
+             Warnings: 44,
              Infos: 0
       </title>
             <link>http://github.com/pholser/junit-quickcheck/checkstyle.html</link>
@@ -262,7 +262,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  0
+                  1
                 </td>
                 <td>
                   0
@@ -606,6 +606,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Gen.java">com/pholser/junit/quickcheck/generator/Gen.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.ShrinkNode.java">com/pholser/junit/quickcheck/runner/ShrinkNode.java</a>
                 </td>
                 <td>
@@ -669,6 +683,20 @@ under the License.
                 </td>
                 <td>
                   6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.FakeAnnotatedTypeFactory.java">com/pholser/junit/quickcheck/internal/FakeAnnotatedTypeFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
                 </td>
                 <td>
                   0
