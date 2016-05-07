@@ -61,7 +61,7 @@ public abstract class AbstractStringGenerator extends Generator&lt;String&gt; {
     }
 
     @Override public boolean canShrink(Object larger) {
-<span class="pc bpc" id="L64" title="2 of 4 branches missed.">        return super.canShrink(larger) &amp;&amp; codePointsInRange((String) larger);</span>
+<span class="pc bpc" id="L64" title="1 of 4 branches missed.">        return super.canShrink(larger) &amp;&amp; codePointsInRange((String) larger);</span>
     }
 
     @Override public List&lt;String&gt; doShrink(SourceOfRandomness random, String larger) {

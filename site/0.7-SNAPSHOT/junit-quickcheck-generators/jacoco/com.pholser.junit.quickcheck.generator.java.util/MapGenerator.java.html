@@ -88,7 +88,7 @@ public abstract class MapGenerator&lt;T extends Map&gt; extends ComponentizedGen
 <span class="fc bfc" id="L88" title="All 2 branches covered.">        for (int i = 0; i &lt; size; ++i) {</span>
 <span class="fc" id="L89">            Object key = componentGenerators().get(0).generate(random, status);</span>
 <span class="fc" id="L90">            Object value = componentGenerators().get(1).generate(random, status);</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">            if (okToAdd(key, value))</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (okToAdd(key, value))</span>
 <span class="fc" id="L92">                items.put(key, value);</span>
         }
 
