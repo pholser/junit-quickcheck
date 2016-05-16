@@ -44,7 +44,7 @@ public class ShrinkingTest {
     @Test public void complete() throws Exception {
         assertThat(
             testResult(ShrinkingCompletely.class),
-            hasSingleFailureContaining(String.format("shrunken to [%s]", new Foo(1))));
+            hasSingleFailureContaining(String.format("Args shrunken to: [%s]", new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -60,7 +60,7 @@ public class ShrinkingTest {
     @Test public void partial() throws Exception {
         assertThat(
             testResult(ShrinkingPartially.class),
-            hasSingleFailureContaining("shrunken to ["));
+            hasSingleFailureContaining("Args shrunken to: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -75,7 +75,7 @@ public class ShrinkingTest {
     @Test public void assumptionFailureWhileShrinking() {
         assertThat(
             testResult(FailedAssumptionDuringShrinking.class),
-            hasSingleFailureContaining("shrunken to ["));
+            hasSingleFailureContaining("Args shrunken to: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -190,7 +190,7 @@ public class ShrinkingTest {
         assertThat(
             testResult(ShrinkingMoreThanOnePropertyParameter.class),
             hasSingleFailureContaining(
-                String.format("shrunken to [%s, %s]", new Foo(1), new Foo(1))));
+                String.format("Args shrunken to: [%s, %s]", new Foo(1), new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -206,8 +206,8 @@ public class ShrinkingTest {
 
     @Test public void timeout() throws Exception {
         assertThat(
-                testResult(ShrinkingTimeout.class),
-                hasSingleFailureContaining("shrunken to ["));
+            testResult(ShrinkingTimeout.class),
+            hasSingleFailureContaining("Args shrunken to: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)

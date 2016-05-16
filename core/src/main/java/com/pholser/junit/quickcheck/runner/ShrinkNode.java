@@ -98,15 +98,20 @@ final class ShrinkNode {
         return new ShrinkNode(method, testClass, params, args, initialSeeds, argIndex + 1, depth);
     }
 
-    AssertionError fail(AssertionError originalFailure) {
-        AssertionError minimumFailure = new AssertionError(
+    AssertionError fail(AssertionError originalFailure, Object[] originalArgs) {
+        throw new AssertionError(
             String.format(
-                "Property %s falsified for args shrunken to %s using initial seeds %s",
+                "Property %s falsified.%n"
+                    + "Original failure message: [%s]%n"
+                    + "Original args: %s%n"
+                    + "Args shrunken to: %s%n"
+                    + "Seeds: %s%n",
                 method.getName(),
+                originalFailure.getMessage(),
+                Arrays.toString(originalArgs),
                 Arrays.toString(args),
-                Arrays.toString(initialSeeds)));
-        minimumFailure.setStackTrace(originalFailure.getStackTrace());
-        throw minimumFailure;
+                Arrays.toString(initialSeeds)),
+            originalFailure);
     }
 
     boolean mightBePast(ShrinkNode other) {
