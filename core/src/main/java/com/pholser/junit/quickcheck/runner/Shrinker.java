@@ -100,14 +100,15 @@ class Shrinker {
         }
 
         handleMinimalCounterexample(counterexample);
-        throw counterexample.fail(failure);
+        throw counterexample.fail(failure, args);
     }
 
     private void handleMinimalCounterexample(ShrinkNode counterexample) {
         Runnable repeat = () -> {
             try {
                 counterexample.verifyProperty();
-            } catch (Throwable e) {}
+            } catch (Throwable e) {
+            }
         };
 
         onMinimalCounterexample.handle(counterexample.getArgs(), repeat);
