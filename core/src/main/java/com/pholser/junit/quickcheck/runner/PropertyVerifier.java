@@ -40,7 +40,7 @@ import org.junit.runners.model.TestClass;
 class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final FrameworkMethod method;
     private final Object[] args;
-    private final long[] initialSeeds;
+    private final long[] seeds;
     private final Consumer<Void> onSuccess;
     private final Consumer<AssumptionViolatedException> onAssumptionViolated;
     private final BiConsumer<AssertionError, Runnable> onFailure;
@@ -49,7 +49,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         TestClass clazz,
         FrameworkMethod method,
         Object[] args,
-        long[] initialSeeds,
+        long[] seeds,
         Consumer<Void> onSuccess,
         Consumer<AssumptionViolatedException> onAssumptionViolated,
         BiConsumer<AssertionError, Runnable> onFailure)
@@ -58,7 +58,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         super(clazz.getJavaClass());
         this.method = method;
         this.args = args;
-        this.initialSeeds = initialSeeds;
+        this.seeds = seeds;
         this.onSuccess = onSuccess;
         this.onAssumptionViolated = onAssumptionViolated;
         this.onFailure = onFailure;
@@ -109,10 +109,10 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private void reportErrorWithArguments(Throwable e) {
         throw new AssertionError(
             String.format(
-                "Unexpected error in property %s with args %s and initial seeds %s",
+                "Unexpected error in property %s with args %s and seeds %s",
                 method.getName(),
                 Arrays.toString(args),
-                Arrays.toString(initialSeeds)),
+                Arrays.toString(seeds)),
             e);
     }
 }

@@ -66,12 +66,12 @@ class Shrinker {
     void shrink(
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        long[] initialSeeds)
+        long[] seeds)
         throws Throwable {
 
         Stack<ShrinkNode> nodes = new Stack<>();
         ShrinkNode counterexample =
-            ShrinkNode.root(method, testClass, params, args, initialSeeds);
+            ShrinkNode.root(method, testClass, params, args, seeds);
         counterexample.shrinks().forEach(nodes::push);
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;

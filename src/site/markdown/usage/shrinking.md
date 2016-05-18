@@ -42,9 +42,13 @@ not to hold. When shrinking is enabled:
     }
 ```
 
-the shrinking process might find a smaller value such as:
+the shrinking process might find a smaller value:
 
-    java.lang.AssertionError: Property primality falsified for args shrunken to [4]
+    java.lang.AssertionError: Property primality falsified.
+    Original failure message: [422886279]
+    Original args: [422886279]
+    Args shrunken to: [4]
+    Seeds: [8922134899668966991]
 
 
 ## Producing "smaller" values

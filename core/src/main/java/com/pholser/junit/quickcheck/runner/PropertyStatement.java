@@ -51,6 +51,7 @@ import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
 import static java.util.stream.Collectors.*;
 
 import static org.junit.Assert.*;
@@ -114,7 +115,7 @@ class PropertyStatement extends Statement {
     private PropertyVerifier property(
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        long[] initialSeeds,
+        long[] seeds,
         ShrinkControl shrinkControl)
         throws InitializationError {
 
@@ -122,17 +123,17 @@ class PropertyStatement extends Statement {
             testClass,
             method,
             args,
-            initialSeeds,
+            seeds,
             s -> ++successes,
             assumptionViolations::add,
             (e, action) -> {
                 if (!shrinkControl.shouldShrink()) {
                     shrinkControl.onMinimalCounterexample().handle(args, action);
-                    throw e;
+                    throw counterexampleFound(method.getName(), args, seeds, e);
                 }
 
                 try {
-                    shrink(params, args, initialSeeds, shrinkControl, e);
+                    shrink(params, args, seeds, shrinkControl, e);
                 } catch (AssertionError ex) {
                     throw ex;
                 } catch (Throwable ex) {
@@ -145,7 +146,7 @@ class PropertyStatement extends Statement {
     private void shrink(
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        long[] initialSeeds,
+        long[] seeds,
         ShrinkControl shrinkControl,
         AssertionError failure)
         throws Throwable {
@@ -158,7 +159,7 @@ class PropertyStatement extends Statement {
             shrinkControl.maxShrinkDepth(),
             shrinkControl.maxShrinkTime(),
             shrinkControl.onMinimalCounterexample())
-            .shrink(params, args, initialSeeds);
+            .shrink(params, args, seeds);
     }
 
     private List<PropertyParameterGenerationContext> parameters(int trials) {
