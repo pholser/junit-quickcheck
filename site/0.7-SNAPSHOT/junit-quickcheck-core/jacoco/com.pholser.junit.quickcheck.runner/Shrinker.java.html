@@ -66,12 +66,12 @@ class Shrinker {
     void shrink(
         List&lt;PropertyParameterGenerationContext&gt; params,
         Object[] args,
-        long[] initialSeeds)
+        long[] seeds)
         throws Throwable {
 
 <span class="fc" id="L72">        Stack&lt;ShrinkNode&gt; nodes = new Stack&lt;&gt;();</span>
 <span class="fc" id="L73">        ShrinkNode counterexample =</span>
-<span class="fc" id="L74">            ShrinkNode.root(method, testClass, params, args, initialSeeds);</span>
+<span class="fc" id="L74">            ShrinkNode.root(method, testClass, params, args, seeds);</span>
 <span class="fc" id="L75">        counterexample.shrinks().forEach(nodes::push);</span>
 
 <span class="fc" id="L77">        shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;</span>
@@ -100,24 +100,25 @@ class Shrinker {
 <span class="fc" id="L100">        }</span>
 
 <span class="fc" id="L102">        handleMinimalCounterexample(counterexample);</span>
-<span class="nc" id="L103">        throw counterexample.fail(failure);</span>
+<span class="fc" id="L103">        throw counterexample.fail(failure, args);</span>
     }
 
     private void handleMinimalCounterexample(ShrinkNode counterexample) {
 <span class="fc" id="L107">        Runnable repeat = () -&gt; {</span>
             try {
 <span class="fc" id="L109">                counterexample.verifyProperty();</span>
-<span class="pc" id="L110">            } catch (Throwable e) {}</span>
-<span class="fc" id="L111">        };</span>
+<span class="nc" id="L110">            } catch (Throwable e) {</span>
+<span class="fc" id="L111">            }</span>
+<span class="fc" id="L112">        };</span>
 
-<span class="fc" id="L113">        onMinimalCounterexample.handle(counterexample.getArgs(), repeat);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L114">        onMinimalCounterexample.handle(counterexample.getArgs(), repeat);</span>
+<span class="fc" id="L115">    }</span>
 
     private boolean shouldContinueShrinking(Stack&lt;ShrinkNode&gt; nodes) {
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        return shrinkAttempts &lt; maxShrinks</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">            &amp;&amp; shrinkTimeout &gt;= System.currentTimeMillis()</span>
-<span class="fc bfc" id="L119" title="All 2 branches covered.">            &amp;&amp; !nodes.empty()</span>
-<span class="fc bfc" id="L120" title="All 2 branches covered.">            &amp;&amp; !nodes.peek().deeperThan(maxShrinkDepth);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        return shrinkAttempts &lt; maxShrinks</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            &amp;&amp; shrinkTimeout &gt;= System.currentTimeMillis()</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            &amp;&amp; !nodes.empty()</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            &amp;&amp; !nodes.peek().deeperThan(maxShrinkDepth);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

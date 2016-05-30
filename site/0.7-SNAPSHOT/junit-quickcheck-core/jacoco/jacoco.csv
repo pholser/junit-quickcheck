@@ -40,12 +40,13 @@ junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,ServiceLoa
 junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,ZilchGenerator,0,6,0,0,0,3,0,2,0,2
 junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,GeneratorRepository,0,616,0,52,0,146,0,57,0,31
 junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,PropertyParameterGenerationContext,0,211,0,20,0,39,0,21,0,11
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyFalsified,0,67,0,0,0,13,0,3,0,3
 junit-quickcheck-core,com.pholser.junit.quickcheck.runner,JUnitQuickcheck,0,99,0,4,0,19,0,7,0,5
-junit-quickcheck-core,com.pholser.junit.quickcheck.runner,Shrinker,10,147,2,16,2,39,2,12,0,5
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,Shrinker,5,153,2,16,2,40,2,12,0,5
 junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyStatement.SeededValue,0,15,0,0,0,6,0,3,0,3
-junit-quickcheck-core,com.pholser.junit.quickcheck.runner,ShrinkNode,6,218,2,6,1,37,3,15,1,13
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,ShrinkNode,6,197,2,6,1,32,3,15,1,13
 junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyVerifier.new Statement() {...},7,41,0,0,2,13,0,3,0,3
-junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyStatement,28,264,1,7,8,56,1,17,0,14
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyStatement,28,270,1,7,8,56,1,17,0,14
 junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyVerifier.new Statement() {...},0,22,0,0,0,3,0,2,0,2
 junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyVerifier,0,73,0,0,0,19,0,6,0,6
 junit-quickcheck-core,com.pholser.junit.quickcheck.hook,NilMinimalCounterexampleHook,0,4,0,0,0,2,0,2,0,2

@@ -200,10 +200,10 @@ public final class Reflection {
     }
 
     public static void setField(
-        final Field field,
+        Field field,
         Object target,
         Object value,
-        final boolean suppressProtection) {
+        boolean suppressProtection) {
 
 <span class="fc" id="L208">        doPrivileged((PrivilegedAction&lt;Void&gt;) () -&gt; {</span>
 <span class="fc" id="L209">            field.setAccessible(suppressProtection);</span>

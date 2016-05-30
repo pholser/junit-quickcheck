@@ -40,7 +40,7 @@ import org.junit.runners.model.TestClass;
 class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final FrameworkMethod method;
     private final Object[] args;
-    private final long[] initialSeeds;
+    private final long[] seeds;
     private final Consumer&lt;Void&gt; onSuccess;
     private final Consumer&lt;AssumptionViolatedException&gt; onAssumptionViolated;
     private final BiConsumer&lt;AssertionError, Runnable&gt; onFailure;
@@ -49,7 +49,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         TestClass clazz,
         FrameworkMethod method,
         Object[] args,
-        long[] initialSeeds,
+        long[] seeds,
         Consumer&lt;Void&gt; onSuccess,
         Consumer&lt;AssumptionViolatedException&gt; onAssumptionViolated,
         BiConsumer&lt;AssertionError, Runnable&gt; onFailure)
@@ -58,7 +58,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
 <span class="fc" id="L58">        super(clazz.getJavaClass());</span>
 <span class="fc" id="L59">        this.method = method;</span>
 <span class="fc" id="L60">        this.args = args;</span>
-<span class="fc" id="L61">        this.initialSeeds = initialSeeds;</span>
+<span class="fc" id="L61">        this.seeds = seeds;</span>
 <span class="fc" id="L62">        this.onSuccess = onSuccess;</span>
 <span class="fc" id="L63">        this.onAssumptionViolated = onAssumptionViolated;</span>
 <span class="fc" id="L64">        this.onFailure = onFailure;</span>
@@ -109,10 +109,10 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private void reportErrorWithArguments(Throwable e) {
 <span class="fc" id="L110">        throw new AssertionError(</span>
 <span class="fc" id="L111">            String.format(</span>
-                &quot;Unexpected error in property %s with args %s and initial seeds %s&quot;,
+                &quot;Unexpected error in property %s with args %s and seeds %s&quot;,
 <span class="fc" id="L113">                method.getName(),</span>
 <span class="fc" id="L114">                Arrays.toString(args),</span>
-<span class="fc" id="L115">                Arrays.toString(initialSeeds)),</span>
+<span class="fc" id="L115">                Arrays.toString(seeds)),</span>
             e);
     }
 }
