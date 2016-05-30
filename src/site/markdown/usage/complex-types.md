@@ -34,7 +34,7 @@ values.
 ```
 
 
-## Embedding other generators as fields of the generator, calling upon them as necessary
+## Calling on generators embedding as fields of the generator
 
 ```java
     public class NonNegativeInts extends Generator<Integer> {
