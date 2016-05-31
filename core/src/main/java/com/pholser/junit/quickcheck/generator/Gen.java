@@ -25,8 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 
+import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
@@ -78,5 +82,24 @@ public interface Gen<T> {
         return (random, status) ->
             mapper.apply(Gen.this.generate(random, status))
                 .generate(random, status);
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given values at random with (approximately) equal
+     * probability.
+     *
+     * @param <U> type of values produced by the resulting strategy
+     * @param first first possible choice
+     * @param rest the other possible choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs
+    static <U> Gen<U> choose(U first, U... rest) {
+        List<U> items = new ArrayList<>();
+        items.add(first);
+        Collections.addAll(items, rest);
+
+        return (random, status) -> Items.choose(items, random);
     }
 }

@@ -33,6 +33,39 @@ import java.lang.reflect.Parameter;
  */
 public interface Generators {
     /**
+     * <p>Gives a generator that can produce instances of one of a given set of
+     * related types on every generation.</p>
+     *
+     * <p>On each generation, one of the available generators that can produce
+     * one of the named types will be chosen with (approximately) equal
+     * probability.</p>
+     *
+     * @param <T> type of objects produced by the resulting generator
+     * @param first first type of generated value
+     * @param rest other (related) types of generated values
+     * @return generator that can produce values of the given types
+     */
+    <T> Generator<T> oneOf(
+        Class<? extends T> first,
+        Class<? extends T>... rest);
+
+    /**
+     * <p>Gives a generator that can produce instances of one of a given set of
+     * related types on every generation.</p>
+     *
+     * <p>On each generation, one of the given generators will be called upon
+     * with (approximately) equal probability.</p>
+     *
+     * @param <T> type of objects produced by the resulting generator
+     * @param first first generator
+     * @param rest other generators
+     * @return generator that can produce values using the given generators
+     */
+    <T> Generator<T> oneOf(
+        Generator<? extends T> first,
+        Generator<? extends T>... rest);
+
+    /**
      * <p>Gives a generator that can produce an instance of the type described
      * by the field with the given name and containing type.</p>
      *
@@ -115,25 +148,4 @@ public interface Generators {
      * @return generator that can produce values of the field's type
      */
     Generator<?> field(Field field);
-
-    /**
-     * <p>Gives a generator that can produce instances of one of a given set of
-     * related types on every generation.</p>
-     *
-     * <p>On each generation, one of the available generators that can produce
-     * one of the named types will be chosen with (approximately) equal
-     * probability.</p>
-     *
-     * @param <T> type of objects produced by the resulting generator
-     * @param first first type of generated value
-     * @param rest other (related) types of generated values
-     * @return generator that can produce values of the given types
-     */
-    <T> Generator<T> oneOf(
-        Class<? extends T> first,
-        Class<? extends T>... rest);
-
-    <T> Generator<T> oneOf(
-        Generator<? extends T> first,
-        Generator<? extends T>... rest);
 }
