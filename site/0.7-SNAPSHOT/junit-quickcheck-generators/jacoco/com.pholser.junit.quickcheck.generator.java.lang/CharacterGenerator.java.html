@@ -70,7 +70,7 @@ public class CharacterGenerator extends Generator&lt;Character&gt; {
 <span class="pc bpc" id="L70" title="1 of 4 branches missed.">        return new CodePointShrink(cp -&gt; cp &gt;= min &amp;&amp; cp &lt;= max)</span>
 <span class="fc" id="L71">            .shrink(random, (int) larger)</span>
 <span class="fc" id="L72">            .stream()</span>
-<span class="pc" id="L73">            .map((Integer cp) -&gt; (char) cp.intValue())</span>
+<span class="fc" id="L73">            .map((Integer cp) -&gt; (char) cp.intValue())</span>
 <span class="fc" id="L74">            .collect(Collectors.toList());</span>
     }
 }

@@ -68,17 +68,17 @@ public class OptionalIntGenerator extends Generator&lt;OptionalInt&gt; {
     }
 
     @Override public List&lt;OptionalInt&gt; doShrink(SourceOfRandomness random, OptionalInt larger) {
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (!larger.isPresent())</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (!larger.isPresent())</span>
 <span class="fc" id="L72">            return new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L74">        List&lt;OptionalInt&gt; shrinks = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L75">        shrinks.add(OptionalInt.empty());</span>
-<span class="nc" id="L76">        shrinks.addAll(</span>
-<span class="nc" id="L77">            integerGenerator.shrink(random, larger.getAsInt())</span>
-<span class="nc" id="L78">                .stream()</span>
-<span class="nc" id="L79">                .map(OptionalInt::of)</span>
-<span class="nc" id="L80">                .collect(Collectors.toList()));</span>
-<span class="nc" id="L81">        return shrinks;</span>
+<span class="fc" id="L74">        List&lt;OptionalInt&gt; shrinks = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L75">        shrinks.add(OptionalInt.empty());</span>
+<span class="fc" id="L76">        shrinks.addAll(</span>
+<span class="fc" id="L77">            integerGenerator.shrink(random, larger.getAsInt())</span>
+<span class="fc" id="L78">                .stream()</span>
+<span class="fc" id="L79">                .map(OptionalInt::of)</span>
+<span class="fc" id="L80">                .collect(Collectors.toList()));</span>
+<span class="fc" id="L81">        return shrinks;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
