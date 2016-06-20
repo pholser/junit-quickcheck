@@ -39,8 +39,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * &lt;p&gt;JUnit test runner for junit-quickcheck property-based tests.&lt;/p&gt;
@@ -59,7 +57,6 @@ import org.slf4j.LoggerFactory;
 public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
-    private final Logger seedLog;
 
     /**
      * Invoked reflectively by JUnit.
@@ -68,35 +65,34 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
      * @throws InitializationError if there is a problem with the properties class
      */
     public JUnitQuickcheck(Class&lt;?&gt; clazz) throws InitializationError {
-<span class="fc" id="L71">        super(clazz);</span>
+<span class="fc" id="L68">        super(clazz);</span>
 
-<span class="fc" id="L73">        SourceOfRandomness random = new SourceOfRandomness(new Random());</span>
-<span class="fc" id="L74">        repo = new GeneratorRepository(random).register(new ServiceLoaderGeneratorSource());</span>
-<span class="fc" id="L75">        distro = new GeometricDistribution();</span>
-<span class="fc" id="L76">        seedLog = LoggerFactory.getLogger(&quot;junit-quickcheck.seed-reporting&quot;);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L70">        SourceOfRandomness random = new SourceOfRandomness(new Random());</span>
+<span class="fc" id="L71">        repo = new GeneratorRepository(random).register(new ServiceLoaderGeneratorSource());</span>
+<span class="fc" id="L72">        distro = new GeometricDistribution();</span>
+<span class="fc" id="L73">    }</span>
 
     @Override protected void validateTestMethods(List&lt;Throwable&gt; errors) {
-<span class="fc" id="L80">        validatePublicVoidNoArgMethods(Test.class, false, errors);</span>
-<span class="fc" id="L81">        validatePropertyMethods(errors);</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L76">        validatePublicVoidNoArgMethods(Test.class, false, errors);</span>
+<span class="fc" id="L77">        validatePropertyMethods(errors);</span>
+<span class="fc" id="L78">    }</span>
 
     private void validatePropertyMethods(List&lt;Throwable&gt; errors) {
-<span class="fc bfc" id="L85" title="All 2 branches covered.">        for (FrameworkMethod each : getTestClass().getAnnotatedMethods(Property.class))</span>
-<span class="fc" id="L86">            each.validatePublicVoid(false, errors);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (FrameworkMethod each : getTestClass().getAnnotatedMethods(Property.class))</span>
+<span class="fc" id="L82">            each.validatePublicVoid(false, errors);</span>
+<span class="fc" id="L83">    }</span>
 
     @Override protected List&lt;FrameworkMethod&gt; computeTestMethods() {
-<span class="fc" id="L90">        List&lt;FrameworkMethod&gt; methods = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L91">        methods.addAll(getTestClass().getAnnotatedMethods(Test.class));</span>
-<span class="fc" id="L92">        methods.addAll(getTestClass().getAnnotatedMethods(Property.class));</span>
-<span class="fc" id="L93">        return methods;</span>
+<span class="fc" id="L86">        List&lt;FrameworkMethod&gt; methods = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L87">        methods.addAll(getTestClass().getAnnotatedMethods(Test.class));</span>
+<span class="fc" id="L88">        methods.addAll(getTestClass().getAnnotatedMethods(Property.class));</span>
+<span class="fc" id="L89">        return methods;</span>
     }
 
     @Override public Statement methodBlock(FrameworkMethod method) {
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        return method.getAnnotation(Test.class) != null</span>
-<span class="fc" id="L98">            ? super.methodBlock(method)</span>
-<span class="fc" id="L99">            : new PropertyStatement(method, getTestClass(), repo, distro, seedLog);</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        return method.getAnnotation(Test.class) != null</span>
+<span class="fc" id="L94">            ? super.methodBlock(method)</span>
+<span class="fc" id="L95">            : new PropertyStatement(method, getTestClass(), repo, distro);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

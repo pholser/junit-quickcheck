@@ -48,7 +48,6 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
-import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
@@ -61,56 +60,53 @@ class PropertyStatement extends Statement {
     private final TestClass testClass;
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
-    private final Logger seedLog;
-<span class="fc" id="L65">    private final List&lt;AssumptionViolatedException&gt; assumptionViolations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L63">    private final List&lt;AssumptionViolatedException&gt; assumptionViolations = new ArrayList&lt;&gt;();</span>
     private int successes;
 
     PropertyStatement(
         FrameworkMethod method,
         TestClass testClass,
         GeneratorRepository repo,
-        GeometricDistribution distro,
-<span class="fc" id="L73">        Logger seedLog) {</span>
+<span class="fc" id="L70">        GeometricDistribution distro) {</span>
 
-<span class="fc" id="L75">        this.method = method;</span>
-<span class="fc" id="L76">        this.testClass = testClass;</span>
-<span class="fc" id="L77">        this.repo = repo;</span>
-<span class="fc" id="L78">        this.distro = distro;</span>
-<span class="fc" id="L79">        this.seedLog = seedLog;</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L72">        this.method = method;</span>
+<span class="fc" id="L73">        this.testClass = testClass;</span>
+<span class="fc" id="L74">        this.repo = repo;</span>
+<span class="fc" id="L75">        this.distro = distro;</span>
+<span class="fc" id="L76">    }</span>
 
     @Override public void evaluate() throws Throwable {
-<span class="fc" id="L83">        Property marker = method.getAnnotation(Property.class);</span>
-<span class="fc" id="L84">        int trials = marker.trials();</span>
-<span class="fc" id="L85">        MinimalCounterexampleHook hook = marker.onMinimalCounterexample().newInstance();</span>
-<span class="fc" id="L86">        ShrinkControl shrinkControl = new ShrinkControl(</span>
-<span class="fc" id="L87">            marker.shrink(),</span>
-<span class="fc" id="L88">            marker.maxShrinks(),</span>
-<span class="fc" id="L89">            marker.maxShrinkDepth(),</span>
-<span class="fc" id="L90">            marker.maxShrinkTime(),</span>
+<span class="fc" id="L79">        Property marker = method.getAnnotation(Property.class);</span>
+<span class="fc" id="L80">        int trials = marker.trials();</span>
+<span class="fc" id="L81">        MinimalCounterexampleHook hook = marker.onMinimalCounterexample().newInstance();</span>
+<span class="fc" id="L82">        ShrinkControl shrinkControl = new ShrinkControl(</span>
+<span class="fc" id="L83">            marker.shrink(),</span>
+<span class="fc" id="L84">            marker.maxShrinks(),</span>
+<span class="fc" id="L85">            marker.maxShrinkDepth(),</span>
+<span class="fc" id="L86">            marker.maxShrinkTime(),</span>
             hook);
 
-<span class="fc" id="L93">        List&lt;PropertyParameterGenerationContext&gt; params = parameters(trials);</span>
+<span class="fc" id="L89">        List&lt;PropertyParameterGenerationContext&gt; params = parameters(trials);</span>
 
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (int i = 0; i &lt; trials; ++i)</span>
-<span class="fc" id="L96">            verifyProperty(params, shrinkControl);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (int i = 0; i &lt; trials; ++i)</span>
+<span class="fc" id="L92">            verifyProperty(params, shrinkControl);</span>
 
-<span class="pc bpc" id="L98" title="1 of 4 branches missed.">        if (successes == 0 &amp;&amp; !assumptionViolations.isEmpty()) {</span>
-<span class="nc" id="L99">            fail(&quot;No values satisfied property assumptions. Violated assumptions: &quot;</span>
+<span class="pc bpc" id="L94" title="1 of 4 branches missed.">        if (successes == 0 &amp;&amp; !assumptionViolations.isEmpty()) {</span>
+<span class="nc" id="L95">            fail(&quot;No values satisfied property assumptions. Violated assumptions: &quot;</span>
                 + assumptionViolations);
         }
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L98">    }</span>
 
     private void verifyProperty(
         List&lt;PropertyParameterGenerationContext&gt; params,
         ShrinkControl shrinkControl)
         throws Throwable {
 
-<span class="fc" id="L109">        List&lt;SeededValue&gt; seededValues = argumentsFor(params);</span>
-<span class="fc" id="L110">        Object[] args = seededValues.stream().map(SeededValue::value).toArray();</span>
-<span class="fc" id="L111">        long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();</span>
-<span class="fc" id="L112">        property(params, args, seeds, shrinkControl).verify();</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L105">        List&lt;SeededValue&gt; seededValues = argumentsFor(params);</span>
+<span class="fc" id="L106">        Object[] args = seededValues.stream().map(SeededValue::value).toArray();</span>
+<span class="fc" id="L107">        long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();</span>
+<span class="fc" id="L108">        property(params, args, seeds, shrinkControl).verify();</span>
+<span class="fc" id="L109">    }</span>
 
     private PropertyVerifier property(
         List&lt;PropertyParameterGenerationContext&gt; params,
@@ -119,27 +115,27 @@ class PropertyStatement extends Statement {
         ShrinkControl shrinkControl)
         throws InitializationError {
 
-<span class="fc" id="L122">        return new PropertyVerifier(</span>
+<span class="fc" id="L118">        return new PropertyVerifier(</span>
             testClass,
             method,
             args,
             seeds,
-<span class="fc" id="L127">            s -&gt; ++successes,</span>
+<span class="fc" id="L123">            s -&gt; ++successes,</span>
             assumptionViolations::add,
             (e, action) -&gt; {
-<span class="fc bfc" id="L130" title="All 2 branches covered.">                if (!shrinkControl.shouldShrink()) {</span>
-<span class="fc" id="L131">                    shrinkControl.onMinimalCounterexample().handle(args, action);</span>
-<span class="fc" id="L132">                    throw counterexampleFound(method.getName(), args, seeds, e);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (!shrinkControl.shouldShrink()) {</span>
+<span class="fc" id="L127">                    shrinkControl.onMinimalCounterexample().handle(args, action);</span>
+<span class="fc" id="L128">                    throw counterexampleFound(method.getName(), args, seeds, e);</span>
                 }
 
                 try {
-<span class="nc" id="L136">                    shrink(params, args, seeds, shrinkControl, e);</span>
-<span class="fc" id="L137">                } catch (AssertionError ex) {</span>
-<span class="fc" id="L138">                    throw ex;</span>
-<span class="nc" id="L139">                } catch (Throwable ex) {</span>
-<span class="nc" id="L140">                    throw new AssertionError(ex.getCause());</span>
-<span class="nc" id="L141">                }</span>
-<span class="nc" id="L142">            }</span>
+<span class="nc" id="L132">                    shrink(params, args, seeds, shrinkControl, e);</span>
+<span class="fc" id="L133">                } catch (AssertionError ex) {</span>
+<span class="fc" id="L134">                    throw ex;</span>
+<span class="nc" id="L135">                } catch (Throwable ex) {</span>
+<span class="nc" id="L136">                    throw new AssertionError(ex.getCause());</span>
+<span class="nc" id="L137">                }</span>
+<span class="nc" id="L138">            }</span>
         );
     }
 
@@ -151,31 +147,31 @@ class PropertyStatement extends Statement {
         AssertionError failure)
         throws Throwable {
 
-<span class="fc" id="L154">        new Shrinker(</span>
+<span class="fc" id="L150">        new Shrinker(</span>
             method,
             testClass,
             failure,
-<span class="fc" id="L158">            shrinkControl.maxShrinks(),</span>
-<span class="fc" id="L159">            shrinkControl.maxShrinkDepth(),</span>
-<span class="fc" id="L160">            shrinkControl.maxShrinkTime(),</span>
-<span class="fc" id="L161">            shrinkControl.onMinimalCounterexample())</span>
-<span class="nc" id="L162">            .shrink(params, args, seeds);</span>
-<span class="nc" id="L163">    }</span>
+<span class="fc" id="L154">            shrinkControl.maxShrinks(),</span>
+<span class="fc" id="L155">            shrinkControl.maxShrinkDepth(),</span>
+<span class="fc" id="L156">            shrinkControl.maxShrinkTime(),</span>
+<span class="fc" id="L157">            shrinkControl.onMinimalCounterexample())</span>
+<span class="nc" id="L158">            .shrink(params, args, seeds);</span>
+<span class="nc" id="L159">    }</span>
 
     private List&lt;PropertyParameterGenerationContext&gt; parameters(int trials) {
-<span class="fc" id="L166">        Map&lt;String, Type&gt; typeVariables = GenericsResolver.resolve(testClass.getJavaClass())</span>
-<span class="fc" id="L167">            .method(method.getMethod())</span>
-<span class="fc" id="L168">            .genericsMap();</span>
+<span class="fc" id="L162">        Map&lt;String, Type&gt; typeVariables = GenericsResolver.resolve(testClass.getJavaClass())</span>
+<span class="fc" id="L163">            .method(method.getMethod())</span>
+<span class="fc" id="L164">            .genericsMap();</span>
 
-<span class="fc" id="L170">        return Arrays.stream(method.getMethod().getParameters())</span>
-<span class="fc" id="L171">            .map(p -&gt; parameterContextFor(p, trials, typeVariables))</span>
-<span class="fc" id="L172">            .map(p -&gt; new PropertyParameterGenerationContext(</span>
+<span class="fc" id="L166">        return Arrays.stream(method.getMethod().getParameters())</span>
+<span class="fc" id="L167">            .map(p -&gt; parameterContextFor(p, trials, typeVariables))</span>
+<span class="fc" id="L168">            .map(p -&gt; new PropertyParameterGenerationContext(</span>
                 p,
                 repo,
                 distro,
-                new SourceOfRandomness(new Random()),
-                seedLog))
-<span class="fc" id="L178">            .collect(toList());</span>
+                new SourceOfRandomness(new Random())
+            ))
+<span class="fc" id="L174">            .collect(toList());</span>
     }
 
     private PropertyParameterContext parameterContextFor(
@@ -183,43 +179,43 @@ class PropertyStatement extends Statement {
         int trials,
         Map&lt;String, Type&gt; typeVariables) {
 
-<span class="fc" id="L186">        return new PropertyParameterContext(</span>
+<span class="fc" id="L182">        return new PropertyParameterContext(</span>
             new ParameterTypeContext(
-<span class="fc" id="L188">                parameter.getName(),</span>
-<span class="fc" id="L189">                parameter.getAnnotatedType(),</span>
-<span class="fc" id="L190">                declarerName(parameter),</span>
+<span class="fc" id="L184">                parameter.getName(),</span>
+<span class="fc" id="L185">                parameter.getAnnotatedType(),</span>
+<span class="fc" id="L186">                declarerName(parameter),</span>
                 typeVariables)
-<span class="fc" id="L192">                .allowMixedTypes(true),</span>
+<span class="fc" id="L188">                .allowMixedTypes(true),</span>
             trials
-<span class="fc" id="L194">        ).annotate(parameter);</span>
+<span class="fc" id="L190">        ).annotate(parameter);</span>
     }
 
     private static String declarerName(Parameter p) {
-<span class="fc" id="L198">        Executable exec = p.getDeclaringExecutable();</span>
-<span class="fc" id="L199">        return exec.getDeclaringClass().getName() + '.' + exec.getName();</span>
+<span class="fc" id="L194">        Executable exec = p.getDeclaringExecutable();</span>
+<span class="fc" id="L195">        return exec.getDeclaringClass().getName() + '.' + exec.getName();</span>
     }
 
     private List&lt;SeededValue&gt; argumentsFor(List&lt;PropertyParameterGenerationContext&gt; params) {
-<span class="fc" id="L203">        return params.stream()</span>
-<span class="fc" id="L204">            .map(p -&gt; new SeededValue(p.generate(), p.effectiveSeed()))</span>
-<span class="fc" id="L205">            .collect(toList());</span>
+<span class="fc" id="L199">        return params.stream()</span>
+<span class="fc" id="L200">            .map(p -&gt; new SeededValue(p.generate(), p.effectiveSeed()))</span>
+<span class="fc" id="L201">            .collect(toList());</span>
     }
 
-    private static class SeededValue {
+    private static final class SeededValue {
         private final Object value;
         private final long seed;
 
-<span class="fc" id="L212">        SeededValue(Object value, long seed) {</span>
-<span class="fc" id="L213">            this.value = value;</span>
-<span class="fc" id="L214">            this.seed = seed;</span>
-<span class="fc" id="L215">        }</span>
+<span class="fc" id="L208">        SeededValue(Object value, long seed) {</span>
+<span class="fc" id="L209">            this.value = value;</span>
+<span class="fc" id="L210">            this.seed = seed;</span>
+<span class="fc" id="L211">        }</span>
 
         Object value() {
-<span class="fc" id="L218">            return value;</span>
+<span class="fc" id="L214">            return value;</span>
         }
 
         long seed() {
-<span class="fc" id="L222">            return seed;</span>
+<span class="fc" id="L218">            return seed;</span>
         }
     }
 }

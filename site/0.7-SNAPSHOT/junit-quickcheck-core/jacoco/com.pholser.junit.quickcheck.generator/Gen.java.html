@@ -25,8 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 
+import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
@@ -60,8 +64,8 @@ public interface Gen&lt;T&gt; {
      * @return a new generation strategy
      */
     default &lt;U&gt; Gen&lt;U&gt; map(Function&lt;? super T, ? extends U&gt; mapper) {
-<span class="fc" id="L63">        return (random, status) -&gt;</span>
-<span class="fc" id="L64">            mapper.apply(Gen.this.generate(random, status));</span>
+<span class="fc" id="L67">        return (random, status) -&gt;</span>
+<span class="fc" id="L68">            mapper.apply(Gen.this.generate(random, status));</span>
     }
 
     /**
@@ -75,9 +79,28 @@ public interface Gen&lt;T&gt; {
      * @return a new generation strategy
      */
     default &lt;U&gt; Gen&lt;U&gt; flatMap(Function&lt;? super T, ? extends Gen&lt;? extends U&gt;&gt; mapper) {
-<span class="fc" id="L78">        return (random, status) -&gt;</span>
-<span class="fc" id="L79">            mapper.apply(Gen.this.generate(random, status))</span>
-<span class="fc" id="L80">                .generate(random, status);</span>
+<span class="fc" id="L82">        return (random, status) -&gt;</span>
+<span class="fc" id="L83">            mapper.apply(Gen.this.generate(random, status))</span>
+<span class="fc" id="L84">                .generate(random, status);</span>
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given values at random with (approximately) equal
+     * probability.
+     *
+     * @param &lt;U&gt; type of values produced by the resulting strategy
+     * @param first first possible choice
+     * @param rest the other possible choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs
+    static &lt;U&gt; Gen&lt;U&gt; choose(U first, U... rest) {
+<span class="fc" id="L99">        List&lt;U&gt; items = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L100">        items.add(first);</span>
+<span class="fc" id="L101">        Collections.addAll(items, rest);</span>
+
+<span class="fc" id="L103">        return (random, status) -&gt; Items.choose(items, random);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

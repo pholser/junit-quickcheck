@@ -27,7 +27,7 @@ under the License.
     <item>
       <title>File: 48,
              Errors: 0,
-             Warnings: 48,
+             Warnings: 46,
              Infos: 0
       </title>
             <link>http://github.com/pholser/junit-quickcheck/checkstyle.html</link>
@@ -220,7 +220,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  6
+                  5
                 </td>
                 <td>
                   0
@@ -584,7 +584,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  2
+                  1
                 </td>
                 <td>
                   0
