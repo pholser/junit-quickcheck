@@ -37,7 +37,6 @@ import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.slf4j.Logger;
 
 import static java.lang.Math.min;
 import static java.util.Collections.*;
@@ -57,25 +56,22 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         PropertyParameterContext parameter,
         GeneratorRepository repository,
         GeometricDistribution distro,
-        SourceOfRandomness random,
-        Logger seedLog) {
+        SourceOfRandomness random) {
 
         this.parameter = parameter;
         this.distro = distro;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
-        this.random = initializeRandomness(parameter, random, seedLog);
+        this.random = initializeRandomness(parameter, random);
         this.generator = repository.produceGenerator(parameter.typeContext());
     }
 
     private SourceOfRandomness initializeRandomness(
         PropertyParameterContext p,
-        SourceOfRandomness r,
-        Logger seedLog) {
+        SourceOfRandomness r) {
 
         if (p.fixedSeed())
             r.setSeed(p.seed());
 
-        seedLog.debug("Seed for parameter {} is {}", p.typeContext().name(), r.seed());
         return r;
     }
 

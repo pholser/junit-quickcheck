@@ -48,7 +48,6 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
-import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
@@ -61,7 +60,6 @@ class PropertyStatement extends Statement {
     private final TestClass testClass;
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
-    private final Logger seedLog;
     private final List<AssumptionViolatedException> assumptionViolations = new ArrayList<>();
     private int successes;
 
@@ -69,14 +67,12 @@ class PropertyStatement extends Statement {
         FrameworkMethod method,
         TestClass testClass,
         GeneratorRepository repo,
-        GeometricDistribution distro,
-        Logger seedLog) {
+        GeometricDistribution distro) {
 
         this.method = method;
         this.testClass = testClass;
         this.repo = repo;
         this.distro = distro;
-        this.seedLog = seedLog;
     }
 
     @Override public void evaluate() throws Throwable {
@@ -173,8 +169,8 @@ class PropertyStatement extends Statement {
                 p,
                 repo,
                 distro,
-                new SourceOfRandomness(new Random()),
-                seedLog))
+                new SourceOfRandomness(new Random())
+            ))
             .collect(toList());
     }
 
@@ -205,7 +201,7 @@ class PropertyStatement extends Statement {
             .collect(toList());
     }
 
-    private static class SeededValue {
+    private static final class SeededValue {
         private final Object value;
         private final long seed;
 

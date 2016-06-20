@@ -19,11 +19,13 @@ property over and over again with the same set of generated values that caused
 the failure.
 
 junit-quickcheck reports the seed used for a given property parameter in the
-message of the `AssertionError` raised when a property fails. It also reports
-the seeds by logging them to a [SLF4J](http://www.slf4j.org/) logger named
-`junit-quickcheck.seed-reporting`, at `DEBUG` level.
+message of the `AssertionError` raised when a property fails.
 
-    Seed for parameter com.your.PropertiesClass.propertyMethod:parameterName is 8007238959251963394
-
-Add an SLF4J binding JAR file to your test class path and logging configuration
-for your chosen bound library to see the seed log messages.
+    java.lang.AssertionError: Property myProperty falsified.
+    Original failure message: [
+    Expected: a value less than <1>
+         but: <753701363> was greater than <1>]
+    Original args: [753701363]
+    Args shrunken to: [1]
+    Seeds: [-6700838609453830748]
+    ...

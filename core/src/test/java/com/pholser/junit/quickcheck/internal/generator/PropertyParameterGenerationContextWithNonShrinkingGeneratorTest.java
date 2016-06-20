@@ -64,8 +64,8 @@ public class PropertyParameterGenerationContextWithNonShrinkingGeneratorTest {
                 parameter,
                 new GeneratorRepository(random).register(new NonShrinker()),
                 new GeometricDistribution(),
-                random,
-                seedLog);
+                random
+            );
 
         assertEquals(emptyList(), gen.shrink(0));
     }

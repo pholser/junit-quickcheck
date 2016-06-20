@@ -67,8 +67,8 @@ public class PropertyParameterGenerationContextTest {
                 parameter,
                 new GeneratorRepository(random).register(new Countdown()),
                 new GeometricDistribution(),
-                random,
-                seedLog);
+                random
+            );
 
         thrown.expect(DiscardRatioExceededException.class);
         thrown.expectMessage(String.format(

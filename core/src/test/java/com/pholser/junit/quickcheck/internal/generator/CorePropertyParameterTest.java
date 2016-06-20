@@ -94,8 +94,8 @@ public abstract class CorePropertyParameterTest {
                 parameter,
                 repository,
                 distro,
-                randomForParameterGenerator,
-                log);
+                randomForParameterGenerator
+            );
         for (int i = 0; i < trials; ++i)
             propertyParameters.add(generator.generate());
     }
