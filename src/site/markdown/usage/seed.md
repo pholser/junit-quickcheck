@@ -18,8 +18,9 @@ You may want to fix the seed when a property fails, so that you can test the
 property over and over again with the same set of generated values that caused
 the failure.
 
-junit-quickcheck reports the seed used for a given property parameter by
-logging it to a [SLF4J](http://www.slf4j.org/) logger named
+junit-quickcheck reports the seed used for a given property parameter in the
+message of the `AssertionError` raised when a property fails. It also reports
+the seeds by logging them to a [SLF4J](http://www.slf4j.org/) logger named
 `junit-quickcheck.seed-reporting`, at `DEBUG` level.
 
     Seed for parameter com.your.PropertiesClass.propertyMethod:parameterName is 8007238959251963394
