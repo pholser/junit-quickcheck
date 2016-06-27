@@ -29,9 +29,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import javafx.util.Pair;
 
 /**
  * Represents a strategy for generating random values.
@@ -85,6 +88,17 @@ public interface Gen<T> {
     }
 
     /**
+     * Gives a generation strategy that produces the given value, always.
+     *
+     * @param <U> type of values produced by the resulting strategy
+     * @param constant the value to be returned by the resulting strategy
+     * @return a new generation strategy
+     */
+    static <U> Gen<U> pure(U constant) {
+        return (random, status) -> constant;
+    }
+
+    /**
      * Gives a generation strategy that produces a random value by choosing
      * one of the given values at random with (approximately) equal
      * probability.
@@ -95,11 +109,78 @@ public interface Gen<T> {
      * @return a new generation strategy
      */
     @SafeVarargs
-    static <U> Gen<U> choose(U first, U... rest) {
-        List<U> items = new ArrayList<>();
-        items.add(first);
-        Collections.addAll(items, rest);
+    static <U> Gen<U> oneOf(U first, U... rest) {
+        List<U> choices = new ArrayList<>();
+        choices.add(first);
+        Collections.addAll(choices, rest);
 
-        return (random, status) -> Items.choose(items, random);
+        return (random, status) -> Items.choose(choices, random);
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given generators at random with (approximately) equal
+     * probability, and having it generate a value
+     *
+     * @param <U> type of values produced by the resulting strategy
+     * @param first first possible generator choice
+     * @param rest the other possible generator choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs
+    static <U> Gen<U> oneOf(
+        Gen<? extends U> first,
+        Gen<? extends U>... rest) {
+
+        List<Gen<? extends U>> choices = new ArrayList<>();
+        choices.add(first);
+        Collections.addAll(choices, rest);
+
+        return (random, status) ->
+            Items.choose(choices, random).generate(random, status);
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given generators at random with probability in proportion
+     * to their given weights, and having it generate a value.
+     *
+     * @param <U> type of values produced by the resulting strategy
+     * @param first first possible (weighted) generator choice
+     * @param rest the other possible (weighted) generator choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs
+    static <U> Gen<U> frequency(
+        Pair<Integer, Gen<? extends U>> first,
+        Pair<Integer, Gen<? extends U>>... rest) {
+
+        List<Pair<Integer, Gen<? extends U>>> pairs = new ArrayList<>();
+        pairs.add(first);
+        Collections.addAll(pairs, rest);
+
+        List<Weighted<Gen<? extends U>>> weighted =
+            pairs.stream()
+                .map(p -> new Weighted<Gen<? extends U>>(p.getValue(), p.getKey()))
+                .collect(Collectors.toList());
+
+        return (random, status) ->
+            Items.chooseWeighted(weighted, random).generate(random, status);
+    }
+
+    /**
+     * Helper for making a weighted generator indicator for
+     * {@link #frequency(Pair, Pair[])}.
+     *
+     * @param <U> type of values produced by the given generation strategy
+     * @param weight an integer weight
+     * @param generator a generator
+     * @return a weight-generator pair
+     */
+    static <U> Pair<Integer, Gen<? extends U>> freq(
+        int weight,
+        Gen<? extends U> generator) {
+
+        return new Pair<>(weight, generator);
     }
 }

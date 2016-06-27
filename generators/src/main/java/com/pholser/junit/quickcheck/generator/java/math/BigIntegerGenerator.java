@@ -91,7 +91,7 @@ public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
         else if (maxToUse == null)
             maxToUse = minToUse.add(TEN.pow(numberOfBits));
 
-        return choose(random, minToUse, maxToUse);
+        return Ranges.choose(random, minToUse, maxToUse);
     }
 
     @Override protected Function<BigInteger, BigInteger> narrow() {

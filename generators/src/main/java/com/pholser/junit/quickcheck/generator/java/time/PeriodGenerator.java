@@ -32,9 +32,9 @@ import java.time.Year;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
@@ -78,7 +78,8 @@ public class PeriodGenerator extends Generator<Period> {
     }
 
     @Override public Period generate(SourceOfRandomness random, GenerationStatus status) {
-        return fromBigInteger(choose(random, toBigInteger(min), toBigInteger(max)));
+        return fromBigInteger(
+            Ranges.choose(random, toBigInteger(min), toBigInteger(max)));
     }
 
     private BigInteger toBigInteger(Period period) {
