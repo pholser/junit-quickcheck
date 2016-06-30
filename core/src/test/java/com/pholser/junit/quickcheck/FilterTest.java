@@ -25,41 +25,39 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.Optional;
+
 import com.pholser.junit.quickcheck.generator.Gen;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MapFlatMapTest {
-    @Test public void map() {
-        Gen<Integer> five = (random, status) -> 5;
+public class FilterTest {
+    @Test public void filter() {
+        int[] i = { 0 };
+        Gen<Integer> ints = (random, status) -> i[0]++;
+        Gen<Integer> bigger = ints.filter(n -> n >= 10);
 
-        Gen<String> mapped = five.map(String::valueOf);
+        int result = bigger.generate(null, null);
 
-        assertEquals("5", mapped.generate(null, null));
+        assertEquals(10, result);
+        assertEquals(11, i[0]);
     }
 
-    @Test public void flatMap() {
-        class Coordinate {
-            final int x;
-            final int y;
+    @Test public void filterOptional() {
+        int[] i = { 0 };
+        Gen<Integer> ints = (random, status) -> i[0]++;
+        Gen<Optional<Integer>> smaller = ints.filterOptional(n -> n < 2);
 
-            private Coordinate(int x, int y) {
-                this.x = x;
-                this.y = y;
-            }
-        }
+        int first = smaller.generate(null, null)
+            .orElseThrow(AssertionError::new);
+        assertEquals(0, first);
 
-        Gen<Integer> five = (random, status) -> 5;
-        Gen<Integer> six = (random, status) -> 6;
-        Gen<Coordinate> flatMapped =
-            five.flatMap(i ->
-                six.map(j ->
-                    new Coordinate(i, j)));
+        int second = smaller.generate(null, null)
+            .orElseThrow(AssertionError::new);
+        assertEquals(1, second);
 
-        Coordinate generated = flatMapped.generate(null, null);
-
-        assertEquals(5, generated.x);
-        assertEquals(6, generated.y);
+        assertEquals(Optional.empty(), smaller.generate(null, null));
+        assertEquals(3, i[0]);
     }
 }

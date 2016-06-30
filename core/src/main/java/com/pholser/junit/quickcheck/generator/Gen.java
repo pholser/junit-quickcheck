@@ -28,7 +28,9 @@ package com.pholser.junit.quickcheck.generator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.internal.Items;
@@ -67,8 +69,7 @@ public interface Gen<T> {
      * @return a new generation strategy
      */
     default <U> Gen<U> map(Function<? super T, ? extends U> mapper) {
-        return (random, status) ->
-            mapper.apply(Gen.this.generate(random, status));
+        return (random, status) -> mapper.apply(generate(random, status));
     }
 
     /**
@@ -83,8 +84,26 @@ public interface Gen<T> {
      */
     default <U> Gen<U> flatMap(Function<? super T, ? extends Gen<? extends U>> mapper) {
         return (random, status) ->
-            mapper.apply(Gen.this.generate(random, status))
-                .generate(random, status);
+            mapper.apply(generate(random, status)).generate(random, status);
+    }
+
+    default Gen<T> filter(Predicate<? super T> condition) {
+        return (random, status) -> {
+            T next = generate(random, status);
+            while (!condition.test(next)) {
+                next = generate(random, status);
+            }
+            return next;
+        };
+    }
+
+    default Gen<Optional<T>> filterOptional(Predicate<? super T> condition) {
+        return (random, status) -> {
+            T next = generate(random, status);
+            return condition.test(next)
+                ? Optional.ofNullable(next)
+                : Optional.empty();
+        };
     }
 
     /**
