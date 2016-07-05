@@ -111,7 +111,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
 <span class="fc" id="L111">            String.format(</span>
                 &quot;Unexpected error in property %s with args %s and seeds %s&quot;,
 <span class="fc" id="L113">                method.getName(),</span>
-<span class="fc" id="L114">                Arrays.toString(args),</span>
+<span class="fc" id="L114">                Arrays.deepToString(args),</span>
 <span class="fc" id="L115">                Arrays.toString(seeds)),</span>
             e);
     }

@@ -46,7 +46,7 @@ class PropertyFalsified {
                     + &quot;Seeds: %s%n&quot;,
                 propertyName,
 <span class="fc" id="L48">                e.getMessage(),</span>
-<span class="fc" id="L49">                Arrays.toString(args),</span>
+<span class="fc" id="L49">                Arrays.deepToString(args),</span>
 <span class="fc" id="L50">                Arrays.toString(seeds)),</span>
             e);
     }
@@ -67,8 +67,8 @@ class PropertyFalsified {
                     + &quot;Seeds: %s%n&quot;,
                 propertyName,
 <span class="fc" id="L69">                originalFailure.getMessage(),</span>
-<span class="fc" id="L70">                Arrays.toString(originalArgs),</span>
-<span class="fc" id="L71">                Arrays.toString(args),</span>
+<span class="fc" id="L70">                Arrays.deepToString(originalArgs),</span>
+<span class="fc" id="L71">                Arrays.deepToString(args),</span>
 <span class="fc" id="L72">                Arrays.toString(seeds)),</span>
             originalFailure);
     }
