@@ -46,7 +46,7 @@ class PropertyFalsified {
                     + "Seeds: %s%n",
                 propertyName,
                 e.getMessage(),
-                Arrays.toString(args),
+                Arrays.deepToString(args),
                 Arrays.toString(seeds)),
             e);
     }

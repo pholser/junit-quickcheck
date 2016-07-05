@@ -111,7 +111,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
             String.format(
                 "Unexpected error in property %s with args %s and seeds %s",
                 method.getName(),
-                Arrays.toString(args),
+                Arrays.deepToString(args),
                 Arrays.toString(seeds)),
             e);
     }
