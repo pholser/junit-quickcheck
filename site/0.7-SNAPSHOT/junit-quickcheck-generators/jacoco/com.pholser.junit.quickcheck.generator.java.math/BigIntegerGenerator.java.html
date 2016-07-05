@@ -91,7 +91,7 @@ public class BigIntegerGenerator extends IntegralGenerator&lt;BigInteger&gt; {
 <span class="fc bfc" id="L91" title="All 2 branches covered.">        else if (maxToUse == null)</span>
 <span class="fc" id="L92">            maxToUse = minToUse.add(TEN.pow(numberOfBits));</span>
 
-<span class="fc" id="L94">        return choose(random, minToUse, maxToUse);</span>
+<span class="fc" id="L94">        return Ranges.choose(random, minToUse, maxToUse);</span>
     }
 
     @Override protected Function&lt;BigInteger, BigInteger&gt; narrow() {
