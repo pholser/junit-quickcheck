@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,6 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTes
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
-import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.asList;
@@ -48,7 +48,7 @@ public class SetOfSuperFloatPropertyParameterTest
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
         org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
-        List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(floatType));
+        List<org.javaruntype.type.Type<?>> supertypes = new ArrayList<>(Reflection.supertypes(floatType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(supertypes.indexOf(floatType))
             .thenReturn(0)

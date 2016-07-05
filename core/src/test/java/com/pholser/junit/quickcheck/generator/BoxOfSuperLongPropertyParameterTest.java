@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.internal.Reflection;
@@ -32,7 +33,6 @@ import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest
 import com.pholser.junit.quickcheck.test.generator.Box;
 import org.javaruntype.type.Types;
 
-import static com.google.common.collect.Lists.*;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.*;
 
@@ -42,7 +42,7 @@ public class BoxOfSuperLongPropertyParameterTest extends CorePropertyParameterTe
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextLong()).thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
-        List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
+        List<org.javaruntype.type.Type<?>> supertypes = new ArrayList<>(Reflection.supertypes(longType));
         when(randomForGeneratorRepo.nextInt(eq(0), anyInt()))
             .thenReturn(supertypes.indexOf(longType))
             .thenReturn(0)

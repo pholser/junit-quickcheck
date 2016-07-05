@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.Generating;
@@ -32,7 +33,6 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTes
 import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
-import static com.google.common.collect.Lists.*;
 import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
@@ -50,7 +50,7 @@ public class ListOfSuperLongPropertyParameterTest
         when(Generating.longs(randomForParameterGenerator))
             .thenReturn(3L).thenReturn(4L).thenReturn(5L);
         org.javaruntype.type.Type<?> longType = Types.forJavaLangReflectType(Long.class);
-        List<org.javaruntype.type.Type<?>> supertypes = newArrayList(Reflection.supertypes(longType));
+        List<org.javaruntype.type.Type<?>> supertypes = new ArrayList<>(Reflection.supertypes(longType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(supertypes.indexOf(longType))
             .thenReturn(0)
