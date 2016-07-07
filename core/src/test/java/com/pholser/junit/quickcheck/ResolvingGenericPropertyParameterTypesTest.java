@@ -84,7 +84,6 @@ public class ResolvingGenericPropertyParameterTypesTest {
         assertThat(testResult(ConcreteFooPairProperties.class), isSuccessful());
     }
 
-    @Ignore("Not sure whether a bug in generics resolution lib, unrealistic expectation, or pilot error")
     @Test public void unresolvedPairOfPair() {
         assertThat(testResult(PairOfPairProperties.class), isSuccessful());
     }
