@@ -33,10 +33,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.pholser.junit.quickcheck.Pair;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import javafx.util.Pair;
 
 /**
  * Represents a strategy for generating random values.
@@ -180,7 +180,7 @@ public interface Gen<T> {
 
         List<Weighted<Gen<? extends U>>> weighted =
             pairs.stream()
-                .map(p -> new Weighted<Gen<? extends U>>(p.getValue(), p.getKey()))
+                .map(p -> new Weighted<Gen<? extends U>>(p.second, p.first))
                 .collect(Collectors.toList());
 
         return (random, status) ->
