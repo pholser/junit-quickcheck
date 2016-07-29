@@ -32,6 +32,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.System.*;
@@ -86,22 +88,22 @@ public final class Lambdas {
         return lambdaType.cast(newProxyInstance(
             lambdaType.getClassLoader(),
             new Class<?>[] { lambdaType },
-            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status)));
+            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status == null ? null : status.attempts())));
     }
 
     private static class LambdaInvocationHandler<T, U> implements InvocationHandler {
         private final Class<T> lambdaType;
         private final Generator<U> returnValueGenerator;
-        private final GenerationStatus status;
+        private final Integer attempts;
 
         LambdaInvocationHandler(
             Class<T> lambdaType,
             Generator<U> returnValueGenerator,
-            GenerationStatus status) {
+            Integer attempts) {
 
             this.lambdaType = lambdaType;
             this.returnValueGenerator = returnValueGenerator;
-            this.status = status;
+            this.attempts = attempts;
         }
 
         @Override public Object invoke(Object proxy, Method method, Object[] args)
@@ -114,6 +116,8 @@ public final class Lambdas {
 
             SourceOfRandomness source = new SourceOfRandomness(new Random());
             source.setSeed(Arrays.hashCode(args));
+            GenerationStatus status = attempts == null ?
+                    null : new SimpleGenerationStatus(new GeometricDistribution(), source, attempts);
             return returnValueGenerator.generate(source, status);
         }
 
