@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
@@ -39,11 +38,9 @@ import org.slf4j.Logger;
 import static java.lang.Math.min;
 import static java.util.Collections.*;
 
-public class PropertyParameterGenerationContext implements GenerationStatus {
+public class PropertyParameterGenerationContext extends AbstractGenerationStatus {
     private final PropertyParameterContext parameter;
-    private final GeometricDistribution distro;
     private final ConstraintEvaluator evaluator;
-    private final SourceOfRandomness random;
     private final Generator<?> generator;
 
     private int successfulEvaluations;
@@ -55,15 +52,13 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
         GeometricDistribution distro,
         SourceOfRandomness random,
         Logger seedLog) {
-
+        super(distro, initializeRandomness(parameter, random, seedLog));
         this.parameter = parameter;
-        this.distro = distro;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
-        this.random = initializeRandomness(parameter, random, seedLog);
         this.generator = repository.produceGenerator(parameter.typeContext());
     }
 
-    private SourceOfRandomness initializeRandomness(
+    private static SourceOfRandomness initializeRandomness(
         PropertyParameterContext p,
         SourceOfRandomness r,
         Logger seedLog) {
@@ -116,7 +111,7 @@ public class PropertyParameterGenerationContext implements GenerationStatus {
     }
 
     @Override public int size() {
-        int sample = distro.sampleWithMean(attempts() + 1, random);
+        int sample = super.size();
         return min(sample, parameter.sampleSize());
     }
 
