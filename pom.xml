@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pholser</groupId>
     <artifactId>junit-quickcheck</artifactId>
-    <version>0.6.2-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>junit-quickcheck</name>
     <description>Property-based testing, JUnit-style</description>
