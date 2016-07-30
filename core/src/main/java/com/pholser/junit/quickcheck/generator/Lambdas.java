@@ -88,13 +88,13 @@ public final class Lambdas {
         return lambdaType.cast(newProxyInstance(
             lambdaType.getClassLoader(),
             new Class<?>[] { lambdaType },
-            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status == null ? null : status.attempts())));
+            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status.attempts())));
     }
 
     private static class LambdaInvocationHandler<T, U> implements InvocationHandler {
         private final Class<T> lambdaType;
         private final Generator<U> returnValueGenerator;
-        private final Integer attempts;
+        private final int attempts;
 
         LambdaInvocationHandler(
             Class<T> lambdaType,
@@ -116,8 +116,8 @@ public final class Lambdas {
 
             SourceOfRandomness source = new SourceOfRandomness(new Random());
             source.setSeed(Arrays.hashCode(args));
-            GenerationStatus status = attempts == null ?
-                    null : new SimpleGenerationStatus(new GeometricDistribution(), source, attempts);
+            GenerationStatus status =
+                new SimpleGenerationStatus(new GeometricDistribution(), source, attempts);
             return returnValueGenerator.generate(source, status);
         }
 

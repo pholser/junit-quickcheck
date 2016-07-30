@@ -4,14 +4,14 @@
     <parent>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck</artifactId>
-        <version>0.6.1-SNAPSHOT</version>
+        <version>0.6</version>
     </parent>
 
-    <artifactId>junit-quickcheck-core</artifactId>
-    <version>0.6.1-SNAPSHOT</version>
+    <artifactId>junit-quickcheck-guava</artifactId>
+    <version>0.6</version>
     <packaging>jar</packaging>
-    <name>junit-quickcheck-core</name>
-    <description>Property-based testing, JUnit-style: core functionality</description>
+    <name>junit-quickcheck-guava</name>
+    <description>Property-based testing, JUnit-style: generators for Guava types</description>
     <url>http://github.com/pholser/junit-quickcheck</url>
 
     <dependencies>
@@ -20,28 +20,14 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.junit.contrib</groupId>
-            <artifactId>junit-theories</artifactId>
-            <version>5.0-alpha-3</version>
+            <groupId>com.pholser</groupId>
+            <artifactId>junit-quickcheck-core</artifactId>
+            <version>0.6</version>
         </dependency>
         <dependency>
-            <groupId>org.javaruntype</groupId>
-            <artifactId>javaruntype</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>ognl</groupId>
-            <artifactId>ognl</artifactId>
-            <version>3.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.vyarus</groupId>
-            <artifactId>generics-resolver</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -60,14 +46,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.pholser</groupId>
+            <artifactId>junit-quickcheck-core</artifactId>
+            <version>0.6</version>
+            <scope>test</scope>
+            <type>test-jar</type>
         </dependency>
     </dependencies>
 
@@ -96,6 +84,23 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
+                <artifactId>serviceloader-maven-plugin</artifactId>
+                <version>1.0.6</version>
+                <configuration>
+                    <services>
+                        <param>com.pholser.junit.quickcheck.generator.Generator</param>
+                    </services>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

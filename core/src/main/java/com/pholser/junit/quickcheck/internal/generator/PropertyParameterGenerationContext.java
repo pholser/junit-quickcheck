@@ -52,6 +52,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         GeometricDistribution distro,
         SourceOfRandomness random,
         Logger seedLog) {
+
         super(distro, initializeRandomness(parameter, random, seedLog));
         this.parameter = parameter;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
