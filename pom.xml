@@ -64,6 +64,10 @@
             <name>davidhart82</name>
             <roles><role>several patches</role></roles>
         </contributor>
+        <contributor>
+            <name>Jason Hinch</name>
+            <roles><role>Fixed lambda generator to produce pure functions</role></roles>
+        </contributor>
     </contributors>
 
     <properties>
@@ -416,4 +420,3 @@
         </site>
     </distributionManagement>
 </project>
-

@@ -25,8 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import java.util.Random;
 import java.util.function.Predicate;
 
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.ABool;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
@@ -42,16 +46,22 @@ public class LambdasTest {
     @Rule public final ExpectedException thrown = none();
 
     private ABool returnValueGenerator;
+    private SourceOfRandomness random;
+    private SimpleGenerationStatus status;
     private Predicate<Integer> predicate;
 
     @SuppressWarnings("unchecked")
     @Before public void setUp() {
         returnValueGenerator = new ABool();
-        predicate = makeLambda(Predicate.class, returnValueGenerator, null);
+        random = new SourceOfRandomness(new Random());
+        random.setSeed(-1L);
+        status = new SimpleGenerationStatus(new GeometricDistribution(), random, 0);
+
+        predicate = makeLambda(Predicate.class,returnValueGenerator, status);
     }
 
     @Test public void equalsBasedOnIdentity() {
-        Predicate<?> duplicate = makeLambda(Predicate.class, returnValueGenerator, null);
+        Predicate<?> duplicate = makeLambda(Predicate.class, returnValueGenerator, status);
 
         assertEquals(predicate, predicate);
         assertEquals(duplicate, duplicate);
@@ -71,12 +81,12 @@ public class LambdasTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(Cloneable.class + " is not a functional interface");
 
-        makeLambda(Cloneable.class, new AnInt(), null);
+        makeLambda(Cloneable.class, new AnInt(), status);
     }
 
     @Test public void invokingDefaultMethodOnFunctionalInterface() {
         @SuppressWarnings("unchecked")
-        Predicate<Integer> another = makeLambda(Predicate.class, returnValueGenerator, null);
+        Predicate<Integer> another = makeLambda(Predicate.class, returnValueGenerator, status);
 
         boolean firstResult = predicate.test(4);
         boolean secondResult = another.test(4);

@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.generator.java.util.function;
 
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 import com.pholser.junit.quickcheck.Property;
@@ -85,6 +86,19 @@ public class FunctionPropertyParameterTest {
 
             assertEquals(ultimate, second.compose(first).apply(arg));
             assertEquals(ultimate, first.andThen(second).apply(arg));
+        }
+    }
+
+    @Test public void lambdasArePureFunctions() {
+        assertThat(testResult(PureFunctions.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class PureFunctions {
+        @Property public void hold(Function<Integer, List<Long>> f) {
+            List<Long> ell = f.apply(34);
+            for (int i = 0; i < 10000; ++i)
+                assertEquals(ell, f.apply(34));
         }
     }
 }
