@@ -45,6 +45,8 @@ final class ShrinkNode {
     private final int argIndex;
     private final int depth;
 
+    private AssertionError failure;
+
     private ShrinkNode(
         FrameworkMethod method,
         TestClass testClass,
@@ -52,7 +54,8 @@ final class ShrinkNode {
         Object[] args,
         long[] seeds,
         int argIndex,
-        int depth) {
+        int depth,
+        AssertionError failure) {
 
         this.method = method;
         this.testClass = testClass;
@@ -61,6 +64,7 @@ final class ShrinkNode {
         this.seeds = seeds;
         this.argIndex = argIndex;
         this.depth = depth;
+        this.failure = failure;
     }
 
     Object[] getArgs() {
@@ -72,9 +76,10 @@ final class ShrinkNode {
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
         Object[] args,
-        long[] seeds) {
+        long[] seeds,
+        AssertionError failure) {
 
-        return new ShrinkNode(method, testClass, params, args, seeds, 0, 0);
+        return new ShrinkNode(method, testClass, params, args, seeds, 0, 0, failure);
     }
 
     List<ShrinkNode> shrinks() {
@@ -96,16 +101,31 @@ final class ShrinkNode {
     }
 
     ShrinkNode advanceToNextArg() {
-        return new ShrinkNode(method, testClass, params, args, seeds, argIndex + 1, depth);
+        return new ShrinkNode(
+            method,
+            testClass,
+            params,
+            args,
+            seeds,
+            argIndex + 1,
+            depth,
+            failure);
     }
 
     AssertionError fail(AssertionError originalFailure, Object[] originalArgs) {
-        return smallerCounterexampleFound(
-            method.getName(),
-            originalArgs,
-            args,
-            seeds,
-            originalFailure);
+        return originalFailure == failure
+            ? counterexampleFound(
+                method.getName(),
+                args,
+                seeds,
+                failure)
+            : smallerCounterexampleFound(
+                method.getName(),
+                originalArgs,
+                args,
+                seeds,
+                failure,
+                originalFailure);
     }
 
     boolean mightBePast(ShrinkNode other) {
@@ -124,7 +144,10 @@ final class ShrinkNode {
             seeds,
             s -> result[0] = true,
             v -> result[0] = true,
-            (e, repeatTestOption) -> result[0] = false);
+            (e, repeatTestOption) -> {
+                failure = e;
+                result[0] = false;
+            });
     }
 
     private ShrinkNode shrinkNodeFor(Object shrunk) {
@@ -132,6 +155,6 @@ final class ShrinkNode {
         System.arraycopy(args, 0, shrunkArgs, 0, args.length);
         shrunkArgs[argIndex] = shrunk;
 
-        return new ShrinkNode(method, testClass, params, shrunkArgs, seeds, argIndex, depth + 1);
+        return new ShrinkNode(method, testClass, params, shrunkArgs, seeds, argIndex, depth + 1, failure);
     }
 }
