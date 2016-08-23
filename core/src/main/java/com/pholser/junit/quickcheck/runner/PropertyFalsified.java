@@ -41,7 +41,7 @@ class PropertyFalsified {
         return new AssertionError(
             String.format(
                 "Property %s falsified.%n"
-                    + "Original failure message: [%s]%n"
+                    + "Failure message: [%s]%n"
                     + "Args: %s%n"
                     + "Seeds: %s%n",
                 propertyName,
@@ -56,20 +56,26 @@ class PropertyFalsified {
         Object[] originalArgs,
         Object[] args,
         long[] seeds,
+        AssertionError smallerFailure,
         AssertionError originalFailure) {
 
-        return new AssertionError(
+        AssertionError e = new AssertionError(
             String.format(
-                "Property %s falsified.%n"
+                "Property %s falsified via shrinking.%n"
+                    + "Shrink failure message: [%s]%n"
+                    + "Shrunken args: %s%n"
                     + "Original failure message: [%s]%n"
                     + "Original args: %s%n"
-                    + "Args shrunken to: %s%n"
                     + "Seeds: %s%n",
                 propertyName,
+                smallerFailure.getMessage(),
+                Arrays.deepToString(args),
                 originalFailure.getMessage(),
                 Arrays.deepToString(originalArgs),
-                Arrays.deepToString(args),
                 Arrays.toString(seeds)),
             originalFailure);
+
+        e.setStackTrace(smallerFailure.getStackTrace());
+        return e;
     }
 }

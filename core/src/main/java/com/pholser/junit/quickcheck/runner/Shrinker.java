@@ -71,7 +71,7 @@ class Shrinker {
 
         Stack<ShrinkNode> nodes = new Stack<>();
         ShrinkNode counterexample =
-            ShrinkNode.root(method, testClass, params, args, seeds);
+            ShrinkNode.root(method, testClass, params, args, seeds, failure);
         counterexample.shrinks().forEach(nodes::push);
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;

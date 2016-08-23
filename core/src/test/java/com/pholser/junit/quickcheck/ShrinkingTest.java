@@ -44,7 +44,7 @@ public class ShrinkingTest {
     @Test public void complete() throws Exception {
         assertThat(
             testResult(ShrinkingCompletely.class),
-            hasSingleFailureContaining(String.format("Args shrunken to: [%s]", new Foo(1))));
+            hasSingleFailureContaining(String.format("Shrunken args: [%s]", new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -57,14 +57,14 @@ public class ShrinkingTest {
         }
     }
 
-    @Test public void partial() throws Exception {
+    @Test public void shrinkingDoesNotShrink() throws Exception {
         assertThat(
-            testResult(ShrinkingPartially.class),
-            hasSingleFailureContaining("Args shrunken to: ["));
+            testResult(ShrinkingNotReally.class),
+            hasSingleFailureContaining("Args: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPartially {
+    public static class ShrinkingNotReally {
         @Property public void shouldHold(Foo f) {
             assumeThat(f.i(), greaterThan(Integer.MAX_VALUE / 2));
 
@@ -75,7 +75,7 @@ public class ShrinkingTest {
     @Test public void assumptionFailureWhileShrinking() {
         assertThat(
             testResult(FailedAssumptionDuringShrinking.class),
-            hasSingleFailureContaining("Args shrunken to: ["));
+            hasSingleFailureContaining("Args: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -190,7 +190,7 @@ public class ShrinkingTest {
         assertThat(
             testResult(ShrinkingMoreThanOnePropertyParameter.class),
             hasSingleFailureContaining(
-                String.format("Args shrunken to: [%s, %s]", new Foo(1), new Foo(1))));
+                String.format("Shrunken args: [%s, %s]", new Foo(1), new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -207,7 +207,7 @@ public class ShrinkingTest {
     @Test public void timeout() throws Exception {
         assertThat(
             testResult(ShrinkingTimeout.class),
-            hasSingleFailureContaining("Args shrunken to: ["));
+            hasSingleFailureContaining("Args: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
