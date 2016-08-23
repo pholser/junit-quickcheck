@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PropertyStatement.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">PropertyStatement.java</span></div><h1>PropertyStatement.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.runner;
+
+import java.lang.reflect.Executable;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
+import com.pholser.junit.quickcheck.internal.ShrinkControl;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.junit.AssumptionViolatedException;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
+import org.junit.runners.model.TestClass;
+import ru.vyarus.java.generics.resolver.GenericsResolver;
+
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+import static java.util.stream.Collectors.*;
+
+import static org.junit.Assert.*;
+
+class PropertyStatement extends Statement {
+    private final FrameworkMethod method;
+    private final TestClass testClass;
+    private final GeneratorRepository repo;
+    private final GeometricDistribution distro;
+<span class="fc" id="L63">    private final List&lt;AssumptionViolatedException&gt; assumptionViolations = new ArrayList&lt;&gt;();</span>
+    private int successes;
+
+    PropertyStatement(
+        FrameworkMethod method,
+        TestClass testClass,
+        GeneratorRepository repo,
+<span class="fc" id="L70">        GeometricDistribution distro) {</span>
+
+<span class="fc" id="L72">        this.method = method;</span>
+<span class="fc" id="L73">        this.testClass = testClass;</span>
+<span class="fc" id="L74">        this.repo = repo;</span>
+<span class="fc" id="L75">        this.distro = distro;</span>
+<span class="fc" id="L76">    }</span>
+
+    @Override public void evaluate() throws Throwable {
+<span class="fc" id="L79">        Property marker = method.getAnnotation(Property.class);</span>
+<span class="fc" id="L80">        int trials = marker.trials();</span>
+<span class="fc" id="L81">        MinimalCounterexampleHook hook = marker.onMinimalCounterexample().newInstance();</span>
+<span class="fc" id="L82">        ShrinkControl shrinkControl = new ShrinkControl(</span>
+<span class="fc" id="L83">            marker.shrink(),</span>
+<span class="fc" id="L84">            marker.maxShrinks(),</span>
+<span class="fc" id="L85">            marker.maxShrinkDepth(),</span>
+<span class="fc" id="L86">            marker.maxShrinkTime(),</span>
+            hook);
+
+<span class="fc" id="L89">        List&lt;PropertyParameterGenerationContext&gt; params = parameters(trials);</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (int i = 0; i &lt; trials; ++i)</span>
+<span class="fc" id="L92">            verifyProperty(params, shrinkControl);</span>
+
+<span class="pc bpc" id="L94" title="1 of 4 branches missed.">        if (successes == 0 &amp;&amp; !assumptionViolations.isEmpty()) {</span>
+<span class="nc" id="L95">            fail(&quot;No values satisfied property assumptions. Violated assumptions: &quot;</span>
+                + assumptionViolations);
+        }
+<span class="fc" id="L98">    }</span>
+
+    private void verifyProperty(
+        List&lt;PropertyParameterGenerationContext&gt; params,
+        ShrinkControl shrinkControl)
+        throws Throwable {
+
+<span class="fc" id="L105">        List&lt;SeededValue&gt; seededValues = argumentsFor(params);</span>
+<span class="fc" id="L106">        Object[] args = seededValues.stream().map(SeededValue::value).toArray();</span>
+<span class="fc" id="L107">        long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();</span>
+<span class="fc" id="L108">        property(params, args, seeds, shrinkControl).verify();</span>
+<span class="fc" id="L109">    }</span>
+
+    private PropertyVerifier property(
+        List&lt;PropertyParameterGenerationContext&gt; params,
+        Object[] args,
+        long[] seeds,
+        ShrinkControl shrinkControl)
+        throws InitializationError {
+
+<span class="fc" id="L118">        return new PropertyVerifier(</span>
+            testClass,
+            method,
+            args,
+            seeds,
+<span class="fc" id="L123">            s -&gt; ++successes,</span>
+            assumptionViolations::add,
+            (e, action) -&gt; {
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (!shrinkControl.shouldShrink()) {</span>
+<span class="fc" id="L127">                    shrinkControl.onMinimalCounterexample().handle(args, action);</span>
+<span class="fc" id="L128">                    throw counterexampleFound(method.getName(), args, seeds, e);</span>
+                }
+
+                try {
+<span class="nc" id="L132">                    shrink(params, args, seeds, shrinkControl, e);</span>
+<span class="fc" id="L133">                } catch (AssertionError ex) {</span>
+<span class="fc" id="L134">                    throw ex;</span>
+<span class="nc" id="L135">                } catch (Throwable ex) {</span>
+<span class="nc" id="L136">                    throw new AssertionError(ex.getCause());</span>
+<span class="nc" id="L137">                }</span>
+<span class="nc" id="L138">            }</span>
+        );
+    }
+
+    private void shrink(
+        List&lt;PropertyParameterGenerationContext&gt; params,
+        Object[] args,
+        long[] seeds,
+        ShrinkControl shrinkControl,
+        AssertionError failure)
+        throws Throwable {
+
+<span class="fc" id="L150">        new Shrinker(</span>
+            method,
+            testClass,
+            failure,
+<span class="fc" id="L154">            shrinkControl.maxShrinks(),</span>
+<span class="fc" id="L155">            shrinkControl.maxShrinkDepth(),</span>
+<span class="fc" id="L156">            shrinkControl.maxShrinkTime(),</span>
+<span class="fc" id="L157">            shrinkControl.onMinimalCounterexample())</span>
+<span class="nc" id="L158">            .shrink(params, args, seeds);</span>
+<span class="nc" id="L159">    }</span>
+
+    private List&lt;PropertyParameterGenerationContext&gt; parameters(int trials) {
+<span class="fc" id="L162">        Map&lt;String, Type&gt; typeVariables = GenericsResolver.resolve(testClass.getJavaClass())</span>
+<span class="fc" id="L163">            .method(method.getMethod())</span>
+<span class="fc" id="L164">            .genericsMap();</span>
+
+<span class="fc" id="L166">        return Arrays.stream(method.getMethod().getParameters())</span>
+<span class="fc" id="L167">            .map(p -&gt; parameterContextFor(p, trials, typeVariables))</span>
+<span class="fc" id="L168">            .map(p -&gt; new PropertyParameterGenerationContext(</span>
+                p,
+                repo,
+                distro,
+                new SourceOfRandomness(new Random())
+            ))
+<span class="fc" id="L174">            .collect(toList());</span>
+    }
+
+    private PropertyParameterContext parameterContextFor(
+        Parameter parameter,
+        int trials,
+        Map&lt;String, Type&gt; typeVariables) {
+
+<span class="fc" id="L182">        return new PropertyParameterContext(</span>
+            new ParameterTypeContext(
+<span class="fc" id="L184">                parameter.getName(),</span>
+<span class="fc" id="L185">                parameter.getAnnotatedType(),</span>
+<span class="fc" id="L186">                declarerName(parameter),</span>
+                typeVariables)
+<span class="fc" id="L188">                .allowMixedTypes(true),</span>
+            trials
+<span class="fc" id="L190">        ).annotate(parameter);</span>
+    }
+
+    private static String declarerName(Parameter p) {
+<span class="fc" id="L194">        Executable exec = p.getDeclaringExecutable();</span>
+<span class="fc" id="L195">        return exec.getDeclaringClass().getName() + '.' + exec.getName();</span>
+    }
+
+    private List&lt;SeededValue&gt; argumentsFor(List&lt;PropertyParameterGenerationContext&gt; params) {
+<span class="fc" id="L199">        return params.stream()</span>
+<span class="fc" id="L200">            .map(p -&gt; new SeededValue(p.generate(), p.effectiveSeed()))</span>
+<span class="fc" id="L201">            .collect(toList());</span>
+    }
+
+    private static final class SeededValue {
+        private final Object value;
+        private final long seed;
+
+<span class="fc" id="L208">        SeededValue(Object value, long seed) {</span>
+<span class="fc" id="L209">            this.value = value;</span>
+<span class="fc" id="L210">            this.seed = seed;</span>
+<span class="fc" id="L211">        }</span>
+
+        Object value() {
+<span class="fc" id="L214">            return value;</span>
+        }
+
+        long seed() {
+<span class="fc" id="L218">            return seed;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
