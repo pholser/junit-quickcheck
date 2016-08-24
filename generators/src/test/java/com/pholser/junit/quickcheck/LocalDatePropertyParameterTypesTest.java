@@ -126,11 +126,11 @@ public class LocalDatePropertyParameterTypesTest {
     }
 
     @Test public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
+    public static class MissingMin {
         @Property public void shouldHold(
             @InRange(max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
 

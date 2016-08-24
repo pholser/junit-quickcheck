@@ -40,7 +40,7 @@ import static java.util.Arrays.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
- * Produces values for theory parameters of type {@code double} or
+ * Produces values for property parameters of type {@code double} or
  * {@link Double}.
  */
 public class DoubleGenerator extends DecimalGenerator<Double> {

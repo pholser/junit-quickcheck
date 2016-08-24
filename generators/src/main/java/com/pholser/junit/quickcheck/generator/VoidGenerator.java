@@ -30,7 +30,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 /**
- * Produces values for theory parameters of type {@code void} or {@link Void}.
+ * Produces values for property parameters of type {@code void} or
+ * {@link Void}.
  */
 public class VoidGenerator extends Generator<Void> {
     @SuppressWarnings("unchecked") public VoidGenerator() {

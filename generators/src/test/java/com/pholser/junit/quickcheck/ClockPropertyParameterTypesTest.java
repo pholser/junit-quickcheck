@@ -135,12 +135,12 @@ public class ClockPropertyParameterTypesTest {
 
     @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
+    public static class BackwardsRange {
         @Property public void shouldHold(
             @InRange(
                 min = "2012-12-31T23:59:59.999999999Z",

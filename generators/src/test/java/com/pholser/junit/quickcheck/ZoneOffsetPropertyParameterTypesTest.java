@@ -117,12 +117,12 @@ public class ZoneOffsetPropertyParameterTypesTest {
 
     @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
+    public static class BackwardsRange {
         @Property public void shouldHold(
             @InRange(min = "-12:00", max = "+12:00") ZoneOffset o) {
         }

@@ -2,8 +2,7 @@
 
 - Instead of the `Theories` runner, with `@Theory` methods with parameters
 marked `@ForAll`, we use the `JUnitQuickcheck` runner, with `@Property`
-methods. `@ForAll` is marked as deprecated; support for the
-`Theories`-based junit-quickcheck may be removed soon.
+methods.
 - There are `Property.trials()` executions of the property, instead of a
 combinatorial number of executions of a `Theory`
 - Use the `@When` annotation to control seed and parameter value generation

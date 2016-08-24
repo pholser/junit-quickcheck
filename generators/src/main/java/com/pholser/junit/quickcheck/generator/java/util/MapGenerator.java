@@ -54,7 +54,7 @@ import static com.pholser.junit.quickcheck.internal.Sequences.*;
  * <p>The generated map has a number of entries limited by
  * {@link GenerationStatus#size()}, or else by the attributes of a {@link Size}
  * marking. The individual keys and values will have types corresponding to the
- * theory parameter's type arguments.</p>
+ * property parameter's type arguments.</p>
  *
  * @param <T> the type of map generated
  */

@@ -39,11 +39,11 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PropertyParameterGenerationStatusTest {
     @Test public void sizeNeverExceedsSampleSize() throws Exception {
-        assertThat(testResult(SizeTheories.class), isSuccessful());
+        assertThat(testResult(SizeProperties.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class SizeTheories {
+    public static class SizeProperties {
         public static class Gen extends Generator<Object> {
             public Gen() {
                 super(Object.class);

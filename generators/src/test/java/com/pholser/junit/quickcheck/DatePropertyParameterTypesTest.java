@@ -40,21 +40,21 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class DatePropertyParameterTypesTest {
     @Test public void date() {
-        assertThat(testResult(DateTheory.class), isSuccessful());
+        assertThat(testResult(DateProperty.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class DateTheory {
+    public static class DateProperty {
         @Property public void shouldHold(Date d) {
         }
     }
 
     @Test public void rangedDate() {
-        assertThat(testResult(RangedDateTheory.class), isSuccessful());
+        assertThat(testResult(RangedDate.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedDateTheory {
+    public static class RangedDate {
         @Property public void shouldHold(
             @InRange(min = "01/01/2012", max = "12/31/2012", format = "MM/dd/yyyy") Date d) throws Exception {
 
@@ -69,12 +69,12 @@ public class DatePropertyParameterTypesTest {
 
     @Test public void malformedMin() {
         assertThat(
-            testResult(MalformedMinDateTheory.class),
+            testResult(MalformedMinDate.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMinDateTheory {
+    public static class MalformedMinDate {
         @Property public void shouldHold(
             @InRange(min = "@#!@#@", max = "12/31/2012", format = "MM/dd/yyyy") Date d) {
         }
@@ -82,12 +82,12 @@ public class DatePropertyParameterTypesTest {
 
     @Test public void malformedMax() {
         assertThat(
-            testResult(MalformedMaxDateTheory.class),
+            testResult(MalformedMaxDate.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxDateTheory {
+    public static class MalformedMaxDate {
         @Property public void shouldHold(
             @InRange(min = "06/01/2011", max = "*&@^#%$", format = "MM/dd/yyyy") Date d) {
         }
@@ -95,23 +95,23 @@ public class DatePropertyParameterTypesTest {
 
     @Test public void malformedFormat() {
         assertThat(
-            testResult(MalformedFormatDateTheory.class),
+            testResult(MalformedFormatDate.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedFormatDateTheory {
+    public static class MalformedFormatDate {
         @Property public void shouldHold(
             @InRange(min = "06/01/2011", max = "06/30/2011", format = "*@&^#$") Date d) {
         }
     }
 
     @Test public void missingMin() {
-        assertThat(testResult(MissingMinTheory.class), isSuccessful());
+        assertThat(testResult(MissingMin.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMinTheory {
+    public static class MissingMin {
         @Property public void shouldHold(@InRange(max = "12/31/2012", format = "MM/dd/yyyy") Date d)
             throws Exception {
 
@@ -121,11 +121,11 @@ public class DatePropertyParameterTypesTest {
     }
 
     @Test public void missingMax() {
-        assertThat(testResult(MissingMaxTheory.class), isSuccessful());
+        assertThat(testResult(MissingMax.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MissingMaxTheory {
+    public static class MissingMax {
         @Property public void shouldHold(@InRange(min = "12/31/2012", format = "MM/dd/yyyy") Date d)
             throws Exception {
 
@@ -136,12 +136,12 @@ public class DatePropertyParameterTypesTest {
 
     @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
+    public static class BackwardsRange {
         @Property public void shouldHold(
             @InRange(min = "12/31/2012", max = "12/01/2012", format = "MM/dd/yyyy") Date d) {
         }

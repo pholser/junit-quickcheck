@@ -48,11 +48,11 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class BigNumberPropertyParameterTypesTest {
     @Test public void bigInteger() {
-        assertThat(testResult(BigIntegerTheory.class), isSuccessful());
+        assertThat(testResult(BigIntegerProperty.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BigIntegerTheory {
+    public static class BigIntegerProperty {
         @Property public void shouldHold(BigInteger i) {
         }
     }
@@ -187,21 +187,21 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void bigDecimal() {
-        assertThat(testResult(BigDecimalTheory.class), isSuccessful());
+        assertThat(testResult(BigDecimalProperty.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BigDecimalTheory {
+    public static class BigDecimalProperty {
         @Property public void shouldHold(BigDecimal d) {
         }
     }
 
     @Test public void bigDecimalWithSpecifiedPrecision() {
-        assertThat(testResult(BigDecimalTheory.class), isSuccessful());
+        assertThat(testResult(BigDecimalWithSpecifiedPrecision.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BigDecimalWithSpecifiedPrecisionTheory {
+    public static class BigDecimalWithSpecifiedPrecision {
         @Property public void shouldHold(@Precision(scale = 5) BigDecimal d) {
             assertEquals(5, d.scale());
         }

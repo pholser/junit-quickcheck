@@ -85,12 +85,12 @@ public class InstantPropertyParameterTypesTest {
 
     @Test public void malformedMax() {
         assertThat(
-            testResult(MalformedMaxInstantTheory.class),
+            testResult(MalformedMaxInstant.class),
             hasSingleFailureContaining(DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class MalformedMaxInstantTheory {
+    public static class MalformedMaxInstant {
         @Property public void shouldHold(
             @InRange(min = "06/01/2011T23:59:59.999999999Z", max = "*&@^#%$") Instant i) {
         }

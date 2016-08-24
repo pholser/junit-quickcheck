@@ -136,12 +136,12 @@ public class DurationPropertyParameterTypesTest {
 
     @Test public void backwardsRange() {
         assertThat(
-            testResult(BackwardsRangeTheory.class),
+            testResult(BackwardsRange.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class BackwardsRangeTheory {
+    public static class BackwardsRange {
         @Property public void shouldHold(
             @InRange(
                 min = "PT2562047788015215H30M7.999999999S",

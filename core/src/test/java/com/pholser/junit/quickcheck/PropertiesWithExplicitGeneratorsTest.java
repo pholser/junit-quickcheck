@@ -259,12 +259,12 @@ public class PropertiesWithExplicitGeneratorsTest {
 
     @Test public void typeMismatch() throws Exception {
         assertThat(
-            testResult(WithGeneratorTypeThatDoesNotMatchTheoryParameterType.class),
+            testResult(WithGeneratorTypeThatDoesNotMatchParameterType.class),
             hasSingleFailureContaining(IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithGeneratorTypeThatDoesNotMatchTheoryParameterType {
+    public static class WithGeneratorTypeThatDoesNotMatchParameterType {
         @Property public void shouldHold(@From(StringEmitter.class) Number n) {
         }
     }
