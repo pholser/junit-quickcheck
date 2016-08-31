@@ -87,6 +87,14 @@ public interface Gen<T> {
             mapper.apply(generate(random, status)).generate(random, status);
     }
 
+    /**
+     * Gives a generation strategy that produces a random value by having this
+     * strategy produce random values until one satisfies the given condition,
+     * then using that value as the result.
+     *
+     * @param condition a condition the generated value is to meet
+     * @return a new generation strategy
+     */
     default Gen<T> filter(Predicate<? super T> condition) {
         return (random, status) -> {
             T next = generate(random, status);
@@ -97,6 +105,19 @@ public interface Gen<T> {
         };
     }
 
+    /**
+     * <p>Gives a generation strategy that produces a random value by having
+     * this strategy produce a random value and wrapping it in an
+     * {@link Optional}; if the value meets the given condition, the wrapping
+     * optional will be {@linkplain Optional#isPresent() present}.</p>
+     *
+     * <p>If the value meets the condition but is {@code null}, the wrapping
+     * optional will not be considered
+     * {@linkplain Optional#isPresent() present}.</p>
+     *
+     * @param condition a condition the generated value is to meet
+     * @return a new generation strategy
+     */
     default Gen<Optional<T>> filterOptional(Predicate<? super T> condition) {
         return (random, status) -> {
             T next = generate(random, status);
