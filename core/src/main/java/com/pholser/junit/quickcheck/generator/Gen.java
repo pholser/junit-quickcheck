@@ -127,6 +127,18 @@ public interface Gen<T> {
         };
     }
 
+    default Gen<List<T>> times(int times) {
+        if (times < 0)
+            throw new IllegalArgumentException("negative times: " + times);
+
+        return (random, status) -> {
+            List<T> values = new ArrayList<>();
+            for (int i = 0; i < times; ++i)
+                values.add(generate(random, status));
+            return values;
+        };
+    }
+
     /**
      * Gives a generation strategy that produces the given value, always.
      *
