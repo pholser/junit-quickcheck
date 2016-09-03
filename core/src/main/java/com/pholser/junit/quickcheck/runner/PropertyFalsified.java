@@ -40,8 +40,7 @@ class PropertyFalsified {
 
         return new AssertionError(
             String.format(
-                "Property %s falsified.%n"
-                    + "Failure message: [%s]%n"
+                "Property %s falsified.%s%n"
                     + "Args: %s%n"
                     + "Seeds: %s%n",
                 propertyName,
@@ -61,8 +60,7 @@ class PropertyFalsified {
 
         AssertionError e = new AssertionError(
             String.format(
-                "Property %s falsified via shrinking.%n"
-                    + "Shrink failure message: [%s]%n"
+                "Property %s falsified via shrinking: %s%n"
                     + "Shrunken args: %s%n"
                     + "Original failure message: [%s]%n"
                     + "Original args: %s%n"
