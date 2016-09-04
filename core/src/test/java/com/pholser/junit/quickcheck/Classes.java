@@ -30,19 +30,19 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-public final class Classes {
+final class Classes {
     private Classes() {
         throw new UnsupportedOperationException();
     }
 
-    public static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
+    static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
         return new TypeSafeMatcher<Class<?>>() {
             @Override protected boolean matchesSafely(Class<?> item) {
                 return item.isAssignableFrom(other);
@@ -54,22 +54,19 @@ public final class Classes {
         };
     }
 
-    public static List<Class<?>> classesOf(Iterable<?> items) {
-        return FluentIterable
-            .from(items)
-            .transform(new Function<Object, Class<?>>() {
-                @Override public Class<?> apply(Object input) {
-                    return input.getClass();
-                }
-            }).toList();
+    static List<Class<?>> classesOf(Iterable<?> items) {
+        return StreamSupport.stream(items.spliterator(), false)
+            .map(Object::getClass)
+            .collect(Collectors.toList());
     }
 
-    public static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
+    static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
         return commonSuperclassesOf(classes).get(0);
     }
 
     private static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
-        Set<Class<?>> intersection = new LinkedHashSet<Class<?>>(getClassesBreadthFirst(classes.get(0)));
+        Set<Class<?>> intersection =
+            new LinkedHashSet<>(getClassesBreadthFirst(classes.get(0)));
 
         if (classes.size() > 1) {
             for (Class<?> each : classes.subList(1, classes.size()))
