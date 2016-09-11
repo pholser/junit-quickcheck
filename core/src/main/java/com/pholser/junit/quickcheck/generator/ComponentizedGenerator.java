@@ -67,6 +67,15 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     }
 
     @Override public void addComponentGenerators(List<Generator<?>> newComponents) {
+        if (newComponents.size() != numberOfNeededComponents()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Needed %d components for %s, but got %d",
+                    numberOfNeededComponents(),
+                    getClass(),
+                    newComponents.size()));
+        }
+
         components.clear();
         components.addAll(newComponents);
     }

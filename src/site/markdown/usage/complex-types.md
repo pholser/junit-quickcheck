@@ -34,51 +34,7 @@ values.
 ```
 
 
-## Calling on generators embedding as fields of the generator
-
-```java
-    public class NonNegativeInts extends Generator<Integer> {
-        public NonNegativeInts() {
-            super(Arrays.asList(Integer.class, int.class));
-        }
-
-        @Override public Integer generate(
-            SourceOfRandomness random,
-            GenerationStatus status) {
-
-            return Math.abs(random.nextInt());
-        }
-    }
-
-    public class Counter {
-        private int count;
-
-        public Counter(int count) {
-            this.count = count;
-        }
-
-        // ...
-    }
-
-    public class Counters extends Generator<Counter> {
-        private final Generator<Integer> nonNegatives =
-            new NonNegativeInts();
-
-        public Counters() {
-            super(Counter.class);
-        }
-
-        @Override public Counter generate(
-            SourceOfRandomness random,
-            GenerationStatus status) {
-
-            return new Counter(nonNegatives.generate(random, status));
-        }
-    }
-```
-
-
-## Asking for a generator for values of a specific type via `gen()`
+## Calling for a generator for values of a specific type via `gen()`
 
 Generators that are made available to the `ServiceLoader` or referenced via
 `@From` can access other such generators via the superclass method `gen()`.
@@ -214,11 +170,56 @@ This method gives a generator that can produce instances of the type of the
 given reflected field, and that honors all of the configuration annotations
 on the field.
 
+- `gen.make(...)`
+
+This method makes an instance of the given generator class, makes the
+available generators available to it, and configures it with whatever
+configuration annotations live on the generator class.
+
+```java
+    public class NonNegativeInts extends Generator<Integer> {
+        public NonNegativeInts() {
+            super(Arrays.asList(Integer.class, int.class));
+        }
+
+        @Override public Integer generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
+            return Math.abs(random.nextInt());
+        }
+    }
+
+    public class Counter {
+        private int count;
+
+        public Counter(int count) {
+            this.count = count;
+        }
+
+        // ...
+    }
+
+    public class Counters extends Generator<Counter> {
+        public Counters() {
+            super(Counter.class);
+        }
+
+        @Override public Counter generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
+            return new Counter(
+                gen().make(NonNegativeInts.class)
+                    .generate(random, status));
+        }
+    }
+```
 
 # Generators for types with component types: `ComponentizedGenerator`
 
 Extend class `ComponentizedGenerator` instead of `Generator` when the type
-of values you need to generate have component types; for example, collections
+of values you need to generate has component types; for example, collections
 and maps. This is usually necessary for generating values for types that
 involve generics.
 
