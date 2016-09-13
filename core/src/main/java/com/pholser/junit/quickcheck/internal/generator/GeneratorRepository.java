@@ -52,6 +52,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 
+import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
 import static com.pholser.junit.quickcheck.internal.Items.*;
@@ -121,7 +122,7 @@ public class GeneratorRepository implements Generators {
         if (constructor == null) {
             throw new IllegalArgumentException(
                 "No constructor found for " + type
-                    + " with argument types " + Arrays.asList(argumentTypes));
+                    + " with argument types " + asList(argumentTypes));
         }
 
         Ctor<U> ctor = new Ctor<>(constructor);
@@ -193,7 +194,20 @@ public class GeneratorRepository implements Generators {
         return (Generator<T>) new CompositeGenerator(weightings);
     }
 
-    public Generator<?> produceGenerator(ParameterTypeContext parameter) {
+    @SafeVarargs
+    @Override public final <T extends Generator<?>> T make(
+        Class<T> genType,
+        Generator<?>... components) {
+
+        T generator = instantiate(genType);
+        generator.provide(this);
+        generator.configure(genType);
+        generator.addComponentGenerators(asList(components));
+
+        return generator;
+    }
+
+    Generator<?> produceGenerator(ParameterTypeContext parameter) {
         Generator<?> generator = generatorFor(parameter);
         generator.provide(this);
         generator.configure(parameter.annotatedType());
@@ -342,7 +356,7 @@ public class GeneratorRepository implements Generators {
         return instantiate(generator.getClass());
     }
 
-    public static org.javaruntype.type.Type<?> token(Type type) {
+    private static org.javaruntype.type.Type<?> token(Type type) {
         return Types.forJavaLangReflectType(type);
     }
 }

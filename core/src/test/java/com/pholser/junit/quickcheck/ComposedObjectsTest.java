@@ -44,11 +44,11 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ComposedObjectsTest {
     @Test public void askingForGeneratorsByType() {
-        assertThat(testResult(AskingForGeneratorsByType.class), isSuccessful());
+        assertThat(testResult(GeneratorsByType.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingForGeneratorsByType {
+    public static class GeneratorsByType {
         static class A {
             Foo foo;
         }
@@ -58,7 +58,10 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
                 a.foo = gen().type(Foo.class).generate(random, status);
                 return a;
@@ -70,11 +73,11 @@ public class ComposedObjectsTest {
     }
 
     @Test public void askingForGeneratorsForIndividualFields() {
-        assertThat(testResult(AskingForIndividualFields.class), isSuccessful());
+        assertThat(testResult(IndividualFields.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingForIndividualFields {
+    public static class IndividualFields {
         static class A {
             @X Foo foo;
             @X Box<@Same(3) Foo> boxOfFoo;
@@ -86,10 +89,15 @@ public class ComposedObjectsTest {
             }
 
             @SuppressWarnings("unchecked")
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
-                a.foo = (Foo) gen().field(A.class, "foo").generate(random, status);
-                a.boxOfFoo = (Box<Foo>) gen().field(A.class, "boxOfFoo").generate(random, status);
+                a.foo = (Foo) gen().field(A.class, "foo")
+                    .generate(random, status);
+                a.boxOfFoo = (Box<Foo>) gen().field(A.class, "boxOfFoo")
+                    .generate(random, status);
                 return a;
             }
         }
@@ -103,11 +111,11 @@ public class ComposedObjectsTest {
     }
 
     @Test public void askingForGeneratorsForAllFieldsOfClassAtOnce() {
-        assertThat(testResult(AskingForAllFieldsAtOnce.class), isSuccessful());
+        assertThat(testResult(AllFieldsAtOnce.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingForAllFieldsAtOnce {
+    public static class AllFieldsAtOnce {
         public static class B {
             Foo foo;
             @From(ABox.class) Box<@X @From(AnotherBox.class) Box<@X Foo>> boxOfBoxOfFoo;
@@ -122,7 +130,10 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
                 a.b = gen().fieldsOf(B.class).generate(random, status);
                 return a;
@@ -138,16 +149,19 @@ public class ComposedObjectsTest {
     }
 
     @Test public void askingForGeneratorsByConstructor() {
-        assertThat(testResult(AskingByConstructor.class), isSuccessful());
+        assertThat(testResult(ByConstructor.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingByConstructor {
+    public static class ByConstructor {
         public static class B {
             final Foo foo;
             final Box<@X Box<@X Foo>> boxOfBoxOfFoo;
 
-            public B(@Same(6) Foo foo, Box<@X Box<@X @Same(7) Foo>> boxOfBoxOfFoo) {
+            public B(
+                @Same(6) Foo foo,
+                Box<@X Box<@X @Same(7) Foo>> boxOfBoxOfFoo) {
+
                 this.foo = foo;
                 this.boxOfBoxOfFoo = boxOfBoxOfFoo;
             }
@@ -162,9 +176,13 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
-                a.b = gen().constructor(B.class, Foo.class, Box.class).generate(random, status);
+                a.b = gen().constructor(B.class, Foo.class, Box.class)
+                    .generate(random, status);
                 return a;
             }
         }
@@ -179,17 +197,21 @@ public class ComposedObjectsTest {
 
     @Test public void askingForGeneratorsByUnrecognizedConstructor() {
         assertThat(
-            testResult(AskingByUnrecognizedConstructor.class),
-            hasSingleFailureContaining("java.lang.IllegalArgumentException: No constructor found for class"));
+            testResult(UnrecognizedConstructor.class),
+            hasSingleFailureContaining(
+                "java.lang.IllegalArgumentException: No constructor found for class"));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingByUnrecognizedConstructor {
+    public static class UnrecognizedConstructor {
         public static class B {
             final Foo foo;
             final Box<@X Box<@X Foo>> boxOfBoxOfFoo;
 
-            public B(@Same(6) Foo foo, Box<@X Box<@X @Same(7) Foo>> boxOfBoxOfFoo) {
+            public B(
+                @Same(6) Foo foo,
+                Box<@X Box<@X @Same(7) Foo>> boxOfBoxOfFoo) {
+
                 this.foo = foo;
                 this.boxOfBoxOfFoo = boxOfBoxOfFoo;
             }
@@ -204,9 +226,13 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
-                a.b = gen().constructor(B.class, int.class).generate(random, status);
+                a.b = gen().constructor(B.class, int.class)
+                    .generate(random, status);
                 return a;
             }
         }
@@ -231,7 +257,10 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
                 a.foos = gen().type(Foo[][].class).generate(random, status);
                 return a;
@@ -244,11 +273,11 @@ public class ComposedObjectsTest {
 
     @Test
     public void askingForRawComponentizedType() {
-        assertThat(testResult(AskingForRawComponentizedType.class), isSuccessful());
+        assertThat(testResult(RawComponentizedType.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingForRawComponentizedType {
+    public static class RawComponentizedType {
         static class A {
             Box b;
         }
@@ -258,7 +287,10 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
                 a.b = gen().type(Box.class).generate(random, status);
                 return a;
@@ -271,11 +303,13 @@ public class ComposedObjectsTest {
 
     @Test
     public void askingForArrayOfRawComponentizedType() {
-        assertThat(testResult(AskingForArrayOfRawComponentizedType.class), isSuccessful());
+        assertThat(
+            testResult(ArrayOfRawComponentizedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class AskingForArrayOfRawComponentizedType {
+    public static class ArrayOfRawComponentizedType {
         static class A {
             Box[] b;
         }
@@ -285,7 +319,10 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
-            @Override public A generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 A a = new A();
                 a.b = gen().type(Box[].class).generate(random, status);
                 return a;
@@ -293,6 +330,77 @@ public class ComposedObjectsTest {
         }
 
         @Property public void holds(@From(MakeA.class) A a) {
+        }
+    }
+
+    @Test public void askingToMakeASpecificKindOfGenerator() {
+        assertThat(testResult(SpecificGenerator.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class SpecificGenerator {
+        @X public static class AnXBox extends ABox {
+        }
+
+        static class A {
+            Box<Foo> boxOfFoos;
+        }
+
+        public static class MakeA extends Generator<A> {
+            public MakeA() {
+                super(A.class);
+            }
+
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
+                A a = new A();
+                AnXBox make = gen().make(AnXBox.class, gen().type(Foo.class));
+                a.boxOfFoos = (Box<Foo>) make.generate(random, status);
+                return a;
+            }
+        }
+
+        @Property public void holds(@From(MakeA.class) A a) {
+            assertTrue(a.boxOfFoos.marked());
+        }
+    }
+
+    @Test public void specificKindOfGeneratorWithMissingComponents() {
+        assertThat(
+            testResult(SpecificGeneratorWithMissingComponents.class),
+            hasSingleFailureContaining(
+                "IllegalArgumentException: Needed 1 components"));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class SpecificGeneratorWithMissingComponents {
+        @X public static class AnXBox extends ABox {
+        }
+
+        static class A {
+            Box<Foo> boxOfFoos;
+        }
+
+        public static class MakeA extends Generator<A> {
+            public MakeA() {
+                super(A.class);
+            }
+
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
+                A a = new A();
+                AnXBox make = gen().make(AnXBox.class);
+                a.boxOfFoos = (Box<Foo>) make.generate(random, status);
+                return a;
+            }
+        }
+
+        @Property public void holds(@From(MakeA.class) A a) {
+            assertTrue(a.boxOfFoos.marked());
         }
     }
 }

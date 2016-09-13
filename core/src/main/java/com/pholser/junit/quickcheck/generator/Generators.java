@@ -148,4 +148,20 @@ public interface Generators {
      * @return generator that can produce values of the field's type
      */
     Generator<?> field(Field field);
+
+    /**
+     * <p>Makes a new generator of the given type, provides it with access to
+     * other available generators,
+     * {@linkplain Generator#configure(java.lang.reflect.AnnotatedType)
+     * configures} it with any configuration annotations present on the
+     * generator type, and supplies it any
+     * {@linkplain Generator#hasComponents() component generators} it needs.
+     *
+     * @param <T> type of objects produced by the resulting generator
+     * @param genType type of generator to create
+     * @return a generator for producing values
+     */
+    <T extends Generator<?>> T make(
+        Class<T> genType,
+        Generator<?>... componentGenerators);
 }
