@@ -27,12 +27,14 @@ package com.pholser.junit.quickcheck.generator;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * <p>Produces instances of a class by reflecting the class's fields and
@@ -63,7 +65,10 @@ public class Fields<T> extends Generator<T> {
     public Fields(Class<T> type) {
         super(type);
 
-        this.fields = allDeclaredFieldsOf(type);
+        this.fields =
+            allDeclaredFieldsOf(type).stream()
+                .filter(f -> !Modifier.isFinal(f.getModifiers()))
+                .collect(toList());
 
         instantiate(type);
     }
@@ -72,8 +77,13 @@ public class Fields<T> extends Generator<T> {
         Class<T> type = types().get(0);
         Object generated = instantiate(type);
 
-        for (Field each : fields)
-            setField(each, generated, gen().field(each).generate(random, status), true);
+        for (Field each : fields) {
+            setField(
+                each,
+                generated,
+                gen().field(each).generate(random, status),
+                true);
+        }
 
         return type.cast(generated);
     }

@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -60,11 +61,11 @@ public class PropertyParameterGenerationByFieldsTest {
     private static Object object;
 
     @Test public void autoGeneration() {
-        assertThat(testResult(WithAutoGeneration.class), isSuccessful());
+        assertThat(testResult(AutoGeneration.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGeneration {
+    public static class AutoGeneration {
         public static class P {
             public Zilch z;
             public Foo f;
@@ -76,11 +77,11 @@ public class PropertyParameterGenerationByFieldsTest {
     }
 
     @Test public void autoGenerationOnGenericType() {
-        assertThat(testResult(WithAutoGenerationOnGenericType.class), isSuccessful());
+        assertThat(testResult(AutoGenerationOnGenericType.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationOnGenericType {
+    public static class AutoGenerationOnGenericType {
         @Property public void shouldHold(@From(Fields.class) FakeList<Foo> list) {
         }
     }
@@ -98,35 +99,47 @@ public class PropertyParameterGenerationByFieldsTest {
     }
 
     @Test public void autoGenerationOnPrimitiveType() {
-        PrintableResult result = testResult(WithAutoGenerationOnPrimitiveType.class);
-        assertThat(result, hasSingleFailureContaining(ReflectionException.class.getName()));
-        assertThat(result, hasSingleFailureContaining(InstantiationException.class.getName()));
+        PrintableResult result = testResult(AutoGenerationOnPrimitiveType.class);
+
+        assertThat(
+            result,
+            hasSingleFailureContaining(ReflectionException.class.getName()));
+        assertThat(
+            result,
+            hasSingleFailureContaining(InstantiationException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationOnPrimitiveType {
+    public static class AutoGenerationOnPrimitiveType {
         @Property public void shouldHold(@From(Fields.class) int i) {
         }
     }
 
     @Test public void autoGenerationOnPrimitiveWrapperType() {
-        PrintableResult result = testResult(WithAutoGenerationOnPrimitiveWrapperType.class);
-        assertThat(result, hasSingleFailureContaining(ReflectionException.class.getName()));
-        assertThat(result, hasSingleFailureContaining(InstantiationException.class.getName()));
+        PrintableResult result = testResult(AutoGenerationOnPrimitiveWrapperType.class);
+
+        assertThat(
+            result,
+            hasSingleFailureContaining(ReflectionException.class.getName()));
+        assertThat(
+            result,
+            hasSingleFailureContaining(InstantiationException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationOnPrimitiveWrapperType {
+    public static class AutoGenerationOnPrimitiveWrapperType {
         @Property public void shouldHold(@From(Fields.class) Float f) {
         }
     }
 
     @Test public void autoGenerationWithAnnotations() {
-        assertThat(testResult(WithAutoGenerationWithAnnotations.class), isSuccessful());
+        assertThat(
+            testResult(AutoGenerationWithAnnotations.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithAnnotations {
+    public static class AutoGenerationWithAnnotations {
         public static class P {
             @From(AnInt.class) @Between(min = 2, max = 4) public int i;
         }
@@ -137,11 +150,13 @@ public class PropertyParameterGenerationByFieldsTest {
     }
 
     @Test public void autoGenerationWithAggregateAnnotation() {
-        assertThat(testResult(WithAutoGenerationWithAggregateAnnotations.class), isSuccessful());
+        assertThat(
+            testResult(AutoGenerationWithAggregateAnnotations.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithAggregateAnnotations {
+    public static class AutoGenerationWithAggregateAnnotations {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
         @From(AnInt.class)
@@ -159,11 +174,13 @@ public class PropertyParameterGenerationByFieldsTest {
     }
 
     @Test public void autoGenerationWithAnnotationsOnTypeUsesInFields() {
-        assertThat(testResult(WithAutoGenerationWithAnnotationsOnTypeUsesInFields.class), isSuccessful());
+        assertThat(
+            testResult(AutoGenerationWithAnnotationsOnTypeUsesInFields.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithAnnotationsOnTypeUsesInFields {
+    public static class AutoGenerationWithAnnotationsOnTypeUsesInFields {
         public static class P {
             public Box<@X Foo> box;
         }
@@ -175,11 +192,13 @@ public class PropertyParameterGenerationByFieldsTest {
     }
 
     @Test public void autoGenerationWithAggregateAnnotationsOnTypeUsesInFields() {
-        assertThat(testResult(WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInFields.class), isSuccessful());
+        assertThat(
+            testResult(AutoGenerationWithAggregateAnnotationsOnTypeUsesInFields.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInFields {
+    public static class AutoGenerationWithAggregateAnnotationsOnTypeUsesInFields {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
         @X
@@ -206,13 +225,29 @@ public class PropertyParameterGenerationByFieldsTest {
 
     @Test public void autoGenerationWithUnresolvedTypeVariablesInFields() {
         assertThat(
-            testResult(WithAutoGenerationWithUnresolvedTypeVariablesInFields.class),
+            testResult(AutoGenerationWithUnresolvedTypeVariablesInFields.class),
             hasSingleFailureContaining("No variable substitution established"));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithUnresolvedTypeVariablesInFields<A, B, C> {
+    public static class AutoGenerationWithUnresolvedTypeVariablesInFields<A, B, C> {
         @Property public void shouldHold(@From(Fields.class) Tuple3<A, B, C> t) {
+        }
+    }
+
+    @Test public void autoGenerationWithFinalFields() {
+        assertThat(
+            testResult(AutoGenerationWithFinalFields.class),
+            isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class AutoGenerationWithFinalFields {
+        public static class Hamster{
+            private static final Foo F = new Foo(12, false);
+        }
+
+        @Property public void holds(@From(Fields.class) Hamster h) {
         }
     }
 }

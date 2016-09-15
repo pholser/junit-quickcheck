@@ -193,7 +193,10 @@ public final class Reflection {
         for (Class<?> c = type; c != null; c = c.getSuperclass())
             Collections.addAll(allFields, c.getDeclaredFields());
 
-        List<Field> results = allFields.stream().filter(f -> ! f.isSynthetic()).collect(toList());
+        List<Field> results =
+            allFields.stream()
+                .filter(f -> !f.isSynthetic())
+                .collect(toList());
         results.forEach(f -> f.setAccessible(true));
 
         return results;
