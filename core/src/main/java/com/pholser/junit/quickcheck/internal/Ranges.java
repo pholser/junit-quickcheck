@@ -68,4 +68,48 @@ public final class Ranges {
 
         return generated.add(min);
     }
+
+    public static long choose(SourceOfRandomness random, long min, long max) {
+        if (min > max) {
+            throw new IllegalArgumentException("min=" + min + " must be less than max=" + max);
+        }
+
+        // There are some edges cases with integer overflows, for instance, when (max - min)
+        // exceeds Long.MAX_VALUE. These cases should be relatively rare under the assumption
+        // that choosing [Long.MIN_VALUE, Long.MAX_VALUE] can be simplified to choosing any
+        // random long. Thus, the optimization here only deals with the common situation
+        // that no overflows are possible (maybe the heuristic to detect that could be improved).
+        boolean noOverflowIssues = max < ((long) 1 << 62) && min > -(((long) 1) << 62);
+
+        if (noOverflowIssues) {
+            // fast path: use long computations
+            long range = (max - min) + 1;
+            long mask = findNextPowerOfTwoLong(range) - 1;
+
+            // loop to avoid distribution bias (as it would be the case with modulo division)
+            long generated;
+            do {
+                generated = Math.abs(random.nextLong()) & mask;
+            } while (generated >= range);
+
+            return generated + min;
+
+        } else {
+            // slow path: fall back to BigInteger to avoid any surprises
+            return choose(random, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
+        }
+    }
+
+    // VisibleForTesting
+    static long findNextPowerOfTwoLong(long positiveLong) {
+        if (isPowerOfTwoLong(positiveLong)) {
+            return positiveLong;
+        } else {
+            return ((long) 1) << (64 - Long.numberOfLeadingZeros(positiveLong));
+        }
+    }
+
+    private static boolean isPowerOfTwoLong(long positiveLong) {
+        return (positiveLong & (positiveLong - 1)) == 0;
+    }
 }
