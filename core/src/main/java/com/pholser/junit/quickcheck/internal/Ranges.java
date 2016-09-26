@@ -29,6 +29,7 @@ import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static java.lang.String.*;
 
 public final class Ranges {
@@ -70,16 +71,18 @@ public final class Ranges {
     }
 
     public static long choose(SourceOfRandomness random, long min, long max) {
-        if (min > max) {
-            throw new IllegalArgumentException("min=" + min + " must be less than max=" + max);
-        }
+        checkRange(INTEGRAL, min, max);
 
-        // There are some edges cases with integer overflows, for instance, when (max - min)
-        // exceeds Long.MAX_VALUE. These cases should be relatively rare under the assumption
-        // that choosing [Long.MIN_VALUE, Long.MAX_VALUE] can be simplified to choosing any
-        // random long. Thus, the optimization here only deals with the common situation
-        // that no overflows are possible (maybe the heuristic to detect that could be improved).
-        boolean noOverflowIssues = max < ((long) 1 << 62) && min > -(((long) 1) << 62);
+        /* There are some edges cases with integer overflows, for instance,
+           when (max - min) exceeds Long.MAX_VALUE. These cases should be
+           relatively rare under the assumption that choosing
+           [Long.MIN_VALUE, Long.MAX_VALUE] can be simplified to choosing any
+           random long. Thus, the optimization here only deals with the common
+           situation that no overflows are possible (maybe the heuristic to
+           detect that could be improved).
+         */
+        boolean noOverflowIssues =
+            max < ((long) 1 << 62) && min > -(((long) 1) << 62);
 
         if (noOverflowIssues) {
             // fast path: use long computations
@@ -93,20 +96,20 @@ public final class Ranges {
             } while (generated >= range);
 
             return generated + min;
-
         } else {
             // slow path: fall back to BigInteger to avoid any surprises
-            return choose(random, BigInteger.valueOf(min), BigInteger.valueOf(max)).longValue();
+            return choose(
+                random,
+                BigInteger.valueOf(min),
+                BigInteger.valueOf(max))
+                .longValue();
         }
     }
 
-    // VisibleForTesting
     static long findNextPowerOfTwoLong(long positiveLong) {
-        if (isPowerOfTwoLong(positiveLong)) {
-            return positiveLong;
-        } else {
-            return ((long) 1) << (64 - Long.numberOfLeadingZeros(positiveLong));
-        }
+        return isPowerOfTwoLong(positiveLong)
+            ? positiveLong
+            : ((long) 1) << (64 - Long.numberOfLeadingZeros(positiveLong));
     }
 
     private static boolean isPowerOfTwoLong(long positiveLong) {

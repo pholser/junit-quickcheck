@@ -68,6 +68,10 @@
             <name>Jason Hinch</name>
             <roles><role>Fixed lambda generator to produce pure functions</role></roles>
         </contributor>
+        <contributor>
+            <name>Philipp Classen</name>
+            <roles><role>Sped up int/long generation</role></roles>
+        </contributor>
     </contributors>
 
     <properties>

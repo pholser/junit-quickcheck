@@ -25,18 +25,15 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.findNextPowerOfTwoLong;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Random;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Test;
 
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static org.junit.Assert.*;
 
 public class RangesTest {
-
     @Test public void checkFindNextPowerOfTwoLong() {
         assertEquals(1, findNextPowerOfTwoLong(1));
         assertEquals(2, findNextPowerOfTwoLong(2));
@@ -48,19 +45,11 @@ public class RangesTest {
     }
 
     @Test public void chooseLongsMustReturnValuesInTheExpectedRange() {
-        chooseLongsShouldOnlyReturnValuesInTheExpectedRange(-10L, 100L);
-        chooseLongsShouldOnlyReturnValuesInTheExpectedRange(1L, 1L);
-        chooseLongsShouldOnlyReturnValuesInTheExpectedRange(Long.MIN_VALUE, Long.MIN_VALUE + 1);
-        chooseLongsShouldOnlyReturnValuesInTheExpectedRange(Long.MAX_VALUE - 1, Long.MAX_VALUE);
-        chooseLongsShouldOnlyReturnValuesInTheExpectedRange(Long.MIN_VALUE, Long.MAX_VALUE);
-    }
-
-    private void chooseLongsShouldOnlyReturnValuesInTheExpectedRange(long min, long max) {
-        SourceOfRandomness random = new SourceOfRandomness(new Random(0));
-        for (int i = 0; i < 1000; i++) {
-            long result = Ranges.choose(random, min, max);
-            assertTrue(min <= result && result <= max);
-        }
+        assertRangeOfRandomLong(-10L, 100L);
+        assertRangeOfRandomLong(1L, 1L);
+        assertRangeOfRandomLong(Long.MIN_VALUE, Long.MIN_VALUE + 1);
+        assertRangeOfRandomLong(Long.MAX_VALUE - 1, Long.MAX_VALUE);
+        assertRangeOfRandomLong(Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
     @Test public void weakSanityCheckForDistributionOfChooseLongs() {
@@ -72,6 +61,14 @@ public class RangesTest {
         }
         for (boolean hit : hits) {
             assertTrue(hit);
+        }
+    }
+
+    private void assertRangeOfRandomLong(long min, long max) {
+        SourceOfRandomness random = new SourceOfRandomness(new Random(0));
+        for (int i = 0; i < 1000; i++) {
+            long result = Ranges.choose(random, min, max);
+            assertTrue(min <= result && result <= max);
         }
     }
 }
