@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DurationGenerator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.time</a> &gt; <span class="el_source">DurationGenerator.java</span></div><h1>DurationGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.time;
+
+import java.time.Duration;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
+/**
+ * Produces values of type {@link Duration}.
+ */
+public class DurationGenerator extends Generator&lt;Duration&gt; {
+<span class="fc" id="L41">    private Duration min = Duration.ofSeconds(Long.MIN_VALUE, 0);</span>
+<span class="fc" id="L42">    private Duration max = Duration.ofSeconds(Long.MAX_VALUE, 999_999_999);</span>
+
+    public DurationGenerator() {
+<span class="fc" id="L45">        super(Duration.class);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * &lt;p&gt;Tells this generator to produce values within a specified
+     * {@linkplain InRange#min() minimum} and/or {@linkplain InRange#max()
+     * maximum}, inclusive, with uniform distribution, down to the
+     * nanosecond.&lt;/p&gt;
+     *
+     * &lt;p&gt;If an endpoint of the range is not specified, the generator will use
+     * durations with second values of either {@link Long#MIN_VALUE} or
+     * {@link Long#MAX_VALUE} (with nanoseconds set to 999,999,999) as
+     * appropriate.&lt;/p&gt;
+     *
+     * &lt;p&gt;{@linkplain InRange#format()} is ignored. Durations are always
+     * parsed using formats based on the ISO-8601 duration format
+     * {@code PnDTnHnMn.nS} with days considered to be exactly 24 hours.
+     *
+     * @see Duration#parse(CharSequence)
+     * @param range annotation that gives the range's constraints
+     */
+    public void configure(InRange range) {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (!defaultValueOf(InRange.class, &quot;min&quot;).equals(range.min()))</span>
+<span class="fc" id="L68">            min = Duration.parse(range.min());</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!defaultValueOf(InRange.class, &quot;max&quot;).equals(range.max()))</span>
+<span class="fc" id="L70">            max = Duration.parse(range.max());</span>
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (min.compareTo(max) &gt; 0)</span>
+<span class="fc" id="L73">            throw new IllegalArgumentException(String.format(&quot;bad range, %s &gt; %s&quot;, range.min(), range.max()));</span>
+<span class="fc" id="L74">    }</span>
+
+    @Override public Duration generate(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc" id="L77">        return random.nextDuration(min, max);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
