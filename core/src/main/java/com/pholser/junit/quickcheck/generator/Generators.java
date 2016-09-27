@@ -159,6 +159,7 @@ public interface Generators {
      *
      * @param <T> type of objects produced by the resulting generator
      * @param genType type of generator to create
+     * @param componentGenerators any generators for components of the type
      * @return a generator for producing values
      */
     <T extends Generator<?>> T make(
