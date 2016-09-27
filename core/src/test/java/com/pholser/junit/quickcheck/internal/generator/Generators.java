@@ -41,7 +41,10 @@ public final class Generators {
     }
 
     @SafeVarargs
-    public static void assertGenerators(Generator<?> result, Class<? extends Generator>... expectedTypes) {
+    public static void assertGenerators(
+        Generator<?> result,
+        Class<? extends Generator>... expectedTypes) {
+
         assumeThat(result, instanceOf(CompositeGenerator.class));
 
         CompositeGenerator composite = (CompositeGenerator) result;
@@ -50,9 +53,5 @@ public final class Generators {
             compositeTypes.add(composite.composed(i).getClass());
 
         assertEquals(newHashSet(expectedTypes), compositeTypes);
-    }
-
-    public static Generator<?> componentOf(Generator<?> generator, int index) {
-        return ((CompositeGenerator) generator).composed(index);
     }
 }

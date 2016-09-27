@@ -351,6 +351,7 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
+            @SuppressWarnings("unchecked")
             @Override public A generate(
                 SourceOfRandomness random,
                 GenerationStatus status) {
@@ -388,6 +389,7 @@ public class ComposedObjectsTest {
                 super(A.class);
             }
 
+            @SuppressWarnings("unchecked")
             @Override public A generate(
                 SourceOfRandomness random,
                 GenerationStatus status) {

@@ -32,6 +32,8 @@ package com.pholser.junit.quickcheck.generator;
  * @see Generator#configure(java.lang.reflect.AnnotatedType)
  */
 public class GeneratorConfigurationException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
     public GeneratorConfigurationException(String message) {
         super(message);
     }

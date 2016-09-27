@@ -194,7 +194,6 @@ public class GeneratorRepository implements Generators {
         return (Generator<T>) new CompositeGenerator(weightings);
     }
 
-    @SafeVarargs
     @Override public final <T extends Generator<?>> T make(
         Class<T> genType,
         Generator<?>... components) {
@@ -266,9 +265,8 @@ public class GeneratorRepository implements Generators {
                     .allowMixedTypes(true);
             Generator<?> returnTypeGenerator = generatorFor(returnType);
 
-            @SuppressWarnings("unchecked")
             Generator<?> lambda =
-                new LambdaGenerator(parameter.getRawClass(), returnTypeGenerator);
+                new LambdaGenerator<>(parameter.getRawClass(), returnTypeGenerator);
             matches.add(lambda);
         }
     }
