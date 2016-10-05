@@ -70,7 +70,7 @@ given type.
     }
 ```
 
-- `gen.constructor(...)`
+- `gen().constructor(...)`
 
 This method gives a generator that produces instances of the given type by
 invoking a constructor reflectively, generating random values for the
@@ -114,7 +114,7 @@ will be honored.
     }
 ```
 
-- `gen.fieldsOf(...)`
+- `gen().fieldsOf(...)`
 
 This method gives a generator that produces instances of the given type by
 instantiating using an accessible zero-arg constructor, and generating random
@@ -152,25 +152,25 @@ like annotating a property parameter with `@From(Fields.class)`. Any
     }
 ```
 
-- `gen.parameter(...)`
+- `gen().parameter(...)`
 
 This method gives a generator that can produce instances of the type of the
 given reflected method parameter, and that honors all of the configuration
 annotations on the parameter.
 
-- `gen.field(Class<?>, String)`
+- `gen().field(Class<?>, String)`
 
 This method gives a generator that can produce instances of the type of the
 field of a given name on the given type, and that honors all of the
 configuration annotations on the field.
 
-- `gen.field(Field)`
+- `gen().field(Field)`
 
 This method gives a generator that can produce instances of the type of the
 given reflected field, and that honors all of the configuration annotations
 on the field.
 
-- `gen.make(...)`
+- `gen().make(...)`
 
 This method makes an instance of the given generator class, makes the
 available generators available to it, and configures it with whatever
@@ -277,7 +277,6 @@ involve generics.
         @Override public Either<?, ?> generate(
             SourceOfRandomness random,
             GenerationStatus status) {
-
 
             return random.nextBoolean()
                 ? Either.createLeft(componentGenerators().get(0).generate(random, status))
