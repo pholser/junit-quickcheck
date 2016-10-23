@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/pholser/junit-quickcheck.svg?branch=master)](https://travis-ci.org/pholser/junit-quickcheck)
 
 <a href="http://www.yegor256.com/2015/10/17/award-2016.html">
-  <img src="http://www.yegor256.com/images/award/2016/winner-???.png"
+  <img src="http://www.yegor256.com/images/award/2016/winner-pholser.png"
   style="width:203px;height:45px;"/></a>
 
 # junit-quickcheck: Property-based testing, JUnit-style
