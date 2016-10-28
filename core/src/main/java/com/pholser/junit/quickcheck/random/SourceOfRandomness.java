@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
@@ -34,6 +39,7 @@ import java.util.Random;
 import com.pholser.junit.quickcheck.internal.Ranges;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static java.util.concurrent.TimeUnit.*;
 
 /**
  * A source of randomness, fed to
@@ -41,7 +47,8 @@ import static com.pholser.junit.quickcheck.internal.Ranges.*;
  * can produce random values for property parameters.
  */
 public class SourceOfRandomness {
-    private static final BigInteger NANOS_PER_SECOND = BigInteger.valueOf(1_000_000_000);
+    private static final BigInteger NANOS_PER_SECOND =
+        BigInteger.valueOf(SECONDS.toNanos(1));
 
     private final Random delegate;
 
@@ -57,6 +64,31 @@ public class SourceOfRandomness {
         seed = delegate.nextLong();
         this.delegate = delegate;
         delegate.setSeed(seed);
+    }
+
+    /**
+     * <p>Gives a JDK source of randomness, with the same internal state as
+     * this source of randomness.</p>
+     *
+     * @return a JDK "clone" of self
+     */
+    public Random toJDKRandom() {
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+
+        try (ObjectOutputStream objectOut = new ObjectOutputStream(bytesOut)) {
+            objectOut.writeObject(delegate);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+
+        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
+        try (ObjectInputStream objectIn = new ObjectInputStream(bytesIn)) {
+            return (Random) objectIn.readObject();
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        } catch (ClassNotFoundException shouldNeverHappen) {
+            throw new AssertionError(shouldNeverHappen);
+        }
     }
 
     /**
