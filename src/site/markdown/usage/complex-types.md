@@ -280,7 +280,7 @@ involve generics.
 
             return random.nextBoolean()
                 ? Either.createLeft(componentGenerators().get(0).generate(random, status))
-                : Either.createLeft(componentGenerators().get(0).generate(random, status));
+                : Either.createRight(componentGenerators().get(1).generate(random, status));
         }
 
         @Override public int numberOfNeededComponents() {
