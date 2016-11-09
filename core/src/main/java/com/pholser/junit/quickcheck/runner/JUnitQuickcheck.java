@@ -39,6 +39,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
+import org.junit.runners.model.TestClass;
 
 /**
  * <p>JUnit test runner for junit-quickcheck property-based tests.</p>
@@ -93,5 +94,9 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
         return method.getAnnotation(Test.class) != null
             ? super.methodBlock(method)
             : new PropertyStatement(method, getTestClass(), repo, distro);
+    }
+
+    @Override protected TestClass createTestClass(Class<?> testClass) {
+        return new JUnitQuickcheckTestClass(testClass);
     }
 }
