@@ -95,12 +95,18 @@ public class GeneratorRepository implements Generators {
             registerHierarchy(each, generator);
     }
 
-    private void maybeRegisterGeneratorForType(Class<?> type, Generator<?> generator) {
+    private void maybeRegisterGeneratorForType(
+        Class<?> type,
+        Generator<?> generator) {
+
         if (generator.canRegisterAsType(type))
             registerGeneratorForType(type, generator);
     }
 
-    private void registerGeneratorForType(Class<?> type, Generator<?> generator) {
+    private void registerGeneratorForType(
+        Class<?> type,
+        Generator<?> generator) {
+
         Set<Generator<?>> forType = generators.get(type);
         if (forType == null) {
             forType = new LinkedHashSet<>();
@@ -183,11 +189,11 @@ public class GeneratorRepository implements Generators {
         Generator<? extends T> first,
         Generator<? extends T>... rest) {
 
-        List<Generator<? extends T>> generators = new ArrayList<>();
-        generators.add(first);
-        Collections.addAll(generators, rest);
+        List<Generator<? extends T>> gens = new ArrayList<>();
+        gens.add(first);
+        Collections.addAll(gens, rest);
 
-        List<Weighted<Generator<?>>> weightings = generators.stream()
+        List<Weighted<Generator<?>>> weightings = gens.stream()
             .map(g -> new Weighted<Generator<?>>(g, 1))
             .collect(Collectors.toList());
 

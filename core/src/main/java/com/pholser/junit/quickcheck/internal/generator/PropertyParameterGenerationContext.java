@@ -35,6 +35,7 @@ import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.Math.min;
+import static java.lang.String.*;
 import static java.util.Collections.*;
 
 public class PropertyParameterGenerationContext extends AbstractGenerationStatus {
@@ -132,7 +133,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
             int discards,
             int successfulEvaluations) {
 
-            super(String.format(
+            super(format(
                 MESSAGE_TEMPLATE,
                 parameter.typeContext().name(),
                 parameter.discardRatio(),

@@ -160,8 +160,7 @@ public interface Gen<T> {
      * @param rest the other possible choices
      * @return a new generation strategy
      */
-    @SafeVarargs
-    static <U> Gen<U> oneOf(U first, U... rest) {
+    @SafeVarargs static <U> Gen<U> oneOf(U first, U... rest) {
         List<U> choices = new ArrayList<>();
         choices.add(first);
         Collections.addAll(choices, rest);
@@ -172,15 +171,14 @@ public interface Gen<T> {
     /**
      * Gives a generation strategy that produces a random value by choosing
      * one of the given generators at random with (approximately) equal
-     * probability, and having it generate a value
+     * probability, and having it generate a value.
      *
      * @param <U> type of values produced by the resulting strategy
      * @param first first possible generator choice
      * @param rest the other possible generator choices
      * @return a new generation strategy
      */
-    @SafeVarargs
-    static <U> Gen<U> oneOf(
+    @SafeVarargs static <U> Gen<U> oneOf(
         Gen<? extends U> first,
         Gen<? extends U>... rest) {
 
@@ -202,8 +200,7 @@ public interface Gen<T> {
      * @param rest the other possible (weighted) generator choices
      * @return a new generation strategy
      */
-    @SafeVarargs
-    static <U> Gen<U> frequency(
+    @SafeVarargs static <U> Gen<U> frequency(
         Pair<Integer, Gen<? extends U>> first,
         Pair<Integer, Gen<? extends U>>... rest) {
 

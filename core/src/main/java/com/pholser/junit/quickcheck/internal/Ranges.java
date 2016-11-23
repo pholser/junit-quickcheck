@@ -29,8 +29,9 @@ import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static java.lang.String.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 
 public final class Ranges {
     public enum Type {
@@ -50,16 +51,28 @@ public final class Ranges {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends Comparable<? super T>> int checkRange(Type type, T min, T max) {
+    public static <T extends Comparable<? super T>> int checkRange(
+        Type type,
+        T min,
+        T max) {
+
         int comparison = min.compareTo(max);
         if (comparison > 0) {
             throw new IllegalArgumentException(
-                format("bad range, %" + type.pattern + " > %" + type.pattern, min, max));
+                format(
+                    "bad range, %" + type.pattern + " > %" + type.pattern,
+                    min,
+                    max));
         }
+
         return comparison;
     }
 
-    public static BigInteger choose(SourceOfRandomness random, BigInteger min, BigInteger max) {
+    public static BigInteger choose(
+        SourceOfRandomness random,
+        BigInteger min,
+        BigInteger max) {
+
         BigInteger range = max.subtract(min).add(BigInteger.ONE);
         BigInteger generated;
 
@@ -89,7 +102,8 @@ public final class Ranges {
             long range = (max - min) + 1;
             long mask = findNextPowerOfTwoLong(range) - 1;
 
-            // loop to avoid distribution bias (as it would be the case with modulo division)
+            // loop to avoid distribution bias (as would be the case
+            // with modulo division)
             long generated;
             do {
                 generated = Math.abs(random.nextLong()) & mask;

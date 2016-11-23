@@ -38,8 +38,9 @@ import java.util.Random;
 
 import com.pholser.junit.quickcheck.internal.Ranges;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static java.util.concurrent.TimeUnit.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
  * A source of randomness, fed to

@@ -40,8 +40,7 @@ public final class Generators {
         throw new UnsupportedOperationException();
     }
 
-    @SafeVarargs
-    public static void assertGenerators(
+    @SafeVarargs public static void assertGenerators(
         Generator<?> result,
         Class<? extends Generator>... expectedTypes) {
 

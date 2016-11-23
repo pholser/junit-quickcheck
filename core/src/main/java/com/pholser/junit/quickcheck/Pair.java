@@ -27,10 +27,23 @@ package com.pholser.junit.quickcheck;
 
 import java.util.Objects;
 
+/**
+ * Typed pair of elements.
+ *
+ * @param <F> type of first element of pair
+ * @param <S> type of second element of pair
+ * @see com.pholser.junit.quickcheck.generator.Gen#frequency(Pair, Pair[])
+ */
 public final class Pair<F, S> {
     public final F first;
     public final S second;
 
+    /**
+     * Makes a pair.
+     *
+     * @param first first element of the pair
+     * @param second second element of the pair
+     */
     public Pair(F first, S second) {
         this.first = first;
         this.second = second;

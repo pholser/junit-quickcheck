@@ -30,7 +30,7 @@ import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 
-class FakeAnnotatedTypeFactory {
+final class FakeAnnotatedTypeFactory {
     private FakeAnnotatedTypeFactory() {
         throw new UnsupportedOperationException();
     }
@@ -41,18 +41,17 @@ class FakeAnnotatedTypeFactory {
 
     private static AnnotatedArrayType makeArrayType(Class<?> type) {
         return new AnnotatedArrayType() {
-            @Override
-            public AnnotatedType getAnnotatedGenericComponentType() {
+            @Override public AnnotatedType getAnnotatedGenericComponentType() {
                 return makeFrom(type.getComponentType());
             }
 
-            @Override
-            public Type getType() {
+            @Override public Type getType() {
                 return type;
             }
 
-            @Override
-            public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+            @Override public <T extends Annotation> T getAnnotation(
+                Class<T> annotationClass) {
+
                 return null;
             }
 
@@ -70,23 +69,21 @@ class FakeAnnotatedTypeFactory {
 
     private static AnnotatedType makePlainType(Class<?> type) {
         return new AnnotatedType() {
-            @Override
-            public Type getType() {
+            @Override public Type getType() {
                 return type;
             }
 
-            @Override
-            public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+            @Override public <T extends Annotation> T getAnnotation(
+                Class<T> annotationClass) {
+
                 return null;
             }
 
-            @Override
-            public Annotation[] getAnnotations() {
+            @Override public Annotation[] getAnnotations() {
                 return new Annotation[0];
             }
 
-            @Override
-            public Annotation[] getDeclaredAnnotations() {
+            @Override public Annotation[] getDeclaredAnnotations() {
                 return new Annotation[0];
             }
         };

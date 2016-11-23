@@ -32,12 +32,15 @@ import com.pholser.junit.quickcheck.When;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class PropertyParameterContext {
+    private static final long DEFAULT_SEED =
+        (long) defaultValueOf(When.class, "seed");
+
     private final ParameterTypeContext typeContext;
     private final int sampleSize;
 
     private int discardRatio;
     private String constraint;
-    private long seed = (long) defaultValueOf(When.class, "seed");
+    private long seed = DEFAULT_SEED;
 
     public PropertyParameterContext(ParameterTypeContext typeContext, int sampleSize) {
         this.typeContext = typeContext;
@@ -63,8 +66,12 @@ public class PropertyParameterContext {
     }
 
     public PropertyParameterContext addConstraint(When quantifier) {
-        if (quantifier != null && !defaultValueOf(When.class, "satisfies").equals(quantifier.satisfies()))
+        if (quantifier != null
+            && !defaultValueOf(When.class, "satisfies")
+                .equals(quantifier.satisfies())) {
+
             constraint = quantifier.satisfies();
+        }
 
         return this;
     }
@@ -86,7 +93,7 @@ public class PropertyParameterContext {
     }
 
     public boolean fixedSeed() {
-        return seed != (long) defaultValueOf(When.class, "seed");
+        return seed != DEFAULT_SEED;
     }
 
     public long seed() {

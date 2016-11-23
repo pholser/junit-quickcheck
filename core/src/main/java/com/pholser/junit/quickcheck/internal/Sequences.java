@@ -37,7 +37,10 @@ public final class Sequences {
         throw new UnsupportedOperationException();
     }
 
-    public static Iterable<BigInteger> halvingIntegral(BigInteger max, BigInteger start) {
+    public static Iterable<BigInteger> halvingIntegral(
+        BigInteger max,
+        BigInteger start) {
+
         return () -> new Iterator<BigInteger>() {
             private boolean done;
             private BigInteger next = start;
@@ -56,12 +59,17 @@ public final class Sequences {
             }
 
             private BigInteger peek() {
-                return next.add(max.subtract(next).divide(BigInteger.valueOf(2)));
+                return next.add(
+                    max.subtract(next)
+                        .divide(BigInteger.valueOf(2)));
             }
         };
     }
 
-    public static Iterable<BigDecimal> halvingDecimal(BigDecimal max, BigDecimal start) {
+    public static Iterable<BigDecimal> halvingDecimal(
+        BigDecimal max,
+        BigDecimal start) {
+
         return () -> new Iterator<BigDecimal>() {
             private boolean done;
             private BigDecimal next = start;
@@ -80,7 +88,9 @@ public final class Sequences {
             }
 
             private BigDecimal peek() {
-                return next.add(max.subtract(next).divide(BigDecimal.valueOf(2), HALF_UP));
+                return next.add(
+                    max.subtract(next)
+                        .divide(BigDecimal.valueOf(2), HALF_UP));
             }
         };
     }

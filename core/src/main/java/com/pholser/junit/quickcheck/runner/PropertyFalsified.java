@@ -27,7 +27,7 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.util.Arrays;
 
-class PropertyFalsified {
+final class PropertyFalsified {
     private PropertyFalsified() {
         throw new UnsupportedOperationException();
     }
