@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BigIntegerGenerator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.math</a> &gt; <span class="el_source">BigIntegerGenerator.java</span></div><h1>BigIntegerGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.math;
+
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.IntegralGenerator;
+import com.pholser.junit.quickcheck.generator.internal.Comparables;
+import com.pholser.junit.quickcheck.internal.Ranges;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigInteger.*;
+import static java.util.function.Function.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
+/**
+ * &lt;p&gt;Produces values of type {@link BigInteger}.&lt;/p&gt;
+ *
+ * &lt;p&gt;With no additional configuration, the generated values are chosen from
+ * a range with a magnitude decided by
+ * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.&lt;/p&gt;
+ */
+public class BigIntegerGenerator extends IntegralGenerator&lt;BigInteger&gt; {
+    private BigInteger min;
+    private BigInteger max;
+
+    public BigIntegerGenerator() {
+<span class="fc" id="L57">        super(BigInteger.class);</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * &lt;p&gt;Tells this generator to produce values within a specified
+     * {@linkplain InRange#min() minimum} and/or
+     * {@linkplain InRange#max() maximum} inclusive, with uniform
+     * distribution.&lt;/p&gt;
+     *
+     * &lt;p&gt;If an endpoint of the range is not specified, its value takes on
+     * a magnitude influenced by
+     * {@link com.pholser.junit.quickcheck.generator.GenerationStatus#size()}.&lt;/p&gt;
+
+     * @param range annotation that gives the range's constraints
+     */
+    public void configure(InRange range) {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (!defaultValueOf(InRange.class, &quot;min&quot;).equals(range.min()))</span>
+<span class="fc" id="L74">            min = new BigInteger(range.min());</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (!defaultValueOf(InRange.class, &quot;max&quot;).equals(range.max()))</span>
+<span class="fc" id="L76">            max = new BigInteger(range.max());</span>
+<span class="fc bfc" id="L77" title="All 4 branches covered.">        if (min != null &amp;&amp; max != null)</span>
+<span class="fc" id="L78">            checkRange(Ranges.Type.INTEGRAL, min, max);</span>
+<span class="fc" id="L79">    }</span>
+
+    @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc" id="L82">        int numberOfBits = status.size() + 1;</span>
+
+<span class="fc bfc" id="L84" title="All 4 branches covered.">        if (min == null &amp;&amp; max == null)</span>
+<span class="fc" id="L85">            return random.nextBigInteger(numberOfBits);</span>
+
+<span class="fc" id="L87">        BigInteger minToUse = min;</span>
+<span class="fc" id="L88">        BigInteger maxToUse = max;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (minToUse == null)</span>
+<span class="fc" id="L90">            minToUse = maxToUse.subtract(TEN.pow(numberOfBits));</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        else if (maxToUse == null)</span>
+<span class="fc" id="L92">            maxToUse = minToUse.add(TEN.pow(numberOfBits));</span>
+
+<span class="fc" id="L94">        return Ranges.choose(random, minToUse, maxToUse);</span>
+    }
+
+    @Override protected Function&lt;BigInteger, BigInteger&gt; narrow() {
+<span class="fc" id="L98">        return identity();</span>
+    }
+
+    @Override protected Predicate&lt;BigInteger&gt; inRange() {
+<span class="fc" id="L102">        return Comparables.inRange(min, max);</span>
+    }
+
+    @Override protected BigInteger leastMagnitude() {
+<span class="fc" id="L106">        return Comparables.leastMagnitude(min, max, ZERO);</span>
+    }
+
+    @Override protected boolean negative(BigInteger target) {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        return target.signum() &lt; 0;</span>
+    }
+
+    @Override protected BigInteger negate(BigInteger target) {
+<span class="fc" id="L114">        return target.negate();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
