@@ -12,3 +12,5 @@ tests in JUnit, inspired by QuickCheck for Haskell.
 [Version 0.7](https://pholser.github.io/junit-quickcheck/index.html) is the
 current stable version of junit-quickcheck.
 
+[Version 0.8-alpha-1](http://pholser.github.io/junit-quickcheck/site/0.8-alpha-1/)
+is available.
