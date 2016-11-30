@@ -34,9 +34,8 @@ class JUnitQuickcheckTestClass extends TestClass {
     private void addDefaultInterfaceMethods(
         Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations) {
 
-        for (Class<?> each : implementedInterfaces()) {
+        for (Class<?> each : implementedInterfaces())
             addDefaultInterfaceMethodsFrom(methodsForAnnotations, each);
-        }
     }
 
     private void addDefaultInterfaceMethodsFrom(
