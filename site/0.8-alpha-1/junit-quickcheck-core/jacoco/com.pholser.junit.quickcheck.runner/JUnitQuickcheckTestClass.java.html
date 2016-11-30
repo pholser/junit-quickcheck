@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JUnitQuickcheckTestClass.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">JUnitQuickcheckTestClass.java</span></div><h1>JUnitQuickcheckTestClass.java</h1><pre class="source lang-java linenums">package com.pholser.junit.quickcheck.runner;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.internal.MethodSorter;
+import org.junit.runners.model.FrameworkField;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.TestClass;
+
+import static java.util.stream.Collectors.*;
+
+class JUnitQuickcheckTestClass extends TestClass {
+    JUnitQuickcheckTestClass(Class&lt;?&gt; testClass) {
+<span class="fc" id="L21">        super(testClass);</span>
+<span class="fc" id="L22">    }</span>
+
+    @Override
+    protected void scanAnnotatedMembers(
+        Map&lt;Class&lt;? extends Annotation&gt;, List&lt;FrameworkMethod&gt;&gt; methodsForAnnotations,
+        Map&lt;Class&lt;? extends Annotation&gt;, List&lt;FrameworkField&gt;&gt; fieldsForAnnotations) {
+
+<span class="fc" id="L29">        super.scanAnnotatedMembers(methodsForAnnotations, fieldsForAnnotations);</span>
+
+<span class="fc" id="L31">        addDefaultInterfaceMethods(methodsForAnnotations);</span>
+<span class="fc" id="L32">    }</span>
+
+    private void addDefaultInterfaceMethods(
+        Map&lt;Class&lt;? extends Annotation&gt;, List&lt;FrameworkMethod&gt;&gt; methodsForAnnotations) {
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        for (Class&lt;?&gt; each : implementedInterfaces()) {</span>
+<span class="nc" id="L38">            addDefaultInterfaceMethodsFrom(methodsForAnnotations, each);</span>
+<span class="nc" id="L39">        }</span>
+<span class="fc" id="L40">    }</span>
+
+    private void addDefaultInterfaceMethodsFrom(
+        Map&lt;Class&lt;? extends Annotation&gt;, List&lt;FrameworkMethod&gt;&gt; methodsForAnnotations,
+        Class&lt;?&gt; iface) {
+
+<span class="nc" id="L46">        List&lt;Method&gt; defaultMethods =</span>
+<span class="nc" id="L47">            Arrays.stream(MethodSorter.getDeclaredMethods(iface))</span>
+<span class="nc" id="L48">                .filter(Method::isDefault)</span>
+<span class="nc" id="L49">                .collect(toList());</span>
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (Method each : defaultMethods) {</span>
+<span class="nc" id="L52">            addToAnnotationLists(</span>
+                new FrameworkMethod(each),
+                methodsForAnnotations);
+<span class="nc" id="L55">        }</span>
+<span class="nc" id="L56">    }</span>
+
+    private Set&lt;Class&lt;?&gt;&gt; implementedInterfaces() {
+<span class="fc" id="L59">        Set&lt;Class&lt;?&gt;&gt; interfaces = new HashSet&lt;&gt;();</span>
+
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (Class&lt;?&gt; c = getJavaClass(); c != null; c = c.getSuperclass())</span>
+<span class="fc" id="L62">            Collections.addAll(interfaces, c.getInterfaces());</span>
+
+<span class="fc" id="L64">        return interfaces;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
