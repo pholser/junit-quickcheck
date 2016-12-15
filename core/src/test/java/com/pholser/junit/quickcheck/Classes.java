@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -33,13 +35,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.google.common.io.Resources;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import static com.google.common.io.Resources.*;
+
 final class Classes {
     private Classes() {
         throw new UnsupportedOperationException();
+    }
+
+    static String currentMethodName() {
+        StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+        StackTraceElement element = trace[2];
+        return element.getClassName() + "::" + element.getMethodName();
     }
 
     static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
@@ -97,5 +108,9 @@ final class Classes {
         } while (!nextLevel.isEmpty());
 
         return classes;
+    }
+
+    static String resourceAsString(String name) throws IOException {
+        return Resources.toString(getResource(name), Charset.forName("UTF-8"));
     }
 }

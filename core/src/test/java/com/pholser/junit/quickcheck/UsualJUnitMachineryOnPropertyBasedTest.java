@@ -34,6 +34,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,6 +49,7 @@ import static org.junit.runners.MethodSorters.*;
 
 public class UsualJUnitMachineryOnPropertyBasedTest {
     private List<String> expectedStatements = asList(
+        "second class rule before", "first class rule before",
         "class set up", "class init",
         "second rule before", "first rule before",
         "set up", "init",
@@ -64,7 +66,8 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
         "property",
         "reset", "tear down",
         "first rule after", "second rule after",
-        "class tear down", "class reset");
+        "class tear down", "class reset",
+        "first class rule after", "second class rule after");
 
     @Test public void orderingOfStatements() throws Exception {
         assertThat(testResult(PropertyBasedTests.class), isSuccessful());
@@ -76,13 +79,32 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
     public static class PropertyBasedTests {
         static final List<String> LOGS = new ArrayList<>();
 
+        @ClassRule public static final ExternalResource firstClassRule = new ExternalResource() {
+            @Override protected void before() {
+                LOGS.add("first class rule before");
+            }
+
+            @Override protected void after() {
+                LOGS.add("first class rule after");
+            }
+        };
+
+        @ClassRule public static final ExternalResource secondClassRule = new ExternalResource() {
+            @Override protected void before() {
+                LOGS.add("second class rule before");
+            }
+
+            @Override protected void after() {
+                LOGS.add("second class rule after");
+            }
+        };
+
         @Rule public final ExternalResource firstRule = new ExternalResource() {
             @Override protected void before() {
                 LOGS.add("first rule before");
             }
 
-            @Override
-            protected void after() {
+            @Override protected void after() {
                 LOGS.add("first rule after");
             }
         };
@@ -92,8 +114,7 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
                 LOGS.add("second rule before");
             }
 
-            @Override
-            protected void after() {
+            @Override protected void after() {
                 LOGS.add("second rule after");
             }
         };
