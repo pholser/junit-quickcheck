@@ -62,17 +62,17 @@ public class JUnitQuickcheckTestClass extends TestClass {
         Map<Class<? extends Annotation>, List<FrameworkField>> annotatedFields) {
 
         ancestry().forEachOrdered(c -> {
-            for (Method m : applicableMethodsOf(c)) {
-                addToAnnotationLists(new FrameworkMethod(m), annotatedMethods);
+            for (Method each : applicableMethodsOf(c)) {
+                addToAnnotationLists(new FrameworkMethod(each), annotatedMethods);
             }
-            for (Field f : applicableFieldsOf(c)) {
-                addToAnnotationLists(new FrameworkField(f), annotatedFields);
+            for (Field each : applicableFieldsOf(c)) {
+                addToAnnotationLists(new FrameworkField(each), annotatedFields);
             }
         });
     }
 
-    private static List<Method> applicableMethodsOf(Class<?> c) {
-        return Arrays.stream(MethodSorter.getDeclaredMethods(c))
+    private static List<Method> applicableMethodsOf(Class<?> clazz) {
+        return Arrays.stream(MethodSorter.getDeclaredMethods(clazz))
             .filter(m ->
                 !m.getDeclaringClass().isInterface()
                     || m.isDefault()
@@ -98,10 +98,10 @@ public class JUnitQuickcheckTestClass extends TestClass {
         return hierarchy.stream();
     }
 
-    private static Stream<Class<?>> interfaceAncestry(Class<?> c) {
+    private static Stream<Class<?>> interfaceAncestry(Class<?> clazz) {
         return Stream.concat(
-            Stream.of(c),
-            Arrays.stream(c.getInterfaces())
+            Stream.of(clazz),
+            Arrays.stream(clazz.getInterfaces())
                 .flatMap(JUnitQuickcheckTestClass::interfaceAncestry));
     }
 }

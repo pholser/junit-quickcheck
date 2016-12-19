@@ -45,6 +45,6 @@ for classes `String` and `Key`. Find out more about generators in
 [Basic Types](basic-types.html) and
 [Generating Values of Other Types](other-types.html).
 
-The usual JUnit machinery is honored: `@Before`, `@After`, `@BeforeClass`,
-`@AfterClass`, `@Rule`. Zero-arg `public` `void` methods annotated with
-`@Test` will also be run.
+The usual JUnit machinery is honored: `@Before`, `@After`, `@Rule`,
+`@BeforeClass`, `@AfterClass`, `@ClassRule`. Zero-arg `public` `void` methods
+annotated with `@Test` will also be run.
