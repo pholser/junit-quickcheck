@@ -333,7 +333,7 @@
                             <header>junit-quickcheck ${project.version}</header>
                             <footer>junit-quickcheck ${project.version}</footer>
                             <doctitle>junit-quickcheck ${project.version}</doctitle>
-                            <excludePackageNames>*.internal.*</excludePackageNames>
+                            <excludePackageNames>*.internal.*:org.junit.*</excludePackageNames>
                             <links>
                                 <link>https://docs.oracle.com/javase/8/docs/api</link>
                                 <link>http://junit.org/junit4/javadoc/latest/</link>

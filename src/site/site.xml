@@ -26,6 +26,7 @@
             <item name="Sample Size" href="usage/sample-size.html"/>
             <item name="Seed" href="usage/seed.html"/>
             <item name="Shrinking" href="usage/shrinking.html"/>
+            <item name="Contract Tests" href="usage/contract-tests.html"/>
         </menu>
         <menu name="Background">
             <item name="History" href="background/history.html"/>
