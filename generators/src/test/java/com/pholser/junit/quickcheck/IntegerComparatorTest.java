@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(JUnitQuickcheck.class)
 public class IntegerComparatorTest<T> implements ComparatorContract<Integer> {
-    @Override public Comparator<Integer> getComparator() {
+    @Override public Comparator<Integer> subject() {
         return Integer::compare;
     }
 }

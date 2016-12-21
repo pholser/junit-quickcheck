@@ -6,14 +6,14 @@ import static java.lang.Math.*;
 import static org.junit.Assert.*;
 
 public interface ComparatorContract<T> {
-    Comparator<T> getComparator();
+    Comparator<T> subject();
 
     @Property default void symmetry(T x, T y) {
-        Comparator<T> comparator = getComparator();
+        Comparator<T> subject = subject();
 
         assertEquals(
-            signum(comparator.compare(x, y)),
-            -signum(comparator.compare(y, x)),
+            signum(subject.compare(x, y)),
+            -signum(subject.compare(y, x)),
             0F);
     }
 }
