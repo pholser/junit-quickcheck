@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Sequences.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">Sequences.java</span></div><h1>Sequences.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import static java.math.RoundingMode.*;
+
+public final class Sequences {
+<span class="fc" id="L36">    private Sequences() {</span>
+<span class="fc" id="L37">        throw new UnsupportedOperationException();</span>
+    }
+
+    public static Iterable&lt;BigInteger&gt; halvingIntegral(
+        BigInteger max,
+        BigInteger start) {
+
+<span class="fc" id="L44">        return () -&gt; new Iterator&lt;BigInteger&gt;() {</span>
+            private boolean done;
+<span class="fc" id="L46">            private BigInteger next = start;</span>
+
+            @Override public boolean hasNext() {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">                return !done;</span>
+            }
+
+            @Override public BigInteger next() {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">                if (!hasNext())</span>
+<span class="fc" id="L54">                    throw new NoSuchElementException();</span>
+
+<span class="fc" id="L56">                next = peek();</span>
+<span class="fc" id="L57">                done = next.equals(peek());</span>
+<span class="fc" id="L58">                return next;</span>
+            }
+
+            private BigInteger peek() {
+<span class="fc" id="L62">                return next.add(</span>
+<span class="fc" id="L63">                    max.subtract(next)</span>
+<span class="fc" id="L64">                        .divide(BigInteger.valueOf(2)));</span>
+            }
+        };
+    }
+
+    public static Iterable&lt;BigDecimal&gt; halvingDecimal(
+        BigDecimal max,
+        BigDecimal start) {
+
+<span class="fc" id="L73">        return () -&gt; new Iterator&lt;BigDecimal&gt;() {</span>
+            private boolean done;
+<span class="fc" id="L75">            private BigDecimal next = start;</span>
+
+            @Override public boolean hasNext() {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                return !done;</span>
+            }
+
+            @Override public BigDecimal next() {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                if (!hasNext())</span>
+<span class="fc" id="L83">                    throw new NoSuchElementException();</span>
+
+<span class="fc" id="L85">                next = peek();</span>
+<span class="fc" id="L86">                done = next.equals(peek());</span>
+<span class="fc" id="L87">                return next;</span>
+            }
+
+            private BigDecimal peek() {
+<span class="fc" id="L91">                return next.add(</span>
+<span class="fc" id="L92">                    max.subtract(next)</span>
+<span class="fc" id="L93">                        .divide(BigDecimal.valueOf(2), HALF_UP));</span>
+            }
+        };
+    }
+
+    public static Iterable&lt;Integer&gt; halving(int start) {
+<span class="fc" id="L99">        return () -&gt; new Iterator&lt;Integer&gt;() {</span>
+            private boolean done;
+<span class="fc" id="L101">            private int next = start;</span>
+
+            @Override public boolean hasNext() {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">                return !done;</span>
+            }
+
+            @Override public Integer next() {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                if (!hasNext())</span>
+<span class="fc" id="L109">                    throw new NoSuchElementException();</span>
+
+<span class="fc" id="L111">                int result = next;</span>
+<span class="fc" id="L112">                next = peek();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                done = next == 0;</span>
+<span class="fc" id="L114">                return result;</span>
+            }
+
+            private int peek() {
+<span class="fc" id="L118">                return next / 2;</span>
+            }
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
