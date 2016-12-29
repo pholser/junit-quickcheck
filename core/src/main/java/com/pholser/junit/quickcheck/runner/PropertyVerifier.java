@@ -30,7 +30,10 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import com.pholser.junit.quickcheck.PropertyRule;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import org.junit.AssumptionViolatedException;
+import org.junit.rules.TestRule;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -38,6 +41,7 @@ import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
 
 class PropertyVerifier extends BlockJUnit4ClassRunner {
+    private final GeneratorRepository repo;
     private final FrameworkMethod method;
     private final Object[] args;
     private final long[] seeds;
@@ -46,6 +50,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private final BiConsumer<AssertionError, Runnable> onFailure;
 
     PropertyVerifier(
+        GeneratorRepository repo,
         TestClass clazz,
         FrameworkMethod method,
         Object[] args,
@@ -56,6 +61,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         throws InitializationError {
 
         super(clazz.getJavaClass());
+        this.repo = repo;
         this.method = method;
         this.args = args;
         this.seeds = seeds;
@@ -104,6 +110,17 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
                 frameworkMethod.invokeExplosively(test, args);
             }
         };
+    }
+
+    @Override protected List<TestRule> getTestRules(Object target) {
+        List<TestRule> rules = super.getTestRules(target);
+
+        rules.stream()
+            .filter(PropertyRule.class::isInstance)
+            .map(PropertyRule.class::cast)
+            .forEach(r -> r.provide(repo));
+
+        return rules;
     }
 
     private void reportErrorWithArguments(Throwable e) {

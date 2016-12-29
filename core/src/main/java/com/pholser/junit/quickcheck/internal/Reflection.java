@@ -32,9 +32,11 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -281,5 +283,10 @@ public final class Reflection {
         }
 
         return emptyList();
+    }
+
+    public static String declarerName(Parameter p) {
+        Executable exec = p.getDeclaringExecutable();
+        return exec.getDeclaringClass().getName() + '.' + exec.getName();
     }
 }

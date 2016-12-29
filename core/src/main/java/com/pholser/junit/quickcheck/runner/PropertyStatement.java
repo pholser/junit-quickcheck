@@ -25,7 +25,6 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import java.lang.reflect.Executable;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -50,6 +49,7 @@ import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.stream.Collectors.*;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
@@ -116,6 +116,7 @@ class PropertyStatement extends Statement {
         throws InitializationError {
 
         return new PropertyVerifier(
+            repo,
             testClass,
             method,
             args,
@@ -148,6 +149,7 @@ class PropertyStatement extends Statement {
         throws Throwable {
 
         new Shrinker(
+            repo,
             method,
             testClass,
             failure,
@@ -188,11 +190,6 @@ class PropertyStatement extends Statement {
                 .allowMixedTypes(true),
             trials
         ).annotate(parameter);
-    }
-
-    private static String declarerName(Parameter p) {
-        Executable exec = p.getDeclaringExecutable();
-        return exec.getDeclaringClass().getName() + '.' + exec.getName();
     }
 
     private List<SeededValue> argumentsFor(List<PropertyParameterGenerationContext> params) {

@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -37,6 +38,7 @@ import org.junit.runners.model.TestClass;
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
 
 final class ShrinkNode {
+    private final GeneratorRepository repo;
     private final FrameworkMethod method;
     private final TestClass testClass;
     private final List<PropertyParameterGenerationContext> params;
@@ -48,6 +50,7 @@ final class ShrinkNode {
     private AssertionError failure;
 
     private ShrinkNode(
+        GeneratorRepository repo,
         FrameworkMethod method,
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
@@ -56,6 +59,8 @@ final class ShrinkNode {
         int argIndex,
         int depth,
         AssertionError failure) {
+
+        this.repo = repo;
 
         this.method = method;
         this.testClass = testClass;
@@ -72,6 +77,7 @@ final class ShrinkNode {
     }
 
     static ShrinkNode root(
+        GeneratorRepository repo,
         FrameworkMethod method,
         TestClass testClass,
         List<PropertyParameterGenerationContext> params,
@@ -79,7 +85,16 @@ final class ShrinkNode {
         long[] seeds,
         AssertionError failure) {
 
-        return new ShrinkNode(method, testClass, params, args, seeds, 0, 0, failure);
+        return new ShrinkNode(
+            repo,
+            method,
+            testClass,
+            params,
+            args,
+            seeds,
+            0,
+            0,
+            failure);
     }
 
     List<ShrinkNode> shrinks() {
@@ -102,6 +117,7 @@ final class ShrinkNode {
 
     ShrinkNode advanceToNextArg() {
         return new ShrinkNode(
+            repo,
             method,
             testClass,
             params,
@@ -138,6 +154,7 @@ final class ShrinkNode {
 
     private PropertyVerifier property(boolean[] result) throws InitializationError {
         return new PropertyVerifier(
+            repo,
             testClass,
             method,
             args,
@@ -155,6 +172,15 @@ final class ShrinkNode {
         System.arraycopy(args, 0, shrunkArgs, 0, args.length);
         shrunkArgs[argIndex] = shrunk;
 
-        return new ShrinkNode(method, testClass, params, shrunkArgs, seeds, argIndex, depth + 1, failure);
+        return new ShrinkNode(
+            repo,
+            method,
+            testClass,
+            params,
+            shrunkArgs,
+            seeds,
+            argIndex,
+            depth + 1,
+            failure);
     }
 }

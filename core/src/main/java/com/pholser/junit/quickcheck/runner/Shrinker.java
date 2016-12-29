@@ -29,11 +29,13 @@ import java.util.List;
 import java.util.Stack;
 
 import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
 
 class Shrinker {
+    private final GeneratorRepository repo;
     private final FrameworkMethod method;
     private final TestClass testClass;
     private final AssertionError failure;
@@ -46,6 +48,7 @@ class Shrinker {
     private long shrinkTimeout;
 
     Shrinker(
+        GeneratorRepository repo,
         FrameworkMethod method,
         TestClass testClass,
         AssertionError failure,
@@ -54,6 +57,7 @@ class Shrinker {
         int maxShrinkTime,
         MinimalCounterexampleHook onMinimalCounterexample) {
 
+        this.repo = repo;
         this.method = method;
         this.testClass = testClass;
         this.failure = failure;
@@ -71,7 +75,7 @@ class Shrinker {
 
         Stack<ShrinkNode> nodes = new Stack<>();
         ShrinkNode counterexample =
-            ShrinkNode.root(method, testClass, params, args, seeds, failure);
+            ShrinkNode.root(repo, method, testClass, params, args, seeds, failure);
         counterexample.shrinks().forEach(nodes::push);
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;
