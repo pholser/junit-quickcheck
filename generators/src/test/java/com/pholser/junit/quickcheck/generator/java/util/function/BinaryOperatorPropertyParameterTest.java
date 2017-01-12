@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.generator.java.util.function;
 
 import java.util.Date;
-import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 

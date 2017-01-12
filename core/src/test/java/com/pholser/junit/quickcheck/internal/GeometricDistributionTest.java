@@ -34,10 +34,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static java.lang.Math.ulp;
+import static java.lang.Math.*;
 import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GeometricDistributionTest {
     @Rule public final ExpectedException thrown = none();

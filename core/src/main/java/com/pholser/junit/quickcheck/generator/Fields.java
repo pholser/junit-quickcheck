@@ -33,9 +33,8 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.util.stream.Collectors.*;
-
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * <p>Produces instances of a class by reflecting the class's fields and

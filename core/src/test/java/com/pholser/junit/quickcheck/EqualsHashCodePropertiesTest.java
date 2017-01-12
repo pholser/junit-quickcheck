@@ -26,8 +26,6 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import com.pholser.junit.quickcheck.test.generator.Foo;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.*;

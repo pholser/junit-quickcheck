@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2017 Paul R. Holser, Jr.
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,22 +23,37 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.runner.sampling;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.lang.reflect.Parameter;
+import java.util.List;
+import java.util.stream.Stream;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.internal.ParameterSampler;
+import com.pholser.junit.quickcheck.internal.SeededValue;
+import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 
-public final class Functions {
-    private Functions() {
-        throw new UnsupportedOperationException();
+import static java.util.stream.Collectors.*;
+
+public class TupleParameterSampler implements ParameterSampler {
+    private final int trials;
+
+    public TupleParameterSampler(int trials) {
+        this.trials = trials;
     }
 
-    public static <T> T functionValue(Generator<T> generator, Object[] args) {
-        SourceOfRandomness source = new SourceOfRandomness(new Random());
-        source.setSeed(Arrays.hashCode(args));
-        return generator.generate(source, null);
+    @Override public int sizeFactor(Parameter p) {
+        return trials;
+    }
+
+    @Override public Stream<List<SeededValue>> sample(
+        List<PropertyParameterGenerationContext> parameters) {
+
+        Stream<List<SeededValue>> tupleStream =
+            Stream.generate(
+                () -> parameters.stream()
+                    .map(SeededValue::new)
+                    .collect(toList()));
+        return tupleStream.limit(trials);
     }
 }

@@ -27,11 +27,11 @@ package com.pholser.junit.quickcheck.generator.java.nio.charset;
 
 import java.nio.charset.Charset;
 
-import static java.nio.charset.Charset.*;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.nio.charset.Charset.*;
 
 /**
  * Produces values of type {@link java.nio.charset.Charset}.

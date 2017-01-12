@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.String.format;
+import static java.lang.String.*;
 
 /**
  * Maps ordinal values to corresponding Unicode code points in a

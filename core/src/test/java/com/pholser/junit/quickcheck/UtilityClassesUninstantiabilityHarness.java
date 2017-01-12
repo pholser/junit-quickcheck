@@ -35,7 +35,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static java.lang.reflect.Modifier.isPrivate;
+import static java.lang.reflect.Modifier.*;
 import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 

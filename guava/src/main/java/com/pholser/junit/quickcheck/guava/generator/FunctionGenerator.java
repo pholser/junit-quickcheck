@@ -30,7 +30,7 @@ import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
 /**
  * Produces values of type {@code Function}.

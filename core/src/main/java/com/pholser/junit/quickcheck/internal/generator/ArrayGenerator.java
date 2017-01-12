@@ -39,13 +39,12 @@ import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.util.stream.StreamSupport.*;
-
 import static com.pholser.junit.quickcheck.internal.Lists.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
+import static java.util.stream.StreamSupport.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;

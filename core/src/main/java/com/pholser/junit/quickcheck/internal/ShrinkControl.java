@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.internal;
 
 import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
+import com.pholser.junit.quickcheck.Property;
 
 public class ShrinkControl {
     private final boolean shouldShrink;
@@ -34,18 +35,12 @@ public class ShrinkControl {
     private final int maxShrinkTime;
     private final MinimalCounterexampleHook onMinimalCounterexample;
 
-    public ShrinkControl(
-        boolean shouldShrink,
-        int maxShrinks,
-        int maxShrinkDepth,
-        int maxShrinkTime,
-        MinimalCounterexampleHook onMinimalCounterexample) {
-
-        this.shouldShrink = shouldShrink;
-        this.maxShrinks = maxShrinks;
-        this.maxShrinkDepth = maxShrinkDepth;
-        this.maxShrinkTime = maxShrinkTime;
-        this.onMinimalCounterexample = onMinimalCounterexample;
+    public ShrinkControl(Property marker) throws IllegalAccessException, InstantiationException {
+        this.shouldShrink = marker.shrink();
+        this.maxShrinks = marker.maxShrinks();
+        this.maxShrinkDepth = marker.maxShrinkDepth();
+        this.maxShrinkTime = marker.maxShrinkTime();
+        this.onMinimalCounterexample = marker.onMinimalCounterexample().newInstance();
     }
 
     public boolean shouldShrink() {

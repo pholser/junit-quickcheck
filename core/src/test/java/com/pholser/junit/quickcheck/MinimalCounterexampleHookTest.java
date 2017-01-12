@@ -25,22 +25,21 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.Foo;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import com.pholser.junit.quickcheck.test.generator.Foo;
 
 public class MinimalCounterexampleHookTest {
     public static class StoreFailingSetInGlobalVariable implements MinimalCounterexampleHook {

@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import org.junit.Test;
-
 import java.security.NoSuchAlgorithmException;
+
+import org.junit.Test;
 
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 import static org.hamcrest.Matchers.*;

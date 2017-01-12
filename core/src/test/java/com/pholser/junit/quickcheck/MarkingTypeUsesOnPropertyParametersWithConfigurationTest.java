@@ -33,10 +33,10 @@ import com.pholser.junit.quickcheck.test.generator.X;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.pholser.junit.quickcheck.test.generator.AFoo.Same;
+import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
 import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.testResult;
-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
 public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
     @Test public void singleGenericParameterConfigured() throws Exception {

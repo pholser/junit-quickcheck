@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Stack;
 
 import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
+import com.pholser.junit.quickcheck.internal.ShrinkControl;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
@@ -49,18 +50,15 @@ class Shrinker {
         FrameworkMethod method,
         TestClass testClass,
         AssertionError failure,
-        int maxShrinks,
-        int maxShrinkDepth,
-        int maxShrinkTime,
-        MinimalCounterexampleHook onMinimalCounterexample) {
+        ShrinkControl shrinkControl) {
 
         this.method = method;
         this.testClass = testClass;
         this.failure = failure;
-        this.maxShrinks = maxShrinks;
-        this.maxShrinkDepth = maxShrinkDepth;
-        this.maxShrinkTime = maxShrinkTime;
-        this.onMinimalCounterexample = onMinimalCounterexample;
+        this.maxShrinks = shrinkControl.maxShrinks();
+        this.maxShrinkDepth = shrinkControl.maxShrinkDepth();
+        this.maxShrinkTime = shrinkControl.maxShrinkTime();
+        this.onMinimalCounterexample = shrinkControl.onMinimalCounterexample();
     }
 
     void shrink(

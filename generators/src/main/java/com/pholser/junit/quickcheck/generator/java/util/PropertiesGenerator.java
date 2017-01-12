@@ -25,13 +25,6 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.java.lang.AbstractStringGenerator;
-import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
-import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -39,7 +32,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import static java.util.Arrays.asList;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.java.lang.AbstractStringGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
+import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.Arrays.*;
 
 /**
  * Produces values of type {@link Properties}.

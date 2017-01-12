@@ -25,22 +25,19 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.math.BigInteger;
+import java.time.Period;
+import java.time.format.DateTimeParseException;
+
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.math.BigInteger;
-import java.time.Period;
-import java.time.format.DateTimeParseException;
-
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.experimental.results.PrintableResult.testResult;
-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PeriodPropertyParameterTypesTest {
     private static final BigInteger TWELVE = BigInteger.valueOf(12);

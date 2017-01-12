@@ -50,11 +50,10 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
-import static java.lang.String.*;
-import static java.util.Collections.*;
-
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.lang.String.*;
+import static java.util.Collections.*;
 import static org.javaruntype.type.Types.*;
 
 public class ParameterTypeContext {

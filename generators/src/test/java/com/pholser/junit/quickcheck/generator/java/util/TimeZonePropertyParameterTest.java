@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
-
 import java.util.List;
 import java.util.TimeZone;
+
+import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;

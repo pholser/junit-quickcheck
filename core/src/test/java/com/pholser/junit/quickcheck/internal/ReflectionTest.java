@@ -25,10 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -38,6 +34,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.annotation.ElementType.*;
