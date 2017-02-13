@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JUnitQuickcheck.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">JUnitQuickcheck.java</span></div><h1>JUnitQuickcheck.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.runner;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.junit.Test;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.JUnitQuickcheckTestClass;
+import org.junit.runners.model.Statement;
+import org.junit.runners.model.TestClass;
+
+/**
+ * &lt;p&gt;JUnit test runner for junit-quickcheck property-based tests.&lt;/p&gt;
+ *
+ * &lt;p&gt;When this runner runs a given test class, it regards only
+ * {@code public} instance methods with a return type of {@code void} that are
+ * marked with either the {@link com.pholser.junit.quickcheck.Property}
+ * annotation or the {@code org.junit.Test} annotation.&lt;/p&gt;
+ *
+ * &lt;p&gt;This runner honors {@link org.junit.Rule}, {@link org.junit.Before},
+ * {@link org.junit.After}, {@link org.junit.BeforeClass}, and
+ * {@link org.junit.AfterClass}. Their execution is wrapped around the
+ * verification of a property or execution of a test in the expected
+ * order.&lt;/p&gt;
+ */
+public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
+    private final GeneratorRepository repo;
+    private final GeometricDistribution distro;
+
+    /**
+     * Invoked reflectively by JUnit.
+     *
+     * @param clazz class containing properties to verify
+     * @throws InitializationError if there is a problem with the properties class
+     */
+    public JUnitQuickcheck(Class&lt;?&gt; clazz) throws InitializationError {
+<span class="fc" id="L70">        super(clazz);</span>
+
+<span class="fc" id="L72">        SourceOfRandomness random = new SourceOfRandomness(new Random());</span>
+<span class="fc" id="L73">        repo = new GeneratorRepository(random).register(new ServiceLoaderGeneratorSource());</span>
+<span class="fc" id="L74">        distro = new GeometricDistribution();</span>
+<span class="fc" id="L75">    }</span>
+
+    @Override protected void validateTestMethods(List&lt;Throwable&gt; errors) {
+<span class="fc" id="L78">        validatePublicVoidNoArgMethods(Test.class, false, errors);</span>
+<span class="fc" id="L79">        validatePropertyMethods(errors);</span>
+<span class="fc" id="L80">    }</span>
+
+    private void validatePropertyMethods(List&lt;Throwable&gt; errors) {
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (FrameworkMethod each : getTestClass().getAnnotatedMethods(Property.class))</span>
+<span class="fc" id="L84">            each.validatePublicVoid(false, errors);</span>
+<span class="fc" id="L85">    }</span>
+
+    @Override protected List&lt;FrameworkMethod&gt; computeTestMethods() {
+<span class="fc" id="L88">        List&lt;FrameworkMethod&gt; methods = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L89">        methods.addAll(getTestClass().getAnnotatedMethods(Test.class));</span>
+<span class="fc" id="L90">        methods.addAll(getTestClass().getAnnotatedMethods(Property.class));</span>
+<span class="fc" id="L91">        return methods;</span>
+    }
+
+    @Override public Statement methodBlock(FrameworkMethod method) {
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        return method.getAnnotation(Test.class) != null</span>
+<span class="fc" id="L96">            ? super.methodBlock(method)</span>
+<span class="fc" id="L97">            : new PropertyStatement(method, getTestClass(), repo, distro);</span>
+    }
+
+    @Override protected TestClass createTestClass(Class&lt;?&gt; testClass) {
+<span class="fc" id="L101">        return new JUnitQuickcheckTestClass(testClass);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
