@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DecimalGenerator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">DecimalGenerator.java</span></div><h1>DecimalGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.Collections.*;
+import static java.util.stream.StreamSupport.*;
+
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
+
+/**
+ * Base class for generators of integral types, such as {@code double} and
+ * {@link BigDecimal}.
+ *
+ * @param &lt;T&gt; type of values this generator produces
+ */
+public abstract class DecimalGenerator&lt;T extends Number&gt; extends Generator&lt;T&gt; {
+    protected DecimalGenerator(Class&lt;T&gt; type) {
+<span class="fc" id="L52">        super(singletonList(type));</span>
+<span class="fc" id="L53">    }</span>
+
+    protected DecimalGenerator(List&lt;Class&lt;T&gt;&gt; types) {
+<span class="fc" id="L56">        super(types);</span>
+<span class="fc" id="L57">    }</span>
+
+    @Override public List&lt;T&gt; doShrink(SourceOfRandomness random, T larger) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (larger.equals(leastMagnitude()))</span>
+<span class="fc" id="L61">            return emptyList();</span>
+
+<span class="fc" id="L63">        BigDecimal decimal = widen().apply(larger);</span>
+<span class="fc" id="L64">        BigDecimal least = widen().apply(leastMagnitude());</span>
+
+<span class="fc" id="L66">        List&lt;T&gt; results = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L67">        results.addAll(shrunkenDecimals(decimal, least));</span>
+<span class="fc" id="L68">        results.addAll(shrunkenIntegrals(decimal, least));</span>
+<span class="fc" id="L69">        results.add(leastMagnitude());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (negative(larger))</span>
+<span class="fc" id="L71">            results.add(negate(larger));</span>
+
+<span class="fc" id="L73">        return results;</span>
+    }
+
+    private List&lt;T&gt; shrunkenIntegrals(BigDecimal decimal, BigDecimal least) {
+<span class="fc" id="L77">        return decimalsFrom(</span>
+<span class="fc" id="L78">            stream(halvingIntegral(decimal.toBigInteger(), least.toBigInteger()).spliterator(), false)</span>
+<span class="fc" id="L79">                .map(BigDecimal::new));</span>
+    }
+
+    private List&lt;T&gt; shrunkenDecimals(BigDecimal decimal, BigDecimal least) {
+<span class="fc" id="L83">        return decimalsFrom(stream(halvingDecimal(decimal, least).spliterator(), false));</span>
+    }
+
+    private List&lt;T&gt; decimalsFrom(Stream&lt;BigDecimal&gt; stream) {
+<span class="fc" id="L87">        List&lt;T&gt; decimals =</span>
+<span class="fc" id="L88">            stream.limit(15)</span>
+<span class="fc" id="L89">                .map(narrow())</span>
+<span class="fc" id="L90">                .filter(inRange())</span>
+<span class="fc" id="L91">                .distinct()</span>
+<span class="fc" id="L92">                .collect(Collectors.toList());</span>
+<span class="fc" id="L93">        Collections.reverse(decimals);</span>
+
+<span class="fc" id="L95">        return decimals;</span>
+    }
+
+    protected abstract Function&lt;T, BigDecimal&gt; widen();
+
+    protected abstract Function&lt;BigDecimal, T&gt; narrow();
+
+    protected abstract Predicate&lt;T&gt; inRange();
+
+    protected abstract T leastMagnitude();
+
+    protected abstract boolean negative(T target);
+
+    protected abstract T negate(T target);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
