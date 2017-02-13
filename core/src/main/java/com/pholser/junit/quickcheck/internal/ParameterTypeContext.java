@@ -240,7 +240,7 @@ public class ParameterTypeContext {
     public ParameterTypeContext arrayComponentContext() {
         @SuppressWarnings("unchecked")
         org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) token);
-        AnnotatedType annotatedComponent = ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType();
+        AnnotatedType annotatedComponent = annotatedArrayComponent(component);
         return new ParameterTypeContext(
             annotatedComponent.getType().getTypeName(),
             annotatedComponent,
@@ -249,6 +249,12 @@ public class ParameterTypeContext {
             typeVariables)
             .annotate(annotatedComponent)
             .allowMixedTypes(true);
+    }
+
+    private AnnotatedType annotatedArrayComponent(org.javaruntype.type.Type<?> component) {
+        return parameterType instanceof AnnotatedArrayType
+            ? ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType()
+            : FakeAnnotatedTypeFactory.makeFrom(component.getComponentClass());
     }
 
     public Class<?> getRawClass() {
