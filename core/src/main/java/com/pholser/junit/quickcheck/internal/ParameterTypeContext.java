@@ -163,15 +163,17 @@ public class ParameterTypeContext {
     private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
         // for Ctor/Fields
         Constructor<? extends Generator> ctor = findConstructor(generatorType, Class.class);
-        if (ctor != null)
-            return instantiate(ctor, rawParameterType());
-
-        return instantiate(generatorType);
+        return ctor != null
+            ? instantiate(ctor, rawParameterType())
+            : instantiate(generatorType);
     }
 
     private Class<?> rawParameterType() {
         if (type() instanceof ParameterizedType)
             return (Class<?>) ((ParameterizedType) type()).getRawType();
+        if (type() instanceof TypeVariable<?>)
+            return typeVariables.get(((TypeVariable<?>) type()).getName()).getRawClass();
+
         return (Class<?>) type();
     }
 
