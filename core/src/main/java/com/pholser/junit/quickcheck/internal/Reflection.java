@@ -134,10 +134,7 @@ public final class Reflection {
     }
 
     public static List<Annotation> allAnnotations(AnnotatedElement e) {
-        List<Annotation> thisAnnotations =
-            asList(e.getAnnotations()).stream()
-                .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-                .collect(toList());
+        List<Annotation> thisAnnotations = nonSystemAnnotations(e);
 
         List<Annotation> annotations = new ArrayList<>();
         for (Annotation each : thisAnnotations) {
@@ -152,10 +149,7 @@ public final class Reflection {
         List<T> annotations = new ArrayList<>();
         Collections.addAll(annotations, e.getAnnotationsByType(type));
 
-        List<Annotation> thisAnnotations =
-            asList(e.getAnnotations()).stream()
-                .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-                .collect(toList());
+        List<Annotation> thisAnnotations = nonSystemAnnotations(e);
 
         for (Annotation each : thisAnnotations)
             annotations.addAll(allAnnotationsByType(each.annotationType(), type));
@@ -263,6 +257,13 @@ public final class Reflection {
             return (RuntimeException) ex;
 
         return new ReflectionException(ex);
+    }
+
+    private static List<Annotation> nonSystemAnnotations(AnnotatedElement e) {
+        return stream(e.getAnnotations())
+            .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
+            .filter(a -> !a.annotationType().getName().startsWith("kotlin.annotation"))
+            .collect(toList());
     }
 
     public static List<AnnotatedType> annotatedComponentTypes(AnnotatedType annotatedType) {
