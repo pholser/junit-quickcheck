@@ -134,7 +134,7 @@ public final class Reflection {
     }
 
     public static List<Annotation> allAnnotations(AnnotatedElement e) {
-        List<Annotation> thisAnnotations = getNonSystemAnnotations(e);
+        List<Annotation> thisAnnotations = nonSystemAnnotations(e);
 
         List<Annotation> annotations = new ArrayList<>();
         for (Annotation each : thisAnnotations) {
@@ -149,7 +149,7 @@ public final class Reflection {
         List<T> annotations = new ArrayList<>();
         Collections.addAll(annotations, e.getAnnotationsByType(type));
 
-        List<Annotation> thisAnnotations = getNonSystemAnnotations(e);
+        List<Annotation> thisAnnotations = nonSystemAnnotations(e);
 
         for (Annotation each : thisAnnotations)
             annotations.addAll(allAnnotationsByType(each.annotationType(), type));
@@ -259,7 +259,7 @@ public final class Reflection {
         return new ReflectionException(ex);
     }
 
-    private static List<Annotation> getNonSystemAnnotations(AnnotatedElement e) {
+    private static List<Annotation> nonSystemAnnotations(AnnotatedElement e) {
         return stream(e.getAnnotations())
             .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
             .filter(a -> !a.annotationType().getName().startsWith("kotlin.annotation"))
