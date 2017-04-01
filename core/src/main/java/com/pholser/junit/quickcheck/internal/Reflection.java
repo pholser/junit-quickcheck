@@ -136,7 +136,10 @@ public final class Reflection {
     public static List<Annotation> allAnnotations(AnnotatedElement e) {
         List<Annotation> thisAnnotations =
             asList(e.getAnnotations()).stream()
-                .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
+                .filter(a ->
+                    !a.annotationType().getName().startsWith("java.lang.annotation") &&
+                        !a.annotationType().getName().startsWith("kotlin.annotation")
+                )
                 .collect(toList());
 
         List<Annotation> annotations = new ArrayList<>();
