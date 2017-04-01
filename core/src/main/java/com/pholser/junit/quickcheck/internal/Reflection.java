@@ -36,13 +36,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.javaruntype.type.Type;
 
@@ -134,13 +128,7 @@ public final class Reflection {
     }
 
     public static List<Annotation> allAnnotations(AnnotatedElement e) {
-        List<Annotation> thisAnnotations =
-            asList(e.getAnnotations()).stream()
-                .filter(a ->
-                    !a.annotationType().getName().startsWith("java.lang.annotation") &&
-                        !a.annotationType().getName().startsWith("kotlin.annotation")
-                )
-                .collect(toList());
+        List<Annotation> thisAnnotations = getNonSystemAnnotations(e);
 
         List<Annotation> annotations = new ArrayList<>();
         for (Annotation each : thisAnnotations) {
@@ -155,10 +143,7 @@ public final class Reflection {
         List<T> annotations = new ArrayList<>();
         Collections.addAll(annotations, e.getAnnotationsByType(type));
 
-        List<Annotation> thisAnnotations =
-            asList(e.getAnnotations()).stream()
-                .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-                .collect(toList());
+        List<Annotation> thisAnnotations = getNonSystemAnnotations(e);
 
         for (Annotation each : thisAnnotations)
             annotations.addAll(allAnnotationsByType(each.annotationType(), type));
@@ -266,6 +251,13 @@ public final class Reflection {
             return (RuntimeException) ex;
 
         return new ReflectionException(ex);
+    }
+
+    private static List<Annotation> getNonSystemAnnotations(AnnotatedElement e) {
+        return stream(e.getAnnotations())
+            .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
+            .filter(a -> !a.annotationType().getName().startsWith("kotlin.annotation"))
+            .collect(toList());
     }
 
     public static List<AnnotatedType> annotatedComponentTypes(AnnotatedType annotatedType) {
