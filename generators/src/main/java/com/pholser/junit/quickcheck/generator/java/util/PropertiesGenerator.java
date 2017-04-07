@@ -25,6 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.java.lang.AbstractStringGenerator;
+import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
+import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -32,21 +39,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 /**
  * Produces values of type {@link Properties}.
  */
 public class PropertiesGenerator extends Generator<Properties> {
-    private final StringGenerator stringGenerator = new StringGenerator();
+    private AbstractStringGenerator stringGenerator = new StringGenerator();
 
     public PropertiesGenerator() {
         super(Properties.class);
+    }
+
+    public void configure(Encoded.InCharset charset) {
+        Encoded encoded = new Encoded();
+        encoded.configure(charset);
+        stringGenerator = encoded;
     }
 
     @Override public Properties generate(SourceOfRandomness random, GenerationStatus status) {
