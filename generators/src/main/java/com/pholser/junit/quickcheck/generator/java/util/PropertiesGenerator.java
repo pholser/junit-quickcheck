@@ -73,7 +73,11 @@ public class PropertiesGenerator extends Generator<Properties> {
     @SuppressWarnings("unchecked")
     @Override public boolean canRegisterAsType(Class<?> type) {
         Set<Class<?>> exclusions =
-            new HashSet<>(asList(Object.class, Hashtable.class, Map.class, Dictionary.class));
+            new HashSet<>(asList(
+                Object.class,
+                Hashtable.class,
+                Map.class,
+                Dictionary.class));
         return !exclusions.contains(type);
     }
 }
