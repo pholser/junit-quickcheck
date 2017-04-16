@@ -133,7 +133,7 @@ class PropertyStatement extends Statement {
                 } catch (AssertionError ex) {
                     throw ex;
                 } catch (Throwable ex) {
-                    throw new AssertionError(ex.getCause());
+                    throw new AssertionError(ex);
                 }
             }
         );
