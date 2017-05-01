@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Generator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">Generator.java</span></div><h1>Generator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
+
+import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
+/**
+ * Produces values for property parameters.
+ *
+ * @param &lt;T&gt; type of property parameter to apply this generator's values to
+ */
+public abstract class Generator&lt;T&gt; implements Gen&lt;T&gt;, Shrink&lt;T&gt; {
+<span class="fc" id="L55">    private final List&lt;Class&lt;T&gt;&gt; types = new ArrayList&lt;&gt;();</span>
+
+    private Generators repo;
+
+    /**
+     * @param type class token for type of property parameter this generator is
+     * applicable to
+     */
+    @SuppressWarnings(&quot;unchecked&quot;) protected Generator(Class&lt;T&gt; type) {
+<span class="fc" id="L64">        this(singletonList(type));</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Used for generators of primitives and their wrappers. For example, a
+     * {@code Generator&lt;Integer&gt;} can be used for property parameters of type
+     * {@code Integer} or {@code int}.
+     *
+     * @param types class tokens for type of property parameter this generator
+     * is applicable to
+     */
+<span class="fc" id="L75">    protected Generator(List&lt;Class&lt;T&gt;&gt; types) {</span>
+<span class="fc" id="L76">        this.types.addAll(types);</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * @return class tokens for the types of property parameters this generator
+     * is applicable to
+     */
+    public List&lt;Class&lt;T&gt;&gt; types() {
+<span class="fc" id="L84">        return unmodifiableList(types);</span>
+    }
+
+    /**
+     * Tells whether this generator is allowed to be used for property
+     * parameters of the given type.
+     *
+     * @param type type against which to test this generator
+     * @return {@code true} if the generator is allowed to participate in
+     * generating values for property parameters of {@code type}
+     */
+    public boolean canRegisterAsType(Class&lt;?&gt; type) {
+<span class="fc" id="L96">        return true;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * &lt;p&gt;Generators first ensure that they {@linkplain #canShrink(Object) can
+     * participate} in shrinking the given value, and if so, they
+     * {@linkplain #doShrink(SourceOfRandomness, Object) produce shrinks}.&lt;/p&gt;
+     */
+    @Override public final List&lt;T&gt; shrink(SourceOfRandomness random, Object larger) {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (!canShrink(larger)) {</span>
+<span class="fc" id="L108">            throw new IllegalStateException(</span>
+<span class="fc" id="L109">                getClass() + &quot; not capable of shrinking &quot; + larger);</span>
+        }
+
+<span class="fc" id="L112">        return doShrink(random, narrow(larger));</span>
+    }
+
+    /**
+     * &lt;p&gt;Tells whether this generator is allowed to participate in the
+     * {@link Shrink} process for the given &quot;larger&quot; value.&lt;/p&gt;
+     *
+     * &lt;p&gt;Unless overridden, the only criterion for whether a generator is
+     * allowed to participate in shrinking a value is if the value can be
+     * safely cast to the type of values the generator produces.&lt;/p&gt;
+     *
+     * @param larger the &quot;larger&quot; value
+     * @return whether this generator can participate in &quot;shrinking&quot; the larger
+     * value
+     */
+    public boolean canShrink(Object larger) {
+<span class="fc" id="L128">        return types().get(0).isInstance(larger);</span>
+    }
+
+    /**
+     * &lt;p&gt;Gives some objects that are &quot;smaller&quot; than a given &quot;larger&quot;
+     * object.&lt;/p&gt;
+     *
+     * &lt;p&gt;Unless overridden, a generator will produce an empty list of
+     * &quot;smaller&quot; values.&lt;/p&gt;
+     *
+     * @param random source of randomness to use in shrinking, if desired
+     * @param larger the larger object
+     * @return objects that are &quot;smaller&quot; than the larger object
+     */
+    public List&lt;T&gt; doShrink(SourceOfRandomness random, T larger) {
+<span class="fc" id="L143">        return emptyList();</span>
+    }
+
+    /**
+     * Attempts to &quot;narrow&quot; the given object to the type this generator
+     * produces.
+     *
+     * @param wider target of the narrowing
+     * @return narrowed the result of the narrowing
+     * @throws ClassCastException if the narrowing cannot be performed
+     */
+    protected final T narrow(Object wider) {
+<span class="fc" id="L155">        return types().get(0).cast(wider);</span>
+    }
+
+    /**
+     * @return whether this generator has component generators, such as for
+     * those generators that produce lists or maps.
+     *
+     * @see #addComponentGenerators(java.util.List)
+     */
+    public boolean hasComponents() {
+<span class="fc" id="L165">        return false;</span>
+    }
+
+    /**
+     * @return how many component generators this generator needs
+     * @see #addComponentGenerators(java.util.List)
+     */
+    public int numberOfNeededComponents() {
+<span class="fc" id="L173">        return 0;</span>
+    }
+
+    /**
+     * &lt;p&gt;Adds component generators to this generator.&lt;/p&gt;
+     *
+     * &lt;p&gt;Some generators need component generators to create proper values.
+     * For example, list generators require a single component generator in
+     * order to generate elements that have the type of the list parameter's
+     * type argument.&lt;/p&gt;
+     *
+     * @param newComponents component generators to add
+     */
+    public void addComponentGenerators(List&lt;Generator&lt;?&gt;&gt; newComponents) {
+        // do nothing by default
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * @param typeParameters a list of generic type parameters
+     * @return whether this generator can be considered for generating values
+     * for property parameters that have the given type parameters in their
+     * signatures
+     */
+    public boolean canGenerateForParametersOfTypes(List&lt;TypeParameter&lt;?&gt;&gt; typeParameters) {
+<span class="fc" id="L197">        return true;</span>
+    }
+
+    /**
+     * @param parameter a generic type parameter
+     * @param clazz a type
+     * @return whether the type is compatible with the generic type parameter
+     * @see #canGenerateForParametersOfTypes(List)
+     */
+    public static boolean compatibleWithTypeParameter(TypeParameter&lt;?&gt; parameter, Class&lt;?&gt; clazz) {
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        return parameter instanceof WildcardTypeParameter</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">            || parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));</span>
+    }
+
+    /**
+     * &lt;p&gt;Configures this generator using annotations from a given annotated
+     * type.&lt;/p&gt;
+     *
+     * &lt;p&gt;This method considers only annotations that are themselves marked
+     * with {@link GeneratorConfiguration}.&lt;/p&gt;
+     *
+     * &lt;p&gt;By default, the generator will configure itself using this
+     * procedure:&lt;/p&gt;
+     * &lt;ul&gt;
+     *   &lt;li&gt;For each of the given annotations:
+     *     &lt;ul&gt;
+     *       &lt;li&gt;Find a {@code public} method on the generator named
+     *       {@code configure}, that accepts a single parameter of the
+     *       annotation type&lt;/li&gt;
+     *       &lt;li&gt;Invoke the {@code configure} method reflectively, passing the
+     *       annotation as the argument&lt;/li&gt;
+     *     &lt;/ul&gt;
+     *   &lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param annotatedType a type usage
+     * @throws GeneratorConfigurationException if the generator does not
+     * &quot;understand&quot; one of the generation configuration annotations on
+     * the annotated type
+     */
+    public void configure(AnnotatedType annotatedType) {
+<span class="fc" id="L238">        configureStrict(collectConfigurationAnnotations(annotatedType));</span>
+<span class="fc" id="L239">    }</span>
+
+    /**
+     * @param element an annotated program element
+     */
+    public void configure(AnnotatedElement element) {
+<span class="fc" id="L245">        configureLenient(collectConfigurationAnnotations(element));</span>
+<span class="fc" id="L246">    }</span>
+
+    /**
+     * Used to supply the available generators to this one.
+     *
+     * @param provided repository of available generators
+     */
+    public void provide(Generators provided) {
+<span class="fc" id="L254">        repo = provided;</span>
+<span class="fc" id="L255">    }</span>
+
+    /**
+     * @return an access point for the available generators
+     */
+    protected Generators gen() {
+<span class="fc" id="L261">        return repo;</span>
+    }
+
+    /**
+     * Gives a list of the {@link GeneratorConfiguration} annotations present
+     * on the given program element.
+     *
+     * @param element an annotated program element
+     * @return what configuration annotations are present on that element
+     */
+    protected static List&lt;Annotation&gt; configurationAnnotationsOn(AnnotatedElement element) {
+<span class="fc" id="L272">        return allAnnotations(element).stream()</span>
+<span class="fc" id="L273">            .filter(a -&gt; a.annotationType().isAnnotationPresent(GeneratorConfiguration.class))</span>
+<span class="fc" id="L274">            .collect(toList());</span>
+    }
+
+    private Map&lt;Class&lt;? extends Annotation&gt;, Annotation&gt; collectConfigurationAnnotations(
+        AnnotatedElement element) {
+
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">        if (element == null)</span>
+<span class="nc" id="L281">            return emptyMap();</span>
+
+<span class="fc" id="L283">        List&lt;Annotation&gt; configs = configurationAnnotationsOn(element);</span>
+
+<span class="fc" id="L285">        Map&lt;Class&lt;? extends Annotation&gt;, Annotation&gt; byType = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">        for (Annotation each : configs)</span>
+<span class="fc" id="L287">            byType.put(each.annotationType(), each);</span>
+<span class="fc" id="L288">        return byType;</span>
+    }
+
+    private void configureStrict(Map&lt;Class&lt;? extends Annotation&gt;, Annotation&gt; byType) {
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        for (Map.Entry&lt;Class&lt;? extends Annotation&gt;, Annotation&gt; each : byType.entrySet())</span>
+<span class="fc" id="L293">            configureStrict(each.getKey(), each.getValue());</span>
+<span class="fc" id="L294">    }</span>
+
+    private void configureStrict(
+        Class&lt;? extends Annotation&gt; annotationType,
+        Annotation configuration) {
+
+<span class="fc" id="L300">        configure(annotationType, configuration, ex -&gt; {</span>
+<span class="fc" id="L301">            throw new GeneratorConfigurationException(</span>
+<span class="fc" id="L302">                String.format(</span>
+                    &quot;Generator %s does not understand configuration annotation %s&quot;,
+<span class="fc" id="L304">                    getClass().getName(),</span>
+<span class="fc" id="L305">                    annotationType.getName()),</span>
+                ex);
+        });
+<span class="fc" id="L308">    }</span>
+
+    private void configureLenient(Map&lt;Class&lt;? extends Annotation&gt;, Annotation&gt; byType) {
+<span class="fc bfc" id="L311" title="All 2 branches covered.">        for (Map.Entry&lt;Class&lt;? extends Annotation&gt;, Annotation&gt; each : byType.entrySet())</span>
+<span class="fc" id="L312">            configureLenient(each.getKey(), each.getValue());</span>
+<span class="fc" id="L313">    }</span>
+
+    private void configureLenient(
+        Class&lt;? extends Annotation&gt; annotationType,
+        Annotation configuration) {
+
+<span class="fc" id="L319">        configure(annotationType, configuration, ex -&gt; {});</span>
+<span class="fc" id="L320">    }</span>
+
+    private void configure(
+        Class&lt;? extends Annotation&gt; annotationType,
+        Annotation configuration,
+        Consumer&lt;ReflectionException&gt; exceptionHandler) {
+
+<span class="fc" id="L327">        Method configurer = null;</span>
+
+        try {
+<span class="fc" id="L330">            configurer = findMethod(getClass(), &quot;configure&quot;, annotationType);</span>
+<span class="fc" id="L331">        } catch (ReflectionException ex) {</span>
+<span class="fc" id="L332">            exceptionHandler.accept(ex);</span>
+<span class="fc" id="L333">        }</span>
+
+<span class="fc bfc" id="L335" title="All 2 branches covered.">        if (configurer != null)</span>
+<span class="fc" id="L336">            invoke(configurer, this, configuration);</span>
+<span class="fc" id="L337">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
