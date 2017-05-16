@@ -1,0 +1,46 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+junit-quickcheck-core,com.pholser.junit.quickcheck.random,SourceOfRandomness,0,300,0,10,0,66,0,31,0,26
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Zilch,0,8,0,0,0,3,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Sequences.new Iterator() {...},0,54,0,4,0,9,0,6,0,4
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Sequences.new Iterator() {...},0,53,0,4,0,9,0,6,0,4
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Sequences.new Iterator() {...},0,47,0,6,0,10,0,7,0,4
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,GeometricDistribution,0,75,0,8,0,13,0,9,0,5
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Items,0,84,0,6,0,15,0,7,0,4
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,ParameterTypeContext,7,505,1,33,2,126,1,46,0,30
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Weighted,0,23,0,2,0,6,0,2,0,1
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Lists,0,163,0,10,0,44,0,11,0,6
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Sequences,0,34,0,0,0,5,0,7,0,7
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Reflection,0,493,0,58,0,113,0,58,0,29
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,ShrinkControl,0,33,0,0,0,12,0,6,0,6
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,ReflectionException,0,9,0,0,0,4,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Ranges.Type,9,56,0,0,0,8,2,2,2,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,PropertyParameterContext,0,119,0,10,0,28,0,16,0,11
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal,Ranges,0,62,0,4,0,11,0,5,0,3
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.constraint,ConstraintEvaluator,0,53,0,6,0,12,0,6,0,3
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.constraint,ConstraintEvaluator.ConstraintOgnlContext,0,25,0,2,0,4,0,3,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.constraint,ConstraintEvaluator.EvaluationException,0,8,0,0,0,4,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,Fields,0,106,0,6,0,20,0,8,0,5
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,GeneratorConfigurationException,0,9,0,0,0,4,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,Ctor,0,114,0,6,0,22,0,10,0,7
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,Lambdas.LambdaInvocationHandler,0,114,0,10,0,24,0,10,0,5
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,Lambdas,0,53,0,2,0,8,0,4,0,3
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,ComponentizedGenerator,0,92,0,10,0,20,0,13,0,8
+junit-quickcheck-core,com.pholser.junit.quickcheck.generator,Generator,0,259,0,16,0,60,0,35,0,27
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyStatement.SeededValue,3,12,0,0,1,5,1,2,1,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,ShrinkNode,6,218,2,6,1,37,3,15,1,13
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyVerifier.new Statement() {...},7,41,0,0,2,13,0,3,0,3
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyStatement,28,271,1,7,8,56,1,18,0,15
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyVerifier.new Statement() {...},0,22,0,0,0,3,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,JUnitQuickcheck,0,99,0,4,0,19,0,7,0,5
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,PropertyVerifier,0,73,0,0,0,19,0,6,0,6
+junit-quickcheck-core,com.pholser.junit.quickcheck.runner,Shrinker,10,147,2,16,2,39,2,12,0,5
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,ServiceLoaderGeneratorSource,0,31,0,2,0,7,0,3,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,CompositeGenerator,4,213,0,8,2,49,0,21,0,17
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,ZilchGenerator,0,6,0,0,0,3,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,LambdaGenerator,0,17,0,0,0,5,0,2,0,2
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,EnumGenerator,0,42,0,2,0,11,0,5,0,4
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,PropertyParameterGenerationContext.DiscardRatioExceededException,0,38,0,0,0,7,0,1,0,1
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,ArrayGenerator,0,220,1,17,0,49,1,20,0,12
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,GeneratorRepository,0,568,0,52,0,134,0,53,0,27
+junit-quickcheck-core,com.pholser.junit.quickcheck.internal.generator,PropertyParameterGenerationContext,0,190,0,20,0,35,0,19,0,9
+junit-quickcheck-core,com.pholser.junit.quickcheck.hook,NilMinimalCounterexampleHook,0,4,0,0,0,2,0,2,0,2
