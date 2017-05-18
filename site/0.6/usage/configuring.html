@@ -257,20 +257,24 @@
         <div id="bodyColumn"  class="span10" >
                                   
             <h1>Configuring generators</h1>
-<p>If you mark a property parameter with an annotation that is itself marked as <tt>@GeneratorConfiguration</tt>, then if the <tt>Generator</tt> for that parameter&#x2019;s type has a public method named <tt>configure</tt> that accepts a single argument of the annotation type, junit-quickcheck will call the <tt>configure</tt> method reflectively, passing it the annotation:</p>
+<p>If you mark a property parameter with an annotation that is itself marked as <tt>@GeneratorConfiguration</tt>, then if the <tt>Generator</tt> for that parameter&#x2019;s type has a public method named <tt>configure</tt> that accepts a single argument of the annotation type, JUnit-Quickcheck will call the <tt>configure</tt> method reflectively, passing it the annotation. 
+The call will take place **before** the call to <tt>generate</tt>, ensuring that the configured value will be in position so to influence the behavior of the generator at the next run.</p>
 
 <div class="source">
-<div class="source"><pre class="prettyprint">    @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
-    @Retention(RUNTIME)
+<div class="source"><pre class="prettyprint">    
     @GeneratorConfiguration
-    public @interface Positive {
-        // ...
-    }
+    public @interface Positive {}
 
-    public class IntegralGenerator extends Generator&lt;Integer&gt; {
+    public class PositiveGenerator extends Generator&lt;Integer&gt; {
         private Positive positive;
 
-        @Override public Integer generate(
+        // NB: every custom generator needs a no-args constructor!
+        public PositiveGenerator() {
+            super(Integer.class);
+        }
+
+        @Override
+        public Integer generate(
             SourceOfRandomness random,
             GenerationStatus status) {
 
@@ -278,18 +282,33 @@
             return positive != null ? Math.abs(value) : value;
         }
 
-        public void configure(Positive positive) {
-            this.positive = positive;
+        public void configure(Positive p) {
+            this.positive = p;
         }
     }
 
     @RunWith(JUnitQuickcheck.class)
     public class Numbers {
-        @Property public void holds(@Positive int i) {
+        @Property
+        public void holds(@From(positiveGenerator.class) @Positive int i) {
+            assertTrue(i > 0);
         }
     }
 </pre></div></div>
+<p>Let's illustrate this example by starting from the bottom:
+<ol>
+<li>Test method parameter <tt>i</tt> is marked as having to be <tt>@Positive</tt>, whatever this may mean to the system - of course we'll make sure that this corresponds to generating strictly positive integer values for the test method.</li>
+<li>A class belonging to the JUnit-Quickcheck <tt>Generator</tt> hyerarchy is found on the classpath, and it has a <tt>configure(Positive p)</tt> method.</li>
+<li>Annotation interface <tt>Positive</tt> is marked as a <tt>@GeneratorConfiguration</tt>.</li>
+<li></li>
+</ol><br/>
+<p></p>All this leads to JUnit-Quickcheck understanding that the <tt>public Integer generate</tt> method of <tt>PositiveGenerator</tt> class has to be used to generate <tt>Positive</tt> values for the test method <tt>Numbers.holds</tt>.</p>
+<p>Had we not placed the <tt>@From</tt> annotation in the test method, <tt>PositiveGenerator</tt> would have been added 
+to the list of eligible generators (<tt>Generator<Integer></tt> and <tt>Generator<Number></tt>) and chosen randomically for the task along with the other ones.</p>
 <p>A <tt>Generator</tt> can have many such <tt>configure</tt> methods.</p>
+<p>Please note that when building custom generators, each class must have a no-args constructor invoking `super()`</p>
+<p>Be aware that the generation mechanism for the Positive interface can be specified and focused also using annotations, as the following "Aggregating configuration" paragraph illustrates.</p>
+
 <div class="section">
 <h2><a name="Configuration_on_type_uses"></a>Configuration on type uses</h2>
 <p>Configuration annotations that can target type uses will be honored:</p>
@@ -297,7 +316,8 @@
 <div class="source">
 <div class="source"><pre class="prettyprint">    @RunWith(JUnitQuickcheck.class)
     public class PropertiesOfListsOfSingleDigits {
-        @Property public void hold(
+        @Property
+        public void hold(
             List&lt;@InRange(min = &quot;0&quot;, max = &quot;9&quot;) Integer&gt; digits) {
                 // ...
         }
@@ -323,7 +343,8 @@
 <p>Configuration annotations that are directly on a property parameter, and any configuration annotations on annotations that are directly on a property parameter (and so on&#x2026;) are collected to configure the generator(s) for the parameter:</p>
 
 <div class="source">
-<div class="source"><pre class="prettyprint">    @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
+<div class="source"><pre class="prettyprint">
+    @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
     @Retention(RUNTIME)
     @From(MoneyGenerator.class)
     @InRange(min = &quot;0&quot;, max = &quot;20&quot;)
@@ -333,7 +354,8 @@
 
     @RunWith(JUnitQuickcheck.class)
     public class Monies {
-        @Property public void hold(@SmallChange BigDecimal d) {
+        @Property
+        public void hold(@SmallChange BigDecimal d) {
             assertEquals(2, d.scale());
             assertThat(
                 d,
@@ -342,7 +364,9 @@
                     lessThanOrEqualTo(new BigDecimal(&quot;20&quot;))));
         }
     }
-</pre></div></div></div>
+</pre></div></div>
+<p>In this code, class <tt>MoneyGenerator extends Generator&lt;BigDecimal&gt;</tt> will obviously need to have a 
+<tt>public BigDecimal generate(SourceOfRandomness r, GenerationStatus s)</tt> method producing small change the way we wish. In case we forget to implement there the control that amount be less or equal than 20, annotation <tt>@InRange</tt> will see to it that no value higher than 20 be fed as a parameter to any JUnit test method that like <tt>Monies.hold</tt> accepts <tt>SmallChange</tt> values as input.</p></div>
                   </div>
             </div>
           </div>
