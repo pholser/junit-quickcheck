@@ -261,8 +261,8 @@ public final class Reflection {
 
     private static List<Annotation> nonSystemAnnotations(AnnotatedElement e) {
         return stream(e.getAnnotations())
-            .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation"))
-            .filter(a -> !a.annotationType().getName().startsWith("kotlin.annotation"))
+            .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation."))
+            .filter(a -> !a.annotationType().getName().startsWith("kotlin."))
             .collect(toList());
     }
 
