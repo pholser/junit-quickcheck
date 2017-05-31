@@ -12,7 +12,7 @@ tests in JUnit, inspired by QuickCheck for Haskell.
 [Version 0.7](https://pholser.github.io/junit-quickcheck/index.html) is the
 current stable version of junit-quickcheck.
 
-[Version 0.8-alpha-5](http://pholser.github.io/junit-quickcheck/site/0.8-alpha-5/)
+[Version 0.8-alpha-6](http://pholser.github.io/junit-quickcheck/site/0.8-alpha-6/)
 is available.
 
 ## Basic example
