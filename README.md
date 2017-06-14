@@ -9,6 +9,23 @@
 junit-quickcheck is a library that supports writing and running property-based
 tests in JUnit, inspired by QuickCheck for Haskell.
 
+Property-based tests capture characteristics, or "properties", of the output
+of code that should be true given arbitrary inputs that meet certain criteria.
+For example, imagine a function that produces a list of the prime factors of
+a positive integer `n` greater than 1. Regardless of the specific value of
+`n`, the function must give a list whose members are all primes, must
+equal `n` when all multiplied together, and must be different from the
+factorization of a positive integer `m` greater than 1 and not equal to
+`n`.
+
+Rather than testing such properties for all possible inputs, junit-quickcheck
+and other QuickCheck kin generate some number of random inputs, and verify
+that the properties hold at least for the generated inputs. This gives us
+some reasonable assurance over time that the properties hold true for any
+valid inputs.
+
+## Getting junit-quickcheck
+ 
 [Version 0.7](https://pholser.github.io/junit-quickcheck/index.html) is the
 current stable version of junit-quickcheck.
 
