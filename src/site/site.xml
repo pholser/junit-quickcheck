@@ -23,7 +23,7 @@
             <item name="Configuring Generators" href="usage/configuring.html"/>
             <item name="Constraining Generated Values" href="usage/constraining.html"/>
             <item name="Generating Values of Complex Types" href="usage/complex-types.html"/>
-            <item name="Sample Size" href="usage/sample-size.html"/>
+            <item name="Verification Modes" href="usage/verification-modes.html"/>
             <item name="Seed" href="usage/seed.html"/>
             <item name="Shrinking" href="usage/shrinking.html"/>
             <item name="Contract Tests" href="usage/contract-tests.html"/>
