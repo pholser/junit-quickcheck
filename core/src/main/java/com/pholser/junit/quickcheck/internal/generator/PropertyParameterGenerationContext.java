@@ -53,6 +53,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         SourceOfRandomness random) {
 
         super(distro, initializeRandomness(parameter, random));
+
         this.parameter = parameter;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
         this.generator = repository.produceGenerator(parameter.typeContext());
@@ -101,7 +102,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
 
     private boolean tooManyDiscards() {
         if (parameter.discardRatio() == 0)
-            return discards > parameter.sampleSize();
+            return discards > sampleSize();
 
         return successfulEvaluations == 0
             ? discards > parameter.discardRatio()
@@ -109,8 +110,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
     }
 
     @Override public int size() {
-        int sample = super.size();
-        return min(sample, parameter.sampleSize());
+        return min(super.size(), sampleSize());
     }
 
     @Override public int attempts() {
@@ -119,6 +119,10 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
 
     public long effectiveSeed() {
         return random().seed();
+    }
+
+    public int sampleSize() {
+        return parameter.sampleSize();
     }
 
     public static class DiscardRatioExceededException extends RuntimeException {

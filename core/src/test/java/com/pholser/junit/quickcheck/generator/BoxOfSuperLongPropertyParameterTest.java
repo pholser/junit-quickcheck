@@ -33,7 +33,7 @@ import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest
 import com.pholser.junit.quickcheck.test.generator.Box;
 import org.javaruntype.type.Types;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class BoxOfSuperLongPropertyParameterTest extends CorePropertyParameterTest {

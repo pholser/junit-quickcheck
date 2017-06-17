@@ -25,20 +25,35 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Arrays;
-import java.util.Random;
+import com.pholser.junit.quickcheck.internal.ParameterSampler;
+import com.pholser.junit.quickcheck.runner.sampling.ExhaustiveParameterSampler;
+import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+/**
+ * Represents different modes of execution of property-based tests.
+ */
+public enum Mode {
+    /**
+     * Verify {@link Property#trials()} tuples of arguments for a property's
+     * parameters.
+     */
+    SAMPLING {
+        @Override ParameterSampler sampler(int defaultSampleSize) {
+            return new TupleParameterSampler(defaultSampleSize);
+        }
+    },
 
-public final class Functions {
-    private Functions() {
-        throw new UnsupportedOperationException();
-    }
+    /**
+     * Generate {@link Property#trials()} arguments for each parameter
+     * property, and verify the cross-products of those sets of arguments.
+     * This behavior mirrors that of the JUnit
+     * {@link org.junit.experimental.theories.Theories} runner.
+     */
+    EXHAUSTIVE {
+        @Override ParameterSampler sampler(int defaultSampleSize) {
+            return new ExhaustiveParameterSampler(defaultSampleSize);
+        }
+    };
 
-    public static <T> T functionValue(Generator<T> generator, Object[] args) {
-        SourceOfRandomness source = new SourceOfRandomness(new Random());
-        source.setSeed(Arrays.hashCode(args));
-        return generator.generate(source, null);
-    }
+    abstract ParameterSampler sampler(int defaultSampleSize);
 }

@@ -33,16 +33,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Stream;
 
-import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.ParameterSampler;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
+import com.pholser.junit.quickcheck.internal.SeededValue;
 import com.pholser.junit.quickcheck.internal.ShrinkControl;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.runner.sampling.ExhaustiveParameterSampler;
+import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
 import org.junit.AssumptionViolatedException;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -50,9 +54,8 @@ import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
-import static java.util.stream.Collectors.*;
-
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+import static java.util.stream.Collectors.*;
 import static org.junit.Assert.*;
 
 class PropertyStatement extends Statement {
@@ -61,6 +64,7 @@ class PropertyStatement extends Statement {
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
     private final List<AssumptionViolatedException> assumptionViolations = new ArrayList<>();
+
     private int successes;
 
     PropertyStatement(
@@ -76,20 +80,29 @@ class PropertyStatement extends Statement {
     }
 
     @Override public void evaluate() throws Throwable {
+        Map<String, Type> typeVariables =
+            GenericsResolver.resolve(testClass.getJavaClass())
+                .method(method.getMethod())
+                .genericsMap();
+
         Property marker = method.getAnnotation(Property.class);
-        int trials = marker.trials();
-        MinimalCounterexampleHook hook = marker.onMinimalCounterexample().newInstance();
-        ShrinkControl shrinkControl = new ShrinkControl(
-            marker.shrink(),
-            marker.maxShrinks(),
-            marker.maxShrinkDepth(),
-            marker.maxShrinkTime(),
-            hook);
+        ParameterSampler sampler = sampler(marker);
+        ShrinkControl shrinkControl = new ShrinkControl(marker);
 
-        List<PropertyParameterGenerationContext> params = parameters(trials);
+        List<PropertyParameterGenerationContext> parameters =
+            Arrays.stream(method.getMethod().getParameters())
+                .map(p -> parameterContextFor(p, sampler, typeVariables))
+                .map(p -> new PropertyParameterGenerationContext(
+                    p,
+                    repo,
+                    distro,
+                    new SourceOfRandomness(new Random())
+                ))
+                .collect(toList());
 
-        for (int i = 0; i < trials; ++i)
-            verifyProperty(params, shrinkControl);
+        Stream<List<SeededValue>> sample = sampler.sample(parameters);
+        for (List<SeededValue> args : (Iterable<List<SeededValue>>) sample::iterator)
+            property(args, shrinkControl).verify();
 
         if (successes == 0 && !assumptionViolations.isEmpty()) {
             fail("No values satisfied property assumptions. Violated assumptions: "
@@ -97,23 +110,15 @@ class PropertyStatement extends Statement {
         }
     }
 
-    private void verifyProperty(
-        List<PropertyParameterGenerationContext> params,
-        ShrinkControl shrinkControl)
-        throws Throwable {
-
-        List<SeededValue> seededValues = argumentsFor(params);
-        Object[] args = seededValues.stream().map(SeededValue::value).toArray();
-        long[] seeds = seededValues.stream().mapToLong(SeededValue::seed).toArray();
-        property(params, args, seeds, shrinkControl).verify();
-    }
-
     private PropertyVerifier property(
-        List<PropertyParameterGenerationContext> params,
-        Object[] args,
-        long[] seeds,
+        List<SeededValue> arguments,
         ShrinkControl shrinkControl)
         throws InitializationError {
+
+        List<PropertyParameterGenerationContext> params =
+            arguments.stream().map(SeededValue::parameter).collect(toList());
+        Object[] args = arguments.stream().map(SeededValue::value).toArray();
+        long[] seeds = arguments.stream().mapToLong(SeededValue::seed).toArray();
 
         return new PropertyVerifier(
             testClass,
@@ -151,32 +156,13 @@ class PropertyStatement extends Statement {
             method,
             testClass,
             failure,
-            shrinkControl.maxShrinks(),
-            shrinkControl.maxShrinkDepth(),
-            shrinkControl.maxShrinkTime(),
-            shrinkControl.onMinimalCounterexample())
+            shrinkControl)
             .shrink(params, args, seeds);
-    }
-
-    private List<PropertyParameterGenerationContext> parameters(int trials) {
-        Map<String, Type> typeVariables = GenericsResolver.resolve(testClass.getJavaClass())
-            .method(method.getMethod())
-            .genericsMap();
-
-        return Arrays.stream(method.getMethod().getParameters())
-            .map(p -> parameterContextFor(p, trials, typeVariables))
-            .map(p -> new PropertyParameterGenerationContext(
-                p,
-                repo,
-                distro,
-                new SourceOfRandomness(new Random())
-            ))
-            .collect(toList());
     }
 
     private PropertyParameterContext parameterContextFor(
         Parameter parameter,
-        int trials,
+        ParameterSampler sampler,
         Map<String, Type> typeVariables) {
 
         return new PropertyParameterContext(
@@ -186,36 +172,23 @@ class PropertyStatement extends Statement {
                 declarerName(parameter),
                 typeVariables)
                 .allowMixedTypes(true),
-            trials
+            sampler.sizeFactor(parameter)
         ).annotate(parameter);
+    }
+
+    private ParameterSampler sampler(Property marker) {
+        switch (marker.mode()) {
+            case SAMPLING:
+                return new TupleParameterSampler(marker.trials());
+            case EXHAUSTIVE:
+                return new ExhaustiveParameterSampler(marker.trials());
+        }
+
+        throw new AssertionError("Don't recognize mode " + marker.mode());
     }
 
     private static String declarerName(Parameter p) {
         Executable exec = p.getDeclaringExecutable();
         return exec.getDeclaringClass().getName() + '.' + exec.getName();
-    }
-
-    private List<SeededValue> argumentsFor(List<PropertyParameterGenerationContext> params) {
-        return params.stream()
-            .map(p -> new SeededValue(p.generate(), p.effectiveSeed()))
-            .collect(toList());
-    }
-
-    private static final class SeededValue {
-        private final Object value;
-        private final long seed;
-
-        SeededValue(Object value, long seed) {
-            this.value = value;
-            this.seed = seed;
-        }
-
-        Object value() {
-            return value;
-        }
-
-        long seed() {
-            return seed;
-        }
     }
 }

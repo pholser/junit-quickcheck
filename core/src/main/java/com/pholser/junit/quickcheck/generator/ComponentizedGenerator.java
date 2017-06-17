@@ -31,9 +31,8 @@ import java.util.List;
 
 import org.javaruntype.type.TypeParameter;
 
-import static java.util.Collections.*;
-
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Collections.*;
 
 /**
  * Produces values for property parameters of types that have parameterizations

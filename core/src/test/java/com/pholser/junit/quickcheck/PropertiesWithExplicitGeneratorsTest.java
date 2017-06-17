@@ -25,31 +25,40 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import com.pholser.junit.quickcheck.test.generator.*;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.ABool;
+import com.pholser.junit.quickcheck.test.generator.AByte;
+import com.pholser.junit.quickcheck.test.generator.AChar;
+import com.pholser.junit.quickcheck.test.generator.ADouble;
+import com.pholser.junit.quickcheck.test.generator.AFloat;
+import com.pholser.junit.quickcheck.test.generator.AList;
+import com.pholser.junit.quickcheck.test.generator.ALong;
+import com.pholser.junit.quickcheck.test.generator.AShort;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import com.pholser.junit.quickcheck.test.generator.Between;
+import com.pholser.junit.quickcheck.test.generator.Box;
+import com.pholser.junit.quickcheck.test.generator.Foo;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+
 import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static java.util.Arrays.asList;
+import static java.lang.annotation.RetentionPolicy.*;
+import static java.util.Arrays.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.experimental.results.PrintableResult.testResult;
-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
-import static org.junit.rules.ExpectedException.none;
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
+import static org.junit.rules.ExpectedException.*;
 
 public class PropertiesWithExplicitGeneratorsTest {
     @Rule public final ExpectedException thrown = none();

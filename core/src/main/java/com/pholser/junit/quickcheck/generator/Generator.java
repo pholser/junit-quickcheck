@@ -41,10 +41,9 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values for property parameters.

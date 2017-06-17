@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Iterables;
 import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest;
 import com.pholser.junit.quickcheck.test.generator.Box;
 

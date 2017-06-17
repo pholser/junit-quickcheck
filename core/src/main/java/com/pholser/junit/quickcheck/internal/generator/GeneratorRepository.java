@@ -52,11 +52,10 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 public class GeneratorRepository implements Generators {
     private final SourceOfRandomness random;
@@ -223,6 +222,9 @@ public class GeneratorRepository implements Generators {
     }
 
     public Generator<?> generatorFor(ParameterTypeContext parameter) {
+
+        // test for only/also here, wrap the chosen generator in the only/also strategy?
+
         if (!parameter.explicitGenerators().isEmpty())
             return composeWeighted(parameter, parameter.explicitGenerators());
 

@@ -28,10 +28,11 @@ package com.pholser.junit.quickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook;
+
+import static com.pholser.junit.quickcheck.Mode.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
-
-import com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook;
 
 /**
  * <p>Mark a method on a class that is {@linkplain org.junit.runner.RunWith
@@ -45,7 +46,14 @@ import com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook;
 @Retention(RUNTIME)
 public @interface Property {
     /**
-     * @return how many sets of parameters to verify the property with
+     * @return the verification mode for the property
+     */
+    Mode mode() default SAMPLING;
+
+    /**
+     * @return how many sets of parameters to verify the property with, in
+     * {@link Mode#SAMPLING} mode; in {@link Mode#EXHAUSTIVE} mode, how many
+     * values to generate for each property parameter
      */
     int trials() default 100;
 

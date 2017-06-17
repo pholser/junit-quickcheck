@@ -34,10 +34,9 @@ import com.pholser.junit.quickcheck.internal.Reflection;
 import org.javaruntype.type.Types;
 
 import static com.pholser.junit.quickcheck.Generating.*;
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.eq;
 
 public class ListOfSuperLongPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {

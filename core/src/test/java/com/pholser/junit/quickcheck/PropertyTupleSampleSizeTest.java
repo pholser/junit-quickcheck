@@ -30,13 +30,12 @@ import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.pholser.junit.quickcheck.Annotations.defaultPropertyTrialCount;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.experimental.results.PrintableResult.testResult;
-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+import static com.pholser.junit.quickcheck.Annotations.*;
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-public class PropertySampleSizeTest {
+public class PropertyTupleSampleSizeTest {
     @Test public void shouldFeedADefaultNumberOfValuesToAProperty() throws Exception {
         assertThat(testResult(ForDefaultNumberOfValues.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), ForDefaultNumberOfValues.iterations);

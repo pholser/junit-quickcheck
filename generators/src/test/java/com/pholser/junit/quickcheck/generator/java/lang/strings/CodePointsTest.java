@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
 
 public class CodePointsTest {

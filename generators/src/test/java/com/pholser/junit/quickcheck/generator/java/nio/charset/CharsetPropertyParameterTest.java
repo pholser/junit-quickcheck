@@ -25,13 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator.java.nio.charset;
 
-import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
-
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
+
+import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
 public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParameterTest {

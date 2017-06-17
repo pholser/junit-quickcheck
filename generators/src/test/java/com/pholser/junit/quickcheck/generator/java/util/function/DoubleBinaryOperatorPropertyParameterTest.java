@@ -26,10 +26,8 @@
 package com.pholser.junit.quickcheck.generator.java.util.function;
 
 import java.util.function.DoubleBinaryOperator;
-import java.util.function.DoubleToIntFunction;
 
 import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
