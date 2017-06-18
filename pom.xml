@@ -72,6 +72,14 @@
             <name>Philipp Classen</name>
             <roles><role>Sped up int/long generation</role></roles>
         </contributor>
+        <contributor>
+            <name>Brent Vukmer</name>
+            <roles><role>Added Encoded override for PropertiesGenerator</role></roles>
+        </contributor>
+        <contributor>
+            <name>Pablo Gonzalez Alonso</name>
+            <roles><role>Added support for Kotlin annotations</role></roles>
+        </contributor>
     </contributors>
 
     <properties>
