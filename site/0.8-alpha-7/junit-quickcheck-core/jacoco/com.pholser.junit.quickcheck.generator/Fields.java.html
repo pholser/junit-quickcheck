@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Fields.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">Fields.java</span></div><h1>Fields.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.util.stream.Collectors.*;
+
+/**
+ * &lt;p&gt;Produces instances of a class by reflecting the class's fields and
+ * generating random values for them.&lt;/p&gt;
+ *
+ * &lt;p&gt;All fields of the class and its class hierarchy are auto-generated.&lt;/p&gt;
+ *
+ * &lt;p&gt;In order for this generator to work, the type it is given must have an
+ * accessible zero-arg constructor.&lt;/p&gt;
+ *
+ * &lt;p&gt;If a field is marked with an annotation that influences the generation of
+ * a given kind of value, that annotation will be applied to the generation of
+ * values for that field.&lt;/p&gt;
+ *
+ * &lt;p&gt;This generator is intended to be used with
+ * {@link com.pholser.junit.quickcheck.From}, and not to be available via the
+ * {@link java.util.ServiceLoader} mechanism.&lt;/p&gt;
+ *
+ * @param &lt;T&gt; the type of objects generated
+ */
+public class Fields&lt;T&gt; extends Generator&lt;T&gt; {
+    private final List&lt;Field&gt; fields;
+<span class="fc" id="L60">    private final List&lt;Generator&lt;?&gt;&gt; fieldGenerators = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * @param type the type of objects to be generated
+     */
+    public Fields(Class&lt;T&gt; type) {
+<span class="fc" id="L66">        super(type);</span>
+
+<span class="fc" id="L68">        this.fields =</span>
+<span class="fc" id="L69">            allDeclaredFieldsOf(type).stream()</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                .filter(f -&gt; !Modifier.isFinal(f.getModifiers()))</span>
+<span class="fc" id="L71">                .collect(toList());</span>
+
+<span class="fc" id="L73">        instantiate(type);</span>
+<span class="fc" id="L74">    }</span>
+
+    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc" id="L77">        Class&lt;T&gt; type = types().get(0);</span>
+<span class="fc" id="L78">        Object generated = instantiate(type);</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        for (Field each : fields) {</span>
+<span class="fc" id="L81">            setField(</span>
+                each,
+                generated,
+<span class="fc" id="L84">                gen().field(each).generate(random, status),</span>
+                true);
+<span class="fc" id="L86">        }</span>
+
+<span class="fc" id="L88">        return type.cast(generated);</span>
+    }
+
+    @Override public boolean canRegisterAsType(Class&lt;?&gt; type) {
+<span class="fc" id="L92">        return false;</span>
+    }
+
+    @Override public void provide(Generators provided) {
+<span class="fc" id="L96">        super.provide(provided);</span>
+
+<span class="fc" id="L98">        fieldGenerators.clear();</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (Field each : fields)</span>
+<span class="fc" id="L100">            fieldGenerators.add(gen().field(each));</span>
+<span class="fc" id="L101">    }</span>
+
+    @Override public void configure(AnnotatedType annotatedType) {
+<span class="fc" id="L104">        super.configure(annotatedType);</span>
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        for (int i = 0; i &lt; fields.size(); ++i)</span>
+<span class="fc" id="L107">            fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());</span>
+<span class="fc" id="L108">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
