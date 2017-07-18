@@ -70,13 +70,13 @@ public class PropertyParameterDiscardRatioTest {
 
     @Test public void zeroRatioStopsAfterDiscardsExceedSampleSize() {
         assertThat(
-            testResult(ZeroDiscardRatio.class),
+            testResult(DefaultDiscardRatio.class),
             hasFailureContaining(DiscardRatioExceededException.class.getName()));
-        assertEquals(0, ZeroDiscardRatio.iterations);
+        assertEquals(0, DefaultDiscardRatio.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ZeroDiscardRatio {
+    public static class DefaultDiscardRatio {
         static int iterations;
 
         @Property public void shouldHold(@When(satisfies = "false") Foo f) {

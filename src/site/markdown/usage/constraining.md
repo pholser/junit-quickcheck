@@ -130,5 +130,5 @@ Constraint expressions cannot refer to other property parameters.
 
 junit-quickcheck generates values for a property parameter with a constraint
 expression until the ratio of constraint failures constraint passes is
-greater than the `discardRatio` specified by `@When`, if any. Exceeding the
+greater than the `discardRatio` specified by `@When`. Exceeding the
 discard ratio raises an exception and thus fails the property.

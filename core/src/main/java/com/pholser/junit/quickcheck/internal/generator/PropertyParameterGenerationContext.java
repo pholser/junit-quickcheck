@@ -127,8 +127,8 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
 
     public static class DiscardRatioExceededException extends RuntimeException {
         static final String MESSAGE_TEMPLATE =
-            "For parameter [%s] with discard ratio [%d], %d unsuccessful values and %d successes"
-                + " for a discard ratio of [%f]. Stopping.";
+            "For parameter [%s] with discard ratio [%d],"
+                + " %d unsuccessful values and %d successes. Stopping.";
 
         private static final long serialVersionUID = Long.MIN_VALUE;
 
@@ -142,8 +142,8 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
                 parameter.typeContext().name(),
                 parameter.discardRatio(),
                 discards,
-                successfulEvaluations,
-                (double) discards / successfulEvaluations));
+                successfulEvaluations)
+            );
         }
     }
 }
