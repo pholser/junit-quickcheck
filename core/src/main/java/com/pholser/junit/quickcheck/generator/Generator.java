@@ -143,8 +143,11 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
-     * Attempts to "narrow" the given object to the type this generator
-     * produces.
+     * <p>Attempts to "narrow" the given object to the type this generator
+     * produces.</p>
+     *
+     * <p>This is intended for use only by junit-quickcheck itself, and not by
+     * creators of custom generators.</p>
      *
      * @param wider target of the narrowing
      * @return narrowed the result of the narrowing
@@ -155,9 +158,11 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
-     * @return whether this generator has component generators, such as for
-     * those generators that produce lists or maps.
+     * <p>This is intended for use only by junit-quickcheck itself, and not by
+     * creators of custom generators.</p>
      *
+     * @return whether this generator has component generators, such as for
+     * those generators that produce lists or maps
      * @see #addComponentGenerators(java.util.List)
      */
     public boolean hasComponents() {
@@ -165,6 +170,9 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
+     * <p>This is intended for use only by junit-quickcheck itself, and not by
+     * creators of custom generators.</p>
+     *
      * @return how many component generators this generator needs
      * @see #addComponentGenerators(java.util.List)
      */
@@ -179,6 +187,9 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * For example, list generators require a single component generator in
      * order to generate elements that have the type of the list parameter's
      * type argument.</p>
+     *
+     * <p>This is intended for use only by junit-quickcheck itself, and not by
+     * creators of custom generators.</p>
      *
      * @param newComponents component generators to add
      */
@@ -202,7 +213,10 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @return whether the type is compatible with the generic type parameter
      * @see #canGenerateForParametersOfTypes(List)
      */
-    public static boolean compatibleWithTypeParameter(TypeParameter<?> parameter, Class<?> clazz) {
+    protected static boolean compatibleWithTypeParameter(
+        TypeParameter<?> parameter,
+        Class<?> clazz) {
+
         return parameter instanceof WildcardTypeParameter
             || parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
     }
@@ -245,8 +259,11 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
-     * Used to supply the available generators to this one.
+     * <p>Supplies the available generators to this one.</p>
      *
+     * <p>This is intended for use only by junit-quickcheck itself, and not by
+     * creators of custom generators.</p>
+
      * @param provided repository of available generators
      */
     public void provide(Generators provided) {
