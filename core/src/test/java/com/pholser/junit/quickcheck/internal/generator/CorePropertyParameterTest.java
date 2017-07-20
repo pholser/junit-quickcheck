@@ -39,7 +39,6 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
-import com.pholser.junit.quickcheck.internal.Reflection;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.junit.Before;
@@ -51,6 +50,7 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 
 import static com.pholser.junit.quickcheck.Objects.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -73,6 +73,7 @@ public abstract class CorePropertyParameterTest {
         source = generatorSource();
         primeSourceOfRandomness();
         primeSeed();
+        primeQuantifier();
         primeTrials();
 
         repository = new GeneratorRepository(randomForGeneratorRepo).register(source);
@@ -114,8 +115,13 @@ public abstract class CorePropertyParameterTest {
         when(randomForParameterGenerator.seed()).thenReturn(seed);
     }
 
+    private void primeQuantifier() {
+        when(quantifier.discardRatio())
+            .thenReturn((int) defaultValueOf(When.class, "discardRatio"));
+    }
+
     protected long seed() {
-        return (long) Reflection.defaultValueOf(When.class, "seed");
+        return (long) defaultValueOf(When.class, "seed");
     }
 
     protected Iterable<Generator<?>> auxiliaryGeneratorSource() {

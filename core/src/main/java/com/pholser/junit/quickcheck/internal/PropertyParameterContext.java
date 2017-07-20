@@ -58,7 +58,7 @@ public class PropertyParameterContext {
 
     public PropertyParameterContext addQuantifier(When quantifier) {
         if (quantifier != null) {
-            this.discardRatio = ensureNonNegativeDiscardRatio(quantifier);
+            this.discardRatio = ensurePositiveDiscardRatio(quantifier);
             this.seed = quantifier.seed();
         }
 
@@ -100,10 +100,10 @@ public class PropertyParameterContext {
         return seed;
     }
 
-    private int ensureNonNegativeDiscardRatio(When quantifier) {
-        if (quantifier.discardRatio() < 0) {
+    private int ensurePositiveDiscardRatio(When quantifier) {
+        if (quantifier.discardRatio() <= 0) {
             throw new IllegalArgumentException(
-                "Negative discard ratio for parameter " + typeContext.name()
+                "Non-positive discard ratio for parameter " + typeContext.name()
                     + " of type " + typeContext.type().getTypeName());
         }
 

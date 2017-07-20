@@ -41,11 +41,13 @@ public @interface When {
     /**
      * @return the ratio of discarded generated values to successful generated
      * values above which values for the annotated property parameter will
-     * no longer be generated. For a negative value, an
-     * {@link IllegalArgumentException} is raised. For a zero value, generation
-     * will continue as long as needed.
+     * no longer be generated. For a non-positive value, an
+     * {@link IllegalArgumentException} is raised. The default value is 10,
+     * to curtail generation for {@link #satisfies()} expressions that are
+     * difficult to satisfy or can never be satisfied (inadvertently or
+     * otherwise).
      */
-    int discardRatio() default 0;
+    int discardRatio() default 10;
 
     /**
      * @return an <a href="http://commons.apache.org/ognl/">OGNL</a> expression
