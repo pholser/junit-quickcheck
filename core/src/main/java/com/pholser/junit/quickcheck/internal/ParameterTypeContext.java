@@ -160,11 +160,15 @@ public class ParameterTypeContext {
 
     @SuppressWarnings("unchecked")
     private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
-        // for Ctor/Fields
-        Constructor<? extends Generator> ctor = findConstructor(generatorType, Class.class);
-        return ctor != null
-            ? instantiate(ctor, rawParameterType())
-            : instantiate(generatorType);
+        Constructor<? extends Generator> ctor;
+        try {
+            // for Ctor/Fields
+            ctor = findConstructor(generatorType, Class.class);
+        } catch (ReflectionException ex) {
+            return instantiate(generatorType);
+        }
+
+        return instantiate(ctor, rawParameterType());
     }
 
     private Class<?> rawParameterType() {

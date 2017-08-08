@@ -78,8 +78,8 @@ public final class Reflection {
     public static <T> Constructor<T> findConstructor(Class<T> type, Class<?>... parameterTypes) {
         try {
             return type.getConstructor(parameterTypes);
-        } catch (NoSuchMethodException ex) {
-            return null;
+        } catch (Exception ex) {
+            throw reflectionException(ex);
         }
     }
 
@@ -250,7 +250,7 @@ public final class Reflection {
             && method.getParameterTypes().length == 0;
     }
 
-    private static RuntimeException reflectionException(Exception ex) {
+    public static RuntimeException reflectionException(Exception ex) {
         if (ex instanceof InvocationTargetException)
             return new ReflectionException(((InvocationTargetException) ex).getTargetException());
         if (ex instanceof RuntimeException)

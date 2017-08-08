@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.ABox;
@@ -198,8 +199,7 @@ public class ComposedObjectsTest {
     @Test public void askingForGeneratorsByUnrecognizedConstructor() {
         assertThat(
             testResult(UnrecognizedConstructor.class),
-            hasSingleFailureContaining(
-                "java.lang.IllegalArgumentException: No constructor found for class"));
+            hasSingleFailureContaining(ReflectionException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

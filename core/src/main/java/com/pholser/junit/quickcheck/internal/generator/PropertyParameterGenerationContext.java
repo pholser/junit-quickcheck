@@ -30,6 +30,7 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.ParameterSampler;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -42,6 +43,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
     private final PropertyParameterContext parameter;
     private final ConstraintEvaluator evaluator;
     private final Generator<?> generator;
+    private final int sampleSize;
 
     private int successfulEvaluations;
     private int discards;
@@ -50,13 +52,15 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         PropertyParameterContext parameter,
         GeneratorRepository repository,
         GeometricDistribution distro,
-        SourceOfRandomness random) {
+        SourceOfRandomness random,
+        ParameterSampler sampler) {
 
         super(distro, initializeRandomness(parameter, random));
 
         this.parameter = parameter;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
-        this.generator = repository.produceGenerator(parameter.typeContext());
+        this.generator = sampler.decideGenerator(repository, parameter.typeContext());
+        this.sampleSize = sampler.sizeFactor(parameter.typeContext());
     }
 
     private static SourceOfRandomness initializeRandomness(
@@ -122,7 +126,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
     }
 
     public int sampleSize() {
-        return parameter.sampleSize();
+        return sampleSize;
     }
 
     public static class DiscardRatioExceededException extends RuntimeException {

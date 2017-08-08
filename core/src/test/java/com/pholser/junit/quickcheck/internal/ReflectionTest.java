@@ -55,7 +55,10 @@ public class ReflectionTest {
         assertEquals(int.class, ctor.getParameterTypes()[0]);
     }
 
-    @Test public void findingConstructorQuietlyGivesNullIfNoSuchConstructor() {
+    @Test public void findingConstructorQuietlyWhenNoSuchConstructor() {
+        thrown.expect(ReflectionException.class);
+        thrown.expectMessage(NoSuchMethodException.class.getName());
+
         assertNull(findConstructor(Integer.class, Object.class));
     }
 
