@@ -88,10 +88,6 @@ public class Fields<T> extends Generator<T> {
         return type.cast(generated);
     }
 
-    @Override public boolean canRegisterAsType(Class<?> type) {
-        return false;
-    }
-
     @Override public void provide(Generators provided) {
         super.provide(provided);
 

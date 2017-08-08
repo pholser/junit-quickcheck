@@ -81,10 +81,6 @@ public class Ctor<T> extends Generator<T> {
         return instantiate(ctor, arguments(random, status));
     }
 
-    @Override public boolean canRegisterAsType(Class<?> type) {
-        return false;
-    }
-
     @Override public void provide(Generators provided) {
         super.provide(provided);
 

@@ -31,7 +31,6 @@ import java.lang.annotation.Target;
 import com.pholser.junit.quickcheck.generator.Fields;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.internal.Zilch;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.AFoo.Same;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
@@ -45,7 +44,6 @@ import org.junit.experimental.results.PrintableResult;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import static com.pholser.junit.quickcheck.Types.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 import static org.hamcrest.Matchers.*;
@@ -86,15 +84,6 @@ public class PropertyParameterGenerationByFieldsTest {
     }
 
     public static class FakeList<T> {
-    }
-
-    @Test public void autoGeneratorDoesNotAllowItselfToBeRegistered() throws Exception {
-        GeneratorRepository repo = new GeneratorRepository(null);
-
-        repo.register(new Fields<>(Object.class));
-
-        thrown.expect(IllegalArgumentException.class);
-        repo.generatorFor(typeOf(getClass(), "object"));
     }
 
     @Test public void autoGenerationOnPrimitiveType() {
