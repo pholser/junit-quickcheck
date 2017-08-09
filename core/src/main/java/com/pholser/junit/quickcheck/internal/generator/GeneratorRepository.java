@@ -106,11 +106,8 @@ public class GeneratorRepository implements Generators {
         Class<?> type,
         Generator<?> generator) {
 
-        Set<Generator<?>> forType = generators.get(type);
-        if (forType == null) {
-            forType = new LinkedHashSet<>();
-            generators.put(type, forType);
-        }
+        Set<Generator<?>> forType =
+            generators.computeIfAbsent(type, k -> new LinkedHashSet<>());
 
         forType.add(generator);
     }
@@ -222,12 +219,8 @@ public class GeneratorRepository implements Generators {
     }
 
     public Generator<?> generatorFor(ParameterTypeContext parameter) {
-
-        // test for only/also here, wrap the chosen generator in the only/also strategy?
-
         if (!parameter.explicitGenerators().isEmpty())
             return composeWeighted(parameter, parameter.explicitGenerators());
-
         if (parameter.isArray())
             return generatorForArrayType(parameter);
         if (parameter.isEnum())
@@ -350,16 +343,12 @@ public class GeneratorRepository implements Generators {
 
         List<Generator<?>> copies = new ArrayList<>();
         for (Generator<?> each : matches)
-            copies.add(copyOf(each));
+            copies.add(each.copy());
         return copies;
     }
 
     private boolean hasGeneratorsFor(ParameterTypeContext parameter) {
         return generators.get(parameter.getRawClass()) != null;
-    }
-
-    private static Generator<?> copyOf(Generator<?> generator) {
-        return instantiate(generator.getClass());
     }
 
     private static org.javaruntype.type.Type<?> token(Type type) {

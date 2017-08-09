@@ -102,4 +102,8 @@ public class Fields<T> extends Generator<T> {
         for (int i = 0; i < fields.size(); ++i)
             fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());
     }
+
+    @Override public Generator<T> copy() {
+        return new Fields<>(types().get(0));
+    }
 }

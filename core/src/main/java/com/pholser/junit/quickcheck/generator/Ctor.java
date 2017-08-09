@@ -96,6 +96,10 @@ public class Ctor<T> extends Generator<T> {
             parameterGenerators.get(i).configure(parameters[i].getAnnotatedType());
     }
 
+    @Override public Ctor<T> copy() {
+        return new Ctor<>(ctor);
+    }
+
     private Object[] arguments(SourceOfRandomness random, GenerationStatus status) {
         Object[] args = new Object[parameters.length];
 
