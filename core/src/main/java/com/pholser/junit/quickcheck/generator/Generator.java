@@ -271,6 +271,16 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
+     * Used by the framework to make a copy of the receiver.
+     *
+     * @return a copy of the receiver
+     */
+    @SuppressWarnings("unchecked")
+    public Generator<T> copy() {
+        return (Generator<T>) instantiate(getClass());
+    }
+
+    /**
      * @return an access point for the available generators
      */
     protected Generators gen() {
