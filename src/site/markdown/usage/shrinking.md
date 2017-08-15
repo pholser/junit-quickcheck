@@ -89,12 +89,14 @@ Your custom generators can, of course, do the same.
             if (ORIGIN.equals(larger))
                 return Collections.emptyList();
 
-            List<Point> shrinks = new ArrayList<>();
-            shrinks.add(new Point(0, larger.y));
-            shrinks.add(new Point(larger.x, 0));
-            shrinks.add(new Point(larger.x / 2, larger.y));
-            shrinks.add(new Point(larger.x, larger.y / 2));
-            return shrinks;
+            return Stream.of(
+                    new Point(0, larger.y),
+                    new Point(larger.x, 0),
+                    new Point(larger.x / 2, larger.y),
+                    new Point(larger.x, larger.y / 2))
+                .distinct()
+                .filter(p -> !p.equals(larger))
+                .collect(Collectors.toList());
         }
     }
 ```
