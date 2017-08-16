@@ -30,6 +30,7 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.AFooBadShrinks;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,6 +70,19 @@ public class ShrinkingTest {
             assumeThat(f.i(), greaterThan(Integer.MAX_VALUE / 2));
 
             assertThat(f.i(), lessThan(Integer.MAX_VALUE / 2));
+        }
+    }
+
+    @Test public void shrinkingDoesNotShrinkWhenLargerEqualsSmaller() throws Exception {
+        assertThat(
+            testResult(ShrinksAreIdentity.class),
+            hasSingleFailureContaining("Args: ["));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinksAreIdentity {
+        @Property public void shouldHold(@From(AFooBadShrinks.class) Foo f) {
+            fail();
         }
     }
 

@@ -95,7 +95,6 @@ Your custom generators can, of course, do the same.
                     new Point(larger.x / 2, larger.y),
                     new Point(larger.x, larger.y / 2))
                 .distinct()
-                .filter(p -> !p.equals(larger))
                 .collect(Collectors.toList());
         }
     }
