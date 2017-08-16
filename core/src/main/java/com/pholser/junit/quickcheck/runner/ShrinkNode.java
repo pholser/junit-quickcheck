@@ -88,6 +88,7 @@ final class ShrinkNode {
 
         PropertyParameterGenerationContext param = params.get(argIndex);
         return param.shrink(args[argIndex]).stream()
+            .filter(s -> !s.equals(args[argIndex]))
             .map(this::shrinkNodeFor)
             .collect(Collectors.toList());
     }
