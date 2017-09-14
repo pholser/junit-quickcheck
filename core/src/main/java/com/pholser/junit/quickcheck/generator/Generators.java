@@ -28,6 +28,8 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
 /**
  * An access point for available generators.
  */
@@ -165,4 +167,16 @@ public interface Generators {
     <T extends Generator<?>> T make(
         Class<T> genType,
         Generator<?>... componentGenerators);
+
+    /**
+     * <p>Makes a generator access point just like the receiver, but which
+     * uses the given source of randomness for making random choices.</p>
+     *
+     * <p>Intended for use by junit-quickcheck.</p>
+     *
+     * @param random a source of randomness
+     * @return a generator access point that has the source of randomness
+     * available to it
+     */
+    Generators withRandom(SourceOfRandomness random);
 }

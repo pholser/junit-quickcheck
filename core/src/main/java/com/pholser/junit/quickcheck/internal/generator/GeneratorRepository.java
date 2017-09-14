@@ -59,10 +59,15 @@ import static java.util.Collections.*;
 
 public class GeneratorRepository implements Generators {
     private final SourceOfRandomness random;
-    private final Map<Class<?>, Set<Generator<?>>> generators = new HashMap<>();
+    private final Map<Class<?>, Set<Generator<?>>> generators;
 
     public GeneratorRepository(SourceOfRandomness random) {
+        this(random, new HashMap<>());
+    }
+
+    private GeneratorRepository(SourceOfRandomness random, Map<Class<?>, Set<Generator<?>>> generators) {
         this.random = random;
+        this.generators = generators;
     }
 
     public GeneratorRepository register(Generator<?> source) {
@@ -206,6 +211,10 @@ public class GeneratorRepository implements Generators {
         generator.addComponentGenerators(asList(components));
 
         return generator;
+    }
+
+    @Override public final Generators withRandom(SourceOfRandomness random) {
+        return new GeneratorRepository(random, this.generators);
     }
 
     Generator<?> produceGenerator(ParameterTypeContext parameter) {
