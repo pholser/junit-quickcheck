@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -73,5 +74,16 @@ public class Repro179 {
         @From(OtherGenerator.class) Other test) {
 
         assertThat(func.apply(test), is(func.apply(test)));
+    }
+
+    @Property public void sameBiFuncTwice(
+        BiFunction<
+            @From(OtherGenerator.class) Other,
+            @From(OtherGenerator.class) Other,
+            @From(OtherGenerator.class) Other> func,
+        @From(OtherGenerator.class) Other first,
+        @From(OtherGenerator.class) Other second) {
+
+        assertThat(func.apply(first, second), is(func.apply(first, second)));
     }
 }
