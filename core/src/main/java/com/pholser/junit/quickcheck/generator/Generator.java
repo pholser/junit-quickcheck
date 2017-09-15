@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
@@ -285,6 +286,13 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      */
     protected Generators gen() {
         return repo;
+    }
+
+    /**
+     * @return an access point for the available generators
+     */
+    protected Generators gen(SourceOfRandomness random) {
+        return repo.withRandom(random);
     }
 
     /**
