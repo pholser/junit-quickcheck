@@ -36,13 +36,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.Only;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
@@ -58,7 +56,6 @@ import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.google.common.collect.Sets.*;
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.Mode.*;
 import static java.math.RoundingMode.*;
