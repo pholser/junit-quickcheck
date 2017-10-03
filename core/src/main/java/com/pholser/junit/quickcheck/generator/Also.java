@@ -28,15 +28,41 @@ package com.pholser.junit.quickcheck.generator;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
+/**
+ * <p>Mark a parameter of a {@link Property} method with this annotation to
+ * ensure that a limited set of values are guaranteed to be used as the value
+ * of that parameter to test the property.</p>
+ *
+ * <p>In {@linkplain com.pholser.junit.quickcheck.Mode#SAMPLING sampling}
+ * mode, on each trial junit-quickcheck ensures that the first <em>n</em>
+ * values are the given set, and generates the remaining <em>trials - n</em>
+ * values in the usual way.
+ *
+ * <p>In {@linkplain com.pholser.junit.quickcheck.Mode#EXHAUSTIVE exhaustive}
+ * mode, junit-quickcheck uses the values in the limited set for the property
+ * parameter, and generates the remaining <em>trials - n</em> values in the
+ * usual way.</p>
+ *
+ * <p><strong>Note</strong>: You will still need a generator defined for the
+ * property parameter's type when this annotation is used.</p>
+ */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
 public @interface Also {
+    /**
+     * @return the values to which the property parameter will certainly be
+     * assigned during property verification
+     */
     String[] value();
 
+    /**
+     * @see Only#by()
+     */
     Class<? extends StringConversion> by() default StringConversion.class;
 }

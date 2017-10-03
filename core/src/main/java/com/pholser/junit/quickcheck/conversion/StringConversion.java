@@ -25,7 +25,16 @@
 
 package com.pholser.junit.quickcheck.conversion;
 
+/**
+ * Describes ways of transforming string input into objects of another type.
+ */
 @FunctionalInterface
 public interface StringConversion {
+    /**
+     * Transform the given "raw" string" into an object of another type.
+     *
+     * @param raw the string to convert
+     * @return the result of the conversion
+     */
     Object convert(String raw);
 }

@@ -31,6 +31,9 @@ import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
 
 /**
  * Represents different modes of execution of property-based tests.
+ *
+ * @see com.pholser.junit.quickcheck.generator.Only
+ * @see com.pholser.junit.quickcheck.generator.Also
  */
 public enum Mode {
     /**
