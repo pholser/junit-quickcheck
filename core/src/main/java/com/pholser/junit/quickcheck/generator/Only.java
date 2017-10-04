@@ -46,8 +46,9 @@ import static java.lang.annotation.RetentionPolicy.*;
  * mode, junit-quickcheck will use the values in the limited set for the
  * property parameter, and no others.</p>
  *
- * <p><strong>Note</strong>: There need not be a generator defined for the
- * property parameter's type when this annotation is used.</p>
+ * <p><strong>Note</strong>: When a parameter is marked with this annotation,
+ * junit-quickcheck doesn't call upon any generators. Thus, it ignores any
+ * generator configuration annotations present on the parameter.</p>
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)

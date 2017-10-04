@@ -35,11 +35,13 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Only;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
@@ -52,6 +54,7 @@ import com.pholser.junit.quickcheck.test.generator.ALong;
 import com.pholser.junit.quickcheck.test.generator.AShort;
 import com.pholser.junit.quickcheck.test.generator.AString;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import com.pholser.junit.quickcheck.test.generator.Between;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -621,6 +624,34 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
             firstValues.add(i);
             secondValues.add(ch);
+            ++iterations;
+        }
+    }
+
+    @Test public void alsoHonorsGeneratorsApartFromFixedSet() throws Exception {
+        assertThat(testResult(AlsoHonorsGenerators.class), isSuccessful());
+        assertEquals(defaultPropertyTrialCount(), AlsoHonorsGenerators.iterations);
+        assertEquals(
+            new HashSet<>(asList(1, 2, 3)),
+            new HashSet<>(AlsoHonorsGenerators.values.subList(0, 3)));
+        assertEquals(
+            new HashSet<>(asList(4, 5)),
+            new HashSet<>(
+                AlsoHonorsGenerators.values.subList(
+                    3,
+                    AlsoHonorsGenerators.values.size())));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class AlsoHonorsGenerators {
+        private static int iterations;
+
+        private static final List<Integer> values = new ArrayList<>();
+
+        @Property public void shouldHold(
+            @Also({"1", "2", "3"}) @From(AnInt.class) @Between(min = 4, max = 5) int i) {
+
+            values.add(i);
             ++iterations;
         }
     }

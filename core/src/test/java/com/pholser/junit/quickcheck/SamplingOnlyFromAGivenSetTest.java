@@ -34,9 +34,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
+import com.pholser.junit.quickcheck.generator.Also;
 import com.pholser.junit.quickcheck.generator.Only;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import com.pholser.junit.quickcheck.test.generator.Between;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -509,6 +512,44 @@ public class SamplingOnlyFromAGivenSetTest {
 
             assertTrue(firstCandidates.contains(i));
             assertTrue(secondCandidates.contains(ch));
+            ++iterations;
+        }
+    }
+
+    @Test public void onlyTrumpsAlso() throws Exception {
+        assertThat(testResult(OnlyTrumpsAlso.class), isSuccessful());
+        assertEquals(defaultPropertyTrialCount(), OnlyTrumpsAlso.iterations);
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class OnlyTrumpsAlso {
+        private static int iterations;
+
+        private static final Set<Integer> candidates = new HashSet<>(asList(1, 2, 3));
+
+        @Property public void shouldHold(
+            @Only({"1", "2", "3"}) @Also({"4", "5"}) int i) {
+
+            assertTrue(candidates.contains(i));
+            ++iterations;
+        }
+    }
+
+    @Test public void onlyTrumpsGenerators() throws Exception {
+        assertThat(testResult(OnlyTrumpsGenerators.class), isSuccessful());
+        assertEquals(defaultPropertyTrialCount(), OnlyTrumpsGenerators.iterations);
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class OnlyTrumpsGenerators {
+        private static int iterations;
+
+        private static final Set<Integer> candidates = new HashSet<>(asList(1, 2, 3));
+
+        @Property public void shouldHold(
+            @Only({"1", "2", "3"}) @From(AnInt.class) @Between(min = 4, max = 5) int i) {
+
+            assertTrue(candidates.contains(i));
             ++iterations;
         }
     }
