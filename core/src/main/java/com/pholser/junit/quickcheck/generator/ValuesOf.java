@@ -38,6 +38,13 @@ import static java.lang.annotation.RetentionPolicy.*;
  *
  * <p>This annotation is recognized on parameters of type {@code boolean} and
  * {@link Enum}.</p>
+ *
+ * @deprecated In {@linkplain com.pholser.junit.quickcheck.Mode#EXHAUSTIVE
+ * exhaustive} mode, {@code boolean} and {@code enum} parameters get the
+ * behavior of this annotation by default.
+ * In {@linkplain com.pholser.junit.quickcheck.Mode#SAMPLING sampling} mode,
+ * {@code boolean} and {@code enum} parameters have their limited domains
+ * sampled already.
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
