@@ -91,12 +91,13 @@ class PropertyStatement extends Statement {
 
         List<PropertyParameterGenerationContext> parameters =
             Arrays.stream(method.getMethod().getParameters())
-                .map(p -> parameterContextFor(p, sampler, typeVariables))
+                .map(p -> parameterContextFor(p, typeVariables))
                 .map(p -> new PropertyParameterGenerationContext(
                     p,
                     repo,
                     distro,
-                    new SourceOfRandomness(new Random())
+                    new SourceOfRandomness(new Random()),
+                    sampler
                 ))
                 .collect(toList());
 
@@ -162,7 +163,6 @@ class PropertyStatement extends Statement {
 
     private PropertyParameterContext parameterContextFor(
         Parameter parameter,
-        ParameterSampler sampler,
         Map<String, Type> typeVariables) {
 
         return new PropertyParameterContext(
@@ -171,8 +171,7 @@ class PropertyStatement extends Statement {
                 parameter.getAnnotatedType(),
                 declarerName(parameter),
                 typeVariables)
-                .allowMixedTypes(true),
-            sampler.sizeFactor(parameter)
+                .allowMixedTypes(true)
         ).annotate(parameter);
     }
 

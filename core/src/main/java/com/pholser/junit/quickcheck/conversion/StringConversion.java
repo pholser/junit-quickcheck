@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2017 Paul R. Holser, Jr.
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,31 +23,18 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+package com.pholser.junit.quickcheck.conversion;
 
 /**
- * <p>Mark a parameter of a {@link com.pholser.junit.quickcheck.Property}
- * method with this annotation to generate all the parameter type's values
- * in turn, rather than at random.</p>
- *
- * <p>This annotation is recognized on parameters of type {@code boolean} and
- * {@link Enum}.</p>
- *
- * @deprecated In {@linkplain com.pholser.junit.quickcheck.Mode#EXHAUSTIVE
- * exhaustive} mode, {@code boolean} and {@code enum} parameters get the
- * behavior of this annotation by default.
- * In {@linkplain com.pholser.junit.quickcheck.Mode#SAMPLING sampling} mode,
- * {@code boolean} and {@code enum} parameters have their limited domains
- * sampled already.
+ * Describes ways of transforming string input into objects of another type.
  */
-@Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
-@Retention(RUNTIME)
-@GeneratorConfiguration
-public @interface ValuesOf {
+@FunctionalInterface
+public interface StringConversion {
+    /**
+     * Transform the given "raw" string" into an object of another type.
+     *
+     * @param raw the string to convert
+     * @return the result of the conversion
+     */
+    Object convert(String raw);
 }

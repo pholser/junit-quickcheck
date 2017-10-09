@@ -40,6 +40,7 @@ import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
 import com.pholser.junit.quickcheck.test.generator.TestGeneratorSource;
 import org.junit.Before;
 import org.junit.Rule;
@@ -85,8 +86,7 @@ public abstract class CorePropertyParameterTest {
         int trials = trials();
         PropertyParameterContext parameter =
             new PropertyParameterContext(
-                new ParameterTypeContext("arg", type, type.toString()),
-                trials)
+                new ParameterTypeContext("arg", type, type.toString()))
                 .annotate(annotatedElement());
         parameter.addQuantifier(quantifier);
 
@@ -95,8 +95,8 @@ public abstract class CorePropertyParameterTest {
                 parameter,
                 repository,
                 distro,
-                randomForParameterGenerator
-            );
+                randomForParameterGenerator,
+                new TupleParameterSampler(trials));
         for (int i = 0; i < trials; ++i)
             propertyParameters.add(generator.generate());
     }

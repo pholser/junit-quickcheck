@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2017 Paul R. Holser, Jr.
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,22 +23,26 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck.internal.generator;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Set;
 
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public interface ParameterSampler {
-    int sizeFactor(ParameterTypeContext p);
+public class SamplingDomainGenerator extends Generator<Object> {
+    private final List<?> items;
 
-    Stream<List<SeededValue>> sample(
-        List<PropertyParameterGenerationContext> parameters);
+    public SamplingDomainGenerator(Set<?> items) {
+        super(Object.class);
 
-    default Generator<?> decideGenerator(GeneratorRepository repository, ParameterTypeContext p) {
-        return repository.produceGenerator(p);
+        this.items = new ArrayList<>(items);
+    }
+
+    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+        return random.choose(items);
     }
 }

@@ -37,13 +37,13 @@ import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext.DiscardRatioExceededException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.slf4j.Logger;
 
 import static java.util.Arrays.*;
 import static org.junit.rules.ExpectedException.*;
@@ -53,13 +53,11 @@ public class PropertyParameterGenerationContextTest {
     @Rule public final ExpectedException thrown = none();
 
     @Mock private SourceOfRandomness random;
-    @Mock private Logger seedLog;
 
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() throws Exception {
         PropertyParameterContext parameter =
             new PropertyParameterContext(
-                new ParameterTypeContext("arg", annotatedType(), "declarer"),
-                20)
+                new ParameterTypeContext("arg", annotatedType(), "declarer"))
                 .annotate(annotatedElement());
 
         PropertyParameterGenerationContext gen =
@@ -67,8 +65,8 @@ public class PropertyParameterGenerationContextTest {
                 parameter,
                 new GeneratorRepository(random).register(new Countdown()),
                 new GeometricDistribution(),
-                random
-            );
+                random,
+                new TupleParameterSampler(20));
 
         thrown.expect(DiscardRatioExceededException.class);
         thrown.expectMessage(String.format(
@@ -76,8 +74,7 @@ public class PropertyParameterGenerationContextTest {
             parameter.typeContext().name(),
             parameter.discardRatio(),
             30,
-            10,
-            3D));
+            10));
 
         while (gen.attempts() < 100)
             gen.generate();

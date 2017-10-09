@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2017 Paul R. Holser, Jr.
+ Copyright (c) 2010-2016 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,22 +23,26 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal;
+package com.pholser.junit.quickcheck.internal.conversion;
 
-import java.util.List;
-import java.util.stream.Stream;
+import java.lang.reflect.Method;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
-import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import com.pholser.junit.quickcheck.conversion.StringConversion;
 
-public interface ParameterSampler {
-    int sizeFactor(ParameterTypeContext p);
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
-    Stream<List<SeededValue>> sample(
-        List<PropertyParameterGenerationContext> parameters);
+public class MethodInvokingStringConversion implements StringConversion {
+    private final Method method;
 
-    default Generator<?> decideGenerator(GeneratorRepository repository, ParameterTypeContext p) {
-        return repository.produceGenerator(p);
+    public MethodInvokingStringConversion(Method method) {
+        this.method = method;
+    }
+
+    @Override public Object convert(String raw) {
+        try {
+            return method.invoke(null, raw);
+        } catch (Exception ex) {
+            throw reflectionException(ex);
+        }
     }
 }

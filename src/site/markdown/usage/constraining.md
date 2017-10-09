@@ -89,7 +89,7 @@ size, but will meet some conditions that assumptions would otherwise have
 tested.
 
 
-## `ValuesOf`
+## `ValuesOf` (deprecated)
 
 You can mark `boolean` and `enum` property parameters with `@ValuesOf` to
 force the generation to run through every value in the type's domain, instead

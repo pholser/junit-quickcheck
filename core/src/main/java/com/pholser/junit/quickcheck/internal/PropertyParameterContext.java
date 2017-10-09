@@ -36,15 +36,13 @@ public class PropertyParameterContext {
         (long) defaultValueOf(When.class, "seed");
 
     private final ParameterTypeContext typeContext;
-    private final int sampleSize;
 
     private int discardRatio;
     private String constraint;
     private long seed = DEFAULT_SEED;
 
-    public PropertyParameterContext(ParameterTypeContext typeContext, int sampleSize) {
+    public PropertyParameterContext(ParameterTypeContext typeContext) {
         this.typeContext = typeContext;
-        this.sampleSize = sampleSize;
     }
 
     public PropertyParameterContext annotate(AnnotatedElement element) {
@@ -78,10 +76,6 @@ public class PropertyParameterContext {
 
     public ParameterTypeContext typeContext() {
         return typeContext;
-    }
-
-    public int sampleSize() {
-        return sampleSize;
     }
 
     public int discardRatio() {
