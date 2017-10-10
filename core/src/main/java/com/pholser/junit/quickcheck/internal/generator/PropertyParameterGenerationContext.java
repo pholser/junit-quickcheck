@@ -129,6 +129,10 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         return sampleSize;
     }
 
+    public String name() {
+        return parameter.typeContext().name();
+    }
+
     public static class DiscardRatioExceededException extends RuntimeException {
         static final String MESSAGE_TEMPLATE =
             "For parameter [%s] with discard ratio [%d],"

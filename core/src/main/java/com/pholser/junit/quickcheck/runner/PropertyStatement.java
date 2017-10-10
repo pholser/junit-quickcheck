@@ -52,6 +52,7 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
+import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
@@ -64,6 +65,7 @@ class PropertyStatement extends Statement {
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
     private final List<AssumptionViolatedException> assumptionViolations = new ArrayList<>();
+    private final Logger logger;
 
     private int successes;
 
@@ -71,12 +73,14 @@ class PropertyStatement extends Statement {
         FrameworkMethod method,
         TestClass testClass,
         GeneratorRepository repo,
-        GeometricDistribution distro) {
+        GeometricDistribution distro,
+        Logger logger) {
 
         this.method = method;
         this.testClass = testClass;
         this.repo = repo;
         this.distro = distro;
+        this.logger = logger;
     }
 
     @Override public void evaluate() throws Throwable {
@@ -115,6 +119,14 @@ class PropertyStatement extends Statement {
         List<SeededValue> arguments,
         ShrinkControl shrinkControl)
         throws InitializationError {
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                "Verifying property {} from {} with these values:",
+                method.getName(),
+                testClass.getName());
+            logger.debug("{}", Arrays.deepToString(arguments.toArray()));
+        }
 
         List<PropertyParameterGenerationContext> params =
             arguments.stream().map(SeededValue::parameter).collect(toList());
@@ -157,7 +169,8 @@ class PropertyStatement extends Statement {
             method,
             testClass,
             failure,
-            shrinkControl)
+            shrinkControl,
+            logger)
             .shrink(params, args, seeds);
     }
 

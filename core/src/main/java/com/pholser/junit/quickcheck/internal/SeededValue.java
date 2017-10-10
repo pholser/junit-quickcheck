@@ -24,4 +24,12 @@ public final class SeededValue {
     public long seed() {
         return seed;
     }
+
+    @Override public String toString() {
+        return String.format(
+            "%s = [%s], seed = %d",
+            p.name(),
+            String.valueOf(value),
+            seed);
+    }
 }

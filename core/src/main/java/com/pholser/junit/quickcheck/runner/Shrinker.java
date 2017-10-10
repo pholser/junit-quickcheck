@@ -33,11 +33,13 @@ import com.pholser.junit.quickcheck.internal.ShrinkControl;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
+import org.slf4j.Logger;
 
 class Shrinker {
     private final FrameworkMethod method;
     private final TestClass testClass;
     private final AssertionError failure;
+    private final Logger logger;
     private final int maxShrinks;
     private final int maxShrinkDepth;
     private final int maxShrinkTime;
@@ -50,11 +52,13 @@ class Shrinker {
         FrameworkMethod method,
         TestClass testClass,
         AssertionError failure,
-        ShrinkControl shrinkControl) {
+        ShrinkControl shrinkControl,
+        Logger logger) {
 
         this.method = method;
         this.testClass = testClass;
         this.failure = failure;
+        this.logger = logger;
         this.maxShrinks = shrinkControl.maxShrinks();
         this.maxShrinkDepth = shrinkControl.maxShrinkDepth();
         this.maxShrinkTime = shrinkControl.maxShrinkTime();
@@ -69,7 +73,7 @@ class Shrinker {
 
         Stack<ShrinkNode> nodes = new Stack<>();
         ShrinkNode counterexample =
-            ShrinkNode.root(method, testClass, params, args, seeds, failure);
+            ShrinkNode.root(method, testClass, params, args, seeds, logger, failure);
         counterexample.shrinks().forEach(nodes::push);
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;

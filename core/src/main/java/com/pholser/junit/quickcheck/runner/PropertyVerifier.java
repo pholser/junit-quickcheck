@@ -56,6 +56,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         throws InitializationError {
 
         super(clazz.getJavaClass());
+
         this.method = method;
         this.args = args;
         this.seeds = seeds;
@@ -81,11 +82,11 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
                     Runnable repeat = () -> {
                         try {
                             statement.evaluate();
-                        } catch (Throwable throwable) {}
+                        } catch (Throwable t) {}
                     };
                     onFailure.accept(e, repeat);
-                } catch (Throwable e) {
-                    reportErrorWithArguments(e);
+                } catch (Throwable t) {
+                    reportErrorWithArguments(t);
                 }
             }
         };
