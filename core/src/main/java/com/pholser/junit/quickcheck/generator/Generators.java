@@ -117,13 +117,16 @@ public interface Generators {
     <T> Generator<T> fieldsOf(Class<T> type);
 
     /**
-     * <p>Gives a generator that can produce values of the given type.</p>
+     * <p>Gives a generator that can produce values of the given type,
+     * parameterized by the given "component" types.</p>
      *
      * @param <T> type of objects produced by the resulting generator
      * @param type a type
+     * @param componentTypes types for the "components" of the type, if any
      * @return generator that can produce values of that type
+     * @see ComponentizedGenerator
      */
-    <T> Generator<T> type(Class<T> type);
+    <T> Generator<T> type(Class<T> type, Class<?>... componentTypes);
 
     /**
      * <p>Gives a generator that can produce instances of the type of the
@@ -163,6 +166,7 @@ public interface Generators {
      * @param genType type of generator to create
      * @param componentGenerators any generators for components of the type
      * @return a generator for producing values
+     * @see ComponentizedGenerator
      */
     <T extends Generator<?>> T make(
         Class<T> genType,

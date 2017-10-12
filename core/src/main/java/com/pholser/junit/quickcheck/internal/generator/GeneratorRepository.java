@@ -39,7 +39,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.Ctor;
 import com.pholser.junit.quickcheck.generator.Fields;
@@ -56,6 +55,7 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 
 public class GeneratorRepository implements Generators {
     private final SourceOfRandomness random;
@@ -143,8 +143,12 @@ public class GeneratorRepository implements Generators {
     }
 
     @SuppressWarnings("unchecked")
-    @Override public <T> Generator<T> type(Class<T> type) {
-        return (Generator<T>) produceGenerator(new ParameterTypeContext(type));
+    @Override public <T> Generator<T> type(Class<T> type, Class<?>... componentTypes) {
+        Generator<T> generator =
+            (Generator<T>) produceGenerator(new ParameterTypeContext(type));
+        generator.addComponentGenerators(
+            Arrays.stream(componentTypes).map(c -> type(c)).collect(toList()));
+        return generator;
     }
 
     @Override public Generator<?> parameter(Parameter parameter) {
@@ -174,7 +178,7 @@ public class GeneratorRepository implements Generators {
         return oneOf(
             type(first),
             Arrays.stream(rest)
-                .map(this::type)
+                .map(t -> type(t))
                 .toArray(Generator[]::new));
     }
 
@@ -190,7 +194,7 @@ public class GeneratorRepository implements Generators {
 
         List<Weighted<Generator<?>>> weightings = gens.stream()
             .map(g -> new Weighted<Generator<?>>(g, 1))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         return (Generator<T>) new CompositeGenerator(weightings);
     }
@@ -295,7 +299,7 @@ public class GeneratorRepository implements Generators {
     private Generator<?> compose(ParameterTypeContext parameter, List<Generator<?>> matches) {
         List<Weighted<Generator<?>>> weightings = matches.stream()
             .map(g -> new Weighted<Generator<?>>(g, 1))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         return composeWeighted(parameter, weightings);
     }
