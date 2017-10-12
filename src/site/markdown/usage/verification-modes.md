@@ -222,3 +222,19 @@ type which accepts a single `String`argument.
 
 Supply a custom conversion strategy if you wish via the `by` attribute of
 `@Only` or `@Also`.
+
+## Reporting values and seeds
+
+junit-quickcheck reports the random values and seeds used for verifying a
+property parameter by logging them to a [SLF4J](http://www.slf4j.org/) logger
+named `junit-quickcheck.value-reporting`, at `DEBUG` level.
+
+    Verifying property propertyMethod from com.your.PropertiesClass with these values:
+    com.your.PropertiesClass.propertyMethod:parameterName = [-42], seed = 8007238959251963394
+
+Add an SLF4J binding JAR file to your test class path and logging configuration
+for your chosen bound library to see these log messages.
+
+*Note*: Shrunken counterexamples, minimal or otherwise, are not reported to
+this log.
+
