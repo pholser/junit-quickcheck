@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
@@ -325,6 +326,37 @@ public class ComposedObjectsTest {
 
                 A a = new A();
                 a.b = gen().type(Box[].class).generate(random, status);
+                return a;
+            }
+        }
+
+        @Property public void holds(@From(MakeA.class) A a) {
+        }
+    }
+
+    @Test
+    public void askingForParameterizedComponentizedType() {
+        assertThat(testResult(ParameterizedComponentizedType.class), isSuccessful());
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ParameterizedComponentizedType {
+        static class A {
+            Box<Foo> b;
+        }
+
+        public static class MakeA extends Generator<A> {
+            public MakeA() {
+                super(A.class);
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override public A generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
+                A a = new A();
+                a.b = gen().type(Box.class, Foo.class).generate(random, status);
                 return a;
             }
         }
