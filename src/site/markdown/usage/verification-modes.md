@@ -104,3 +104,121 @@ this might be verified with these executions:
     sum(719283474, -123420835)
     sum(-384571913, -123420835)
 ```
+
+## `@Only` and `@Also`
+
+These annotations can influence how junit-quickcheck chooses the set of values
+from which the value of a property parameter is drawn.
+
+In "sampling" mode, there will be `Property.trials()` values for each
+parameter.
+
+* If the parameter is marked with `@Only`, then its values are chosen at
+random from the specified set.
+* If the parameter is marked with `@Also`, then those values are used, and
+`trials - |Also.value|` values are chosen from generators.
+* Otherwise, the values are chosen exclusively by a generator.
+* `@Only` wins over `@Also`.
+* There will be trials number of executions of the property, once for each
+"tuple" of arguments.
+
+In "exhaustive" mode, there will usually be `trials` values for a parameter.
+However:
+
+* If the parameter has type `boolean`, `Boolean`, or an `enum`, there will be
+2, 2, or `values().length` values, comprising the type's entire domain.
+* If the parameter is marked with `@Only`, then only those values (numbering
+`|Only.value|`) are used.
+* If the parameter is marked with `@Also`, then those values are used, and
+`trials - `|Also.value|` values are chosen from the generators.
+* Otherwise, `trials` values are chosen by a generator.
+* `@Only` wins over `@Also`.
+* There will be `product[ |p| | p in parameters ]` number of executions of
+the property, one for each member of the cross-product of values to be used
+for each parameter.
+
+For example:
+
+```java
+@RunWith(JUnitQuickcheck.class)
+public class OnlyAndAlso {
+    public enum Response { YES, NO, UNSURE }
+    
+    @Property(trials = 45)
+    public void samplingWithOnly(
+        int arg0,
+        boolean arg1,
+        Response arg2,
+        @Only({"1", "2", "0", "-1"}) int arg3) {
+    
+        /*
+        Invoked 45 times.
+        45 tuples (arg0, arg1, arg2, arg3) generated.
+        Each value of each tuple chosen at random from its domain.
+        Domain of arg3 narrowed by @Only.
+        */
+    }
+    
+    @Property(trials = 77, mode = EXHAUSTIVE)
+    public void exhaustiveWithOnly(
+        int arg0,
+        boolean arg1,
+        Response arg2,
+        @Only({"1", "2", "0", "-1"}) int arg3) {
+    
+        /*
+        Invoked 77 * 2 * 3 * 4 times --
+        once for each choice of 77 randomly chosen arg0,
+        two possible values of arg1, three possible values of arg2,
+        and four possible values of arg3.
+        */
+    }
+
+    @Property(trials = 45)
+    public void samplingWithAlso(
+        int arg0,
+        boolean arg1,
+        Response arg2,
+        @Also({"1", "2", "0", "-1"}) int arg3) {
+    
+        /*
+        Invoked 45 times.
+        45 tuples (arg0, arg1, arg2, arg3) generated.
+        Each value of each tuple chosen at random from its domain,
+        except arg3 uses 1, 2, 0, -1, and 41 other randomly generated values.
+        */
+    }
+    
+    @Property(trials = 77, mode = EXHAUSTIVE)
+    public void exhaustiveWithOnly(
+        int arg0,
+        boolean arg1,
+        Response arg2,
+        @Also({"1", "2", "0", "-1"}) int arg3) {
+    
+        /*
+        Invoked 77 * 2 * 3 * 77 times --
+        once for each choice of 77 randomly chosen arg0,
+        two possible values of arg1, three possible values of arg2,
+        and the four values named in arg3 plus 73 other randomly generated
+        values.
+        */
+    }
+}
+```
+
+*Note*: You can use `@Only` on types that do not have a generator.
+
+By default, junit-quickcheck converts the values specified in `@Only` and
+`@Also` markers to values of the property parameter type via the following
+strategy:
+
+* If present, use a `public static` method on the property parameter type
+called `valueOf` which accepts a single `String` argument and whose return
+type is the type itself.
+* Otherwise, if present, use a `public` constructor on the property parameter
+type which accepts a single `String`argument.
+* Otherwise, fail.
+
+Supply a custom conversion strategy if you wish via the `by` attribute of
+`@Only` or `@Also`.
