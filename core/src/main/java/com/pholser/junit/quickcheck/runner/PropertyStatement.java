@@ -169,8 +169,7 @@ class PropertyStatement extends Statement {
             method,
             testClass,
             failure,
-            shrinkControl,
-            logger)
+            shrinkControl)
             .shrink(params, args, seeds);
     }
 

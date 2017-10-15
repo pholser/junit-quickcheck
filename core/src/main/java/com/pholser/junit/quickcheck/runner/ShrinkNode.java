@@ -32,7 +32,6 @@ import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerati
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.TestClass;
-import org.slf4j.Logger;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
 import static java.util.stream.Collectors.*;
@@ -43,7 +42,6 @@ final class ShrinkNode {
     private final List<PropertyParameterGenerationContext> params;
     private final Object[] args;
     private final long[] seeds;
-    private final Logger logger;
     private final int argIndex;
     private final int depth;
 
@@ -55,7 +53,6 @@ final class ShrinkNode {
         List<PropertyParameterGenerationContext> params,
         Object[] args,
         long[] seeds,
-        Logger logger,
         int argIndex,
         int depth,
         AssertionError failure) {
@@ -65,7 +62,6 @@ final class ShrinkNode {
         this.params = params;
         this.args = args;
         this.seeds = seeds;
-        this.logger = logger;
         this.argIndex = argIndex;
         this.depth = depth;
         this.failure = failure;
@@ -81,7 +77,6 @@ final class ShrinkNode {
         List<PropertyParameterGenerationContext> params,
         Object[] args,
         long[] seeds,
-        Logger logger,
         AssertionError failure) {
 
         return new ShrinkNode(
@@ -90,7 +85,6 @@ final class ShrinkNode {
             params,
             args,
             seeds,
-            logger,
             0,
             0,
             failure);
@@ -122,7 +116,7 @@ final class ShrinkNode {
             params,
             args,
             seeds,
-            logger, argIndex + 1,
+            argIndex + 1,
             depth,
             failure);
     }
@@ -176,7 +170,6 @@ final class ShrinkNode {
             params,
             shrunkArgs,
             seeds,
-            logger,
             argIndex,
             depth + 1,
             failure);
