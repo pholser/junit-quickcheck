@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
@@ -35,6 +34,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.TestClass;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+import static java.util.stream.Collectors.*;
 
 final class ShrinkNode {
     private final FrameworkMethod method;
@@ -79,7 +79,15 @@ final class ShrinkNode {
         long[] seeds,
         AssertionError failure) {
 
-        return new ShrinkNode(method, testClass, params, args, seeds, 0, 0, failure);
+        return new ShrinkNode(
+            method,
+            testClass,
+            params,
+            args,
+            seeds,
+            0,
+            0,
+            failure);
     }
 
     List<ShrinkNode> shrinks() {
@@ -90,7 +98,7 @@ final class ShrinkNode {
         return param.shrink(args[argIndex]).stream()
             .filter(s -> !s.equals(args[argIndex]))
             .map(this::shrinkNodeFor)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     boolean verifyProperty() throws Throwable {
@@ -156,6 +164,14 @@ final class ShrinkNode {
         System.arraycopy(args, 0, shrunkArgs, 0, args.length);
         shrunkArgs[argIndex] = shrunk;
 
-        return new ShrinkNode(method, testClass, params, shrunkArgs, seeds, argIndex, depth + 1, failure);
+        return new ShrinkNode(
+            method,
+            testClass,
+            params,
+            shrunkArgs,
+            seeds,
+            argIndex,
+            depth + 1,
+            failure);
     }
 }

@@ -41,6 +41,8 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.JUnitQuickcheckTestClass;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>JUnit test runner for junit-quickcheck property-based tests.</p>
@@ -59,6 +61,7 @@ import org.junit.runners.model.TestClass;
 public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
+    private final Logger logger;
 
     /**
      * Invoked reflectively by JUnit.
@@ -72,6 +75,7 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
         SourceOfRandomness random = new SourceOfRandomness(new Random());
         repo = new GeneratorRepository(random).register(new ServiceLoaderGeneratorSource());
         distro = new GeometricDistribution();
+        logger = LoggerFactory.getLogger("junit-quickcheck.value-reporting");
     }
 
     @Override protected void validateTestMethods(List<Throwable> errors) {
@@ -94,7 +98,7 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     @Override public Statement methodBlock(FrameworkMethod method) {
         return method.getAnnotation(Test.class) != null
             ? super.methodBlock(method)
-            : new PropertyStatement(method, getTestClass(), repo, distro);
+            : new PropertyStatement(method, getTestClass(), repo, distro, logger);
     }
 
     @Override protected TestClass createTestClass(Class<?> testClass) {
