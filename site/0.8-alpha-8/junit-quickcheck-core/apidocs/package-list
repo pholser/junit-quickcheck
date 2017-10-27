@@ -1,0 +1,7 @@
+com.pholser.junit.quickcheck
+com.pholser.junit.quickcheck.conversion
+com.pholser.junit.quickcheck.generator
+com.pholser.junit.quickcheck.hook
+com.pholser.junit.quickcheck.random
+com.pholser.junit.quickcheck.runner
+com.pholser.junit.quickcheck.runner.sampling

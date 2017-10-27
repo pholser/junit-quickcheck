@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Lists.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">Lists.java</span></div><h1>Lists.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.Collections.*;
+
+public final class Lists {
+<span class="fc" id="L38">    private Lists() {</span>
+<span class="fc" id="L39">        throw new UnsupportedOperationException();</span>
+    }
+
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; removeFrom(List&lt;T&gt; target, int howMany) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (howMany &lt; 0)</span>
+<span class="fc" id="L44">            throw new IllegalArgumentException(&quot;Can't remove &quot; + howMany + &quot; elements from a list&quot;);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (howMany == 0)</span>
+<span class="fc" id="L46">            return singletonList(target);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (howMany &gt; target.size())</span>
+<span class="fc" id="L48">            return emptyList();</span>
+
+<span class="fc" id="L50">        List&lt;T&gt; left = target.subList(0, howMany);</span>
+<span class="fc" id="L51">        List&lt;T&gt; right = target.subList(howMany, target.size());</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (right.isEmpty())</span>
+<span class="fc" id="L53">            return singletonList(emptyList());</span>
+
+<span class="fc" id="L55">        List&lt;List&lt;T&gt;&gt; removals = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L56">        removals.add(right);</span>
+<span class="fc" id="L57">        removals.addAll(removeFrom(right, howMany)</span>
+<span class="fc" id="L58">            .stream()</span>
+<span class="fc" id="L59">            .map(r -&gt; {</span>
+<span class="fc" id="L60">                List&lt;T&gt; items = new ArrayList&lt;&gt;(left);</span>
+<span class="fc" id="L61">                items.addAll(r);</span>
+<span class="fc" id="L62">                return items;</span>
+            })
+<span class="fc" id="L64">            .collect(Collectors.toList()));</span>
+<span class="fc" id="L65">        return removals;</span>
+    }
+
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; shrinksOfOneItem(
+        SourceOfRandomness random,
+        List&lt;T&gt; target,
+        Shrink&lt;T&gt; shrink) {
+
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (target.isEmpty())</span>
+<span class="fc" id="L74">            return new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L76">        T head = target.get(0);</span>
+<span class="fc" id="L77">        List&lt;T&gt; tail = target.subList(1, target.size());</span>
+
+<span class="fc" id="L79">        List&lt;List&lt;T&gt;&gt; shrinks = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L80">        shrinks.addAll(shrink.shrink(random, head)</span>
+<span class="fc" id="L81">            .stream()</span>
+<span class="fc" id="L82">            .map(i -&gt; {</span>
+<span class="fc" id="L83">                List&lt;T&gt; items = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L84">                items.add(i);</span>
+<span class="fc" id="L85">                items.addAll(tail);</span>
+<span class="fc" id="L86">                return items;</span>
+            })
+<span class="fc" id="L88">            .collect(Collectors.toList()));</span>
+<span class="fc" id="L89">        shrinks.addAll(shrinksOfOneItem(random, tail, shrink)</span>
+<span class="fc" id="L90">            .stream()</span>
+<span class="fc" id="L91">            .map(s -&gt; {</span>
+<span class="fc" id="L92">                List&lt;T&gt; items = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L93">                items.add(head);</span>
+<span class="fc" id="L94">                items.addAll(s);</span>
+<span class="fc" id="L95">                return items;</span>
+            })
+<span class="fc" id="L97">            .collect(Collectors.toList()));</span>
+
+<span class="fc" id="L99">        return shrinks;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
