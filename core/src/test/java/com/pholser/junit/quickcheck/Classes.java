@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.google.common.io.Resources;
@@ -41,6 +40,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static com.google.common.io.Resources.*;
+import static java.util.stream.Collectors.*;
 
 final class Classes {
     private Classes() {
@@ -68,7 +68,7 @@ final class Classes {
     static List<Class<?>> classesOf(Iterable<?> items) {
         return StreamSupport.stream(items.spliterator(), false)
             .map(Object::getClass)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {

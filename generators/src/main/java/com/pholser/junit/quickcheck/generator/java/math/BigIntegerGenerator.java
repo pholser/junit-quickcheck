@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -36,10 +37,11 @@ import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.math.BigInteger.*;
 import static java.util.function.Function.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>Produces values of type {@link BigInteger}.</p>
@@ -111,5 +113,9 @@ public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
 
     @Override protected BigInteger negate(BigInteger target) {
         return target.negate();
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return new BigDecimal(narrow(value));
     }
 }

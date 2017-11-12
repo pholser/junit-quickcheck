@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2016 Paul R. Holser, Jr.
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.internal.generator;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -47,7 +46,7 @@ public class ExhaustiveDomainGenerator extends Generator<Object> {
         return items.next();
     }
 
-    public boolean hasNext() {
+    boolean hasNext() {
         return items.hasNext();
     }
 }

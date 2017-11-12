@@ -31,12 +31,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.Pair;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Represents a strategy for generating random values.
@@ -211,7 +212,7 @@ public interface Gen<T> {
         List<Weighted<Gen<? extends U>>> weighted =
             pairs.stream()
                 .map(p -> new Weighted<Gen<? extends U>>(p.second, p.first))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return (random, status) ->
             Items.chooseWeighted(weighted, random).generate(random, status);

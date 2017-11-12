@@ -40,52 +40,68 @@ final class FakeAnnotatedTypeFactory {
     }
 
     private static AnnotatedArrayType makeArrayType(Class<?> type) {
-        return new AnnotatedArrayType() {
-            @Override public AnnotatedType getAnnotatedGenericComponentType() {
-                return makeFrom(type.getComponentType());
-            }
-
-            @Override public Type getType() {
-                return type;
-            }
-
-            @Override public <T extends Annotation> T getAnnotation(
-                Class<T> annotationClass) {
-
-                return null;
-            }
-
-            @Override
-            public Annotation[] getAnnotations() {
-                return new Annotation[0];
-            }
-
-            @Override
-            public Annotation[] getDeclaredAnnotations() {
-                return new Annotation[0];
-            }
-        };
+        return new FakeAnnotatedArrayType(type);
     }
 
     private static AnnotatedType makePlainType(Class<?> type) {
-        return new AnnotatedType() {
-            @Override public Type getType() {
-                return type;
-            }
+        return new FakeAnnotatedType(type);
+    }
 
-            @Override public <T extends Annotation> T getAnnotation(
-                Class<T> annotationClass) {
+    private static final class FakeAnnotatedArrayType
+        implements AnnotatedArrayType {
 
-                return null;
-            }
+        private final Class<?> type;
 
-            @Override public Annotation[] getAnnotations() {
-                return new Annotation[0];
-            }
+        FakeAnnotatedArrayType(Class<?> type) {
+            this.type = type;
+        }
 
-            @Override public Annotation[] getDeclaredAnnotations() {
-                return new Annotation[0];
-            }
-        };
+        @Override public AnnotatedType getAnnotatedGenericComponentType() {
+            return makeFrom(type.getComponentType());
+        }
+
+        @Override public Type getType() {
+            return type;
+        }
+
+        @Override public <T extends Annotation> T getAnnotation(
+            Class<T> annotationClass) {
+
+            return null;
+        }
+
+        @Override public Annotation[] getAnnotations() {
+            return new Annotation[0];
+        }
+
+        @Override public Annotation[] getDeclaredAnnotations() {
+            return new Annotation[0];
+        }
+    }
+
+    private static final class FakeAnnotatedType implements AnnotatedType {
+        private final Class<?> type;
+
+        FakeAnnotatedType(Class<?> type) {
+            this.type = type;
+        }
+
+        @Override public Type getType() {
+            return type;
+        }
+
+        @Override public <T extends Annotation> T getAnnotation(
+            Class<T> annotationClass) {
+
+            return null;
+        }
+
+        @Override public Annotation[] getAnnotations() {
+            return new Annotation[0];
+        }
+
+        @Override public Annotation[] getDeclaredAnnotations() {
+            return new Annotation[0];
+        }
     }
 }

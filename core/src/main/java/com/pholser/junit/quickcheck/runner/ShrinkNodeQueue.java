@@ -23,40 +23,29 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.test.generator;
+package com.pholser.junit.quickcheck.runner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.PriorityQueue;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+class ShrinkNodeQueue extends PriorityQueue<ShrinkNode> {
+    private static final long serialVersionUID = Integer.MIN_VALUE;
 
-import static java.math.BigDecimal.*;
+    private BigDecimal maxMagnitude;
 
-public class AList extends ComponentizedGenerator<ArrayList> {
-    public AList() {
-        super(ArrayList.class);
+    ShrinkNodeQueue(BigDecimal maxMagnitude) {
+        this.maxMagnitude = maxMagnitude;
     }
 
-    @Override public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
-        return new ArrayList<>(status.size());
-    }
+    @Override public boolean offer(ShrinkNode node) {
+        if (node.magnitude().compareTo(maxMagnitude) >= 0)
+            return false;
 
-    @Override public int numberOfNeededComponents() {
-        return 1;
-    }
+        if (!contains(node)) {
+            maxMagnitude = node.magnitude();
+            return super.offer(node);
+        }
 
-    @Override public BigDecimal magnitude(Object value) {
-        ArrayList<?> narrowed = narrow(value);
-
-        if (narrowed.isEmpty())
-            return ZERO;
-
-        BigDecimal elementsMagnitude =
-            narrowed.stream()
-                .map(e -> componentGenerators().get(0).magnitude(e))
-                .reduce(ZERO, BigDecimal::add);
-        return BigDecimal.valueOf(narrowed.size()).multiply(elementsMagnitude);
+        return false;
     }
 }

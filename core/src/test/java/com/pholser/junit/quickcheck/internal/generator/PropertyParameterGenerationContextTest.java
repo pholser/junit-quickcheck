@@ -37,7 +37,7 @@ import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext.DiscardRatioExceededException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
+import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

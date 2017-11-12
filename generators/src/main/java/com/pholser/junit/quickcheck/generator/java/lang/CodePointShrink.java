@@ -30,7 +30,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -38,6 +37,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.lang.Character.*;
 import static java.util.Collections.*;
 import static java.util.Comparator.*;
+import static java.util.stream.Collectors.*;
 
 class CodePointShrink implements Shrink<Integer> {
     private final Predicate<? super Integer> filter;
@@ -69,6 +69,6 @@ class CodePointShrink implements Shrink<Integer> {
                 .filter(filter)
                 .filter(cp -> comparator.compare(cp, codePoint) < 0)
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 }

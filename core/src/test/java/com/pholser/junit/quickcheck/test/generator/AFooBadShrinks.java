@@ -25,24 +25,38 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.util.Collections.*;
+
 public class AFooBadShrinks extends Generator<Foo> {
+    private Between range;
 
     public AFooBadShrinks() {
         super(Foo.class);
     }
 
     @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Foo(random.nextInt());
+        return new Foo(
+            range == null
+                ? random.nextInt()
+                : random.nextInt(range.min(), range.max()));
     }
 
     @Override public List<Foo> doShrink(SourceOfRandomness random, Foo larger) {
-        return Collections.singletonList(new Foo(larger.i(), larger.marked()));
+        return singletonList(new Foo(larger.i(), larger.marked()));
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value).i());
+    }
+
+    public void configure(Between range) {
+        this.range = range;
     }
 }

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2016 Paul R. Holser, Jr.
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.conversion;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -63,15 +64,21 @@ public final class StringConversions {
     }
 
     public static StringConversion decide(ParameterTypeContext p, Only only) {
-        return only.by().equals(defaultValueOf(Only.class, "by"))
-            ? to(p.getRawClass())
-            : instantiate(only.by());
+        return decide(p, only.by(), Only.class);
     }
 
     public static StringConversion decide(ParameterTypeContext p, Also also) {
-        return also.by().equals(defaultValueOf(Only.class, "by"))
+        return decide(p, also.by(), Also.class);
+    }
+
+    private static <T extends Annotation> StringConversion decide(
+        ParameterTypeContext p,
+        Class<? extends StringConversion> custom,
+        Class<T> markerClass) {
+
+        return custom.equals(defaultValueOf(markerClass, "by"))
             ? to(p.getRawClass())
-            : instantiate(also.by());
+            : instantiate(custom);
     }
 
     private static StringConversion characterConversion(Class<?> clazz) {

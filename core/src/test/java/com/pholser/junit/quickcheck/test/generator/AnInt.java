@@ -25,11 +25,15 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 public class AnInt extends Generator<Integer> {
     private Between range;
@@ -44,5 +48,13 @@ public class AnInt extends Generator<Integer> {
 
     @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
         return range == null ? random.nextInt() : random.nextInt(range.min(), range.max());
+    }
+
+    @Override public List<Integer> doShrink(SourceOfRandomness random, Integer larger) {
+        return larger == 0 ? emptyList() : singletonList(larger / 2);
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value));
     }
 }

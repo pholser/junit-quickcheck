@@ -25,16 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Produces values of type {@link BitSet}.
@@ -61,15 +62,19 @@ public class BitSetGenerator extends Generator<BitSet> {
         List<BitSet> shrinks = new ArrayList<>();
         shrinks.addAll(larger.stream()
             .mapToObj(i -> larger.get(0, i))
-            .collect(Collectors.toList()));
+            .collect(toList()));
         shrinks.addAll(larger.stream()
             .mapToObj(i -> {
                 BitSet smaller = (BitSet) larger.clone();
                 smaller.clear(i);
                 return smaller;
             })
-            .collect(Collectors.toList()));
+            .collect(toList()));
 
         return shrinks;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value).size());
     }
 }

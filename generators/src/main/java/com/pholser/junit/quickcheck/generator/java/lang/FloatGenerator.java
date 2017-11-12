@@ -35,8 +35,9 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@code float} or {@link Float}.
@@ -89,5 +90,9 @@ public class FloatGenerator extends DecimalGenerator<Float> {
 
     @Override protected Float negate(Float target) {
         return -target;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value));
     }
 }

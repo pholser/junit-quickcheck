@@ -130,15 +130,15 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void shrinkingPrimitivePositiveBigInteger() {
-        assertThat(testResult(ShrinkingPrimitivePositiveBigInteger.class), failureCountIs(1));
+    @Test public void shrinkingPositiveBigInteger() {
+        assertThat(testResult(ShrinkingPositiveBigInteger.class), failureCountIs(1));
         assertEquals(
             BigInteger.valueOf(12341234),
-            Iterables.getLast(ShrinkingPrimitivePositiveBigInteger.values));
+            Iterables.getLast(ShrinkingPositiveBigInteger.values));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPrimitivePositiveBigInteger {
+    public static class ShrinkingPositiveBigInteger {
         static List<BigInteger> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(min = "12341234", max = "555555555555") BigInteger i) {
@@ -148,16 +148,16 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void shrinkingPrimitiveNegativeBigInteger() {
-        assertThat(testResult(ShrinkingPrimitiveNegativeBigInteger.class), failureCountIs(1));
+    @Test public void shrinkingNegativeBigInteger() {
+        assertThat(testResult(ShrinkingNegativeBigInteger.class), failureCountIs(1));
 
         assertEquals(
             BigInteger.valueOf(-114477),
-            Iterables.getLast(ShrinkingPrimitiveNegativeBigInteger.values));
+            Iterables.getLast(ShrinkingNegativeBigInteger.values));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPrimitiveNegativeBigInteger {
+    public static class ShrinkingNegativeBigInteger {
         static List<BigInteger> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(min = "-999888777666", max = "-114477") BigInteger i) {
@@ -167,16 +167,16 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void shrinkingPrimitiveBigIntegerStraddlingZero() {
-        assertThat(testResult(ShrinkingPrimitiveBigIntegerStraddlingZero.class), failureCountIs(1));
+    @Test public void shrinkingBigIntegerStraddlingZero() {
+        assertThat(testResult(ShrinkingBigIntegerStraddlingZero.class), failureCountIs(1));
 
         assertThat(
-            Iterables.getLast(ShrinkingPrimitiveBigIntegerStraddlingZero.values),
+            Iterables.getLast(ShrinkingBigIntegerStraddlingZero.values),
             lessThanOrEqualTo(BigInteger.TEN));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPrimitiveBigIntegerStraddlingZero {
+    public static class ShrinkingBigIntegerStraddlingZero {
         static List<BigInteger> values = new ArrayList<>();
 
         @Property public void shouldHold(BigInteger i) {
@@ -392,15 +392,15 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void shrinkingPrimitivePositiveBigDecimal() {
-        assertThat(testResult(ShrinkingPrimitivePositiveBigDecimal.class), failureCountIs(1));
+    @Test public void shrinkingPositiveBigDecimal() {
+        assertThat(testResult(ShrinkingPositiveBigDecimal.class), failureCountIs(1));
         assertEquals(
             new BigDecimal("123.45678909891"),
-            Iterables.getLast(ShrinkingPrimitivePositiveBigDecimal.values));
+            Iterables.getLast(ShrinkingPositiveBigDecimal.values));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPrimitivePositiveBigDecimal {
+    public static class ShrinkingPositiveBigDecimal {
         static List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
@@ -412,16 +412,19 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void shrinkingPrimitiveNegativeBigDecimal() {
-        assertThat(testResult(ShrinkingPrimitiveNegativeBigDecimal.class), failureCountIs(1));
+    @Test public void shrinkingNegativeBigDecimal() {
+        assertThat(testResult(ShrinkingNegativeBigDecimal.class), failureCountIs(1));
 
-        assertEquals(
-            new BigDecimal("-114477.1234123412341234"),
-            Iterables.getLast(ShrinkingPrimitiveNegativeBigDecimal.values));
+        assertThat(
+            Iterables.getLast(ShrinkingNegativeBigDecimal.values),
+            lessThanOrEqualTo(new BigDecimal("-114477.1234123412341234")));
+        assertThat(
+            Iterables.getLast(ShrinkingNegativeBigDecimal.values),
+            greaterThanOrEqualTo(new BigDecimal("-999888777666.55443322211")));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPrimitiveNegativeBigDecimal {
+    public static class ShrinkingNegativeBigDecimal {
         static List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
@@ -433,16 +436,16 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void shrinkingPrimitiveBigDecimalStraddlingZero() {
-        assertThat(testResult(ShrinkingPrimitiveBigDecimalStraddlingZero.class), failureCountIs(1));
+    @Test public void shrinkingBigDecimalStraddlingZero() {
+        assertThat(testResult(ShrinkingBigDecimalStraddlingZero.class), failureCountIs(1));
 
         assertThat(
-            Iterables.getLast(ShrinkingPrimitiveBigDecimalStraddlingZero.values),
+            Iterables.getLast(ShrinkingBigDecimalStraddlingZero.values),
             lessThanOrEqualTo(BigDecimal.TEN));
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingPrimitiveBigDecimalStraddlingZero {
+    public static class ShrinkingBigDecimalStraddlingZero {
         static List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(BigDecimal d) {

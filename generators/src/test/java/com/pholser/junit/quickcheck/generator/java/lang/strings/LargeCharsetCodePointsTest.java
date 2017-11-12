@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.LongRunning;
 import org.junit.Test;
@@ -36,6 +35,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static java.nio.charset.Charset.*;
+import static java.util.stream.Collectors.*;
 import static org.junit.Assert.*;
 
 @Category(LongRunning.class)
@@ -53,7 +53,7 @@ public class LargeCharsetCodePointsTest {
     public static Iterable<Charset> data() {
         return availableCharsets().values().stream()
             .filter(Charset::canEncode)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @Test public void nthElement() {

@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.test.generator;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -41,6 +42,7 @@ import static java.util.Collections.*;
 public class AFoo extends Generator<Foo> {
     private Same value;
     private X x;
+    private Between range;
 
     @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
     @Retention(RUNTIME)
@@ -55,7 +57,11 @@ public class AFoo extends Generator<Foo> {
 
     @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
         return new Foo(
-            value == null ? random.nextInt() : value.value(),
+            value == null
+                ? (range == null
+                    ? random.nextInt()
+                    : random.nextInt(range.min(), range.max()))
+                : value.value(),
             x != null);
     }
 
@@ -65,11 +71,19 @@ public class AFoo extends Generator<Foo> {
             : singletonList(new Foo(larger.i() / 2, larger.marked()));
     }
 
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value).i());
+    }
+
     public void configure(Same value) {
         this.value = value;
     }
 
     public void configure(X x) {
         this.x = x;
+    }
+
+    public void configure(Between range) {
+        this.range = range;
     }
 }

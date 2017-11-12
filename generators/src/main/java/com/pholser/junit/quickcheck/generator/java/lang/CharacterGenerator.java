@@ -25,16 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
+import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values of type {@code char} or {@link Character}.
@@ -70,6 +72,10 @@ public class CharacterGenerator extends Generator<Character> {
             .shrink(random, (int) larger)
             .stream()
             .map((Integer cp) -> (char) cp.intValue())
-            .collect(Collectors.toList());
+            .collect(toList());
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value));
     }
 }

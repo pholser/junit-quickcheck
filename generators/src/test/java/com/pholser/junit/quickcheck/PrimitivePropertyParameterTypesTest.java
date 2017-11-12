@@ -670,7 +670,6 @@ public class PrimitivePropertyParameterTypesTest {
 
     @Test public void shrinkingPrimitiveFloatStraddlingZero() {
         assertThat(testResult(ShrinkingPrimitiveFloatStraddlingZero.class), failureCountIs(1));
-
         assertEquals(
             Float.valueOf(0),
             Iterables.getLast(ShrinkingPrimitiveFloatStraddlingZero.values));

@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -38,5 +39,9 @@ public class ABigInt extends Generator<BigInteger> {
 
     @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
         return new BigInteger(random.nextBytes(status.size() + 1));
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return new BigDecimal(narrow(value));
     }
 }

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2016 Paul R. Holser, Jr.
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -34,7 +34,8 @@ import static java.util.stream.Collectors.*;
 public class CartesianIterator<T> implements Iterator<List<T>> {
     private final List<Buffer<T>> buffers;
     private final boolean allStartedAvailable;
-    private int count = 0;
+
+    private int count;
 
     public CartesianIterator(List<Iterator<T>> sources) {
         this.buffers = sources.stream()

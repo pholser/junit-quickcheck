@@ -25,65 +25,62 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
+import static java.util.Collections.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
-@RunWith(JUnitQuickcheck.class)
-public class Repro179 {
+public class Repro175 {
+    @Test public void givesAllArgsAChanceToShrink() {
+        assertThat(testResult(GivesAllArgsAChanceToShrink.class), failureCountIs(2));
+        assertThat(Others.shrinkAttempts, greaterThan(0));
+    }
+
     public static class Other {
-        private final Number test;
-
-        Other(Number test) {
-            this.test = test;
-        }
-
-        @Override public boolean equals(Object o) {
-            return o instanceof Other && test.equals(((Other) o).test);
-        }
-
-        @Override public int hashCode() {
-            return test.hashCode();
-        }
-
-        @Override public String toString() {
-            return test.toString();
-        }
     }
 
     public static class Others extends Generator<Other> {
+        private static int shrinkAttempts;
+
         public Others() {
             super(Other.class);
         }
 
+        @Override public List<Other> doShrink(SourceOfRandomness r, Other larger) {
+            ++shrinkAttempts;
+            return emptyList();
+        }
+
         @Override public Other generate(SourceOfRandomness r, GenerationStatus s) {
-            return new Other(gen(r).type(Number.class).generate(r, s));
+            return new Other();
         }
     }
 
-    @Property public void sameFuncTwice(
-        Function<@From(Others.class) Other, @From(Others.class) Other> func,
-        @From(Others.class) Other test) {
+    @RunWith(JUnitQuickcheck.class)
+    public static class GivesAllArgsAChanceToShrink {
+        @Property public void shrinksInt(
+            @From(AnInt.class) int test,
+            @From(Others.class) Other other) {
 
-        assertThat(func.apply(test), is(func.apply(test)));
-    }
+            fail("Shrink me!");
+        }
 
-    @Property public void sameBiFuncTwice(
-        BiFunction<
-            @From(Others.class) Other,
-            @From(Others.class) Other,
-            @From(Others.class) Other> func,
-        @From(Others.class) Other first,
-        @From(Others.class) Other second) {
+        @Property public void shrinksOther(
+            @From(Others.class) Other other,
+            @From(AnInt.class) int test) {
 
-        assertThat(func.apply(first, second), is(func.apply(first, second)));
+            fail("Shrink me!");
+        }
     }
 }

@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -38,5 +40,9 @@ public class ADouble extends Generator<Double> {
 
     @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
         return random.nextDouble();
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value));
     }
 }

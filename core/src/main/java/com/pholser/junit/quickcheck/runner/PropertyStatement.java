@@ -45,8 +45,8 @@ import com.pholser.junit.quickcheck.internal.ShrinkControl;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.runner.sampling.ExhaustiveParameterSampler;
-import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
+import com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler;
+import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
 import org.junit.AssumptionViolatedException;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -55,8 +55,9 @@ import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 
-import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
 import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
 import static org.junit.Assert.*;
 
 class PropertyStatement extends Statement {
@@ -64,7 +65,7 @@ class PropertyStatement extends Statement {
     private final TestClass testClass;
     private final GeneratorRepository repo;
     private final GeometricDistribution distro;
-    private final List<AssumptionViolatedException> assumptionViolations = new ArrayList<>();
+    private final List<AssumptionViolatedException> assumptionViolations;
     private final Logger logger;
 
     private int successes;
@@ -80,6 +81,7 @@ class PropertyStatement extends Statement {
         this.testClass = testClass;
         this.repo = repo;
         this.distro = distro;
+        assumptionViolations = new ArrayList<>();
         this.logger = logger;
     }
 
@@ -193,9 +195,9 @@ class PropertyStatement extends Statement {
                 return new TupleParameterSampler(marker.trials());
             case EXHAUSTIVE:
                 return new ExhaustiveParameterSampler(marker.trials());
+            default:
+                throw new AssertionError("Don't recognize mode " + marker.mode());
         }
-
-        throw new AssertionError("Don't recognize mode " + marker.mode());
     }
 
     private static String declarerName(Parameter p) {

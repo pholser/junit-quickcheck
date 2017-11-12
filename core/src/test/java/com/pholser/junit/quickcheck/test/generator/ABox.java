@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
+
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -44,6 +46,10 @@ public class ABox extends ComponentizedGenerator<Box> {
 
     @Override public int numberOfNeededComponents() {
         return 1;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return componentGenerators().get(0).magnitude(((Box) value).contents());
     }
 
     public void configure(X x) {

@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.Math.min;
 import static java.lang.String.*;
+import static java.math.BigDecimal.*;
 import static java.util.Collections.*;
 
 public class PropertyParameterGenerationContext extends AbstractGenerationStatus {
@@ -131,6 +133,12 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
 
     public String name() {
         return parameter.typeContext().name();
+    }
+
+    public BigDecimal magnitude(Object value) {
+        return generator.canShrink(value)
+            ? generator.magnitude(value).abs()
+            : ZERO;
     }
 
     public static class DiscardRatioExceededException extends RuntimeException {

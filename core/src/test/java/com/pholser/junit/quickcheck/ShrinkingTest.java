@@ -26,11 +26,13 @@
 package com.pholser.junit.quickcheck;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.AFooBadShrinks;
+import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,7 +126,7 @@ public class ShrinkingTest {
 
     @Test public void shrinkingArray() {
         assertThat(testResult(ShrinkingArray.class), failureCountIs(1));
-        assertThat(ShrinkingArray.attempts.size(), greaterThan(1));
+        assertThat(ShrinkingArray.attempts.size(), greaterThan(0));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -132,6 +134,8 @@ public class ShrinkingTest {
         static List<Foo[]> attempts = new ArrayList<>();
 
         @Property public void shouldHold(Foo[] f) {
+            assumeThat(f.length, greaterThan(0));
+
             attempts.add(f);
 
             fail();
@@ -204,17 +208,17 @@ public class ShrinkingTest {
         assertThat(
             testResult(ShrinkingMoreThanOnePropertyParameter.class),
             hasSingleFailureContaining(
-                String.format("Shrunken args: [%s, %s]", new Foo(1), new Foo(1))));
+                String.format("Shrunken args: [%s, %s]", new Foo(0), new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingMoreThanOnePropertyParameter {
-        @Property(maxShrinks = Integer.MAX_VALUE, maxShrinkDepth = Integer.MAX_VALUE)
-        public void shouldHold(Foo first, Foo second) {
-            assumeThat(first.i(), greaterThan(0));
-            assumeThat(second.i(), greaterThan(0));
+        @Property public void shouldHold(
+            @Between(min = 1, max = 500) Foo first,
+            @Between(min = 1, max = 500) Foo second) {
 
             assertThat(first.i(), lessThan(1));
+            assertThat(second.i(), lessThan(1));
         }
     }
 

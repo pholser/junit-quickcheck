@@ -27,10 +27,10 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -39,6 +39,8 @@ import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.stream.Collectors.*;
 
 public class CompositeGenerator extends Generator<Object> {
     private final List<Weighted<Generator<?>>> composed;
@@ -64,7 +66,7 @@ public class CompositeGenerator extends Generator<Object> {
         List<Weighted<Generator<?>>> shrinkers =
             composed.stream()
                 .filter(w -> w.item.canShrink(larger))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         Generator<?> choice = Items.chooseWeighted(shrinkers, random);
         return new ArrayList<>(choice.shrink(random, larger));
@@ -83,6 +85,15 @@ public class CompositeGenerator extends Generator<Object> {
 
         for (Weighted<Generator<?>> each : composed)
             each.item.provide(provided);
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        List<Weighted<Generator<?>>> shrinkers =
+            composed.stream()
+                .filter(w -> w.item.canShrink(value))
+                .collect(toList());
+
+        return shrinkers.get(0).item.magnitude(value);
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -133,13 +144,13 @@ public class CompositeGenerator extends Generator<Object> {
     private String candidateGeneratorDescriptions() {
         return composed.stream()
             .map(w -> w.item.getClass().getName())
-            .collect(Collectors.toList())
+            .collect(toList())
             .toString();
     }
 
     private static List<String> configurationAnnotationNames(AnnotatedElement element) {
         return configurationAnnotationsOn(element).stream()
             .map(a -> a.annotationType().getName())
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 }

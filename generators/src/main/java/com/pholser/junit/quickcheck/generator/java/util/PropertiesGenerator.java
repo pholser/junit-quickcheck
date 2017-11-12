@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -39,6 +40,7 @@ import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 
 /**
@@ -79,5 +81,24 @@ public class PropertiesGenerator extends Generator<Properties> {
                 Map.class,
                 Dictionary.class));
         return !exclusions.contains(type);
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        Properties narrowed = narrow(value);
+
+        if (narrowed.isEmpty())
+            return ZERO;
+
+        BigDecimal keysMagnitude =
+            narrowed.keySet().stream()
+                .map(e -> stringGenerator.magnitude(e))
+                .reduce(ZERO, BigDecimal::add);
+        BigDecimal valuesMagnitude =
+            narrowed.values().stream()
+                .map(e -> stringGenerator.magnitude(e))
+                .reduce(ZERO, BigDecimal::add);
+        return BigDecimal.valueOf(narrowed.size())
+            .multiply(keysMagnitude)
+            .add(valuesMagnitude);
     }
 }

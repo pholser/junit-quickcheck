@@ -25,16 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Produces values of type {@link OptionalDouble}.
@@ -81,7 +84,15 @@ public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
             doubleGenerator.shrink(random, larger.getAsDouble())
                 .stream()
                 .map(OptionalDouble::of)
-                .collect(Collectors.toList()));
+                .collect(toList()));
         return shrinks;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        OptionalDouble narrowed = narrow(value);
+
+        return narrowed.isPresent()
+            ? doubleGenerator.magnitude(narrowed.getAsDouble())
+            : ZERO;
     }
 }

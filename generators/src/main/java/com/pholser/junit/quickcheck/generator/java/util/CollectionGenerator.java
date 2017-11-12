@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -36,12 +36,15 @@ import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.*;
+
 import static com.pholser.junit.quickcheck.internal.Lists.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
-import static java.util.stream.StreamSupport.*;
 
 /**
  * <p>Base class for generators of {@link Collection}s.</p>
@@ -100,16 +103,30 @@ public abstract class CollectionGenerator<T extends Collection>
         Shrink<Object> generator = (Shrink<Object>) componentGenerators().get(0);
 
         List<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, generator);
-        shrinks.addAll(oneItemShrinks.stream()
-            .map(this::convert)
-            .filter(this::inSizeRange)
-            .collect(Collectors.toList()));
+        shrinks.addAll(
+            oneItemShrinks.stream()
+                .map(this::convert)
+                .filter(this::inSizeRange)
+                .collect(toList()));
 
         return shrinks;
     }
 
     @Override public int numberOfNeededComponents() {
         return 1;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        Collection<?> narrowed = narrow(value);
+
+        if (narrowed.isEmpty())
+            return ZERO;
+
+        BigDecimal elementsMagnitude =
+            narrowed.stream()
+                .map(e -> componentGenerators().get(0).magnitude(e))
+                .reduce(ZERO, BigDecimal::add);
+        return BigDecimal.valueOf(narrowed.size()).multiply(elementsMagnitude);
     }
 
     protected final T empty() {
@@ -133,7 +150,7 @@ public abstract class CollectionGenerator<T extends Collection>
             .flatMap(Collection::stream)
             .map(this::convert)
             .filter(this::inSizeRange)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @SuppressWarnings("unchecked")

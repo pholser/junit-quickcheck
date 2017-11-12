@@ -25,14 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -40,12 +39,14 @@ import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.*;
+
 import static com.pholser.junit.quickcheck.internal.Lists.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
-import static java.util.stream.StreamSupport.*;
 
 /**
  * <p>Base class for generators of {@link Map}s.</p>
@@ -110,13 +111,32 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         shrinks.addAll(oneEntryShrinks.stream()
             .map(this::convert)
             .filter(this::inSizeRange)
-            .collect(Collectors.toList()));
+            .collect(toList()));
 
         return shrinks;
     }
 
     @Override public int numberOfNeededComponents() {
         return 2;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        Map<?, ?> narrowed = narrow(value);
+
+        if (narrowed.isEmpty())
+            return BigDecimal.ZERO;
+
+        BigDecimal keysMagnitude =
+            narrowed.keySet().stream()
+                .map(e -> componentGenerators().get(0).magnitude(e))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal valuesMagnitude =
+            narrowed.values().stream()
+                .map(e -> componentGenerators().get(1).magnitude(e))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return BigDecimal.valueOf(narrowed.size())
+            .multiply(keysMagnitude)
+            .add(valuesMagnitude);
     }
 
     protected final T empty() {
@@ -144,7 +164,7 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
             .flatMap(Collection::stream)
             .map(this::convert)
             .filter(this::inSizeRange)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @SuppressWarnings("unchecked")
@@ -170,12 +190,15 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
             List<Object> keyShrinks = keyShrinker.shrink(r, entry.getKey());
             List<Object> valueShrinks = valueShrinker.shrink(r, entry.getValue());
             List<Entry<?, ?>> shrinks = new ArrayList<>();
-            shrinks.addAll(IntStream.range(0, keyShrinks.size())
-                .mapToObj(i -> new SimpleEntry<>(keyShrinks.get(i), entry.getValue()))
-                .collect(Collectors.toList()));
-            shrinks.addAll(IntStream.range(0, valueShrinks.size())
-                .mapToObj(i -> new SimpleEntry<>(entry.getKey(), valueShrinks.get(i)))
-                .collect(Collectors.toList()));
+            shrinks.addAll(
+                keyShrinks.stream()
+                    .map(k -> new SimpleEntry<>(k, entry.getValue()))
+                    .collect(toList()));
+            shrinks.addAll(
+                valueShrinks.stream()
+                    .map(v -> new SimpleEntry<>(entry.getKey(), v))
+                    .collect(toList()));
+
             return shrinks;
         };
     }

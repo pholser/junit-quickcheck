@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2016 Paul R. Holser, Jr.
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,7 +23,7 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.runner.sampling;
+package com.pholser.junit.quickcheck.internal.sampling;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -48,10 +48,11 @@ import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.GuaranteeValuesGenerator;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class ExhaustiveParameterSampler implements ParameterSampler {
     private final int sizeFactor;

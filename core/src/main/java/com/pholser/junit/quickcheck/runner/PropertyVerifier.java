@@ -82,7 +82,8 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
                     Runnable repeat = () -> {
                         try {
                             statement.evaluate();
-                        } catch (Throwable t) {}
+                        } catch (Throwable ignored) {
+                        }
                     };
                     onFailure.accept(e, repeat);
                 } catch (Throwable t) {
