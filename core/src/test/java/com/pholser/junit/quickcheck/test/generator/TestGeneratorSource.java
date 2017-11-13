@@ -41,7 +41,7 @@ public class TestGeneratorSource implements Iterable<Generator<?>> {
             new ABigInt(),
             new ABool(),
             new AByte(),
-            new ACallable(),
+            new ACallable<>(),
             new AChar(),
             new ADouble(),
             new AFloat(),

@@ -51,11 +51,12 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 
-import static com.pholser.junit.quickcheck.internal.Items.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Items.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class GeneratorRepository implements Generators {
     private final SourceOfRandomness random;
@@ -211,8 +212,8 @@ public class GeneratorRepository implements Generators {
         return generator;
     }
 
-    @Override public final Generators withRandom(SourceOfRandomness random) {
-        return new GeneratorRepository(random, this.generators);
+    @Override public final Generators withRandom(SourceOfRandomness other) {
+        return new GeneratorRepository(other, this.generators);
     }
 
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {

@@ -39,7 +39,7 @@ public class ResolvingGenericPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class PairProperties<F, S> {
         @Property public void firstAndSecond(F first, S second) {
-            Pair p = new Pair<>(first, second, false);
+            Pair<F, S> p = new Pair<>(first, second, false);
 
             assertSame(first, p.first());
             assertSame(second, p.second());

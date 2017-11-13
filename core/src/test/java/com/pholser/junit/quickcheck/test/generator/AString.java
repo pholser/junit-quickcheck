@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -38,5 +39,9 @@ public class AString extends Generator<String> {
 
     @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
         return new String(random.nextBytes(status.size() + 1), Charset.forName("UTF-8"));
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value).length());
     }
 }

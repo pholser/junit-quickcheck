@@ -29,6 +29,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,9 +42,11 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.math.BigDecimal.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values for property parameters.
@@ -143,6 +146,24 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
+     * <p>Gives a hint to the shrinking process as to the magnitude of the given
+     * value. The shrinking process will prefer trying values of greater
+     * magnitude before values of lesser magnitude. If not overridden, this
+     * implementation returns zero.</p>
+     *
+     * <p><em>Note to generator writers:</em> Do not worry about normalizing
+     * a magnitude to a positive value; the shrinking mechanism will take care
+     * of it.</p>
+     *
+     * @see #narrow(Object)
+     * @param value the value to assess
+     * @return a measure of the given value's magnitude
+     */
+    public BigDecimal magnitude(Object value) {
+        return ZERO;
+    }
+
+    /**
      * <p>Attempts to "narrow" the given object to the type this generator
      * produces.</p>
      *
@@ -208,20 +229,6 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
-     * @param parameter a generic type parameter
-     * @param clazz a type
-     * @return whether the type is compatible with the generic type parameter
-     * @see #canGenerateForParametersOfTypes(List)
-     */
-    protected static boolean compatibleWithTypeParameter(
-        TypeParameter<?> parameter,
-        Class<?> clazz) {
-
-        return parameter instanceof WildcardTypeParameter
-            || parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
-    }
-
-    /**
      * <p>Configures this generator using annotations from a given annotated
      * type.</p>
      *
@@ -281,6 +288,20 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
     }
 
     /**
+     * @param parameter a generic type parameter
+     * @param clazz a type
+     * @return whether the type is compatible with the generic type parameter
+     * @see #canGenerateForParametersOfTypes(List)
+     */
+    protected static boolean compatibleWithTypeParameter(
+        TypeParameter<?> parameter,
+        Class<?> clazz) {
+
+        return parameter instanceof WildcardTypeParameter
+            || parameter.getType().isAssignableFrom(Types.forJavaLangReflectType(clazz));
+    }
+
+    /**
      * @return an access point for the available generators
      */
     protected Generators gen() {
@@ -332,14 +353,17 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
         Class<? extends Annotation> annotationType,
         Annotation configuration) {
 
-        configure(annotationType, configuration, ex -> {
-            throw new GeneratorConfigurationException(
-                String.format(
-                    "Generator %s does not understand configuration annotation %s",
-                    getClass().getName(),
-                    annotationType.getName()),
-                ex);
-        });
+        configure(
+            annotationType,
+            configuration,
+            ex -> {
+                throw new GeneratorConfigurationException(
+                    String.format(
+                        "Generator %s does not understand configuration annotation %s",
+                        getClass().getName(),
+                        annotationType.getName()),
+                    ex);
+            });
     }
 
     private void configureLenient(Map<Class<? extends Annotation>, Annotation> byType) {

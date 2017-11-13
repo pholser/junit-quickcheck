@@ -63,7 +63,10 @@ to the shrinking process (via its `doShrink()` method).
 Most of the generators in module `junit-quickcheck-generators`, including
 those for primitives/their wrappers, collections, maps, and arrays,
 override `doShrink()` to offer "smaller" values to the shrinking process.
-Your custom generators can, of course, do the same.
+Your custom generators can, of course, do the same. As of version 0.8,
+you can also override `magnitude()` to give the shrinking machinery hints
+as to the relative "size" of values that your generator produces.
+The shrinking process will try "larger" values before "smaller" ones.
 
 ```java
     import java.awt.Point;
@@ -96,6 +99,11 @@ Your custom generators can, of course, do the same.
                     new Point(larger.x, larger.y / 2))
                 .distinct()
                 .collect(Collectors.toList());
+        }
+        
+        @Override public BigDecimal magnitude(Object value) {
+            return BigDecimal.valueOf(x)
+                .add(BigDecimal.valueOf(y).times(2));
         }
     }
 ```

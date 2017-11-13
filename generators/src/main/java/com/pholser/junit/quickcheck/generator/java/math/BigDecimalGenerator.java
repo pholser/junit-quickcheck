@@ -34,15 +34,16 @@ import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
-import com.pholser.junit.quickcheck.generator.internal.Comparables;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.Math.*;
 import static java.math.BigDecimal.*;
 import static java.util.function.Function.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>Produces values of type {@link BigDecimal}.</p>
@@ -166,5 +167,9 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
 
     @Override protected BigDecimal negate(BigDecimal target) {
         return target.negate();
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return narrow(value);
     }
 }

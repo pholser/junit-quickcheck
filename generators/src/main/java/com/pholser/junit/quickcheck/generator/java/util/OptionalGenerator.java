@@ -25,14 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Produces values of type {@link Optional}.
@@ -59,11 +62,18 @@ public class OptionalGenerator extends ComponentizedGenerator<Optional> {
             componentGenerators().get(0).shrink(random, larger.get())
                 .stream()
                 .map(Optional::of)
-                .collect(Collectors.toList()));
+                .collect(toList()));
         return shrinks;
     }
 
     @Override public int numberOfNeededComponents() {
         return 1;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        Optional<?> narrowed = narrow(value);
+
+        return narrowed.map(componentGenerators().get(0)::magnitude)
+            .orElse(ZERO);
     }
 }

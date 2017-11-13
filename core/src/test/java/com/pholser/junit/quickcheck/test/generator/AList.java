@@ -25,11 +25,14 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
 
 public class AList extends ComponentizedGenerator<ArrayList> {
     public AList() {
@@ -42,5 +45,18 @@ public class AList extends ComponentizedGenerator<ArrayList> {
 
     @Override public int numberOfNeededComponents() {
         return 1;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        ArrayList<?> narrowed = narrow(value);
+
+        if (narrowed.isEmpty())
+            return ZERO;
+
+        BigDecimal elementsMagnitude =
+            narrowed.stream()
+                .map(e -> componentGenerators().get(0).magnitude(e))
+                .reduce(ZERO, BigDecimal::add);
+        return BigDecimal.valueOf(narrowed.size()).multiply(elementsMagnitude);
     }
 }

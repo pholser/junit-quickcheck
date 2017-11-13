@@ -27,12 +27,12 @@ package com.pholser.junit.quickcheck.internal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 
 public final class Lists {
     private Lists() {
@@ -61,7 +61,7 @@ public final class Lists {
                 items.addAll(r);
                 return items;
             })
-            .collect(Collectors.toList()));
+            .collect(toList()));
         return removals;
     }
 
@@ -85,7 +85,7 @@ public final class Lists {
                 items.addAll(tail);
                 return items;
             })
-            .collect(Collectors.toList()));
+            .collect(toList()));
         shrinks.addAll(shrinksOfOneItem(random, tail, shrink)
             .stream()
             .map(s -> {
@@ -94,7 +94,7 @@ public final class Lists {
                 items.addAll(s);
                 return items;
             })
-            .collect(Collectors.toList()));
+            .collect(toList()));
 
         return shrinks;
     }

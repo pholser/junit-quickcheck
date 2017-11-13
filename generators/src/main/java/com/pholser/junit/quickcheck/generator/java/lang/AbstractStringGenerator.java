@@ -25,19 +25,21 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Lists;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.*;
+
 import static com.pholser.junit.quickcheck.internal.Lists.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
-import static java.util.stream.StreamSupport.*;
 
 /**
  * <p>Base class for generators of values of type {@link String}.</p>
@@ -66,7 +68,7 @@ public abstract class AbstractStringGenerator extends Generator<String> {
     @Override public List<String> doShrink(SourceOfRandomness random, String larger) {
         List<String> shrinks = new ArrayList<>();
 
-        List<Integer> codePoints = larger.codePoints().boxed().collect(Collectors.toList());
+        List<Integer> codePoints = larger.codePoints().boxed().collect(toList());
         shrinks.addAll(removals(codePoints));
 
         List<List<Integer>> oneItemShrinks =
@@ -74,9 +76,13 @@ public abstract class AbstractStringGenerator extends Generator<String> {
         shrinks.addAll(oneItemShrinks.stream()
             .map(this::convert)
             .filter(this::codePointsInRange)
-            .collect(Collectors.toList()));
+            .collect(toList()));
 
         return shrinks;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value).length());
     }
 
     protected abstract int nextCodePoint(SourceOfRandomness random);
@@ -92,7 +98,7 @@ public abstract class AbstractStringGenerator extends Generator<String> {
             .map(i -> Lists.removeFrom(codePoints, i))
             .flatMap(Collection::stream)
             .map(this::convert)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private String convert(List<Integer> codePoints) {

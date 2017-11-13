@@ -26,8 +26,8 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.internal.ParameterSampler;
-import com.pholser.junit.quickcheck.runner.sampling.ExhaustiveParameterSampler;
-import com.pholser.junit.quickcheck.runner.sampling.TupleParameterSampler;
+import com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler;
+import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
 
 /**
  * Represents different modes of execution of property-based tests.

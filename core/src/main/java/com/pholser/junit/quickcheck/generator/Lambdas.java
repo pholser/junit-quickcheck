@@ -36,16 +36,20 @@ import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.System.*;
 import static java.lang.reflect.Proxy.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Helper class for creating instances of "functional interfaces".
  */
 public final class Lambdas {
     private static final Constructor<MethodHandles.Lookup> METHOD_LOOKUP_CTOR =
-        findDeclaredConstructor(MethodHandles.Lookup.class, Class.class, int.class);
+        findDeclaredConstructor(
+            MethodHandles.Lookup.class,
+            Class.class,
+            int.class);
 
     private Lambdas() {
         throw new UnsupportedOperationException();
@@ -81,13 +85,19 @@ public final class Lambdas {
         Generator<U> returnValueGenerator,
         GenerationStatus status) {
 
-        if (singleAbstractMethodOf(lambdaType) == null)
-            throw new IllegalArgumentException(lambdaType + " is not a functional interface type");
+        if (singleAbstractMethodOf(lambdaType) == null) {
+            throw new IllegalArgumentException(
+                lambdaType + " is not a functional interface type");
+        }
 
-        return lambdaType.cast(newProxyInstance(
-            lambdaType.getClassLoader(),
-            new Class<?>[] { lambdaType },
-            new LambdaInvocationHandler<>(lambdaType, returnValueGenerator, status.attempts())));
+        return lambdaType.cast(
+            newProxyInstance(
+                lambdaType.getClassLoader(),
+                new Class<?>[] { lambdaType },
+                new LambdaInvocationHandler<>(
+                    lambdaType,
+                    returnValueGenerator,
+                    status.attempts())));
     }
 
     private static class LambdaInvocationHandler<T, U> implements InvocationHandler {

@@ -30,13 +30,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Sequences.*;
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 import static java.util.stream.StreamSupport.*;
+
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
 
 /**
  * Base class for generators of integral types, such as {@code int} and
@@ -67,7 +68,7 @@ public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
                 .map(narrow())
                 .filter(inRange())
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(toList());
         Collections.reverse(results);
         results.add(leastMagnitude());
         if (negative(larger))

@@ -25,16 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalLong;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.LongGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Produces values of type {@link OptionalLong}.
@@ -80,7 +83,15 @@ public class OptionalLongGenerator extends Generator<OptionalLong> {
             longGenerator.shrink(random, larger.getAsLong())
                 .stream()
                 .map(OptionalLong::of)
-                .collect(Collectors.toList()));
+                .collect(toList()));
         return shrinks;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        OptionalLong narrowed = narrow(value);
+
+        return narrowed.isPresent()
+            ? BigDecimal.valueOf(narrowed.getAsLong())
+            : ZERO;
     }
 }

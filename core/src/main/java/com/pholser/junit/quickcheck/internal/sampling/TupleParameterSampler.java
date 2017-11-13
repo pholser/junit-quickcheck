@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2016 Paul R. Holser, Jr.
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,7 +23,7 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.runner.sampling;
+package com.pholser.junit.quickcheck.internal.sampling;
 
 import java.util.Arrays;
 import java.util.List;

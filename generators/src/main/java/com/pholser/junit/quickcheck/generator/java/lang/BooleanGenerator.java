@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -32,6 +33,7 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.math.BigDecimal.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
@@ -65,5 +67,9 @@ public class BooleanGenerator extends Generator<Boolean> {
 
     @Override public List<Boolean> doShrink(SourceOfRandomness random, Boolean larger) {
         return larger ? singletonList(false) : emptyList();
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return narrow(value) ? ONE : ZERO;
     }
 }

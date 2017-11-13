@@ -29,8 +29,9 @@ import java.math.BigInteger;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static java.lang.String.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 
 public final class Ranges {
     public enum Type {

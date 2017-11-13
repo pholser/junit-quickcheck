@@ -30,9 +30,10 @@ import java.lang.annotation.Target;
 
 import com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook;
 
-import static com.pholser.junit.quickcheck.Mode.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
+
+import static com.pholser.junit.quickcheck.Mode.*;
 
 /**
  * <p>Mark a method on a class that is {@linkplain org.junit.runner.RunWith

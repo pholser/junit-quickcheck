@@ -39,4 +39,8 @@ public class ADecimal extends Generator<BigDecimal> {
     @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
         return new BigDecimal(random.nextDouble());
     }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return narrow(value);
+    }
 }

@@ -25,11 +25,14 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
 
 public class AMap extends ComponentizedGenerator<HashMap> {
     public AMap() {
@@ -42,5 +45,24 @@ public class AMap extends ComponentizedGenerator<HashMap> {
 
     @Override public int numberOfNeededComponents() {
         return 2;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        HashMap<?, ?> narrowed = narrow(value);
+
+        if (narrowed.isEmpty())
+            return ZERO;
+
+        BigDecimal keysMagnitude =
+            narrowed.keySet().stream()
+                .map(e -> componentGenerators().get(0).magnitude(e))
+                .reduce(ZERO, BigDecimal::add);
+        BigDecimal valuesMagnitude =
+            narrowed.values().stream()
+                .map(e -> componentGenerators().get(1).magnitude(e))
+                .reduce(ZERO, BigDecimal::add);
+        return BigDecimal.valueOf(narrowed.size())
+            .multiply(keysMagnitude)
+            .add(valuesMagnitude);
     }
 }

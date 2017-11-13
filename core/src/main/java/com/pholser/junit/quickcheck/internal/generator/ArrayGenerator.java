@@ -27,10 +27,11 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -39,12 +40,15 @@ import com.pholser.junit.quickcheck.generator.Shrink;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.*;
+
 import static com.pholser.junit.quickcheck.internal.Lists.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
-import static java.util.stream.StreamSupport.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;
@@ -98,7 +102,7 @@ public class ArrayGenerator extends Generator<Object> {
         shrinks.addAll(oneItemShrinks.stream()
             .map(this::convert)
             .filter(this::inLengthRange)
-            .collect(Collectors.toList()));
+            .collect(toList()));
 
         return shrinks;
     }
@@ -107,6 +111,18 @@ public class ArrayGenerator extends Generator<Object> {
         super.provide(provided);
 
         component.provide(provided);
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        int length = Array.getLength(value);
+        if (length == 0)
+            return ZERO;
+
+        BigDecimal elementsMagnitude =
+            IntStream.range(0, length)
+                .mapToObj(i -> component.magnitude(Array.get(value, i)))
+                .reduce(ZERO, BigDecimal::add);
+        return BigDecimal.valueOf(length).multiply(elementsMagnitude);
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
@@ -135,7 +151,7 @@ public class ArrayGenerator extends Generator<Object> {
             .flatMap(Collection::stream)
             .map(this::convert)
             .filter(this::inLengthRange)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private Object convert(List<?> items) {

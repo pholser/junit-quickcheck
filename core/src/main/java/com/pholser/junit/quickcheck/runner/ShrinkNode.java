@@ -25,25 +25,32 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import java.util.Collections;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.TestClass;
 
-import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+import static java.util.Comparator.*;
+import static java.util.function.Function.*;
 import static java.util.stream.Collectors.*;
 
-final class ShrinkNode {
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+
+final class ShrinkNode implements Comparable<ShrinkNode> {
     private final FrameworkMethod method;
     private final TestClass testClass;
     private final List<PropertyParameterGenerationContext> params;
     private final Object[] args;
     private final long[] seeds;
-    private final int argIndex;
-    private final int depth;
+    private final int[] depths;
+    private final int totalDepth;
+    private final BigDecimal totalMagnitude;
 
     private AssertionError failure;
 
@@ -53,8 +60,7 @@ final class ShrinkNode {
         List<PropertyParameterGenerationContext> params,
         Object[] args,
         long[] seeds,
-        int argIndex,
-        int depth,
+        int[] depths,
         AssertionError failure) {
 
         this.method = method;
@@ -62,13 +68,11 @@ final class ShrinkNode {
         this.params = params;
         this.args = args;
         this.seeds = seeds;
-        this.argIndex = argIndex;
-        this.depth = depth;
-        this.failure = failure;
-    }
+        this.depths = depths;
+        this.totalDepth = IntStream.of(depths).sum();
+        this.totalMagnitude = computeTotalMagnitude();
 
-    Object[] getArgs() {
-        return args;
+        this.failure = failure;
     }
 
     static ShrinkNode root(
@@ -85,19 +89,16 @@ final class ShrinkNode {
             params,
             args,
             seeds,
-            0,
-            0,
+            new int[args.length],
             failure);
     }
 
     List<ShrinkNode> shrinks() {
-        if (argIndex >= args.length)
-            return Collections.emptyList();
-
-        PropertyParameterGenerationContext param = params.get(argIndex);
-        return param.shrink(args[argIndex]).stream()
-            .filter(s -> !s.equals(args[argIndex]))
-            .map(this::shrinkNodeFor)
+        return IntStream.range(0, params.size())
+            .mapToObj(i -> params.get(i).shrink(args[i]).stream()
+                .filter(o -> !o.equals(args[i]))
+                .map(o -> shrinkNodeFor(o, i)))
+            .flatMap(identity())
             .collect(toList());
     }
 
@@ -107,18 +108,6 @@ final class ShrinkNode {
         property(result).verify();
 
         return result[0];
-    }
-
-    ShrinkNode advanceToNextArg() {
-        return new ShrinkNode(
-            method,
-            testClass,
-            params,
-            args,
-            seeds,
-            argIndex + 1,
-            depth,
-            failure);
     }
 
     AssertionError fail(AssertionError originalFailure, Object[] originalArgs) {
@@ -137,12 +126,16 @@ final class ShrinkNode {
                 originalFailure);
     }
 
-    boolean mightBePast(ShrinkNode other) {
-        return argIndex >= other.argIndex && depth >= other.depth;
+    Object[] args() {
+        return args;
     }
 
-    boolean deeperThan(int max) {
-        return depth > max;
+    int depth() {
+        return totalDepth;
+    }
+
+    BigDecimal magnitude() {
+        return totalMagnitude;
     }
 
     private PropertyVerifier property(boolean[] result) throws InitializationError {
@@ -159,10 +152,14 @@ final class ShrinkNode {
             });
     }
 
-    private ShrinkNode shrinkNodeFor(Object shrunk) {
+    private ShrinkNode shrinkNodeFor(Object shrunk, int index) {
         Object[] shrunkArgs = new Object[args.length];
         System.arraycopy(args, 0, shrunkArgs, 0, args.length);
-        shrunkArgs[argIndex] = shrunk;
+        shrunkArgs[index] = shrunk;
+
+        int[] newDepths = new int[depths.length];
+        System.arraycopy(depths, 0, newDepths, 0, depths.length);
+        ++newDepths[index];
 
         return new ShrinkNode(
             method,
@@ -170,8 +167,51 @@ final class ShrinkNode {
             params,
             shrunkArgs,
             seeds,
-            argIndex,
-            depth + 1,
+            newDepths,
             failure);
+    }
+
+    private BigDecimal computeTotalMagnitude() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (int i = 0; i < args.length; ++i) {
+            BigDecimal magnitude = magnitudeAt(i);
+            BigDecimal factor = BigDecimal.valueOf(2).pow(args.length - i - 1);
+            total = total.add(magnitude.multiply(factor));
+        }
+
+        return total;
+    }
+
+    private BigDecimal magnitudeAt(int index) {
+        return params.get(index).magnitude(args[index]);
+    }
+
+    @Override public boolean equals(Object o) {
+        if (!(o instanceof ShrinkNode))
+            return false;
+
+        ShrinkNode other = (ShrinkNode) o;
+        return Arrays.equals(args, other.args)
+            && Arrays.equals(depths, other.depths);
+    }
+
+    @Override public int hashCode() {
+        return Arrays.hashCode(args) ^ Arrays.hashCode(depths);
+    }
+
+    @Override public int compareTo(ShrinkNode other) {
+        // Nodes at lesser depth compare less than nodes of greater depth.
+        // Nodes at equal depth needs to compare their args one by one.
+        // prefer larger-magnitude args before smaller.
+
+        Comparator<ShrinkNode> comparison = comparing(ShrinkNode::depth);
+        for (int i = 0; i < params.size(); ++i) {
+            int index = i;
+            Comparator<ShrinkNode> byMagnitude = comparing(s -> s.magnitudeAt(index));
+            comparison = comparison.thenComparing(byMagnitude.reversed());
+        }
+
+        return comparison.compare(this, other);
     }
 }

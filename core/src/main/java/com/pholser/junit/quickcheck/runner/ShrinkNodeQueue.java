@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2004-2011 Paul R. Holser, Jr.
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -23,12 +23,29 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.internal;
+package com.pholser.junit.quickcheck.runner;
 
-import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
+import java.math.BigDecimal;
+import java.util.PriorityQueue;
 
-public class ComparablesUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
-    public ComparablesUtilityClassTest() {
-        super(Comparables.class);
+class ShrinkNodeQueue extends PriorityQueue<ShrinkNode> {
+    private static final long serialVersionUID = Integer.MIN_VALUE;
+
+    private BigDecimal maxMagnitude;
+
+    ShrinkNodeQueue(BigDecimal maxMagnitude) {
+        this.maxMagnitude = maxMagnitude;
+    }
+
+    @Override public boolean offer(ShrinkNode node) {
+        if (node.magnitude().compareTo(maxMagnitude) >= 0)
+            return false;
+
+        if (!contains(node)) {
+            maxMagnitude = node.magnitude();
+            return super.offer(node);
+        }
+
+        return false;
     }
 }

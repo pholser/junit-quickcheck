@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -50,10 +49,12 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
-import static com.pholser.junit.quickcheck.internal.Items.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.String.*;
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Items.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static org.javaruntype.type.Types.*;
 
 public class ParameterTypeContext {
@@ -93,7 +94,9 @@ public class ParameterTypeContext {
             parameterName,
             parameterType,
             declarerName,
-            Types.forJavaLangReflectType(parameterType.getType(), toTokens(typeVariables)),
+            Types.forJavaLangReflectType(
+                parameterType.getType(),
+                toTokens(typeVariables)),
             toTokens(typeVariables));
     }
 
@@ -117,15 +120,14 @@ public class ParameterTypeContext {
             FakeAnnotatedTypeFactory.makeFrom(clazz),
             clazz.getTypeName(),
             Types.forJavaLangReflectType(clazz),
-            emptyMap()
-        );
+            emptyMap());
     }
 
     private static Map<String, org.javaruntype.type.Type<?>> toTokens(
         Map<String, Type> typeVariables) {
 
         return typeVariables.entrySet().stream()
-            .collect(Collectors.toMap(
+            .collect(toMap(
                 Map.Entry::getKey,
                 e -> Types.forJavaLangReflectType(e.getValue())));
     }

@@ -25,24 +25,53 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
+
 public class AFooBadShrinks extends Generator<Foo> {
+    private Between range;
 
     public AFooBadShrinks() {
         super(Foo.class);
     }
 
     @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
-        return new Foo(random.nextInt());
+        return new Foo(
+            range == null
+                ? random.nextInt()
+                : random.nextInt(range.min(), range.max()));
     }
 
     @Override public List<Foo> doShrink(SourceOfRandomness random, Foo larger) {
-        return Collections.singletonList(new Foo(larger.i(), larger.marked()));
+        return unshrinkable(larger)
+            ? emptyList()
+            : Stream.of(new Foo(larger.i(), larger.marked()))
+                .filter(f -> !unshrinkable(f))
+                .collect(toList());
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        return BigDecimal.valueOf(narrow(value).i());
+    }
+
+    public void configure(Between range) {
+        this.range = range;
+    }
+
+    private boolean unshrinkable(Foo value) {
+        return range != null ? !inRange(value) : value.i() == 0;
+    }
+
+    private boolean inRange(Foo value) {
+        return Comparables.inRange(range.min(), range.max()).test(value.i());
     }
 }

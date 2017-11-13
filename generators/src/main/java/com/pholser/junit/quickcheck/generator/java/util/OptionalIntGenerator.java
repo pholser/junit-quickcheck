@@ -25,16 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.stream.Collectors;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Produces values of type {@link OptionalInt}.
@@ -77,7 +80,15 @@ public class OptionalIntGenerator extends Generator<OptionalInt> {
             integerGenerator.shrink(random, larger.getAsInt())
                 .stream()
                 .map(OptionalInt::of)
-                .collect(Collectors.toList()));
+                .collect(toList()));
         return shrinks;
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+        OptionalInt narrowed = narrow(value);
+
+        return narrowed.isPresent()
+            ? BigDecimal.valueOf(narrowed.getAsInt())
+            : ZERO;
     }
 }

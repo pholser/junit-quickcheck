@@ -23,7 +23,7 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.internal;
+package com.pholser.junit.quickcheck.internal;
 
 import java.util.function.Predicate;
 
