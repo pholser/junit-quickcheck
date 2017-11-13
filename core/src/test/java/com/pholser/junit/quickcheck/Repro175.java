@@ -44,7 +44,7 @@ import static org.junit.experimental.results.ResultMatchers.*;
 public class Repro175 {
     @Test public void givesAllArgsAChanceToShrink() {
         assertThat(testResult(GivesAllArgsAChanceToShrink.class), failureCountIs(2));
-        assertThat(Others.shrinkAttempts, greaterThan(0));
+        assertThat(Others.shrinkAttempts, greaterThan(1));
     }
 
     public static class Other {

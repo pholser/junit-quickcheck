@@ -23,9 +23,10 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.generator.internal;
+package com.pholser.junit.quickcheck.internal;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
+import com.pholser.junit.quickcheck.internal.Comparables;
 
 public class ComparablesUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
     public ComparablesUtilityClassTest() {

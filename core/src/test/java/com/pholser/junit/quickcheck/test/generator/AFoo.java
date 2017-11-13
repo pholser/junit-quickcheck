@@ -29,15 +29,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 
 public class AFoo extends Generator<Foo> {
     private Same value;
@@ -66,9 +69,11 @@ public class AFoo extends Generator<Foo> {
     }
 
     @Override public List<Foo> doShrink(SourceOfRandomness random, Foo larger) {
-        return value != null || larger.i() == 0
+        return unshrinkable(larger)
             ? emptyList()
-            : singletonList(new Foo(larger.i() / 2, larger.marked()));
+            : Stream.of(new Foo(larger.i() / 2, larger.marked()))
+                .filter(f -> !unshrinkable(f))
+                .collect(toList());
     }
 
     @Override public BigDecimal magnitude(Object value) {
@@ -85,5 +90,14 @@ public class AFoo extends Generator<Foo> {
 
     public void configure(Between range) {
         this.range = range;
+    }
+
+    private boolean unshrinkable(Foo larger) {
+        return value != null ? !inRange(larger) : larger.i() == 0;
+    }
+
+    private boolean inRange(Foo larger) {
+        return range == null
+            || Comparables.inRange(range.min(), range.max()).test(larger.i());
     }
 }

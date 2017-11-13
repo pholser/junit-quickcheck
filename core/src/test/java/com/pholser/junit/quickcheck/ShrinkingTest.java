@@ -208,7 +208,7 @@ public class ShrinkingTest {
         assertThat(
             testResult(ShrinkingMoreThanOnePropertyParameter.class),
             hasSingleFailureContaining(
-                String.format("Shrunken args: [%s, %s]", new Foo(0), new Foo(1))));
+                String.format("Shrunken args: [%s, %s]", new Foo(1), new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)

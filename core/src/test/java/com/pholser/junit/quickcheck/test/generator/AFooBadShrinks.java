@@ -27,12 +27,15 @@ package com.pholser.junit.quickcheck.test.generator;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 
 public class AFooBadShrinks extends Generator<Foo> {
     private Between range;
@@ -49,7 +52,11 @@ public class AFooBadShrinks extends Generator<Foo> {
     }
 
     @Override public List<Foo> doShrink(SourceOfRandomness random, Foo larger) {
-        return singletonList(new Foo(larger.i(), larger.marked()));
+        return unshrinkable(larger)
+            ? emptyList()
+            : Stream.of(new Foo(larger.i(), larger.marked()))
+                .filter(f -> !unshrinkable(f))
+                .collect(toList());
     }
 
     @Override public BigDecimal magnitude(Object value) {
@@ -58,5 +65,13 @@ public class AFooBadShrinks extends Generator<Foo> {
 
     public void configure(Between range) {
         this.range = range;
+    }
+
+    private boolean unshrinkable(Foo value) {
+        return range != null ? !inRange(value) : value.i() == 0;
+    }
+
+    private boolean inRange(Foo value) {
+        return Comparables.inRange(range.min(), range.max()).test(value.i());
     }
 }

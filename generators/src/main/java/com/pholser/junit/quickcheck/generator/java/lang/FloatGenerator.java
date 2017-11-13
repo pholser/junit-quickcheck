@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.generator.internal.Comparables;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
