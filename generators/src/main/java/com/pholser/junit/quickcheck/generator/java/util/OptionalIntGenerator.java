@@ -63,14 +63,20 @@ public class OptionalIntGenerator extends Generator<OptionalInt> {
         integerGenerator.configure(range);
     }
 
-    @Override public OptionalInt generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public OptionalInt generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         double trial = random.nextDouble();
         return trial < 0.25
             ? OptionalInt.empty()
             : OptionalInt.of(integerGenerator.generate(random, status));
     }
 
-    @Override public List<OptionalInt> doShrink(SourceOfRandomness random, OptionalInt larger) {
+    @Override public List<OptionalInt> doShrink(
+        SourceOfRandomness random,
+        OptionalInt larger) {
+
         if (!larger.isPresent())
             return new ArrayList<>();
 

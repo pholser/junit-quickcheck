@@ -77,24 +77,26 @@ public final class Lists {
         List<T> tail = target.subList(1, target.size());
 
         List<List<T>> shrinks = new ArrayList<>();
-        shrinks.addAll(shrink.shrink(random, head)
-            .stream()
-            .map(i -> {
-                List<T> items = new ArrayList<>();
-                items.add(i);
-                items.addAll(tail);
-                return items;
-            })
-            .collect(toList()));
-        shrinks.addAll(shrinksOfOneItem(random, tail, shrink)
-            .stream()
-            .map(s -> {
-                List<T> items = new ArrayList<>();
-                items.add(head);
-                items.addAll(s);
-                return items;
-            })
-            .collect(toList()));
+        shrinks.addAll(
+            shrink.shrink(random, head)
+                .stream()
+                .map(i -> {
+                    List<T> items = new ArrayList<>();
+                    items.add(i);
+                    items.addAll(tail);
+                    return items;
+                })
+                .collect(toList()));
+        shrinks.addAll(
+            shrinksOfOneItem(random, tail, shrink)
+                .stream()
+                .map(s -> {
+                    List<T> items = new ArrayList<>();
+                    items.add(head);
+                    items.addAll(s);
+                    return items;
+                })
+                .collect(toList()));
 
         return shrinks;
     }

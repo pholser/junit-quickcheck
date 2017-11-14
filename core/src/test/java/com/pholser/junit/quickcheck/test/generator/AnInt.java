@@ -27,13 +27,16 @@ package com.pholser.junit.quickcheck.test.generator;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 
 public class AnInt extends Generator<Integer> {
     private Between range;
@@ -51,10 +54,19 @@ public class AnInt extends Generator<Integer> {
     }
 
     @Override public List<Integer> doShrink(SourceOfRandomness random, Integer larger) {
-        return larger == 0 ? emptyList() : singletonList(larger / 2);
+        return larger == 0
+            ? emptyList()
+            : Stream.of(larger / 2)
+                .filter(this::inRange)
+                .collect(toList());
     }
 
     @Override public BigDecimal magnitude(Object value) {
         return BigDecimal.valueOf(narrow(value));
+    }
+
+    private boolean inRange(Integer value) {
+        return range == null
+            || Comparables.inRange(range.min(), range.max()).test(value);
     }
 }

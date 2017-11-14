@@ -107,11 +107,13 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
             (Shrink<Object>) componentGenerators().get(0),
             (Shrink<Object>) componentGenerators().get(1));
 
-        List<List<Entry<?, ?>>> oneEntryShrinks = shrinksOfOneItem(random, entries, entryShrink);
-        shrinks.addAll(oneEntryShrinks.stream()
-            .map(this::convert)
-            .filter(this::inSizeRange)
-            .collect(toList()));
+        List<List<Entry<?, ?>>> oneEntryShrinks =
+            shrinksOfOneItem(random, entries, entryShrink);
+        shrinks.addAll(
+            oneEntryShrinks.stream()
+                .map(this::convert)
+                .filter(this::inSizeRange)
+                .collect(toList()));
 
         return shrinks;
     }

@@ -117,3 +117,6 @@ of a `@Property` annotation to `false`.
 property, set the `maxShrinks` attribute of that `@Property`.
 - To reduce or increase the maximum "depth" of the shrink search "tree" for a
 given property, set the `maxShrinkDepth` attribute of that `@Property`.
+- Generators that offer configuration annotations that influence the
+generation process are responsible for ensuring that any shrunken values they
+offer conform to the constraints of specific configuration annotations.

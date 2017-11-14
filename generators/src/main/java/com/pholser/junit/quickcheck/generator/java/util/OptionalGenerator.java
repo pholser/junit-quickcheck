@@ -45,21 +45,28 @@ public class OptionalGenerator extends ComponentizedGenerator<Optional> {
         super(Optional.class);
     }
 
-    @Override public Optional<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Optional<?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         double trial = random.nextDouble();
         return trial < 0.25
             ? Optional.empty()
             : Optional.of(componentGenerators().get(0).generate(random, status));
     }
 
-    @Override public List<Optional> doShrink(SourceOfRandomness random, Optional larger) {
+    @Override public List<Optional> doShrink(
+        SourceOfRandomness random,
+        Optional larger) {
+
         if (!larger.isPresent())
             return new ArrayList<>();
 
         List<Optional> shrinks = new ArrayList<>();
         shrinks.add(Optional.empty());
         shrinks.addAll(
-            componentGenerators().get(0).shrink(random, larger.get())
+            componentGenerators().get(0)
+                .shrink(random, larger.get())
                 .stream()
                 .map(Optional::of)
                 .collect(toList()));

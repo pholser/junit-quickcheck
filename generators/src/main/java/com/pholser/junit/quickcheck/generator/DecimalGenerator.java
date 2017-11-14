@@ -75,12 +75,20 @@ public abstract class DecimalGenerator<T extends Number> extends Generator<T> {
 
     private List<T> shrunkenIntegrals(BigDecimal decimal, BigDecimal least) {
         return decimalsFrom(
-            stream(halvingIntegral(decimal.toBigInteger(), least.toBigInteger()).spliterator(), false)
+            stream(
+                halvingIntegral(
+                    decimal.toBigInteger(),
+                    least.toBigInteger())
+                    .spliterator(),
+                false)
                 .map(BigDecimal::new));
     }
 
     private List<T> shrunkenDecimals(BigDecimal decimal, BigDecimal least) {
-        return decimalsFrom(stream(halvingDecimal(decimal, least).spliterator(), false));
+        return decimalsFrom(
+            stream(
+                halvingDecimal(decimal, least).spliterator(),
+                false));
     }
 
     private List<T> decimalsFrom(Stream<BigDecimal> stream) {

@@ -63,7 +63,8 @@ public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
                 halvingIntegral(
                     widen().apply(larger),
                     widen().apply(leastMagnitude())
-                ).spliterator(), false)
+                ).spliterator(),
+                false)
                 .limit(15)
                 .map(narrow())
                 .filter(inRange())

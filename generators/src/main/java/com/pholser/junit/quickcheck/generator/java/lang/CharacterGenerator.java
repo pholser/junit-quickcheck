@@ -31,6 +31,7 @@ import java.util.List;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.Arrays.*;
@@ -72,10 +73,15 @@ public class CharacterGenerator extends Generator<Character> {
             .shrink(random, (int) larger)
             .stream()
             .map((Integer cp) -> (char) cp.intValue())
+            .filter(this::inRange)
             .collect(toList());
     }
 
     @Override public BigDecimal magnitude(Object value) {
         return BigDecimal.valueOf(narrow(value));
+    }
+
+    private boolean inRange(Character value) {
+        return Comparables.inRange(min, max).test(value);
     }
 }

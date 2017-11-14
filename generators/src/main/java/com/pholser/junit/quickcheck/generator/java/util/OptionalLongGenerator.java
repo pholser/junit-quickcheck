@@ -63,7 +63,10 @@ public class OptionalLongGenerator extends Generator<OptionalLong> {
         longGenerator.configure(range);
     }
 
-    @Override public OptionalLong generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public OptionalLong generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         double trial = random.nextDouble();
         return trial < 0.25
             ? OptionalLong.empty()

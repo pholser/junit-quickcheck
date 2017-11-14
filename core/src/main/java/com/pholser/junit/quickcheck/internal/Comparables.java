@@ -32,7 +32,10 @@ public final class Comparables {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends Comparable<? super T>> Predicate<T> inRange(T min, T max) {
+    public static <T extends Comparable<? super T>> Predicate<T> inRange(
+        T min,
+        T max) {
+
         return c -> {
             if (min == null && max == null)
                 return true;
@@ -44,7 +47,11 @@ public final class Comparables {
         };
     }
 
-    public static <T extends Comparable<? super T>> T leastMagnitude(T min, T max, T zero) {
+    public static <T extends Comparable<? super T>> T leastMagnitude(
+        T min,
+        T max,
+        T zero) {
+
         if (min == null && max == null)
             return zero;
 
