@@ -93,10 +93,10 @@ The shrinking process will try "larger" values before "smaller" ones.
                 return Collections.emptyList();
 
             return Stream.of(
-                    new Point(0, larger.y),
-                    new Point(larger.x, 0),
-                    new Point(larger.x / 2, larger.y),
-                    new Point(larger.x, larger.y / 2))
+                new Point(0, larger.y),
+                new Point(larger.x, 0),
+                new Point(larger.x / 2, larger.y),
+                new Point(larger.x, larger.y / 2))
                 .distinct()
                 .collect(Collectors.toList());
         }
