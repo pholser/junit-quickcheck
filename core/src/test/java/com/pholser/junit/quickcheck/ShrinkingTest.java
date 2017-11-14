@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Size;
