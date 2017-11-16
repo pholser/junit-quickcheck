@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OptionalDoubleGenerator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.util</a> &gt; <span class="el_source">OptionalDoubleGenerator.java</span></div><h1>OptionalDoubleGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.util;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
+
+/**
+ * Produces values of type {@link OptionalDouble}.
+ */
+public class OptionalDoubleGenerator extends Generator&lt;OptionalDouble&gt; {
+<span class="fc" id="L46">    private final DoubleGenerator doubleGenerator = new DoubleGenerator();</span>
+
+    public OptionalDoubleGenerator() {
+<span class="fc" id="L49">        super(OptionalDouble.class);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Tells this generator to produce values, when
+     * {@link OptionalDouble#isPresent() present}, within a specified minimum
+     * (inclusive) and/or maximum (exclusive) with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minDouble()} and {@link InRange#maxDouble()},
+     * if non-empty.
+     *
+     * @param range annotation that gives the range's constraints
+     */
+    public void configure(InRange range) {
+<span class="fc" id="L64">        doubleGenerator.configure(range);</span>
+<span class="fc" id="L65">    }</span>
+
+    @Override public OptionalDouble generate(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc" id="L68">        double trial = random.nextDouble();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        return trial &lt; 0.25</span>
+<span class="fc" id="L70">            ? OptionalDouble.empty()</span>
+<span class="fc" id="L71">            : OptionalDouble.of(doubleGenerator.generate(random, status));</span>
+    }
+
+    @Override public List&lt;OptionalDouble&gt; doShrink(
+        SourceOfRandomness random,
+        OptionalDouble larger) {
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (!larger.isPresent())</span>
+<span class="fc" id="L79">            return new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L81">        List&lt;OptionalDouble&gt; shrinks = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L82">        shrinks.add(OptionalDouble.empty());</span>
+<span class="fc" id="L83">        shrinks.addAll(</span>
+<span class="fc" id="L84">            doubleGenerator.shrink(random, larger.getAsDouble())</span>
+<span class="fc" id="L85">                .stream()</span>
+<span class="fc" id="L86">                .map(OptionalDouble::of)</span>
+<span class="fc" id="L87">                .collect(toList()));</span>
+<span class="fc" id="L88">        return shrinks;</span>
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+<span class="fc" id="L92">        OptionalDouble narrowed = narrow(value);</span>
+
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        return narrowed.isPresent()</span>
+<span class="fc" id="L95">            ? doubleGenerator.magnitude(narrowed.getAsDouble())</span>
+            : ZERO;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
