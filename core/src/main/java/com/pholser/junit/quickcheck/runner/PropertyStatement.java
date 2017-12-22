@@ -47,7 +47,7 @@ import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerati
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler;
 import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
-import org.junit.AssumptionViolatedException;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
