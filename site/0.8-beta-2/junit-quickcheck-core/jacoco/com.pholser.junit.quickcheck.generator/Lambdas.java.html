@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Lambdas.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">Lambdas.java</span></div><h1>Lambdas.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2017 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Random;
+
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.System.*;
+import static java.lang.reflect.Proxy.*;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
+/**
+ * Helper class for creating instances of &quot;functional interfaces&quot;.
+ */
+public final class Lambdas {
+<span class="fc" id="L48">    private static final Constructor&lt;MethodHandles.Lookup&gt; METHOD_LOOKUP_CTOR =</span>
+<span class="fc" id="L49">        findDeclaredConstructor(</span>
+            MethodHandles.Lookup.class,
+            Class.class,
+            int.class);
+
+<span class="fc" id="L54">    private Lambdas() {</span>
+<span class="fc" id="L55">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * &lt;p&gt;Creates an instance of a given &quot;functional interface&quot; type, whose
+     * single abstract method returns values of the type produced by the given
+     * generator. The arguments to the lambda's single method will be used to
+     * seed a random generator that will be used to generate the return value
+     * of that method.&lt;/p&gt;
+     *
+     * &lt;p&gt;junit-quickcheck uses this to create random values for property
+     * parameters whose type is determined to be a
+     * {@linkplain FunctionalInterface functional interface}. Custom generators
+     * for functional interface types can use this also.&lt;/p&gt;
+     *
+     * @param lambdaType a functional interface type token
+     * @param returnValueGenerator a generator for the return type of the
+     * functional interface's single method
+     * @param status an object to be passed along to the generator that will
+     * produce the functional interface's method return value
+     * @param &lt;T&gt; the functional interface type token
+     * @param &lt;U&gt; the type of the generated return value of the functional
+     * interface method
+     * @return an instance of the functional interface type, whose single
+     * method will return a generated value
+     * @throws IllegalArgumentException if {@code lambdaType} is not a
+     * functional interface type
+     */
+    public static &lt;T, U&gt; T makeLambda(
+        Class&lt;T&gt; lambdaType,
+        Generator&lt;U&gt; returnValueGenerator,
+        GenerationStatus status) {
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (singleAbstractMethodOf(lambdaType) == null) {</span>
+<span class="fc" id="L89">            throw new IllegalArgumentException(</span>
+                lambdaType + &quot; is not a functional interface type&quot;);
+        }
+
+<span class="fc" id="L93">        return lambdaType.cast(</span>
+<span class="fc" id="L94">            newProxyInstance(</span>
+<span class="fc" id="L95">                lambdaType.getClassLoader(),</span>
+                new Class&lt;?&gt;[] { lambdaType },
+                new LambdaInvocationHandler&lt;&gt;(
+                    lambdaType,
+                    returnValueGenerator,
+<span class="fc" id="L100">                    status.attempts())));</span>
+    }
+
+    private static class LambdaInvocationHandler&lt;T, U&gt; implements InvocationHandler {
+        private final Class&lt;T&gt; lambdaType;
+        private final Generator&lt;U&gt; returnValueGenerator;
+        private final int attempts;
+
+        LambdaInvocationHandler(
+            Class&lt;T&gt; lambdaType,
+            Generator&lt;U&gt; returnValueGenerator,
+<span class="fc" id="L111">            Integer attempts) {</span>
+
+<span class="fc" id="L113">            this.lambdaType = lambdaType;</span>
+<span class="fc" id="L114">            this.returnValueGenerator = returnValueGenerator;</span>
+<span class="fc" id="L115">            this.attempts = attempts;</span>
+<span class="fc" id="L116">        }</span>
+
+        @Override public Object invoke(Object proxy, Method method, Object[] args)
+            throws Throwable {
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (Object.class.equals(method.getDeclaringClass()))</span>
+<span class="fc" id="L122">                return handleObjectMethod(proxy, method, args);</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if (method.isDefault())</span>
+<span class="fc" id="L124">                return handleDefaultMethod(proxy, method, args);</span>
+
+<span class="fc" id="L126">            SourceOfRandomness source = new SourceOfRandomness(new Random());</span>
+<span class="fc" id="L127">            source.setSeed(Arrays.hashCode(args));</span>
+<span class="fc" id="L128">            GenerationStatus status =</span>
+                new SimpleGenerationStatus(new GeometricDistribution(), source, attempts);
+<span class="fc" id="L130">            return returnValueGenerator.generate(source, status);</span>
+        }
+
+        private Object handleObjectMethod(Object proxy, Method method, Object[] args) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (&quot;equals&quot;.equals(method.getName()))</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">                return proxy == args[0];</span>
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            if (&quot;hashCode&quot;.equals(method.getName()))</span>
+<span class="fc" id="L138">                return identityHashCode(proxy);</span>
+
+<span class="fc" id="L140">            return handleToString();</span>
+        }
+
+        private String handleToString() {
+<span class="fc" id="L144">            return &quot;a randomly generated instance of &quot; + lambdaType;</span>
+        }
+
+        private Object handleDefaultMethod(Object proxy, Method method, Object[] args)
+            throws Throwable {
+
+            MethodHandles.Lookup lookup =
+<span class="fc" id="L151">                METHOD_LOOKUP_CTOR.newInstance(</span>
+<span class="fc" id="L152">                    method.getDeclaringClass(),</span>
+<span class="fc" id="L153">                    MethodHandles.Lookup.PRIVATE);</span>
+<span class="fc" id="L154">            return lookup.unreflectSpecial(method, method.getDeclaringClass())</span>
+<span class="fc" id="L155">                .bindTo(proxy)</span>
+<span class="fc" id="L156">                .invokeWithArguments(args);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
