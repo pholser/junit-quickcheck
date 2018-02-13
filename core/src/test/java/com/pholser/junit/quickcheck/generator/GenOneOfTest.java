@@ -25,7 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -40,13 +42,18 @@ public class GenOneOfTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
 
     @Mock private SourceOfRandomness random;
+    private SimpleGenerationStatus status;
+
+    @Before public void setUp() {
+        status = new SimpleGenerationStatus(null, null, 0);
+    }
 
     @Test public void generatorThatPicksAnItemAtRandom() {
         when(random.nextInt(5)).thenReturn(1);
 
         Gen<Integer> chooser = oneOf(2, 3, 5, 7, 11);
 
-        assertEquals(Integer.valueOf(3), chooser.generate(random, null));
+        assertEquals(Integer.valueOf(3), chooser.generate(random, status));
     }
 
     @Test public void generatorThatPicksAGeneratorAtRandom() {
@@ -55,6 +62,6 @@ public class GenOneOfTest {
         Gen<Integer> chooser =
             oneOf(pure(2), pure(3), pure(5), pure(7), pure(11));
 
-        assertEquals(Integer.valueOf(7), chooser.generate(random, null));
+        assertEquals(Integer.valueOf(7), chooser.generate(random, status));
     }
 }

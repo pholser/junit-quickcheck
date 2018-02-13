@@ -70,7 +70,7 @@ public interface Gen<T> {
      * @return a new generation strategy
      */
     default <U> Gen<U> map(Function<? super T, ? extends U> mapper) {
-        return (random, status) -> mapper.apply(generate(random, status));
+        return (random, status) -> mapper.apply(_gen(random, status));
     }
 
     /**
@@ -85,7 +85,7 @@ public interface Gen<T> {
      */
     default <U> Gen<U> flatMap(Function<? super T, ? extends Gen<? extends U>> mapper) {
         return (random, status) ->
-            mapper.apply(generate(random, status)).generate(random, status);
+            mapper.apply(_gen(random, status))._gen(random, status);
     }
 
     /**
@@ -98,9 +98,9 @@ public interface Gen<T> {
      */
     default Gen<T> filter(Predicate<? super T> condition) {
         return (random, status) -> {
-            T next = generate(random, status);
+            T next = _gen(random, status);
             while (!condition.test(next)) {
-                next = generate(random, status);
+                next = _gen(random, status);
             }
             return next;
         };
@@ -121,7 +121,7 @@ public interface Gen<T> {
      */
     default Gen<Optional<T>> filterOptional(Predicate<? super T> condition) {
         return (random, status) -> {
-            T next = generate(random, status);
+            T next = _gen(random, status);
             return condition.test(next)
                 ? Optional.ofNullable(next)
                 : Optional.empty();
@@ -135,7 +135,7 @@ public interface Gen<T> {
         return (random, status) -> {
             List<T> values = new ArrayList<>();
             for (int i = 0; i < times; ++i)
-                values.add(generate(random, status));
+                values.add(_gen(random, status));
             return values;
         };
     }
@@ -188,7 +188,7 @@ public interface Gen<T> {
         Collections.addAll(choices, rest);
 
         return (random, status) ->
-            Items.choose(choices, random).generate(random, status);
+            Items.choose(choices, random)._gen(random, status);
     }
 
     /**
@@ -215,7 +215,7 @@ public interface Gen<T> {
                 .collect(toList());
 
         return (random, status) ->
-            Items.chooseWeighted(weighted, random).generate(random, status);
+            Items.chooseWeighted(weighted, random)._gen(random, status);
     }
 
     /**
@@ -232,5 +232,25 @@ public interface Gen<T> {
         Gen<? extends U> generator) {
 
         return new Pair<>(weight, generator);
+    }
+
+    /**
+     * @deprecated For use by junit-quickcheck only -- when we migrate to Java 9,
+     * this method will likely become {@code private}.
+     *
+     * @param random source of randomness to be used when generating the value
+     * @param status an object that can be used to influence the generated
+     * value. For example, generating lists can use the {@link
+     * GenerationStatus#size() size} method to generate lists with a given
+     * number of elements.
+     * @return the generated value
+     */
+    @Deprecated
+    default T _gen(SourceOfRandomness random, GenerationStatus status) {
+        T result = generate(random, status);
+
+        status.semiAttempt();
+
+        return result;
     }
 }

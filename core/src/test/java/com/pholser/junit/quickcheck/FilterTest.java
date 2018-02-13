@@ -28,17 +28,26 @@ package com.pholser.junit.quickcheck;
 import java.util.Optional;
 
 import com.pholser.junit.quickcheck.generator.Gen;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class FilterTest {
+    private GenerationStatus status;
+
+    @Before public void setUp() {
+        status = new SimpleGenerationStatus(null, null, 0);
+    }
+
     @Test public void filter() {
         int[] i = { 0 };
         Gen<Integer> ints = (random, status) -> i[0]++;
         Gen<Integer> bigger = ints.filter(n -> n >= 10);
 
-        int result = bigger.generate(null, null);
+        int result = bigger.generate(null, status);
 
         assertEquals(10, result);
         assertEquals(11, i[0]);
@@ -49,15 +58,15 @@ public class FilterTest {
         Gen<Integer> ints = (random, status) -> i[0]++;
         Gen<Optional<Integer>> smaller = ints.filterOptional(n -> n < 2);
 
-        int first = smaller.generate(null, null)
+        int first = smaller.generate(null, status)
             .orElseThrow(AssertionError::new);
         assertEquals(0, first);
 
-        int second = smaller.generate(null, null)
+        int second = smaller.generate(null, status)
             .orElseThrow(AssertionError::new);
         assertEquals(1, second);
 
-        assertEquals(Optional.empty(), smaller.generate(null, null));
+        assertEquals(Optional.empty(), smaller.generate(null, status));
         assertEquals(3, i[0]);
     }
 }

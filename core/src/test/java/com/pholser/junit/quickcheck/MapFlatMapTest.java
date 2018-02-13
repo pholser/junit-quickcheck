@@ -26,17 +26,25 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.generator.Gen;
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class MapFlatMapTest {
+    private SimpleGenerationStatus status;
+
+    @Before public void setUp() {
+        status = new SimpleGenerationStatus(null, null, 0);
+    }
+
     @Test public void map() {
         Gen<Integer> five = (random, status) -> 5;
 
         Gen<String> mapped = five.map(String::valueOf);
 
-        assertEquals("5", mapped.generate(null, null));
+        assertEquals("5", mapped.generate(null, status));
     }
 
     @Test public void flatMap() {
@@ -57,7 +65,7 @@ public class MapFlatMapTest {
                 six.map(j ->
                     new Coordinate(i, j)));
 
-        Coordinate generated = flatMapped.generate(null, null);
+        Coordinate generated = flatMapped.generate(null, status);
 
         assertEquals(5, generated.x);
         assertEquals(6, generated.y);

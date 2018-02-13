@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,6 +52,8 @@ public class GenFrequencyTest {
                 freq(3, pure(-3))
             );
 
-        assertEquals(Integer.valueOf(-2), chooser.generate(random, null));
+        assertEquals(
+            Integer.valueOf(-2),
+            chooser.generate(random, new SimpleGenerationStatus(null, null, 0)));
     }
 }

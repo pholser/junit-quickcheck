@@ -49,6 +49,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
 
     private int successfulEvaluations;
     private int discards;
+    private int semiAttempts;
 
     public PropertyParameterGenerationContext(
         PropertyParameterContext parameter,
@@ -120,7 +121,11 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
     }
 
     @Override public int attempts() {
-        return successfulEvaluations + discards;
+        return successfulEvaluations + discards + (semiAttempts / 10);
+    }
+
+    @Override public void semiAttempt() {
+        ++semiAttempts;
     }
 
     public long effectiveSeed() {

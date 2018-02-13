@@ -47,6 +47,16 @@ public interface GenerationStatus {
     int attempts();
 
     /**
+     * <p>Signals part of an attempt to generate a value.</p>
+     *
+     * <p>Mostly for use by junit-quickcheck itself; generators can call this
+     * to convince the framework that it's doing work to generate a complex
+     * value, but doing so is not strictly necessary.</p>
+     */
+    default void semiAttempt() {
+    }
+
+    /**
      * Associates the given value with the given key for the duration of the
      * generation of a value for a property parameter, or until overwritten.
      *
