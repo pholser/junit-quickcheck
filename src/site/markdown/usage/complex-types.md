@@ -20,11 +20,11 @@ values.
 
             int numberOfPoints = Math.abs(r.nextInt());
 
-            int xs = new int[numberOfPoints];
+            int[] xs = new int[numberOfPoints];
             for (int i = 0; i < numberOfPoints; ++i)
                 xs[i] = r.nextInt();
 
-            int ys = new int[numberOfPoints];
+            int[] ys = new int[numberOfPoints];
             for (int i = 0; i < numberOfPoints; ++i)
                 ys[i] = r.nextInt();
 
