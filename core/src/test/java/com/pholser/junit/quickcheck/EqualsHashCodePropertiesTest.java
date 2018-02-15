@@ -103,4 +103,3 @@ public abstract class EqualsHashCodePropertiesTest<T> {
         assertFalse(x.equals(y));
     }
 }
-
