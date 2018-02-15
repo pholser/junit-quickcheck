@@ -39,8 +39,10 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
-    @Test public void singleGenericParameterConfigured() throws Exception {
-        assertThat(testResult(SingleGenericParameterConfigured.class), isSuccessful());
+    @Test public void singleGenericParameterConfigured() {
+        assertThat(
+            testResult(SingleGenericParameterConfigured.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -52,8 +54,10 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
         }
     }
 
-    @Test public void parameterConfiguredButGenericParameterNotConfigured() throws Exception {
-        assertThat(testResult(ParameterConfiguredButGenericParameterNotConfigured.class), isSuccessful());
+    @Test public void parameterConfiguredButGenericParameterNotConfigured() {
+        assertThat(
+            testResult(ParameterConfiguredButGenericParameterNotConfigured.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -64,8 +68,10 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
         }
     }
 
-    @Test public void oneGenericParameterConfiguredButTheOtherNot() throws Exception {
-        assertThat(testResult(OneGenericParameterConfiguredButTheOtherNot.class), isSuccessful());
+    @Test public void oneGenericParameterConfiguredButTheOtherNot() {
+        assertThat(
+            testResult(OneGenericParameterConfiguredButTheOtherNot.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -77,8 +83,10 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
         }
     }
 
-    @Test public void twoGenericParametersOfSameTypeConfiguredDifferently() throws Exception {
-        assertThat(testResult(TwoGenericParametersOfSameTypeConfiguredDifferently.class), isSuccessful());
+    @Test public void twoGenericParametersOfSameTypeConfiguredDifferently() {
+        assertThat(
+            testResult(TwoGenericParametersOfSameTypeConfiguredDifferently.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -96,8 +104,10 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
         }
     }
 
-    @Test public void twoGenericParametersReferringToSameType() throws Exception {
-        assertThat(testResult(TwoGenericParametersReferringToSameType.class), isSuccessful());
+    @Test public void twoGenericParametersReferringToSameType() {
+        assertThat(
+            testResult(TwoGenericParametersReferringToSameType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
