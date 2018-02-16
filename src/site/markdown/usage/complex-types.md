@@ -103,7 +103,7 @@ will be honored.
             super(TrafficTracker.class);
         }
 
-        @Override public Counter generate(
+        @Override public TrafficTracker generate(
             SourceOfRandomness random,
             GenerationStatus status) {
 
