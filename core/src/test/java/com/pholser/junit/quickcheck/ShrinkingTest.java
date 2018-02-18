@@ -43,10 +43,10 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ShrinkingTest {
-    @Test public void complete() throws Exception {
+    @Test public void complete() {
         assertThat(
             testResult(ShrinkingCompletely.class),
-            hasSingleFailureContaining(String.format("Shrunken args: [%s]", new Foo(1))));
+            hasSingleFailureContaining(String.format("With arguments: [%s]", new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -59,10 +59,10 @@ public class ShrinkingTest {
         }
     }
 
-    @Test public void shrinkingDoesNotShrink() throws Exception {
+    @Test public void shrinkingDoesNotShrink() {
         assertThat(
             testResult(ShrinkingNotReally.class),
-            hasSingleFailureContaining("Args: ["));
+            hasSingleFailureContaining("With arguments: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -74,10 +74,10 @@ public class ShrinkingTest {
         }
     }
 
-    @Test public void shrinkingDoesNotShrinkWhenLargerEqualsSmaller() throws Exception {
+    @Test public void shrinkingDoesNotShrinkWhenLargerEqualsSmaller() {
         assertThat(
             testResult(ShrinksAreIdentity.class),
-            hasSingleFailureContaining("Args: ["));
+            hasSingleFailureContaining("With arguments: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -90,7 +90,7 @@ public class ShrinkingTest {
     @Test public void assumptionFailureWhileShrinking() {
         assertThat(
             testResult(FailedAssumptionDuringShrinking.class),
-            hasSingleFailureContaining("Args: ["));
+            hasSingleFailureContaining("With arguments: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -207,7 +207,7 @@ public class ShrinkingTest {
         assertThat(
             testResult(ShrinkingMoreThanOnePropertyParameter.class),
             hasSingleFailureContaining(
-                String.format("Shrunken args: [%s, %s]", new Foo(1), new Foo(1))));
+                String.format("With arguments: [%s, %s]", new Foo(1), new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -221,10 +221,10 @@ public class ShrinkingTest {
         }
     }
 
-    @Test public void timeout() throws Exception {
+    @Test public void timeout() {
         assertThat(
             testResult(ShrinkingTimeout.class),
-            hasSingleFailureContaining("Args: ["));
+            hasSingleFailureContaining("With arguments: ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
