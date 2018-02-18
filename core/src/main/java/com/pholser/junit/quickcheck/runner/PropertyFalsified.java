@@ -37,14 +37,16 @@ final class PropertyFalsified {
         Object[] args,
         long[] seeds,
         AssertionError e) {
+        final String message = "Property named '%s' failed%s%n"
+            + "With arguments: %s%n"
+            + "Seeds for reproduction: %s";
+
 
         return new AssertionError(
             String.format(
-                "Property %s falsified.%s%n"
-                    + "Args: %s%n"
-                    + "Seeds: %s%n",
+                message,
                 propertyName,
-                e.getMessage(),
+                e.getMessage() == null ? ":" : " (" + e.getMessage() + "):",
                 Arrays.deepToString(args),
                 Arrays.toString(seeds)),
             e);
@@ -57,18 +59,20 @@ final class PropertyFalsified {
         long[] seeds,
         AssertionError smallerFailure,
         AssertionError originalFailure) {
+        final String message = "Property named '%s' failed%s%n"
+            + "With arguments: %s%n"
+            + (originalFailure.getMessage() == null ? ""
+                : "Original failure message: " + originalFailure.getMessage() + "%n")
+            + "First arguments found to also provoke a failure: %s%n"
+            + "Seeds for reproduction: %s";
 
         AssertionError e = new AssertionError(
             String.format(
-                "Property %s falsified via shrinking: %s%n"
-                    + "Shrunken args: %s%n"
-                    + "Original failure message: [%s]%n"
-                    + "Original args: %s%n"
-                    + "Seeds: %s%n",
+                message,
                 propertyName,
-                smallerFailure.getMessage(),
+                smallerFailure.getMessage() == null ? ":"
+                    : " (" + smallerFailure.getMessage() + "):",
                 Arrays.deepToString(args),
-                originalFailure.getMessage(),
                 Arrays.deepToString(originalArgs),
                 Arrays.toString(seeds)),
             originalFailure);
