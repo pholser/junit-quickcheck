@@ -26,7 +26,9 @@
 package com.pholser.junit.quickcheck.runner;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
-import org.junit.*;
+
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 
 public class PropertyFalsifiedUtilityClassTest
@@ -38,107 +40,117 @@ public class PropertyFalsifiedUtilityClassTest
 
     @Test
     public void counterexampleFoundWithAllParametersIsCorrect() {
-        final String propertyName = "mySuperProperty";
-        final String[] arguments = {"first", "second", "third"};
-        final long[] seeds = {12345, 8842};
-        final String assertionName = "assertion name";
-        final AssertionError error = new AssertionError(assertionName);
-        final AssertionError actual = PropertyFalsified.counterexampleFound(
+        String propertyName = "mySuperProperty";
+        String[] arguments = {"first", "second", "third"};
+        long[] seeds = {12345, 8842};
+        String assertionName = "assertion name";
+        AssertionError error = new AssertionError(assertionName);
+
+        AssertionError actual = PropertyFalsified.counterexampleFound(
             propertyName,
             arguments,
             seeds,
             error);
-        final String expected = "Property named 'mySuperProperty' failed (assertion name):\n"
+
+        String expected = "Property named 'mySuperProperty' failed (assertion name):\n"
             + "With arguments: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
-        Assert.assertEquals(expected, actual.getMessage());
+        assertEquals(expected, actual.getMessage());
     }
 
     @Test
     public void counterexampleFoundWhenAssertionErrorPassedHasNoMessageIsCorrect() {
-        final String propertyName = "mySuperProperty";
-        final String[] arguments = {"first", "second", "third"};
-        final long[] seeds = {12345, 8842};
-        final AssertionError error = new AssertionError();
-        final AssertionError actual = PropertyFalsified.counterexampleFound(
+        String propertyName = "mySuperProperty";
+        String[] arguments = {"first", "second", "third"};
+        long[] seeds = {12345, 8842};
+        AssertionError error = new AssertionError();
+
+        AssertionError actual = PropertyFalsified.counterexampleFound(
             propertyName,
             arguments,
             seeds,
             error);
-        final String expected = "Property named 'mySuperProperty' failed:\n"
+
+        String expected = "Property named 'mySuperProperty' failed:\n"
             + "With arguments: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
-        Assert.assertEquals(expected, actual.getMessage());
+        assertEquals(expected, actual.getMessage());
     }
 
     @Test
     public void smallerCounterexampleFoundWithAllParametersIsCorrect() {
-        final String propertyName = "mySuperProperty";
-        final String[] originalArguments = {"first", "second", "third"};
-        final String[] arguments = {"first"};
-        final long[] seeds = {12345, 8842};
-        final String smallerFailureName = "smaller name";
-        final AssertionError smallerFailure = new AssertionError(smallerFailureName);
-        final String assertionName = "assertion name";
-        final AssertionError originalFailure = new AssertionError(assertionName);
-        final AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
+        String propertyName = "mySuperProperty";
+        String[] originalArguments = {"first", "second", "third"};
+        String[] arguments = {"first"};
+        long[] seeds = {12345, 8842};
+        String smallerFailureName = "smaller name";
+        AssertionError smallerFailure = new AssertionError(smallerFailureName);
+        String assertionName = "assertion name";
+        AssertionError originalFailure = new AssertionError(assertionName);
+
+        AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
             propertyName,
             originalArguments,
             arguments,
             seeds,
             smallerFailure,
             originalFailure);
-        final String expected = "Property named 'mySuperProperty' failed (smaller name):\n"
+
+        String expected = "Property named 'mySuperProperty' failed (smaller name):\n"
             + "With arguments: [first]\n"
             + "Original failure message: assertion name\n"
             + "First arguments found to also provoke a failure: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
-        Assert.assertEquals(expected, actual.getMessage());
+        assertEquals(expected, actual.getMessage());
     }
 
     @Test
     public void smallerCounterexampleFoundIsCorrectEvenIfSmallerFailureIsNotNamed() {
-        final String propertyName = "mySuperProperty";
-        final String[] originalArguments = {"first", "second", "third"};
-        final String[] arguments = {"first"};
-        final long[] seeds = {12345, 8842};
-        final AssertionError smallerFailure = new AssertionError();
-        final String assertionName = "assertion name";
-        final AssertionError originalFailure = new AssertionError(assertionName);
-        final AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
+        String propertyName = "mySuperProperty";
+        String[] originalArguments = {"first", "second", "third"};
+        String[] arguments = {"first"};
+        long[] seeds = {12345, 8842};
+        AssertionError smallerFailure = new AssertionError();
+        String assertionName = "assertion name";
+        AssertionError originalFailure = new AssertionError(assertionName);
+
+        AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
             propertyName,
             originalArguments,
             arguments,
             seeds,
             smallerFailure,
             originalFailure);
-        final String expected = "Property named 'mySuperProperty' failed:\n"
+
+        String expected = "Property named 'mySuperProperty' failed:\n"
             + "With arguments: [first]\n"
             + "Original failure message: assertion name\n"
             + "First arguments found to also provoke a failure: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
-        Assert.assertEquals(expected, actual.getMessage());
+        assertEquals(expected, actual.getMessage());
     }
 
     @Test
     public void smallerCounterexampleFoundIsCorrectEvenIfOriginalFailureIsNotNamed() {
-        final String propertyName = "mySuperProperty";
-        final String[] originalArguments = {"first", "second", "third"};
-        final String[] arguments = {"first"};
-        final long[] seeds = {12345, 8842};
-        final AssertionError smallerFailure = new AssertionError();
-        final AssertionError originalFailure = new AssertionError();
-        final AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
+        String propertyName = "mySuperProperty";
+        String[] originalArguments = {"first", "second", "third"};
+        String[] arguments = {"first"};
+        long[] seeds = {12345, 8842};
+        AssertionError smallerFailure = new AssertionError();
+        AssertionError originalFailure = new AssertionError();
+
+        AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
             propertyName,
             originalArguments,
             arguments,
             seeds,
             smallerFailure,
             originalFailure);
-        final String expected = "Property named 'mySuperProperty' failed:\n"
+
+        String expected = "Property named 'mySuperProperty' failed:\n"
             + "With arguments: [first]\n"
             + "First arguments found to also provoke a failure: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
-        Assert.assertEquals(expected, actual.getMessage());
+        assertEquals(expected, actual.getMessage());
     }
 }

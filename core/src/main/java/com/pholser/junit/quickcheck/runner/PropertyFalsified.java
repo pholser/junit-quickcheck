@@ -37,10 +37,10 @@ final class PropertyFalsified {
         Object[] args,
         long[] seeds,
         AssertionError e) {
-        final String message = "Property named '%s' failed%s%n"
+
+        String message = "Property named '%s' failed%s%n"
             + "With arguments: %s%n"
             + "Seeds for reproduction: %s";
-
 
         return new AssertionError(
             String.format(
@@ -59,7 +59,8 @@ final class PropertyFalsified {
         long[] seeds,
         AssertionError smallerFailure,
         AssertionError originalFailure) {
-        final String message = "Property named '%s' failed%s%n"
+
+        String message = "Property named '%s' failed%s%n"
             + "With arguments: %s%n"
             + (originalFailure.getMessage() == null ? ""
                 : "Original failure message: " + originalFailure.getMessage() + "%n")

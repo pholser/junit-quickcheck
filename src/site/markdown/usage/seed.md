@@ -21,11 +21,11 @@ the failure.
 junit-quickcheck reports the seed used for a given property parameter in the
 message of the `AssertionError` raised when a property fails.
 
-    java.lang.AssertionError: Property myProperty falsified.
-    Original failure message: [
+    java.lang.AssertionError: Property named 'myProperty' failed:
+    With arguments: [10]
+    Original failure message:
     Expected: a value less than <1>
-         but: <753701363> was greater than <1>]
-    Original args: [753701363]
-    Args shrunken to: [1]
-    Seeds: [-6700838609453830748]
+         but: <10> was greater than <1>
+    First arguments found to also provoke a failure: [753701363]
+    Seeds for reproduction: [-6700838609453830748]
     ...
