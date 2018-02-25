@@ -46,7 +46,9 @@ final class PropertyFalsified {
             String.format(
                 message,
                 propertyName,
-                e.getMessage() == null ? ":" : " (" + e.getMessage() + "):",
+                e.getMessage() == null
+                    ? ":"
+                    : " (" + e.getMessage() + "):",
                 Arrays.deepToString(args),
                 Arrays.toString(seeds)),
             e);
@@ -62,8 +64,12 @@ final class PropertyFalsified {
 
         String message = "Property named '%s' failed%s%n"
             + "With arguments: %s%n"
-            + (originalFailure.getMessage() == null ? ""
-                : "Original failure message: " + originalFailure.getMessage() + "%n")
+            + (originalFailure.getMessage() == null
+                ? ""
+                : "Original failure message: "
+                    + originalFailure.getMessage()
+                    + "%n"
+            )
             + "First arguments found to also provoke a failure: %s%n"
             + "Seeds for reproduction: %s";
 
@@ -71,7 +77,8 @@ final class PropertyFalsified {
             String.format(
                 message,
                 propertyName,
-                smallerFailure.getMessage() == null ? ":"
+                smallerFailure.getMessage() == null
+                    ? ":"
                     : " (" + smallerFailure.getMessage() + "):",
                 Arrays.deepToString(args),
                 Arrays.deepToString(originalArgs),
