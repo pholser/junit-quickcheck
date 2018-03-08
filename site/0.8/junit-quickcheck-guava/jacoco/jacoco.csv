@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+junit-quickcheck-guava,com.pholser.junit.quickcheck.guava.generator,OptionalGenerator,0,81,0,4,0,22,0,7,0,5
+junit-quickcheck-guava,com.pholser.junit.quickcheck.guava.generator,SupplierGenerator,0,16,0,0,0,4,0,3,0,3
+junit-quickcheck-guava,com.pholser.junit.quickcheck.guava.generator,FunctionGenerator,0,16,0,0,0,4,0,3,0,3
+junit-quickcheck-guava,com.pholser.junit.quickcheck.guava.generator,PredicateGenerator,0,17,0,0,0,4,0,3,0,3
