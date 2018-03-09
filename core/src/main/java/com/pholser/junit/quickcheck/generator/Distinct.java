@@ -23,37 +23,27 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck.generator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.generator.Generator;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
-
-public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
-    @SuppressWarnings("rawtypes") private final ServiceLoader<Generator> loader;
-
-    public ServiceLoaderGeneratorSource() {
-        loader = ServiceLoader.load(Generator.class);
-    }
-
-    @Override public Iterator<Generator<?>> iterator() {
-        List<Generator<?>> generators = new ArrayList<>();
-
-        for (Generator<?> each : loader)
-            generators.add(each);
-
-        Collections.sort(
-            generators,
-            comparing(generator -> generator.getClass().getName()));
-
-        return unmodifiableList(generators).iterator();
-    }
+/**
+ * <p>Mark a parameter of a {@link com.pholser.junit.quickcheck.Property}
+ * method with this annotation to make values generated for the parameter
+ * distinct from each other.</p>
+ *
+ * <p>This annotation is recognized on array parameters and parameters of type
+ * {@link java.util.Collection} and {@link java.util.Map}.</p>
+ *
+ * <p>Using this annotation with {@link Size} on {@link java.util.Set} or
+ * {@link java.util.Map} leads to strict size constraint.</p>
+ */
+@Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
+@Retention(RUNTIME)
+@GeneratorConfiguration
+public @interface Distinct {
 }

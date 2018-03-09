@@ -41,4 +41,9 @@ public class VoidGenerator extends Generator<Void> {
     @Override public Void generate(SourceOfRandomness random, GenerationStatus status) {
         return null;
     }
+
+    @Override
+    public boolean canRegisterAsType(Class<?> type) {
+        return !Object.class.equals(type);
+    }
 }

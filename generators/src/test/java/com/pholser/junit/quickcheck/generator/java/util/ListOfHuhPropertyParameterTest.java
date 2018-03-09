@@ -48,7 +48,7 @@ public class ListOfHuhPropertyParameterTest extends BasicGeneratorPropertyParame
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), singletonList(null), asList(null, null));
+        return asList(emptyList(), singletonList(false), asList(false, false));
     }
 
     @Override public void verifyInteractionWithRandomness() {
