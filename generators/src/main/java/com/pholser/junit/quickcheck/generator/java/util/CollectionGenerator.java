@@ -29,11 +29,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Shrink;
-import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.generator.*;
+import com.pholser.junit.quickcheck.internal.Lists;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.math.BigDecimal.*;
@@ -60,6 +59,7 @@ public abstract class CollectionGenerator<T extends Collection>
     extends ComponentizedGenerator<T> {
 
     private Size sizeRange;
+    private boolean distinct = false;
 
     protected CollectionGenerator(Class<T> type) {
         super(type);
@@ -81,14 +81,27 @@ public abstract class CollectionGenerator<T extends Collection>
         checkRange(INTEGRAL, size.min(), size.max());
     }
 
+    /**
+     * Tells this generator to add elements which are distinct from each other.
+     *
+     * @param distinct Generated elements will be distinct if this param is not null.
+     */
+    public void configure(Distinct distinct) {
+        this.distinct = distinct != null;
+    }
+
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         int size = size(random, status);
 
-        T items = empty();
-        for (int i = 0; i < size; ++i)
-            items.add(componentGenerators().get(0).generate(random, status));
+        Generator<?> generator = componentGenerators().get(0);
+        Stream<?> itemStream = Stream.generate(() -> generator.generate(random, status)).sequential();
+        if (distinct) {
+            itemStream = itemStream.distinct();
+        }
 
+        T items = empty();
+        itemStream.limit(size).forEach(items::add);
         return items;
     }
 
@@ -102,9 +115,12 @@ public abstract class CollectionGenerator<T extends Collection>
         @SuppressWarnings("unchecked")
         Shrink<Object> generator = (Shrink<Object>) componentGenerators().get(0);
 
-        List<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, generator);
+        Stream<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, generator).stream();
+        if (distinct) {
+            oneItemShrinks = oneItemShrinks.filter(Lists::isDistinct);
+        }
         shrinks.addAll(
-            oneItemShrinks.stream()
+            oneItemShrinks
                 .map(this::convert)
                 .filter(this::inSizeRange)
                 .collect(toList()));

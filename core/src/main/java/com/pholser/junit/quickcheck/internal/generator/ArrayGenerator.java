@@ -30,14 +30,13 @@ import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.Generators;
-import com.pholser.junit.quickcheck.generator.Shrink;
-import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.generator.*;
+import com.pholser.junit.quickcheck.internal.Lists;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.math.BigDecimal.*;
@@ -55,6 +54,7 @@ public class ArrayGenerator extends Generator<Object> {
     private final Generator<?> component;
 
     private Size lengthRange;
+    private boolean distinct = false;
 
     public ArrayGenerator(Class<?> componentType, Generator<?> component) {
         super(Object.class);
@@ -74,12 +74,27 @@ public class ArrayGenerator extends Generator<Object> {
         checkRange(INTEGRAL, size.min(), size.max());
     }
 
+    /**
+     * Tells this generator to produce values which are distinct from each other.
+     *
+     * @param distinct Generated values will be distinct if this param is not null.
+     */
+    public void configure(Distinct distinct) {
+        this.distinct = distinct != null;
+    }
+
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
         int length = length(random, status);
         Object array = Array.newInstance(componentType, length);
 
+        Stream<?> itemStream = Stream.generate(() -> component.generate(random, status)).sequential();
+        if (distinct) {
+            itemStream = itemStream.distinct();
+        }
+
+        Iterator<?> iterator = itemStream.iterator();
         for (int i = 0; i < length; ++i)
-            Array.set(array, i, component.generate(random, status));
+            Array.set(array, i, iterator.next());
 
         return array;
     }
@@ -98,8 +113,11 @@ public class ArrayGenerator extends Generator<Object> {
         shrinks.addAll(removals(asList));
 
         @SuppressWarnings("unchecked")
-        List<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, (Shrink<Object>) component);
-        shrinks.addAll(oneItemShrinks.stream()
+        Stream<List<Object>> oneItemShrinks = shrinksOfOneItem(random, asList, (Shrink<Object>) component).stream();
+        if (distinct) {
+            oneItemShrinks = oneItemShrinks.filter(Lists::isDistinct);
+        }
+        shrinks.addAll(oneItemShrinks
             .map(this::convert)
             .filter(this::inLengthRange)
             .collect(toList()));

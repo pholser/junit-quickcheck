@@ -32,11 +32,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
-import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Shrink;
-import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.generator.*;
+import com.pholser.junit.quickcheck.internal.Lists;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.util.stream.Collectors.*;
@@ -60,6 +59,7 @@ import static com.pholser.junit.quickcheck.internal.Sequences.*;
  */
 public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator<T> {
     private Size sizeRange;
+    private boolean distinct = false;
 
     protected MapGenerator(Class<T> type) {
         super(type);
@@ -80,17 +80,32 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         checkRange(INTEGRAL, size.min(), size.max());
     }
 
+    /**
+     * Tells this generator to add entries whose keys are distinct from each other.
+     *
+     * @param distinct Keys of generated entries will be distinct if this param is not null.
+     */
+    public void configure(Distinct distinct) {
+        this.distinct = distinct != null;
+    }
+
     @SuppressWarnings("unchecked")
     @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
         int size = size(random, status);
 
-        T items = empty();
-        for (int i = 0; i < size; ++i) {
-            Object key = componentGenerators().get(0).generate(random, status);
-            Object value = componentGenerators().get(1).generate(random, status);
-            if (okToAdd(key, value))
-                items.put(key, value);
+        Generator<?> keyGenerator = componentGenerators().get(0);
+        Stream<?> keyStream = Stream.generate(() -> keyGenerator.generate(random, status)).sequential();
+        if (distinct) {
+            keyStream = keyStream.distinct();
         }
+
+        T items = empty();
+        Generator<?> valueGenerator = componentGenerators().get(1);
+        keyStream
+            .map(key -> new SimpleEntry(key, valueGenerator.generate(random, status)))
+            .filter(entry -> okToAdd(entry.getKey(), entry.getValue()))
+            .limit(size)
+            .forEach(entry -> items.put(entry.getKey(), entry.getValue()));
 
         return items;
     }
@@ -107,10 +122,13 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
             (Shrink<Object>) componentGenerators().get(0),
             (Shrink<Object>) componentGenerators().get(1));
 
-        List<List<Entry<?, ?>>> oneEntryShrinks =
-            shrinksOfOneItem(random, entries, entryShrink);
+        Stream<List<Entry<?, ?>>> oneEntryShrinks =
+            shrinksOfOneItem(random, entries, entryShrink).stream();
+        if (distinct) {
+            oneEntryShrinks = oneEntryShrinks.filter(MapGenerator::isKeyDistinct);
+        }
         shrinks.addAll(
-            oneEntryShrinks.stream()
+            oneEntryShrinks
                 .map(this::convert)
                 .filter(this::inSizeRange)
                 .collect(toList()));
@@ -203,5 +221,9 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
 
             return shrinks;
         };
+    }
+
+    private static boolean isKeyDistinct(List<Entry<?, ?>> entries) {
+        return Lists.isDistinct(entries.stream().map(Entry::getKey).collect(toList()));
     }
 }
