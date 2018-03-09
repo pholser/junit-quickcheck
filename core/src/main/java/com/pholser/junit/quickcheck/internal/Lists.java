@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.Shrink;
@@ -100,9 +99,5 @@ public final class Lists {
                 .collect(toList()));
 
         return shrinks;
-    }
-
-    public static <T> boolean isDistinct(List<T> list) {
-        return new HashSet<>(list).size() == list.size();
     }
 }
