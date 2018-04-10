@@ -44,8 +44,8 @@ import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
  * A source of randomness, fed to
- * {@link com.pholser.junit.quickcheck.generator.Generator generators} so they
- * can produce random values for property parameters.
+ * {@linkplain com.pholser.junit.quickcheck.generator.Generator generators}
+ * so they can produce random values for property parameters.
  */
 public class SourceOfRandomness {
     private static final BigInteger NANOS_PER_SECOND =
