@@ -42,7 +42,7 @@ import static java.util.stream.StreamSupport.*;
 import static com.pholser.junit.quickcheck.internal.Sequences.*;
 
 /**
- * Base class for generators of integral types, such as {@code double} and
+ * Base class for generators of decimal types, such as {@code double} and
  * {@link BigDecimal}.
  *
  * @param <T> type of values this generator produces
