@@ -159,9 +159,7 @@ public class ShrinkingTest {
     }
 
     @Test public void assumptionsNeverMet() {
-        assertThat(
-            testResult(AssumptionsNeverMet.class),
-            hasSingleFailureContaining("No values satisfied property assumptions"));
+        assertThat(testResult(AssumptionsNeverMet.class), isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
