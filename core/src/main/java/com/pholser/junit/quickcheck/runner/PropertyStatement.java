@@ -112,8 +112,8 @@ class PropertyStatement extends Statement {
             property(args, shrinkControl).verify();
 
         if (successes == 0 && !assumptionViolations.isEmpty()) {
-            fail("No values satisfied property assumptions. Violated assumptions: "
-                + assumptionViolations);
+            throw new NoValuesSatisfiedPropertyAssumptions(
+                assumptionViolations);
         }
     }
 
