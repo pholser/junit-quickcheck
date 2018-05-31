@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pholser</groupId>
     <artifactId>junit-quickcheck</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>junit-quickcheck</name>
     <description>Property-based testing, JUnit-style</description>
@@ -25,7 +25,7 @@
         <connection>scm:git:git://github.com/pholser/junit-quickcheck.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/pholser/junit-quickcheck.git</developerConnection>
         <url>http://github.com/pholser/junit-quickcheck</url>
-        <tag>junit-quickcheck-0.8.1</tag>
+        <tag>junit-quickcheck-0.8</tag>
     </scm>
     <issueManagement>
         <system>GitHub Issues</system>
