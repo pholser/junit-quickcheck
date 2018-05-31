@@ -1,0 +1,11 @@
+com.pholser.junit.quickcheck.examples.crypto.AES128Keys
+com.pholser.junit.quickcheck.examples.dummy.AGenerator
+com.pholser.junit.quickcheck.examples.dummy.BGenerator
+com.pholser.junit.quickcheck.examples.func.EitherGenerator
+com.pholser.junit.quickcheck.examples.geom.PointGenerator
+com.pholser.junit.quickcheck.examples.geom.PolygonGenerator
+com.pholser.junit.quickcheck.examples.geom.SegmentGenerator
+com.pholser.junit.quickcheck.examples.number.IntegralGenerator
+com.pholser.junit.quickcheck.examples.tree.EmptyGenerator
+com.pholser.junit.quickcheck.examples.tree.LeafGenerator
+com.pholser.junit.quickcheck.examples.tree.NodeGenerator

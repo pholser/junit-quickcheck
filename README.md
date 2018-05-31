@@ -24,10 +24,10 @@ that the properties hold at least for the generated inputs. This gives us
 some reasonable assurance over time that the properties hold true for any
 valid inputs.
 
-## Getting junit-quickcheck
+## Documentation
  
-[Version 0.8](https://pholser.github.io/junit-quickcheck/index.html) is the
-current stable version of junit-quickcheck.
+Here is a link to the documentation for
+[Version 0.8, the current stable version of junit-quickcheck](https://pholser.github.io/junit-quickcheck/index.html).
 
 ## Basic example
 
@@ -45,3 +45,9 @@ current stable version of junit-quickcheck.
         }
     }
 ```
+
+## Other examples
+
+After browsing the [documentation](#documentation), have a look at some
+[examples](examples) in module `junit-quickcheck-examples`. These are built
+with junit-quickcheck.

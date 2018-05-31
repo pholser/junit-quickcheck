@@ -23,55 +23,35 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.guava.generator;
+package com.pholser.junit.quickcheck.examples.crypto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Key;
 
-import com.google.common.base.Optional;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.examples.crypto.SymmetricCrypto;
+import com.pholser.junit.quickcheck.examples.crypto.SymmetricCrypto.EncryptionResult;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
-public class OptionalPropertyParameterTest {
-    @Test public void maybeAString() {
-        assertThat(testResult(OptionalString.class), isSuccessful());
-    }
+@RunWith(JUnitQuickcheck.class)
+public class SymmetricKeyCryptoPropertiesTest {
+    @Property public void decryptReversesEncrypt(
+        @InCharset("UTF-8") String plaintext,
+        Key key)
+        throws Exception {
 
-    @RunWith(JUnitQuickcheck.class)
-    public static class OptionalString {
-        @Property public void works(
-            Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
+        SymmetricCrypto crypto = new SymmetricCrypto();
 
-            assumeTrue(optional.isPresent());
-            assertTrue(optional.get().codePoints().allMatch(i -> i < 128));
-        }
-    }
+        EncryptionResult enciphered =
+            crypto.encrypt(plaintext.getBytes("UTF-8"), key);
 
-    @Test public void shrinking() {
-        assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
-        assertTrue(
-            ShrinkingOptional.failed.stream()
-                .anyMatch(o -> !o.isPresent()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class ShrinkingOptional {
-        static List<Optional<Byte>> failed = new ArrayList<>();
-
-        @Property public void works(Optional<Byte> optional) {
-            failed.add(optional);
-
-            fail();
-        }
+        assertEquals(
+            plaintext,
+            new String(crypto.decrypt(enciphered, key)));
     }
 }
