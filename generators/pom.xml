@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck</artifactId>
-        <version>0.8.1-SNAPSHOT</version>
+        <version>0.8.1</version>
     </parent>
 
     <artifactId>junit-quickcheck-generators</artifactId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
     <packaging>jar</packaging>
     <name>junit-quickcheck-generators</name>
     <description>Property-based testing, JUnit-style: basic generators</description>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.8.1-SNAPSHOT</version>
+            <version>0.8.1</version>
         </dependency>
 
         <dependency>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.8.1-SNAPSHOT</version>
+            <version>0.8.1</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
