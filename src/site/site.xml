@@ -5,7 +5,7 @@
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.5</version>
+        <version>1.7</version>
     </skin>
     <publishDate format="MMMM dd, yyyy" position="right"/>
     <body>
@@ -48,4 +48,13 @@
             <item name="junit-quickcheck-guava" href="reports/reports-guava.html"/>
         </menu>
     </body>
+    <custom>
+        <fluidoSkin>
+            <gitHub>
+                <projectId>apache/maven-skins</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>darkblue</ribbonColor>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
 </project>
