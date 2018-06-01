@@ -49,7 +49,10 @@ public class SetOfHuhPropertyParameterTest extends BasicGeneratorPropertyParamet
 
     @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet((Object) null), newHashSet(null, null));
+        return asList(
+            newHashSet(),
+            newHashSet(false),
+            newHashSet(false, false));
     }
 
     @Override public void verifyInteractionWithRandomness() {

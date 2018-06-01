@@ -23,12 +23,11 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck;
+package com.pholser.junit.quickcheck.examples.number;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
 
@@ -38,31 +37,19 @@ import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
 @RunWith(JUnitQuickcheck.class)
-public class PrimeFactorsPropertyTest {
-    static class PrimeFactors {
-        static List<BigInteger> of(BigInteger n) {
-            List<BigInteger> primes = new ArrayList<>();
+public class PrimeFactorsPropertiesTest {
+    @Property(trials = 10) public void factorsPassPrimalityTest(
+        BigInteger n) {
 
-            for (BigInteger candidate = BigInteger.valueOf(2);
-                n.compareTo(ONE) > 0;
-                candidate = candidate.add(ONE)) {
-
-                for (; n.mod(candidate).equals(ZERO); n = n.divide(candidate))
-                    primes.add(candidate);
-            }
-
-            return primes;
-        }
-    }
-
-    @Property(trials = 7) public void factorsPassPrimalityTest(BigInteger n) {
         assumeThat(n, greaterThan(ZERO));
 
         for (BigInteger each : PrimeFactors.of(n))
-            assertTrue(each.isProbablePrime(1000));
+            assertTrue(each.isProbablePrime(100));
     }
 
-    @Property(trials = 7) public void factorsMultiplyToOriginal(BigInteger n) {
+    @Property(trials = 10) public void factorsMultiplyToOriginal(
+        BigInteger n) {
+
         assumeThat(n, greaterThan(ZERO));
 
         BigInteger product = ONE;
@@ -72,7 +59,7 @@ public class PrimeFactorsPropertyTest {
         assertEquals(n, product);
     }
 
-    @Property(trials = 7) public void factorizationsAreUnique(
+    @Property(trials = 10) public void factorizationsAreUnique(
         BigInteger m,
         BigInteger n) {
 

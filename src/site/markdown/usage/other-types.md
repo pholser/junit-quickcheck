@@ -95,7 +95,7 @@ by using the `Ctor` generator with `@From`.
     public class DollarsAndCents {
         private final BigDecimal amount;
 
-        public Money(BigDecimal amount) {
+        public DollarsAndCents(BigDecimal amount) {
            this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
 

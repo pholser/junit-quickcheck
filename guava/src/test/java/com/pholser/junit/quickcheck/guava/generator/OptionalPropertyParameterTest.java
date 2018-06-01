@@ -59,7 +59,9 @@ public class OptionalPropertyParameterTest {
 
     @Test public void shrinking() {
         assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
-        assertTrue(ShrinkingOptional.failed.stream().anyMatch(o -> !o.isPresent()));
+        assertTrue(
+            ShrinkingOptional.failed.stream()
+                .anyMatch(o -> !o.isPresent()));
     }
 
     @RunWith(JUnitQuickcheck.class)

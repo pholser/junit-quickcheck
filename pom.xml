@@ -91,6 +91,7 @@
         <module>core</module>
         <module>generators</module>
         <module>guava</module>
+        <module>examples</module>
     </modules>
 
     <dependencyManagement>
