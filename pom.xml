@@ -84,6 +84,10 @@
             <name>ryu1.sakai</name>
             <roles><role>Added @Distinct config for aggregate types</role></roles>
         </contributor>
+        <contributor>
+            <name>Cameron Samak</name>
+            <roles><role>Ignoring shrinks that are equal to the shrinkee</role></roles>
+        </contributor>
     </contributors>
 
     <properties>
