@@ -80,6 +80,10 @@
             <name>Pablo Gonzalez Alonso</name>
             <roles><role>Added support for Kotlin annotations</role></roles>
         </contributor>
+        <contributor>
+            <name>ryu1.sakai</name>
+            <roles><role>Added @Distinct config for aggregate types</role></roles>
+        </contributor>
     </contributors>
 
     <properties>
