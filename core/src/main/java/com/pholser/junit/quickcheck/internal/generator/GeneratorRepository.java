@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,6 +40,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.Ctor;
 import com.pholser.junit.quickcheck.generator.Fields;
@@ -59,6 +61,11 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class GeneratorRepository implements Generators {
+    private static final Set<String> NULLABLE_ANNOTATIONS = Stream.of(
+            "javax.annotation.Nullable", // JSR-305
+            "org.jetbrains.annotations.Nullable" // Kotlin
+    ).collect(toSet());
+
     private final SourceOfRandomness random;
     private final Map<Class<?>, Set<Generator<?>>> generators;
 
@@ -255,6 +262,12 @@ public class GeneratorRepository implements Generators {
                 "Cannot find generator for " + parameter.name()
                 + " of type " + parameter.type().getTypeName());
         }
+
+        if (parameter.annotatedElement() != null && Arrays.stream(parameter.annotatedElement().getAnnotations())
+                .map(Annotation::annotationType)
+                .map(Class::getCanonicalName)
+                .anyMatch(NULLABLE_ANNOTATIONS::contains))
+            matches.add(new NullGenerator<>(parameter.getRawClass()));
 
         return matches;
     }
