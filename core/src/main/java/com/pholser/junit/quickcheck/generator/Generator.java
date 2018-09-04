@@ -149,7 +149,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * <p>Gives a hint to the shrinking process as to the magnitude of the given
      * value. The shrinking process will prefer trying values of greater
      * magnitude before values of lesser magnitude. If not overridden, this
-     * implementation returns zero.</p>
+     * implementation returns "one".</p>
      *
      * <p><em>Note to generator writers:</em> Do not worry about normalizing
      * a magnitude to a positive value; the shrinking mechanism will take care
@@ -160,7 +160,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @return a measure of the given value's magnitude
      */
     public BigDecimal magnitude(Object value) {
-        return ZERO;
+        return ONE;
     }
 
     /**
