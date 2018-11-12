@@ -36,15 +36,15 @@ import static org.junit.Assume.assumeThat;
 
 @RunWith(JUnitQuickcheck.class)
 public class NullableParameterTest {
-    @Property public void shouldNotBeNull(String value) {
+    @Property public void shouldNotBeNull(Integer value) {
         assertNotNull(value);
     }
 
-    @Property public void mayBeNull(@Nullable String value) {
+    @Property public void mayBeNull(@Nullable Integer value) {
         assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
     }
 
-    @Property public void mayNotBeNull(@Nullable String value) {
+    @Property public void mayNotBeNull(@Nullable Integer value) {
         assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
     }
 }
