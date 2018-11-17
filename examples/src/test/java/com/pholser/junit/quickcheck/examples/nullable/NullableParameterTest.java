@@ -24,7 +24,10 @@
 */
 package com.pholser.junit.quickcheck.examples.nullable;
 
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.examples.number.NonNegative;
+import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
@@ -32,11 +35,12 @@ import org.junit.runner.RunWith;
 import javax.annotation.Nullable;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 @RunWith(JUnitQuickcheck.class)
 public class NullableParameterTest {
-    @Property public void shouldNotBeNull(Integer value) {
+    @Property public void shouldNotBeNullByDefault(Integer value) {
         assertNotNull(value);
     }
 
@@ -47,4 +51,27 @@ public class NullableParameterTest {
     @Property public void mayNotBeNull(@Nullable Integer value) {
         assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
     }
+
+    @Property public void nullableAnnotationAndExplicitGenerator(@Nullable @From(IntegerGenerator.class) Integer value) {
+        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+    }
+
+    @Property public void nullableAnnotationAndConfigurationProperty(@Nullable @NonNegative Integer value) {
+        assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
+        assertThat(value, Matchers.greaterThanOrEqualTo(0));
+    }
+
+    @Property public void nullableAnnotationOnEnum(@Nullable SomeEnum value) {
+        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+    }
+
+    @Property public void nullableAnnotationOnArray(@Nullable Integer[] value) {
+        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+    }
+
+    @Property public void nullableAnnotationOnPrimitive(@Nullable int value) { // nonsense, but allowed by the compiler
+        assertNotNull(value);
+    }
+
+    enum SomeEnum { VALUE_1 }
 }

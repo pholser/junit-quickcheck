@@ -26,6 +26,7 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -225,6 +226,10 @@ public class GeneratorRepository implements Generators {
 
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {
         Generator<?> generator = generatorFor(parameter);
+
+        if (!isPrimitiveType(parameter.annotatedType().getType()) && hasNullableAnnotation(parameter.annotatedElement()))
+            generator = new NullableGenerator<>(generator);
+
         generator.provide(this);
         generator.configure(parameter.annotatedType());
         if (parameter.topLevel())
@@ -262,12 +267,6 @@ public class GeneratorRepository implements Generators {
                 "Cannot find generator for " + parameter.name()
                 + " of type " + parameter.type().getTypeName());
         }
-
-        if (parameter.annotatedElement() != null && Arrays.stream(parameter.annotatedElement().getAnnotations())
-                .map(Annotation::annotationType)
-                .map(Class::getCanonicalName)
-                .anyMatch(NULLABLE_ANNOTATIONS::contains))
-            matches.add(new NullGenerator<>(parameter.getRawClass()));
 
         return matches;
     }
@@ -374,5 +373,17 @@ public class GeneratorRepository implements Generators {
 
     private static org.javaruntype.type.Type<?> token(Type type) {
         return Types.forJavaLangReflectType(type);
+    }
+
+    private static boolean isPrimitiveType(Type type) {
+        return (type instanceof Class) && ((Class)type).isPrimitive();
+    }
+
+    private static boolean hasNullableAnnotation(AnnotatedElement annotatedElement) {
+        return annotatedElement != null &&
+                Arrays.stream(annotatedElement.getAnnotations())
+                        .map(Annotation::annotationType)
+                        .map(Class::getCanonicalName)
+                        .anyMatch(NULLABLE_ANNOTATIONS::contains);
     }
 }
