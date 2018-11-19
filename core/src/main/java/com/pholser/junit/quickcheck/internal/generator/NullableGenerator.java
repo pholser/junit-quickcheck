@@ -34,10 +34,13 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 class NullableGenerator<T> extends Generator<T> {
     private final Generator<T> delegate;
-    private float probabilityOfNull = 0.5f; // TODO: make this value configurable
+    private float probabilityOfNull = (Float) defaultValueOf(NullAllows.class, "probability");
 
     NullableGenerator(Generator<T> delegate) {
         super(delegate.types());
@@ -51,6 +54,15 @@ class NullableGenerator<T> extends Generator<T> {
         }
         else {
             return delegate.generate(random, status);
+        }
+    }
+
+    private void configure(NullAllows nullAllows) {
+        if (nullAllows.probability() >= 0.0f && nullAllows.probability() <= 1.0f) {
+            this.probabilityOfNull = nullAllows.probability();
+        }
+        else {
+            throw new IllegalArgumentException("NullAllows probability must be in the [0,1] range");
         }
     }
 
@@ -81,6 +93,7 @@ class NullableGenerator<T> extends Generator<T> {
 
     @Override
     public void configure(AnnotatedType annotatedType) {
+        Optional.ofNullable(annotatedType.getAnnotation(NullAllows.class)).ifPresent(this::configure);
         delegate.configure(annotatedType);
     }
 
@@ -108,6 +121,4 @@ class NullableGenerator<T> extends Generator<T> {
     public BigDecimal magnitude(Object value) {
         return delegate.magnitude(value);
     }
-
-
 }

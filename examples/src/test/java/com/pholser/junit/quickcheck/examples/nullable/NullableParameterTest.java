@@ -28,6 +28,7 @@ import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.examples.number.NonNegative;
 import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
+import com.pholser.junit.quickcheck.internal.generator.NullAllows;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
@@ -44,12 +45,20 @@ public class NullableParameterTest {
         assertNotNull(value);
     }
 
-    @Property public void mayBeNull(@Nullable Integer value) {
+    @Property public void mayBeNullWhenAnnotatedWithNullable(@Nullable Integer value) {
         assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
     }
 
     @Property public void mayNotBeNull(@Nullable Integer value) {
         assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
+    }
+
+    @Property public void willAlwaysBeNullWhenProbabilityIs1(@Nullable @NullAllows(probability = 1.0f) Integer value) {
+        assertThat("All the generated values will be null", value, Matchers.nullValue());
+    }
+
+    @Property public void willneverBeNullWhenProbabilityIs0(@Nullable @NullAllows(probability = 0.0f) Integer value) {
+        assertThat("All the generated values will not be null", value, Matchers.notNullValue());
     }
 
     @Property public void nullableAnnotationAndExplicitGenerator(@Nullable @From(IntegerGenerator.class) Integer value) {
