@@ -41,7 +41,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.Ctor;
 import com.pholser.junit.quickcheck.generator.Fields;
@@ -62,10 +61,9 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class GeneratorRepository implements Generators {
-    private static final Set<String> NULLABLE_ANNOTATIONS = unmodifiableSet(Stream.of(
-            "javax.annotation.Nullable", // JSR-305
-            "org.jetbrains.annotations.Nullable" // Kotlin
-    ).collect(toSet()));
+    private static final Set<String> NULLABLE_ANNOTATIONS = singleton(
+            "javax.annotation.Nullable" // JSR-305
+    );
 
     private final SourceOfRandomness random;
     private final Map<Class<?>, Set<Generator<?>>> generators;
