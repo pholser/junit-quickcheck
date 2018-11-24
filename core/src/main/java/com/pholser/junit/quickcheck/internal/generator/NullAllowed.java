@@ -17,5 +17,5 @@ public @interface NullAllowed {
     /**
      * @return probability of generating null {@code float} value, in the range [0,1]
      */
-    float probability() default 0.5f;
+    float probability() default 0.2f;
 }
