@@ -30,11 +30,11 @@ import com.pholser.junit.quickcheck.examples.number.NonNegative;
 import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.internal.generator.NullAllowed;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
 
 import javax.annotation.Nullable;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
@@ -46,44 +46,44 @@ public class NullableParameterTest {
     }
 
     @Property public void mayBeNullWhenAnnotatedWithNullable(@Nullable Integer value) {
-        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+        assumeThat("Some of the generated values will be null", value, nullValue());
     }
 
     @Property public void mayNotBeNullWhenAnnotatedWithNullable(@Nullable Integer value) {
-        assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
+        assumeThat("Some of the generated values will not be null", value, notNullValue());
     }
 
     @Property public void mayBeNullWhenAnnotatedWithNullAllowed(@NullAllowed Integer value) {
-        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+        assumeThat("Some of the generated values will be null", value, nullValue());
     }
 
     @Property public void mayNotBeNullWhenAnnotatedWithNullAllowed(@NullAllowed Integer value) {
-        assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
+        assumeThat("Some of the generated values will not be null", value, notNullValue());
     }
 
     @Property public void willAlwaysBeNullWhenProbabilityIs1(@NullAllowed(probability = 1.0f) Integer value) {
-        assertThat("All the generated values will be null", value, Matchers.nullValue());
+        assertThat("All the generated values will be null", value, nullValue());
     }
 
     @Property public void willneverBeNullWhenProbabilityIs0(@NullAllowed(probability = 0.0f) Integer value) {
-        assertThat("All the generated values will not be null", value, Matchers.notNullValue());
+        assertThat("All the generated values will not be null", value, notNullValue());
     }
 
     @Property public void nullableAnnotationAndExplicitGenerator(@Nullable @From(IntegerGenerator.class) Integer value) {
-        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+        assumeThat("Some of the generated values will be null", value, nullValue());
     }
 
     @Property public void nullableAnnotationAndConfigurationProperty(@Nullable @NonNegative Integer value) {
-        assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
-        assertThat(value, Matchers.greaterThanOrEqualTo(0));
+        assumeThat("Some of the generated values will not be null", value, notNullValue());
+        assertThat(value, greaterThanOrEqualTo(0));
     }
 
     @Property public void nullableAnnotationOnEnum(@Nullable SomeEnum value) {
-        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+        assumeThat("Some of the generated values will be null", value, nullValue());
     }
 
     @Property public void nullableAnnotationOnArray(@Nullable Integer[] value) {
-        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+        assumeThat("Some of the generated values will be null", value, nullValue());
     }
 
     @Property public void nullableAnnotationOnPrimitive(@Nullable int value) { // nonsense, but allowed by the compiler
