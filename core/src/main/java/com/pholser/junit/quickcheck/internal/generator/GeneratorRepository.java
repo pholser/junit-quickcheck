@@ -62,7 +62,7 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class GeneratorRepository implements Generators {
-    private static final Set<String> NULLABLE_ANNOTATIONS = Collections.unmodifiableSet(Stream.of(
+    private static final Set<String> NULLABLE_ANNOTATIONS = unmodifiableSet(Stream.of(
             "javax.annotation.Nullable", // JSR-305
             "org.jetbrains.annotations.Nullable" // Kotlin
     ).collect(toSet()));
