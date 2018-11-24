@@ -49,15 +49,23 @@ public class NullableParameterTest {
         assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
     }
 
-    @Property public void mayNotBeNull(@Nullable Integer value) {
+    @Property public void mayNotBeNullWhenAnnotatedWithNullable(@Nullable Integer value) {
         assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
     }
 
-    @Property public void willAlwaysBeNullWhenProbabilityIs1(@Nullable @NullAllowed(probability = 1.0f) Integer value) {
+    @Property public void mayBeNullWhenAnnotatedWithNullAllowed(@NullAllowed Integer value) {
+        assumeThat("Some of the generated values will be null", value, Matchers.nullValue());
+    }
+
+    @Property public void mayNotBeNullWhenAnnotatedWithNullAllowed(@NullAllowed Integer value) {
+        assumeThat("Some of the generated values will not be null", value, Matchers.notNullValue());
+    }
+
+    @Property public void willAlwaysBeNullWhenProbabilityIs1(@NullAllowed(probability = 1.0f) Integer value) {
         assertThat("All the generated values will be null", value, Matchers.nullValue());
     }
 
-    @Property public void willneverBeNullWhenProbabilityIs0(@Nullable @NullAllowed(probability = 0.0f) Integer value) {
+    @Property public void willneverBeNullWhenProbabilityIs0(@NullAllowed(probability = 0.0f) Integer value) {
         assertThat("All the generated values will not be null", value, Matchers.notNullValue());
     }
 
@@ -79,6 +87,10 @@ public class NullableParameterTest {
     }
 
     @Property public void nullableAnnotationOnPrimitive(@Nullable int value) { // nonsense, but allowed by the compiler
+        assertNotNull(value);
+    }
+
+    @Property public void nullAllowedAnnotationOnPrimitive(@NullAllowed int value) { // nonsense, but allowed by the compiler
         assertNotNull(value);
     }
 

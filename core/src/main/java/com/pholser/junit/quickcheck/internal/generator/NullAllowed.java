@@ -8,8 +8,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * <p>Mark a parameter of a {@link com.pholser.junit.quickcheck.Property}
- * method with this annotation, in addition to {@link javax.annotation.Nullable},
- * to configure the probability of generating a null value.</p>
+ * method with this annotation to indicate that the parameter is nullable, and
+ * to optionally configure the probability of generating a null value.</p>
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
