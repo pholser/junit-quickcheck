@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
-public @interface NullAllows {
+public @interface NullAllowed {
     /**
      * @return probability of generating null {@code float} value, in the range [0,1]
      */

@@ -40,7 +40,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 class NullableGenerator<T> extends Generator<T> {
     private final Generator<T> delegate;
-    private float probabilityOfNull = (Float) defaultValueOf(NullAllows.class, "probability");
+    private float probabilityOfNull = (Float) defaultValueOf(NullAllowed.class, "probability");
 
     NullableGenerator(Generator<T> delegate) {
         super(delegate.types());
@@ -57,12 +57,12 @@ class NullableGenerator<T> extends Generator<T> {
         }
     }
 
-    private void configure(NullAllows nullAllows) {
-        if (nullAllows.probability() >= 0.0f && nullAllows.probability() <= 1.0f) {
-            this.probabilityOfNull = nullAllows.probability();
+    private void configure(NullAllowed nullAllowed) {
+        if (nullAllowed.probability() >= 0.0f && nullAllowed.probability() <= 1.0f) {
+            this.probabilityOfNull = nullAllowed.probability();
         }
         else {
-            throw new IllegalArgumentException("NullAllows probability must be in the [0,1] range");
+            throw new IllegalArgumentException("NullAllowed probability must be in the [0,1] range");
         }
     }
 
@@ -93,7 +93,7 @@ class NullableGenerator<T> extends Generator<T> {
 
     @Override
     public void configure(AnnotatedType annotatedType) {
-        Optional.ofNullable(annotatedType.getAnnotation(NullAllows.class)).ifPresent(this::configure);
+        Optional.ofNullable(annotatedType.getAnnotation(NullAllowed.class)).ifPresent(this::configure);
         delegate.configure(annotatedType);
     }
 
