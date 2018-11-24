@@ -22,6 +22,7 @@
             <item name="Generating Values of Other Types" href="usage/other-types.html"/>
             <item name="Configuring Generators" href="usage/configuring.html"/>
             <item name="Constraining Generated Values" href="usage/constraining.html"/>
+            <item name="Generating Null Values" href="usage/null.html"/>
             <item name="Generating Values of Complex Types" href="usage/complex-types.html"/>
             <item name="Verification Modes" href="usage/verification-modes.html"/>
             <item name="Seed" href="usage/seed.html"/>

@@ -10,6 +10,7 @@ parameters of the following types:
 * `String`
 * "functional interfaces" (interfaces with a single method that does not
   override a method from `java.lang.Object`)
+* `java.util.Optional` of supported types
 * `java.util.ArrayList` and `java.util.LinkedList` of supported types
 * `java.util.HashSet` and `java.util.LinkedHashSet` of supported types
 * `java.util.HashMap` and `java.util.LinkedHashMap` of supported types
