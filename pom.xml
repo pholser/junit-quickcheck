@@ -88,6 +88,10 @@
             <name>Cameron Samak</name>
             <roles><role>Ignoring shrinks that are equal to the shrinkee</role></roles>
         </contributor>
+        <contributor>
+            <name>Diego Berrueta</name>
+            <roles><role>Added support for generating null values</role></roles>
+        </contributor>
     </contributors>
 
     <properties>

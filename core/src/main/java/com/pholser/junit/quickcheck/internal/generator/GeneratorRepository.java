@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,6 +41,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.pholser.junit.quickcheck.generator.Ctor;
 import com.pholser.junit.quickcheck.generator.Fields;
@@ -59,6 +62,11 @@ import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public class GeneratorRepository implements Generators {
+    private static final Set<String> NULLABLE_ANNOTATIONS = unmodifiableSet(Stream.of(
+            "javax.annotation.Nullable", // JSR-305
+            NullAllowed.class.getCanonicalName()
+    ).collect(toSet()));
+
     private final SourceOfRandomness random;
     private final Map<Class<?>, Set<Generator<?>>> generators;
 
@@ -218,6 +226,10 @@ public class GeneratorRepository implements Generators {
 
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {
         Generator<?> generator = generatorFor(parameter);
+
+        if (!isPrimitiveType(parameter.annotatedType().getType()) && hasNullableAnnotation(parameter.annotatedElement()))
+            generator = new NullableGenerator<>(generator);
+
         generator.provide(this);
         generator.configure(parameter.annotatedType());
         if (parameter.topLevel())
@@ -361,5 +373,17 @@ public class GeneratorRepository implements Generators {
 
     private static org.javaruntype.type.Type<?> token(Type type) {
         return Types.forJavaLangReflectType(type);
+    }
+
+    private static boolean isPrimitiveType(Type type) {
+        return type instanceof Class<?> && ((Class<?>)type).isPrimitive();
+    }
+
+    private static boolean hasNullableAnnotation(AnnotatedElement annotatedElement) {
+        return annotatedElement != null &&
+                Arrays.stream(annotatedElement.getAnnotations())
+                        .map(Annotation::annotationType)
+                        .map(Class::getCanonicalName)
+                        .anyMatch(NULLABLE_ANNOTATIONS::contains);
     }
 }
