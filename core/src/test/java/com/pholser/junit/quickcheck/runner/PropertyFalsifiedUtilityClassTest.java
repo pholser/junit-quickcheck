@@ -25,11 +25,17 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
 
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.runner.RunWith;
 
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PropertyFalsifiedUtilityClassTest
     extends UtilityClassesUninstantiabilityHarness {
@@ -52,7 +58,7 @@ public class PropertyFalsifiedUtilityClassTest
             seeds,
             error);
 
-        String expected = "Property named 'mySuperProperty' failed (assertion name):\n"
+        String expected = "Property named 'mySuperProperty' failed (assertion name)\n"
             + "With arguments: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
         assertEquals(expected, actual.getMessage());
@@ -152,5 +158,19 @@ public class PropertyFalsifiedUtilityClassTest
             + "First arguments found to also provoke a failure: [first, second, third]\n"
             + "Seeds for reproduction: [12345, 8842]";
         assertEquals(expected, actual.getMessage());
+    }
+
+    @Test
+    public void github_212_failWithIllegalFormatSpecifierInMessage() {
+        assertThat(
+            testResult(Failing.class),
+            hasFailureContaining("Failure with a %D in the text"));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class Failing {
+        @Property public void prop(@From(AnInt.class) int n) {
+            fail("Failure with a %D in the text");
+        }
     }
 }
