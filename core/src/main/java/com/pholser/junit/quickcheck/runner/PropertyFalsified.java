@@ -27,6 +27,8 @@ package com.pholser.junit.quickcheck.runner;
 
 import java.util.Arrays;
 
+import static java.lang.String.*;
+
 final class PropertyFalsified {
     private PropertyFalsified() {
         throw new UnsupportedOperationException();
@@ -38,17 +40,19 @@ final class PropertyFalsified {
         long[] seeds,
         AssertionError e) {
 
-        String message = "Property named '%s' failed%s%n"
+        String template = "Property named '%s' failed%s%n"
             + "With arguments: %s%n"
             + "Seeds for reproduction: %s";
+        String assertionErrorMessage =
+            e.getMessage() == null
+                ? ":"
+                : format(" (%s)", e.getMessage());
 
         return new AssertionError(
-            String.format(
-                message,
+            format(
+                template,
                 propertyName,
-                e.getMessage() == null
-                    ? ":"
-                    : " (" + e.getMessage() + "):",
+                assertionErrorMessage,
                 Arrays.deepToString(args),
                 Arrays.toString(seeds)),
             e);
@@ -62,25 +66,30 @@ final class PropertyFalsified {
         AssertionError smallerFailure,
         AssertionError originalFailure) {
 
-        String message = "Property named '%s' failed%s%n"
-            + "With arguments: %s%n"
-            + (originalFailure.getMessage() == null
+        String originalFailureMessageSegment =
+            originalFailure.getMessage() == null
                 ? ""
-                : "Original failure message: "
-                    + originalFailure.getMessage()
-                    + "%n"
-            )
+                : format(
+                    "Original failure message: %s%n",
+                    originalFailure.getMessage());
+        String smallerFailureMessageSegment =
+            smallerFailure.getMessage() == null
+                ? ":"
+                : format(" (%s):", smallerFailure.getMessage());
+
+        String template = "Property named '%s' failed%s%n"
+            + "With arguments: %s%n"
+            + "%s"
             + "First arguments found to also provoke a failure: %s%n"
             + "Seeds for reproduction: %s";
 
         AssertionError e = new AssertionError(
-            String.format(
-                message,
+            format(
+                template,
                 propertyName,
-                smallerFailure.getMessage() == null
-                    ? ":"
-                    : " (" + smallerFailure.getMessage() + "):",
+                smallerFailureMessageSegment,
                 Arrays.deepToString(args),
+                originalFailureMessageSegment,
                 Arrays.deepToString(originalArgs),
                 Arrays.toString(seeds)),
             originalFailure);

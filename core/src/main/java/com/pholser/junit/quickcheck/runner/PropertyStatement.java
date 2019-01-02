@@ -58,7 +58,6 @@ import ru.vyarus.java.generics.resolver.GenericsResolver;
 import static java.util.stream.Collectors.*;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
-import static org.junit.Assert.*;
 
 class PropertyStatement extends Statement {
     private final FrameworkMethod method;
