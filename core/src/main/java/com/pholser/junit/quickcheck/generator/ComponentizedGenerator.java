@@ -31,6 +31,8 @@ import java.util.List;
 
 import org.javaruntype.type.TypeParameter;
 
+import javax.annotation.Nonnull;
+
 import static java.util.Collections.*;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
@@ -105,6 +107,7 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
     /**
      * @return this generator's component generators
      */
+    @Nonnull
     protected List<Generator<?>> componentGenerators() {
         return unmodifiableList(components);
     }

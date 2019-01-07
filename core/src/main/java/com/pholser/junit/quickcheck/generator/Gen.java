@@ -37,6 +37,8 @@ import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import javax.annotation.Nonnull;
+
 import static java.util.stream.Collectors.*;
 
 /**
@@ -57,7 +59,7 @@ public interface Gen<T> {
      * number of elements.
      * @return the generated value
      */
-    T generate(SourceOfRandomness random, GenerationStatus status);
+    T generate(@Nonnull SourceOfRandomness random, @Nonnull GenerationStatus status);
 
     /**
      * Gives a generation strategy that produces a random value by having this

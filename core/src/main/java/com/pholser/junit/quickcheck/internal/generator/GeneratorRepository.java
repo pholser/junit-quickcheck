@@ -54,6 +54,8 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 
+import javax.annotation.Nonnull;
+
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
@@ -126,10 +128,12 @@ public class GeneratorRepository implements Generators {
         forType.add(generator);
     }
 
+    @Nonnull
     @Override public Generator<?> field(Class<?> type, String fieldName) {
         return field(findField(type, fieldName));
     }
 
+    @Nonnull
     @Override public <U> Generator<U> constructor(
         Class<U> type,
         Class<?>... argumentTypes) {
@@ -142,6 +146,7 @@ public class GeneratorRepository implements Generators {
         return ctor;
     }
 
+    @Nonnull
     @Override public <U> Generator<U> fieldsOf(Class<U> type) {
         Fields<U> fields = new Fields<>(type);
 
@@ -151,6 +156,7 @@ public class GeneratorRepository implements Generators {
         return fields;
     }
 
+    @Nonnull
     @SuppressWarnings("unchecked")
     @Override public <T> Generator<T> type(Class<T> type, Class<?>... componentTypes) {
         Generator<T> generator =
@@ -160,6 +166,7 @@ public class GeneratorRepository implements Generators {
         return generator;
     }
 
+    @Nonnull
     @Override public Generator<?> parameter(Parameter parameter) {
         return produceGenerator(
             new ParameterTypeContext(
@@ -169,6 +176,7 @@ public class GeneratorRepository implements Generators {
             ).annotate(parameter));
     }
 
+    @Nonnull
     @Override public Generator<?> field(Field field) {
         return produceGenerator(
             new ParameterTypeContext(
@@ -178,6 +186,7 @@ public class GeneratorRepository implements Generators {
             ).annotate(field));
     }
 
+    @Nonnull
     @SafeVarargs
     @SuppressWarnings("unchecked")
     @Override public final <T> Generator<T> oneOf(
@@ -191,6 +200,7 @@ public class GeneratorRepository implements Generators {
                 .toArray(Generator[]::new));
     }
 
+    @Nonnull
     @SafeVarargs
     @SuppressWarnings("unchecked")
     @Override public final <T> Generator<T> oneOf(
@@ -208,6 +218,7 @@ public class GeneratorRepository implements Generators {
         return (Generator<T>) new CompositeGenerator(weightings);
     }
 
+    @Nonnull
     @Override public final <T extends Generator<?>> T make(
         Class<T> genType,
         Generator<?>... components) {
@@ -220,6 +231,7 @@ public class GeneratorRepository implements Generators {
         return generator;
     }
 
+    @Nonnull
     @Override public final Generators withRandom(SourceOfRandomness other) {
         return new GeneratorRepository(other, this.generators);
     }

@@ -30,6 +30,8 @@ import java.lang.reflect.Parameter;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import javax.annotation.Nonnull;
+
 /**
  * An access point for available generators.
  */
@@ -47,6 +49,7 @@ public interface Generators {
      * @param rest other (related) types of generated values
      * @return generator that can produce values of the given types
      */
+    @Nonnull
     <T> Generator<T> oneOf(
         Class<? extends T> first,
         Class<? extends T>... rest);
@@ -63,6 +66,7 @@ public interface Generators {
      * @param rest other generators
      * @return generator that can produce values using the given generators
      */
+    @Nonnull
     <T> Generator<T> oneOf(
         Generator<? extends T> first,
         Generator<? extends T>... rest);
@@ -79,6 +83,7 @@ public interface Generators {
      * @param fieldName name of a field
      * @return generator that can produce values of the field's type
      */
+    @Nonnull
     Generator<?> field(Class<?> type, String fieldName);
 
     /**
@@ -97,6 +102,7 @@ public interface Generators {
      * @param argumentTypes types of arguments to the constructor
      * @return generator that can produce values using the constructor
      */
+    @Nonnull
     <T> Generator<T> constructor(Class<T> type, Class<?>... argumentTypes);
 
     /**
@@ -114,6 +120,7 @@ public interface Generators {
      * @param type a type
      * @return generator that can produce values of that type
      */
+    @Nonnull
     <T> Generator<T> fieldsOf(Class<T> type);
 
     /**
@@ -126,6 +133,7 @@ public interface Generators {
      * @return generator that can produce values of that type
      * @see ComponentizedGenerator
      */
+    @Nonnull
     <T> Generator<T> type(Class<T> type, Class<?>... componentTypes);
 
     /**
@@ -139,6 +147,7 @@ public interface Generators {
      * @param parameter a reflected method parameter
      * @return generator that can produce values of the parameter's type
      */
+    @Nonnull
     Generator<?> parameter(Parameter parameter);
 
     /**
@@ -152,6 +161,7 @@ public interface Generators {
      * @param field a reflected field
      * @return generator that can produce values of the field's type
      */
+    @Nonnull
     Generator<?> field(Field field);
 
     /**
@@ -168,6 +178,7 @@ public interface Generators {
      * @return a generator for producing values
      * @see ComponentizedGenerator
      */
+    @Nonnull
     <T extends Generator<?>> T make(
         Class<T> genType,
         Generator<?>... componentGenerators);
@@ -182,5 +193,6 @@ public interface Generators {
      * @return a generator access point that has the source of randomness
      * available to it
      */
+    @Nonnull
     Generators withRandom(SourceOfRandomness random);
 }
