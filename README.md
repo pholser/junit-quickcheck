@@ -28,8 +28,7 @@ valid inputs.
 
 ## Documentation
  
-Here is a link to the documentation for
-[Version 0.8.1, the current stable version of junit-quickcheck](https://pholser.github.io/junit-quickcheck/index.html).
+[Documentation for the current stable version](https://pholser.github.io/junit-quickcheck/index.html)
 
 ## Basic example
 
