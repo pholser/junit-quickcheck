@@ -92,6 +92,10 @@
             <name>Diego Berrueta</name>
             <roles><role>Added support for generating null values</role></roles>
         </contributor>
+        <contributor>
+            <name>Julien Debon</name>
+            <roles><role>Trying to improve stuff like shrinking</role></roles>
+        </contributor>
     </contributors>
 
     <properties>

@@ -70,8 +70,7 @@ public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
                 .filter(inRange())
                 .distinct()
                 .collect(toList());
-        Collections.reverse(results);
-        results.add(leastMagnitude());
+        results.add(0, leastMagnitude());
         if (negative(larger))
             results.add(negate(larger));
 

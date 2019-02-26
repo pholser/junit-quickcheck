@@ -33,6 +33,9 @@ import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static java.lang.String.format;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -58,10 +61,10 @@ public class PropertyFalsifiedUtilityClassTest
             seeds,
             error);
 
-        String expected = "Property named 'mySuperProperty' failed (assertion name)\n"
-            + "With arguments: [first, second, third]\n"
-            + "Seeds for reproduction: [12345, 8842]";
-        assertEquals(expected, actual.getMessage());
+        String expected = format("Property named 'mySuperProperty' failed (assertion name)%n"
+            + "With arguments: [first, second, third]%n"
+            + "Seeds for reproduction: [12345, 8842]");
+        assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
@@ -77,10 +80,10 @@ public class PropertyFalsifiedUtilityClassTest
             seeds,
             error);
 
-        String expected = "Property named 'mySuperProperty' failed:\n"
-            + "With arguments: [first, second, third]\n"
-            + "Seeds for reproduction: [12345, 8842]";
-        assertEquals(expected, actual.getMessage());
+        String expected = format("Property named 'mySuperProperty' failed:%n"
+            + "With arguments: [first, second, third]%n"
+            + "Seeds for reproduction: [12345, 8842]");
+        assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
@@ -102,12 +105,12 @@ public class PropertyFalsifiedUtilityClassTest
             smallerFailure,
             originalFailure);
 
-        String expected = "Property named 'mySuperProperty' failed (smaller name):\n"
-            + "With arguments: [first]\n"
-            + "Original failure message: assertion name\n"
-            + "First arguments found to also provoke a failure: [first, second, third]\n"
-            + "Seeds for reproduction: [12345, 8842]";
-        assertEquals(expected, actual.getMessage());
+        String expected = format("Property named 'mySuperProperty' failed (smaller name):%n"
+            + "With arguments: [first]%n"
+            + "Original failure message: assertion name%n"
+            + "First arguments found to also provoke a failure: [first, second, third]%n"
+            + "Seeds for reproduction: [12345, 8842]");
+        assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
@@ -128,12 +131,12 @@ public class PropertyFalsifiedUtilityClassTest
             smallerFailure,
             originalFailure);
 
-        String expected = "Property named 'mySuperProperty' failed:\n"
-            + "With arguments: [first]\n"
-            + "Original failure message: assertion name\n"
-            + "First arguments found to also provoke a failure: [first, second, third]\n"
-            + "Seeds for reproduction: [12345, 8842]";
-        assertEquals(expected, actual.getMessage());
+        String expected = format("Property named 'mySuperProperty' failed:%n"
+            + "With arguments: [first]%n"
+            + "Original failure message: assertion name%n"
+            + "First arguments found to also provoke a failure: [first, second, third]%n"
+            + "Seeds for reproduction: [12345, 8842]");
+        assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
@@ -153,11 +156,11 @@ public class PropertyFalsifiedUtilityClassTest
             smallerFailure,
             originalFailure);
 
-        String expected = "Property named 'mySuperProperty' failed:\n"
-            + "With arguments: [first]\n"
-            + "First arguments found to also provoke a failure: [first, second, third]\n"
-            + "Seeds for reproduction: [12345, 8842]";
-        assertEquals(expected, actual.getMessage());
+        String expected = format("Property named 'mySuperProperty' failed:%n"
+            + "With arguments: [first]%n"
+            + "First arguments found to also provoke a failure: [first, second, third]%n"
+            + "Seeds for reproduction: [12345, 8842]");
+        assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
