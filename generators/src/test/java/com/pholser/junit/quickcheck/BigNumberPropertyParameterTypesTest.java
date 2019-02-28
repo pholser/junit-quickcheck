@@ -436,6 +436,48 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
+    @Test public void shrinkingNegativeBigDecimalTowardsZero() {
+        assertThat(testResult(ShrinkingNegativeBigDecimalTowardsZero.class), failureCountIs(1));
+
+        assertThat(
+            Iterables.getLast(ShrinkingNegativeBigDecimalTowardsZero.values),
+            equalTo(BigDecimal.ZERO));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinkingNegativeBigDecimalTowardsZero {
+        static List<BigDecimal> values = new ArrayList<>();
+
+        @Property public void shouldHold(
+            @InRange(min = "-999999999.999", max = "0") BigDecimal d) {
+
+            values.add(d);
+
+            fail();
+        }
+    }
+
+    @Test public void shrinkingPositiveBigDecimalTowardsZero() {
+        assertThat(testResult(ShrinkingPositiveBigDecimalTowardsZero.class), failureCountIs(1));
+
+        assertThat(
+            Iterables.getLast(ShrinkingPositiveBigDecimalTowardsZero.values),
+            equalTo(BigDecimal.ZERO));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinkingPositiveBigDecimalTowardsZero {
+        static List<BigDecimal> values = new ArrayList<>();
+
+        @Property public void shouldHold(
+            @InRange(min = "0", max = "999999999.999") BigDecimal d) {
+
+            values.add(d);
+
+            fail();
+        }
+    }
+
     @Test public void shrinkingBigDecimalStraddlingZero() {
         assertThat(testResult(ShrinkingBigDecimalStraddlingZero.class), failureCountIs(1));
 

@@ -41,14 +41,14 @@ public final class Sequences {
         BigInteger max,
         BigInteger start) {
 
-        return () -> new BigIntegerHalvingIterator(start, max);
+        return () -> new BigIntegerHalvingIterator(start.min(max), start.max(max));
     }
 
     public static Iterable<BigDecimal> halvingDecimal(
         BigDecimal max,
         BigDecimal start) {
 
-        return () -> new BigDecimalHalvingIterator(start, max);
+        return () -> new BigDecimalHalvingIterator(start.min(max), start.max(max));
     }
 
     public static Iterable<Integer> halving(int start) {

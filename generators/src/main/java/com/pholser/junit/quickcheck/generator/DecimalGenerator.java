@@ -56,38 +56,36 @@ public abstract class DecimalGenerator<T extends Number> extends Generator<T> {
         super(types);
     }
 
-    @Override public List<T> doShrink(SourceOfRandomness random, T larger) {
-        if (larger.equals(leastMagnitude()))
+    @Override public List<T> doShrink(SourceOfRandomness random, T largestGeneric) {
+        if (largestGeneric.equals(leastMagnitude()))
             return emptyList();
 
-        BigDecimal decimal = widen().apply(larger);
+        BigDecimal largest = widen().apply(largestGeneric);
         BigDecimal least = widen().apply(leastMagnitude());
 
         List<T> results = new ArrayList<>();
-        results.addAll(shrunkenDecimals(decimal, least));
-        results.addAll(shrunkenIntegrals(decimal, least));
         results.add(leastMagnitude());
-        if (negative(larger))
-            results.add(negate(larger));
+        results.addAll(shrunkenIntegrals(largest, least));
+        results.addAll(shrunkenDecimals(largest, least));
 
         return results;
     }
 
-    private List<T> shrunkenIntegrals(BigDecimal decimal, BigDecimal least) {
+    private List<T> shrunkenIntegrals(BigDecimal largest, BigDecimal least) {
         return decimalsFrom(
             stream(
                 halvingIntegral(
-                    decimal.toBigInteger(),
+                    largest.toBigInteger(),
                     least.toBigInteger())
                     .spliterator(),
                 false)
                 .map(BigDecimal::new));
     }
 
-    private List<T> shrunkenDecimals(BigDecimal decimal, BigDecimal least) {
+    private List<T> shrunkenDecimals(BigDecimal largest, BigDecimal least) {
         return decimalsFrom(
             stream(
-                halvingDecimal(decimal, least).spliterator(),
+                halvingDecimal(largest, least).spliterator(),
                 false));
     }
 
