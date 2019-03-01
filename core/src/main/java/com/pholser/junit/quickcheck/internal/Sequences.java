@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static java.math.RoundingMode.HALF_UP;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import static java.math.RoundingMode.*;
 
 public final class Sequences {
     private Sequences() {

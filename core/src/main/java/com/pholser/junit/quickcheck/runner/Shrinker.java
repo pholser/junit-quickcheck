@@ -25,6 +25,7 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
@@ -69,8 +70,7 @@ class Shrinker {
 
         ShrinkNode smallest =
             ShrinkNode.root(method, testClass, params, args, seeds, failure);
-        Queue<ShrinkNode> nodes = new ShrinkNodeQueue(smallest.magnitude());
-        nodes.addAll(smallest.shrinks());
+        Queue<ShrinkNode> nodes = new ArrayDeque<>(smallest.shrinks());
 
         shrinkTimeout = System.currentTimeMillis() + maxShrinkTime;
 
@@ -82,7 +82,7 @@ class Shrinker {
 
             if (!result) {
                 smallest = next;
-                nodes.addAll(smallest.shrinks());
+                nodes = new ArrayDeque<>(smallest.shrinks());
             }
         }
 

@@ -25,18 +25,17 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.rules.ExpectedException.none;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static com.google.common.collect.Lists.*;
-import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class SequencesTest {
     @Rule public final ExpectedException thrown = none();
@@ -59,6 +58,26 @@ public class SequencesTest {
                 BigDecimal.valueOf(9),
                 BigDecimal.TEN),
             newArrayList(Sequences.halvingDecimal(BigDecimal.TEN, BigDecimal.ZERO)));
+    }
+
+    @Test public void halvingNegativeBigIntegers() {
+        assertEquals(
+            newArrayList(
+                BigInteger.valueOf(-5),
+                BigInteger.valueOf(-7),
+                BigInteger.valueOf(-8),
+                BigInteger.valueOf(-9)),
+            newArrayList(Sequences.halvingIntegral(BigInteger.TEN.negate(), BigInteger.ZERO)));
+    }
+
+    @Test public void halvingNegativeBigDecimals() {
+        assertEquals(
+            newArrayList(
+                BigDecimal.valueOf(-5),
+                BigDecimal.valueOf(-8),
+                BigDecimal.valueOf(-9),
+                BigDecimal.TEN.negate()),
+            newArrayList(Sequences.halvingDecimal(BigDecimal.TEN.negate(), BigDecimal.ZERO)));
     }
 
     @Test public void halvingInts() {
