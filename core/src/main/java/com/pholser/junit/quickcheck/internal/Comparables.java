@@ -47,6 +47,16 @@ public final class Comparables {
         };
     }
 
+  /**
+   * @return the value with the lowest magnitude between the min, max and zero.
+   * <ul>
+   * <li>[-10, 5] = 0</li>
+   * <li>[-10, -5] = -5</li>
+   * <li>[5, 10] = 5</li>
+   * <li>[-5, 0] = 0</li>
+   * <li>[0, 5] = 0</li>
+   * </ul>
+   */
     public static <T extends Comparable<? super T>> T leastMagnitude(
         T min,
         T max,

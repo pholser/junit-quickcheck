@@ -25,26 +25,36 @@
 
 package com.pholser.junit.quickcheck;
 
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.failureCountIs;
+import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
+import com.google.common.collect.Iterables;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.generator.Precision;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.generator.Precision;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class BigNumberPropertyParameterTypesTest {
     @Test public void bigInteger() {
@@ -450,6 +460,27 @@ public class BigNumberPropertyParameterTypesTest {
 
         @Property public void shouldHold(
             @InRange(min = "-999999999.999", max = "0") BigDecimal d) {
+
+            values.add(d);
+
+            fail();
+        }
+    }
+
+    @Test public void shrinkingNegativeBigIntegerTowardsZero() {
+        assertThat(testResult(ShrinkingNegativeBigIntegerTowardsZero.class), failureCountIs(1));
+
+        assertThat(
+            Iterables.getLast(ShrinkingNegativeBigIntegerTowardsZero.values),
+            equalTo(BigInteger.ZERO));
+    }
+
+    @RunWith(JUnitQuickcheck.class)
+    public static class ShrinkingNegativeBigIntegerTowardsZero {
+        static List<BigInteger> values = new ArrayList<>();
+
+        @Property public void shouldHold(
+            @InRange(min = "-999999999", max = "0") BigInteger d) {
 
             values.add(d);
 
