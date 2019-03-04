@@ -3,7 +3,7 @@
 Version 0.6 of junit-quickcheck introduces one of the most compelling features
 of a proper QuickCheck: _shrinking_. When a property is disproved for a given
 set of values, junit-quickcheck will attempt to find "smaller" sets of values
-that also disprove the property, and will report the smallest such set.
+that also disprove the property, and will report the smallest such set, leading to an easier bug investigation for the developer.
 
 For example, imagine the following disprovable property, without shrinking:
 
@@ -44,11 +44,11 @@ not to hold. When shrinking is enabled:
 
 the shrinking process might find a smaller value:
 
-    java.lang.AssertionError: Property primality falsified.
-    Original failure message: [422886279]
-    Original args: [422886279]
-    Args shrunken to: [4]
-    Seeds: [8922134899668966991]
+    java.lang.AssertionError: Property named 'primality' failed (4):
+    With arguments: [4]
+    Original failure message: 422886279
+    First arguments found to also provoke a failure: [422886279]
+    Seeds for reproduction: [8922134899668966991]
 
 
 ## Producing "smaller" values
@@ -66,13 +66,13 @@ override `doShrink()` to offer "smaller" values to the shrinking process.
 Your custom generators can, of course, do the same. As of version 0.8,
 you can also override `magnitude()` to give the shrinking machinery hints
 as to the relative "size" of values that your generator produces.
-The shrinking process will try "larger" values before "smaller" ones.
+Shrinkers should provide small values before big ones to make the shrinking process more efficient.
 
 ```java
     import java.awt.Point;
 
     public class Points extends Generator<Point> {
-        private static final Point ORIGIN = new Point();
+        private static final Point ORIGIN = new Point(0, 0);
 
         public Points() {
             super(Point.class);
@@ -93,16 +93,19 @@ The shrinking process will try "larger" values before "smaller" ones.
                 return Collections.emptyList();
 
             return Stream.of(
+                new Point(0, 0),
+                new Point(0, larger.y / 2),
+                new Point(larger.x / 2, 0),
+                new Point(larger.x / 2, larger.y / 2),
                 new Point(0, larger.y),
-                new Point(larger.x, 0),
-                new Point(larger.x / 2, larger.y),
-                new Point(larger.x, larger.y / 2))
+                new Point(larger.x, 0))
                 .distinct()
                 .collect(Collectors.toList());
         }
         
         @Override public BigDecimal magnitude(Object value) {
             return BigDecimal.valueOf(x)
+                // For business reasons, y contributes twice as much to the total "magnitude" of a Point as x
                 .add(BigDecimal.valueOf(y).times(2));
         }
     }

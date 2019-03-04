@@ -139,7 +139,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      *
      * @param random source of randomness to use in shrinking, if desired
      * @param larger the larger object
-     * @return objects that are "smaller" than the larger object
+     * @return objects that are "smaller" than the larger object. Smaller objects should be provided before bigger objects to make shrinking process faster.
      */
     public List<T> doShrink(SourceOfRandomness random, T larger) {
         return emptyList();
