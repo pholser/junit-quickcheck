@@ -257,11 +257,12 @@ public class GeneratorRepository implements Generators {
     private List<Generator<?>> matchingGenerators(ParameterTypeContext parameter) {
         List<Generator<?>> matches = new ArrayList<>();
 
-        if (!hasGeneratorsFor(parameter))
+        if (!hasGeneratorsFor(parameter)) {
+            maybeAddGeneratorByNamingConvention(parameter, matches);
             maybeAddLambdaGenerator(parameter, matches);
-        else
+        } else {
             maybeAddGeneratorsFor(parameter, matches);
-
+        }
         if (matches.isEmpty()) {
             throw new IllegalArgumentException(
                 "Cannot find generator for " + parameter.name()
@@ -269,6 +270,27 @@ public class GeneratorRepository implements Generators {
         }
 
         return matches;
+    }
+
+    private void maybeAddGeneratorByNamingConvention(
+            ParameterTypeContext parameter,
+            List<Generator<?>> matches
+    ) {
+        Class<?> genClass = null;
+        try {
+            genClass = Class.forName(parameter.getRawClass().getName() + "Gen");
+        } catch (ClassNotFoundException e) {
+            // class with naming convention doesn't exist
+            return;
+        }
+
+        if (Generator.class.isAssignableFrom(genClass)) {
+            try {
+                matches.add((Generator<?>) genClass.newInstance());
+            } catch (IllegalAccessException | InstantiationException e) {
+                throw new IllegalStateException("Cannot instantiate " + genClass.getName() + " using default constructor.");
+            }
+        }
     }
 
     private void maybeAddLambdaGenerator(
