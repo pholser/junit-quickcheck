@@ -3,6 +3,9 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.GeneratesOtherTypes;
+import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.Convention;
+import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.NotAGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,24 +35,27 @@ public class RegisterGeneratorsByConvention {
         assertTrue(generator.generate(random, generationStatus) instanceof Convention);
     }
 
+    private void assertThatNoGeneratorCanBeFound(Class<?> valueClass) {
+        try {
+            repo.generatorFor(new ParameterTypeContext(valueClass));
+            fail("Shouldn't have found a suitable generator for: " + valueClass.getSimpleName());
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("Cannot find generator for " + valueClass.getName()));
+        }
+    }
+
+    @Test
+    public void does_not_find_a_generator_even_if_the_class_name_would_follow_the_convention() {
+        assertThatNoGeneratorCanBeFound(NotAGenerator.class);
+    }
+
     @Test
     public void does_not_find_a_generator_if_the_types_it_generates_values_for_does_not_match() {
-        try {
-            repo.generatorFor(new ParameterTypeContext(BrokenConvention.class));
-            fail("Shouldn't have found a suitable generator for BrokenConvention class");
-        } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Cannot find generator for"));
-        }
+        assertThatNoGeneratorCanBeFound(GeneratesOtherTypes.class);
     }
 
     @Test
     public void does_not_find_a_generator_if_there_is_no_class_with_the_convention_following_name() {
-        try {
-            repo.generatorFor(new ParameterTypeContext(getClass()));
-            fail("Shouldn't have found a generator for this test's class");
-        } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Cannot find generator for"));
-        }
+        assertThatNoGeneratorCanBeFound(this.getClass());
     }
-
 }

@@ -1,16 +1,13 @@
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck.internal.generator.conventiontestclasses;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 
 public class ConventionGen extends Generator<Convention> {
 
 
-    protected ConventionGen() {
+    public ConventionGen() {
         super(Convention.class);
     }
 

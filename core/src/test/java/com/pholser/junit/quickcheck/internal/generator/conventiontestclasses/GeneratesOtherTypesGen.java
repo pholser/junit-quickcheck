@@ -1,12 +1,12 @@
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck.internal.generator.conventiontestclasses;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-public class BrokenConventionGen extends Generator<Void> {
+public class GeneratesOtherTypesGen extends Generator<Void> {
 
-    public BrokenConventionGen() {
+    public GeneratesOtherTypesGen() {
         super(Void.class);
     }
 
