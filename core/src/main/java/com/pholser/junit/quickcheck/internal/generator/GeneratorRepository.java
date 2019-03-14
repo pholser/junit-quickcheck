@@ -276,7 +276,7 @@ public class GeneratorRepository implements Generators {
             ParameterTypeContext parameter,
             List<Generator<?>> matches
     ) {
-        Class<?> genClass = null;
+        Class<?> genClass;
         try {
             genClass = Class.forName(parameter.getRawClass().getName() + "Gen");
         } catch (ClassNotFoundException e) {
@@ -286,7 +286,10 @@ public class GeneratorRepository implements Generators {
 
         if (Generator.class.isAssignableFrom(genClass)) {
             try {
-                matches.add((Generator<?>) genClass.newInstance());
+                Generator<?> generator = (Generator<?>) genClass.newInstance();
+                if (generator.types().contains(parameter.getRawClass())) {
+                    matches.add(generator);
+                }
             } catch (IllegalAccessException | InstantiationException e) {
                 throw new IllegalStateException("Cannot instantiate " + genClass.getName() + " using default constructor.");
             }
