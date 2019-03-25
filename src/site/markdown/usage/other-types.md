@@ -64,6 +64,13 @@ overrides the built-in means of generation. This is usually necessary for
 functional interfaces that involve generics.
 
 
+## Implied generators by Placement and Naming
+
+If the generator is in the same package as the class you're generating and it
+has the same name with an additional `Gen` suffix, then it should be found
+automatically.
+
+
 ## Implied generators via `ServiceLoader`
 
 To use a generator for your own type without having to use `@From`, you can
