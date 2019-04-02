@@ -41,6 +41,10 @@ class A {
         this.listOfB = listOfB;
     }
 
+    List<B> getListOfB() {
+      return this.listOfB;
+    }
+
     @Override public String toString() {
         return String.format("%s, %d, %s", someString, someInt, listOfB);
     }
