@@ -124,6 +124,11 @@ public class CompositeGenerator extends Generator<Object> {
         installCandidates(candidates, element);
     }
 
+    @Override public void addComponentGenerators(List<Generator<?>> newComponents) {
+        for (Weighted<Generator<?>> each : composed)
+            each.item.addComponentGenerators(newComponents);
+    }
+
     private void installCandidates(
         List<Weighted<Generator<?>>> candidates,
         AnnotatedElement element) {
