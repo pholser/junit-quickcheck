@@ -37,6 +37,10 @@ class A {
         this.someInt = someInt;
     }
 
+    List<B> getListOfB() {
+        return listOfB;
+    }
+
     void setListOfB(List<B> listOfB) {
         this.listOfB = listOfB;
     }
