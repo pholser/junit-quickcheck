@@ -293,7 +293,7 @@ public class ComposedObjectsTest {
                 GenerationStatus status) {
 
                 A a = new A();
-                a.b = gen().type(Box.class).generate(random, status);
+                a.b = gen().type(Box.class, Object.class).generate(random, status);
                 return a;
             }
         }
