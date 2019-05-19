@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GeneratorRepository.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal.generator</a> &gt; <span class="el_source">GeneratorRepository.java</span></div><h1>GeneratorRepository.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2018 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal.generator;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import com.pholser.junit.quickcheck.generator.Ctor;
+import com.pholser.junit.quickcheck.generator.Fields;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.Weighted;
+import com.pholser.junit.quickcheck.internal.Zilch;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.internal.Items.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+
+public class GeneratorRepository implements Generators {
+<span class="fc" id="L65">    private static final Set&lt;String&gt; NULLABLE_ANNOTATIONS = unmodifiableSet(Stream.of(</span>
+            &quot;javax.annotation.Nullable&quot;, // JSR-305
+<span class="fc" id="L67">            NullAllowed.class.getCanonicalName()</span>
+<span class="fc" id="L68">    ).collect(toSet()));</span>
+
+    private final SourceOfRandomness random;
+    private final Map&lt;Class&lt;?&gt;, Set&lt;Generator&lt;?&gt;&gt;&gt; generators;
+
+    public GeneratorRepository(SourceOfRandomness random) {
+<span class="fc" id="L74">        this(random, new HashMap&lt;&gt;());</span>
+<span class="fc" id="L75">    }</span>
+
+<span class="fc" id="L77">    private GeneratorRepository(SourceOfRandomness random, Map&lt;Class&lt;?&gt;, Set&lt;Generator&lt;?&gt;&gt;&gt; generators) {</span>
+<span class="fc" id="L78">        this.random = random;</span>
+<span class="fc" id="L79">        this.generators = generators;</span>
+<span class="fc" id="L80">    }</span>
+
+    public GeneratorRepository register(Generator&lt;?&gt; source) {
+<span class="fc" id="L83">        registerTypes(source);</span>
+<span class="fc" id="L84">        return this;</span>
+    }
+
+    public GeneratorRepository register(Iterable&lt;Generator&lt;?&gt;&gt; source) {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (Generator&lt;?&gt; each : source)</span>
+<span class="fc" id="L89">            registerTypes(each);</span>
+
+<span class="fc" id="L91">        return this;</span>
+    }
+
+    private void registerTypes(Generator&lt;?&gt; generator) {
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (Class&lt;?&gt; each : generator.types())</span>
+<span class="fc" id="L96">            registerHierarchy(each, generator);</span>
+<span class="fc" id="L97">    }</span>
+
+    private void registerHierarchy(Class&lt;?&gt; type, Generator&lt;?&gt; generator) {
+<span class="fc" id="L100">        maybeRegisterGeneratorForType(type, generator);</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (type.getSuperclass() != null)</span>
+<span class="fc" id="L103">            registerHierarchy(type.getSuperclass(), generator);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        else if (type.isInterface())</span>
+<span class="fc" id="L105">            registerHierarchy(Object.class, generator);</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (Class&lt;?&gt; each : type.getInterfaces())</span>
+<span class="fc" id="L108">            registerHierarchy(each, generator);</span>
+<span class="fc" id="L109">    }</span>
+
+    private void maybeRegisterGeneratorForType(
+        Class&lt;?&gt; type,
+        Generator&lt;?&gt; generator) {
+
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        if (generator.canRegisterAsType(type))</span>
+<span class="fc" id="L116">            registerGeneratorForType(type, generator);</span>
+<span class="fc" id="L117">    }</span>
+
+    private void registerGeneratorForType(
+        Class&lt;?&gt; type,
+        Generator&lt;?&gt; generator) {
+
+<span class="fc" id="L123">        Set&lt;Generator&lt;?&gt;&gt; forType =</span>
+<span class="fc" id="L124">            generators.computeIfAbsent(type, k -&gt; new LinkedHashSet&lt;&gt;());</span>
+
+<span class="fc" id="L126">        forType.add(generator);</span>
+<span class="fc" id="L127">    }</span>
+
+    @Override public Generator&lt;?&gt; field(Class&lt;?&gt; type, String fieldName) {
+<span class="fc" id="L130">        return field(findField(type, fieldName));</span>
+    }
+
+    @Override public &lt;U&gt; Generator&lt;U&gt; constructor(
+        Class&lt;U&gt; type,
+        Class&lt;?&gt;... argumentTypes) {
+
+<span class="fc" id="L137">        Constructor&lt;U&gt; constructor = findConstructor(type, argumentTypes);</span>
+<span class="fc" id="L138">        Ctor&lt;U&gt; ctor = new Ctor&lt;&gt;(constructor);</span>
+<span class="fc" id="L139">        ctor.provide(this);</span>
+<span class="fc" id="L140">        ctor.configure(constructor.getAnnotatedReturnType());</span>
+
+<span class="fc" id="L142">        return ctor;</span>
+    }
+
+    @Override public &lt;U&gt; Generator&lt;U&gt; fieldsOf(Class&lt;U&gt; type) {
+<span class="fc" id="L146">        Fields&lt;U&gt; fields = new Fields&lt;&gt;(type);</span>
+
+<span class="fc" id="L148">        fields.provide(this);</span>
+<span class="fc" id="L149">        fields.configure(type);</span>
+
+<span class="fc" id="L151">        return fields;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override public &lt;T&gt; Generator&lt;T&gt; type(Class&lt;T&gt; type, Class&lt;?&gt;... componentTypes) {
+<span class="fc" id="L156">        Generator&lt;T&gt; generator =</span>
+<span class="fc" id="L157">            (Generator&lt;T&gt;) produceGenerator(new ParameterTypeContext(type));</span>
+<span class="fc" id="L158">        generator.addComponentGenerators(</span>
+<span class="fc" id="L159">            Arrays.stream(componentTypes).map(c -&gt; type(c)).collect(toList()));</span>
+<span class="fc" id="L160">        return generator;</span>
+    }
+
+    @Override public Generator&lt;?&gt; parameter(Parameter parameter) {
+<span class="fc" id="L164">        return produceGenerator(</span>
+            new ParameterTypeContext(
+<span class="fc" id="L166">                parameter.getName(),</span>
+<span class="fc" id="L167">                parameter.getAnnotatedType(),</span>
+<span class="fc" id="L168">                parameter.getDeclaringExecutable().getName()</span>
+<span class="fc" id="L169">            ).annotate(parameter));</span>
+    }
+
+    @Override public Generator&lt;?&gt; field(Field field) {
+<span class="fc" id="L173">        return produceGenerator(</span>
+            new ParameterTypeContext(
+<span class="fc" id="L175">                field.getName(),</span>
+<span class="fc" id="L176">                field.getAnnotatedType(),</span>
+<span class="fc" id="L177">                field.getDeclaringClass().getName()</span>
+<span class="fc" id="L178">            ).annotate(field));</span>
+    }
+
+    @SafeVarargs
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override public final &lt;T&gt; Generator&lt;T&gt; oneOf(
+        Class&lt;? extends T&gt; first,
+        Class&lt;? extends T&gt;... rest) {
+
+<span class="fc" id="L187">        return oneOf(</span>
+<span class="fc" id="L188">            type(first),</span>
+<span class="fc" id="L189">            Arrays.stream(rest)</span>
+<span class="fc" id="L190">                .map(t -&gt; type(t))</span>
+<span class="fc" id="L191">                .toArray(Generator[]::new));</span>
+    }
+
+    @SafeVarargs
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override public final &lt;T&gt; Generator&lt;T&gt; oneOf(
+        Generator&lt;? extends T&gt; first,
+        Generator&lt;? extends T&gt;... rest) {
+
+<span class="fc" id="L200">        List&lt;Generator&lt;? extends T&gt;&gt; gens = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L201">        gens.add(first);</span>
+<span class="fc" id="L202">        Collections.addAll(gens, rest);</span>
+
+<span class="fc" id="L204">        List&lt;Weighted&lt;Generator&lt;?&gt;&gt;&gt; weightings = gens.stream()</span>
+<span class="fc" id="L205">            .map(g -&gt; new Weighted&lt;Generator&lt;?&gt;&gt;(g, 1))</span>
+<span class="fc" id="L206">            .collect(toList());</span>
+
+<span class="fc" id="L208">        return (Generator&lt;T&gt;) new CompositeGenerator(weightings);</span>
+    }
+
+    @Override public final &lt;T extends Generator&lt;?&gt;&gt; T make(
+        Class&lt;T&gt; genType,
+        Generator&lt;?&gt;... components) {
+
+<span class="fc" id="L215">        T generator = instantiate(genType);</span>
+<span class="fc" id="L216">        generator.provide(this);</span>
+<span class="fc" id="L217">        generator.configure(genType);</span>
+<span class="fc" id="L218">        generator.addComponentGenerators(asList(components));</span>
+
+<span class="fc" id="L220">        return generator;</span>
+    }
+
+    @Override public final Generators withRandom(SourceOfRandomness other) {
+<span class="nc" id="L224">        return new GeneratorRepository(other, this.generators);</span>
+    }
+
+    public Generator&lt;?&gt; produceGenerator(ParameterTypeContext parameter) {
+<span class="fc" id="L228">        Generator&lt;?&gt; generator = generatorFor(parameter);</span>
+
+<span class="pc bpc" id="L230" title="1 of 4 branches missed.">        if (!isPrimitiveType(parameter.annotatedType().getType()) &amp;&amp; hasNullableAnnotation(parameter.annotatedElement()))</span>
+<span class="nc" id="L231">            generator = new NullableGenerator&lt;&gt;(generator);</span>
+
+<span class="fc" id="L233">        generator.provide(this);</span>
+<span class="fc" id="L234">        generator.configure(parameter.annotatedType());</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (parameter.topLevel())</span>
+<span class="fc" id="L236">            generator.configure(parameter.annotatedElement());</span>
+
+<span class="fc" id="L238">        return generator;</span>
+    }
+
+    public Generator&lt;?&gt; generatorFor(ParameterTypeContext parameter) {
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        if (!parameter.explicitGenerators().isEmpty())</span>
+<span class="fc" id="L243">            return composeWeighted(parameter, parameter.explicitGenerators());</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        if (parameter.isArray())</span>
+<span class="fc" id="L245">            return generatorForArrayType(parameter);</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (parameter.isEnum())</span>
+<span class="fc" id="L247">            return new EnumGenerator(parameter.getRawClass());</span>
+
+<span class="fc" id="L249">        return compose(parameter, matchingGenerators(parameter));</span>
+    }
+
+    private Generator&lt;?&gt; generatorForArrayType(ParameterTypeContext parameter) {
+<span class="fc" id="L253">        ParameterTypeContext component = parameter.arrayComponentContext();</span>
+<span class="fc" id="L254">        return new ArrayGenerator(component.getRawClass(), generatorFor(component));</span>
+    }
+
+    private List&lt;Generator&lt;?&gt;&gt; matchingGenerators(ParameterTypeContext parameter) {
+<span class="fc" id="L258">        List&lt;Generator&lt;?&gt;&gt; matches = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        if (!hasGeneratorsFor(parameter)) {</span>
+<span class="fc" id="L261">            maybeAddGeneratorByNamingConvention(parameter, matches);</span>
+<span class="fc" id="L262">            maybeAddLambdaGenerator(parameter, matches);</span>
+        } else {
+<span class="fc" id="L264">            maybeAddGeneratorsFor(parameter, matches);</span>
+        }
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        if (matches.isEmpty()) {</span>
+<span class="fc" id="L267">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L268">                &quot;Cannot find generator for &quot; + parameter.name()</span>
+<span class="fc" id="L269">                + &quot; of type &quot; + parameter.type().getTypeName());</span>
+        }
+
+<span class="fc" id="L272">        return matches;</span>
+    }
+
+    private void maybeAddGeneratorByNamingConvention(
+            ParameterTypeContext parameter,
+            List&lt;Generator&lt;?&gt;&gt; matches
+    ) {
+        Class&lt;?&gt; genClass;
+        try {
+<span class="fc" id="L281">            genClass = Class.forName(parameter.getRawClass().getName() + &quot;Gen&quot;);</span>
+<span class="fc" id="L282">        } catch (ClassNotFoundException e) {</span>
+            // class with naming convention doesn't exist
+<span class="fc" id="L284">            return;</span>
+<span class="fc" id="L285">        }</span>
+
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        if (Generator.class.isAssignableFrom(genClass)) {</span>
+            try {
+<span class="fc" id="L289">                Generator&lt;?&gt; generator = (Generator&lt;?&gt;) genClass.newInstance();</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">                if (generator.types().contains(parameter.getRawClass())) {</span>
+<span class="fc" id="L291">                    matches.add(generator);</span>
+                }
+<span class="nc" id="L293">            } catch (IllegalAccessException | InstantiationException e) {</span>
+<span class="nc" id="L294">                throw new IllegalStateException(&quot;Cannot instantiate &quot; + genClass.getName() + &quot; using default constructor.&quot;);</span>
+<span class="fc" id="L295">            }</span>
+        }
+<span class="fc" id="L297">    }</span>
+
+    private void maybeAddLambdaGenerator(
+        ParameterTypeContext parameter,
+        List&lt;Generator&lt;?&gt;&gt; matches) {
+
+<span class="fc" id="L303">        Method method = singleAbstractMethodOf(parameter.getRawClass());</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (method != null) {</span>
+<span class="fc" id="L305">            ParameterTypeContext returnType =</span>
+                new ParameterTypeContext(
+                    &quot;return value&quot;,
+<span class="fc" id="L308">                    method.getAnnotatedReturnType(),</span>
+<span class="fc" id="L309">                    method.getName())</span>
+<span class="fc" id="L310">                    .annotate(method.getAnnotatedReturnType())</span>
+<span class="fc" id="L311">                    .allowMixedTypes(true);</span>
+<span class="fc" id="L312">            Generator&lt;?&gt; returnTypeGenerator = generatorFor(returnType);</span>
+
+<span class="fc" id="L314">            Generator&lt;?&gt; lambda =</span>
+<span class="fc" id="L315">                new LambdaGenerator&lt;&gt;(parameter.getRawClass(), returnTypeGenerator);</span>
+<span class="fc" id="L316">            matches.add(lambda);</span>
+        }
+<span class="fc" id="L318">    }</span>
+
+    private void maybeAddGeneratorsFor(
+        ParameterTypeContext parameter,
+        List&lt;Generator&lt;?&gt;&gt; matches) {
+
+<span class="fc" id="L324">        List&lt;Generator&lt;?&gt;&gt; candidates = generatorsFor(parameter);</span>
+<span class="fc" id="L325">        List&lt;TypeParameter&lt;?&gt;&gt; typeParameters = parameter.getTypeParameters();</span>
+
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        if (typeParameters.isEmpty())</span>
+<span class="fc" id="L328">            matches.addAll(candidates);</span>
+        else {
+<span class="fc bfc" id="L330" title="All 2 branches covered.">            for (Generator&lt;?&gt; each : candidates) {</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">                if (each.canGenerateForParametersOfTypes(typeParameters))</span>
+<span class="fc" id="L332">                    matches.add(each);</span>
+<span class="fc" id="L333">            }</span>
+        }
+<span class="fc" id="L335">    }</span>
+
+    private Generator&lt;?&gt; compose(ParameterTypeContext parameter, List&lt;Generator&lt;?&gt;&gt; matches) {
+<span class="fc" id="L338">        List&lt;Weighted&lt;Generator&lt;?&gt;&gt;&gt; weightings = matches.stream()</span>
+<span class="fc" id="L339">            .map(g -&gt; new Weighted&lt;Generator&lt;?&gt;&gt;(g, 1))</span>
+<span class="fc" id="L340">            .collect(toList());</span>
+
+<span class="fc" id="L342">        return composeWeighted(parameter, weightings);</span>
+    }
+
+    private Generator&lt;?&gt; composeWeighted(
+        ParameterTypeContext parameter,
+        List&lt;Weighted&lt;Generator&lt;?&gt;&gt;&gt; matches) {
+
+<span class="fc" id="L349">        List&lt;Generator&lt;?&gt;&gt; forComponents = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">        for (ParameterTypeContext each : parameter.typeParameterContexts(random))</span>
+<span class="fc" id="L351">            forComponents.add(generatorFor(each));</span>
+
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        for (Weighted&lt;Generator&lt;?&gt;&gt; each : matches)</span>
+<span class="fc" id="L354">            applyComponentGenerators(each.item, forComponents);</span>
+
+<span class="fc" id="L356">        return new CompositeGenerator(matches);</span>
+    }
+
+    private void applyComponentGenerators(Generator&lt;?&gt; generator, List&lt;Generator&lt;?&gt;&gt; componentGenerators) {
+<span class="fc bfc" id="L360" title="All 2 branches covered.">        if (generator.hasComponents()) {</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">            if (componentGenerators.isEmpty()) {</span>
+<span class="fc" id="L362">                List&lt;Generator&lt;?&gt;&gt; substitutes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L363">                Generator&lt;?&gt; zilch = generatorFor(</span>
+                    new ParameterTypeContext(
+                        &quot;Zilch&quot;,
+                        null,
+<span class="fc" id="L367">                        getClass().getName(),</span>
+<span class="fc" id="L368">                        token(Zilch.class),</span>
+<span class="fc" id="L369">                        emptyMap())</span>
+<span class="fc" id="L370">                    .allowMixedTypes(true));</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">                for (int i = 0; i &lt; generator.numberOfNeededComponents(); ++i)</span>
+<span class="fc" id="L372">                    substitutes.add(zilch);</span>
+
+<span class="fc" id="L374">                generator.addComponentGenerators(substitutes);</span>
+<span class="fc" id="L375">            } else</span>
+<span class="fc" id="L376">                generator.addComponentGenerators(componentGenerators);</span>
+        }
+<span class="fc" id="L378">    }</span>
+
+    private List&lt;Generator&lt;?&gt;&gt; generatorsFor(ParameterTypeContext parameter) {
+<span class="fc" id="L381">        Set&lt;Generator&lt;?&gt;&gt; matches = generators.get(parameter.getRawClass());</span>
+
+<span class="fc bfc" id="L383" title="All 2 branches covered.">        if (!parameter.allowMixedTypes()) {</span>
+<span class="fc" id="L384">            Generator&lt;?&gt; match = choose(matches, random);</span>
+<span class="fc" id="L385">            matches = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L386">            matches.add(match);</span>
+        }
+
+<span class="fc" id="L389">        List&lt;Generator&lt;?&gt;&gt; copies = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">        for (Generator&lt;?&gt; each : matches)</span>
+<span class="fc" id="L391">            copies.add(each.copy());</span>
+<span class="fc" id="L392">        return copies;</span>
+    }
+
+    private boolean hasGeneratorsFor(ParameterTypeContext parameter) {
+<span class="fc bfc" id="L396" title="All 2 branches covered.">        return generators.get(parameter.getRawClass()) != null;</span>
+    }
+
+    private static org.javaruntype.type.Type&lt;?&gt; token(Type type) {
+<span class="fc" id="L400">        return Types.forJavaLangReflectType(type);</span>
+    }
+
+    private static boolean isPrimitiveType(Type type) {
+<span class="fc bfc" id="L404" title="All 4 branches covered.">        return type instanceof Class&lt;?&gt; &amp;&amp; ((Class&lt;?&gt;)type).isPrimitive();</span>
+    }
+
+    private static boolean hasNullableAnnotation(AnnotatedElement annotatedElement) {
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        return annotatedElement != null &amp;&amp;</span>
+<span class="fc" id="L409">                Arrays.stream(annotatedElement.getAnnotations())</span>
+<span class="fc" id="L410">                        .map(Annotation::annotationType)</span>
+<span class="fc" id="L411">                        .map(Class::getCanonicalName)</span>
+<span class="pc bpc" id="L412" title="1 of 2 branches missed.">                        .anyMatch(NULLABLE_ANNOTATIONS::contains);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
