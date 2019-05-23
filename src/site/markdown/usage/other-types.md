@@ -21,6 +21,8 @@ junit-quickcheck can instantiate your generator, ensure that it has a
     }
 ```
 
+If you define your generator as an inner class, ensure that it is static, otherwise
+it will fail at runtime.
 
 ## Explicit generators
 
