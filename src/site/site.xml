@@ -52,7 +52,7 @@
     <custom>
         <fluidoSkin>
             <gitHub>
-                <projectId>apache/maven-skins</projectId>
+                <projectId>pholser/junit-quickcheck</projectId>
                 <ribbonOrientation>right</ribbonOrientation>
                 <ribbonColor>darkblue</ribbonColor>
             </gitHub>
