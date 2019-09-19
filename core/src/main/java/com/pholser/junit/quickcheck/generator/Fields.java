@@ -78,11 +78,12 @@ public class Fields<T> extends Generator<T> {
         Class<T> type = types().get(0);
         Object generated = instantiate(type);
 
-        for (Field each : fields) {
+        for (int i = 0; i < fields.size(); i++) {
+            Field each = fields.get(i);
             setField(
                 each,
                 generated,
-                gen().field(each).generate(random, status),
+                fieldGenerators.get(i).generate(random, status),
                 true);
         }
 

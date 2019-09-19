@@ -29,6 +29,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -88,7 +89,7 @@ public final class RFC4122 {
         @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
             digest.reset();
             digest.update((namespace == null ? Namespaces.URL : namespace.value()).bytes);
-            digest.update(stringGenerator.generate(random, status).getBytes(Charset.forName("UTF-8")));
+            digest.update(stringGenerator.generate(random, status).getBytes(StandardCharsets.UTF_8));
 
             byte[] hash = digest.digest();
             setVersion(hash, (byte) versionMask);
