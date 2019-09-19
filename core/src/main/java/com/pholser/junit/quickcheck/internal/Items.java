@@ -26,6 +26,8 @@
 package com.pholser.junit.quickcheck.internal;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.RandomAccess;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
@@ -36,8 +38,22 @@ public final class Items {
 
     @SuppressWarnings("unchecked")
     public static <T> T choose(Collection<T> items, SourceOfRandomness random) {
-        Object[] asArray = items.toArray(new Object[items.size()]);
-        return (T) asArray[random.nextInt(items.size())];
+        int size = items.size();
+        if (size == 0) {
+            throw new IllegalArgumentException("Given collection is empty, can't pick an element from it");
+        }
+        if (items instanceof RandomAccess && items instanceof List) {
+            List<T> list = (List<T>) items;
+            if (size == 1) {
+                return list.get(0);
+            }
+            return list.get(random.nextInt(size));
+        }
+        if (size == 1) {
+            return items.iterator().next();
+        }
+        Object[] array = items.toArray(new Object[0]);
+        return (T) array[random.nextInt(array.length)];
     }
 
     public static <T> T chooseWeighted(Collection<Weighted<T>> items, SourceOfRandomness random) {
