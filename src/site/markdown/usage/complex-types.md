@@ -18,7 +18,7 @@ values.
             SourceOfRandomness r,
             GenerationStatus status) {
 
-            int numberOfPoints = Math.abs(r.nextInt());
+            int numberOfPoints = abs(r.nextInt());
 
             int[] xs = new int[numberOfPoints];
             for (int i = 0; i < numberOfPoints; ++i)
@@ -29,6 +29,14 @@ values.
                 ys[i] = r.nextInt();
 
             return new Polygon(xs, ys, numberOfPoints);
+        }
+
+        // Ever-so-slightly favors +(MIN_VALUE + 1).
+        // Math.abs(MIN_VALUE) is negative.
+        private static int abs(int i) {
+            return i == Integer.MIN_VALUE
+                ? Math.abs(i + 1)
+                : Math.abs(i);
         }
     }
 ```
@@ -65,7 +73,15 @@ given type.
             GenerationStatus status) {
 
             return new Counter(
-                Math.abs(gen().type(int.class).generate(random, status)));
+                abs(gen().type(int.class).generate(random, status)));
+        }
+        
+        // Ever-so-slightly favors +(MIN_VALUE + 1).
+        // Math.abs(MIN_VALUE) is negative.
+        private static int abs(int i) {
+            return i == Integer.MIN_VALUE
+                ? Math.abs(i + 1)
+                : Math.abs(i);
         }
     }
 ```
@@ -186,7 +202,15 @@ configuration annotations live on the generator class.
             SourceOfRandomness random,
             GenerationStatus status) {
 
-            return Math.abs(random.nextInt());
+            return abs(random.nextInt());
+        }
+        
+        // Ever-so-slightly favors +(MIN_VALUE + 1).
+        // Math.abs(MIN_VALUE) is negative.
+        private static int abs(int i) {
+            return i == Integer.MIN_VALUE
+                ? Math.abs(i + 1)
+                : Math.abs(i);
         }
     }
 
