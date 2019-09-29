@@ -1,9 +1,8 @@
 language: java
 jdk:
-    - oraclejdk8
+    - openjdk8
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get install oracle-java8-installer
 install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script: mvn clean test
 cache:
@@ -13,6 +12,9 @@ branches:
     except:
         - gh-pages
         - 0.5-branch
+        - 0.6-branch
+        - 0.7-branch
+        - 0.8-branch
 notifications:
     email:
         recipients:
