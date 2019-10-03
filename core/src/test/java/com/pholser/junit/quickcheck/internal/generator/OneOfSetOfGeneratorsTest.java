@@ -41,6 +41,8 @@ import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -81,5 +83,11 @@ public class OneOfSetOfGeneratorsTest {
         assertThat(
             n,
             anyOf(instanceOf(Byte.class), instanceOf(Short.class)));
+    }
+
+    @Test public void choosingFromOneGeneratorChoice() {
+        Generator<Byte> g = repo.oneOf(new AByte());
+
+        assertThat(g, not(instanceOf(CompositeGenerator.class)));
     }
 }

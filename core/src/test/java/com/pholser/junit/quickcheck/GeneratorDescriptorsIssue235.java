@@ -1,7 +1,5 @@
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.test.generator.AFoo;
 import com.pholser.junit.quickcheck.test.generator.AString;
 
 import java.util.HashMap;

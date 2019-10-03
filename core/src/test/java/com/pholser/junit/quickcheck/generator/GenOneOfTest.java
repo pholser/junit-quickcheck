@@ -34,9 +34,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static com.pholser.junit.quickcheck.generator.Gen.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static com.pholser.junit.quickcheck.generator.Gen.oneOf;
+import static com.pholser.junit.quickcheck.generator.Gen.pure;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 public class GenOneOfTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
