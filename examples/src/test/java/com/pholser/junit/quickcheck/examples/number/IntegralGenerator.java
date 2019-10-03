@@ -25,12 +25,11 @@
 
 package com.pholser.junit.quickcheck.examples.number;
 
-import java.util.Arrays;
-
-import com.pholser.junit.quickcheck.examples.number.NonNegative;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import java.util.Arrays;
 
 public class IntegralGenerator extends Generator<Integer> {
     private NonNegative nonNegative;
@@ -44,10 +43,18 @@ public class IntegralGenerator extends Generator<Integer> {
         GenerationStatus status) {
 
         int value = random.nextInt();
-        return nonNegative != null ? Math.abs(value) : value;
+        return nonNegative != null ? abs(value) : value;
     }
 
     public void configure(NonNegative nonNegative) {
         this.nonNegative = nonNegative;
+    }
+
+    // Ever-so-slightly favors +(MIN_VALUE + 1).
+    // Math.abs(MIN_VALUE) is negative.
+    private static int abs(int i) {
+        return i == Integer.MIN_VALUE
+            ? Math.abs(i + 1)
+            : Math.abs(i);
     }
 }

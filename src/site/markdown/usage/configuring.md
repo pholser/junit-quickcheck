@@ -31,11 +31,19 @@ detect it.
             GenerationStatus status) {
 
             int value = random.nextInt();
-            return nonNegative != null ? Math.abs(value) : value;
+            return nonNegative != null ? abs(value) : value;
         }
 
         public void configure(NonNegative nonNegative) {
             this.nonNegative = nonNegative;
+        }
+        
+        // Ever-so-slightly favors +(MIN_VALUE + 1).
+        // Math.abs(MIN_VALUE) is negative.
+        private static int abs(int i) {
+            return i == Integer.MIN_VALUE
+                ? Math.abs(i + 1)
+                : Math.abs(i);
         }
     }
 
