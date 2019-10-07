@@ -45,6 +45,9 @@ import org.mockito.junit.MockitoRule;
 
 import static com.pholser.junit.quickcheck.Types.*;
 import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
@@ -55,6 +58,7 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
     private static HashMap<? extends String, ?> extendsStringKey;
     private static HashMap<? super String, ?> superStringKey;
     private static HashMap<?, ?> huhKey;
+    private static int intField;
 
     private GeneratorRepository repo;
     @Mock private SourceOfRandomness random;
@@ -107,6 +111,13 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "huhKey"));
 
         assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
+    }
+
+    @Test public void doNotComposeGeneratorsIfOnlyOneChoice() throws Exception {
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "intField"));
+
+        assertThat(result, not(instanceOf(CompositeGenerator.class)));
     }
 
     public static class HashMapGenerator<K, V> extends ComponentizedGenerator<HashMap> {

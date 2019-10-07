@@ -197,6 +197,9 @@ public class GeneratorRepository implements Generators {
         Generator<? extends T> first,
         Generator<? extends T>... rest) {
 
+        if (rest.length == 0)
+            return (Generator<T>) first;
+
         List<Generator<? extends T>> gens = new ArrayList<>();
         gens.add(first);
         Collections.addAll(gens, rest);
@@ -353,7 +356,9 @@ public class GeneratorRepository implements Generators {
         for (Weighted<Generator<?>> each : matches)
             applyComponentGenerators(each.item, forComponents);
 
-        return new CompositeGenerator(matches);
+        return matches.size() == 1
+            ? matches.get(0).item
+            : new CompositeGenerator(matches);
     }
 
     private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
