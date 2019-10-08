@@ -36,6 +36,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Random;
 
+import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Ranges;
 
 import static java.util.concurrent.TimeUnit.*;
@@ -352,10 +353,8 @@ public class SourceOfRandomness {
      * @param items a collection
      * @return a randomly chosen element from the collection
      */
-    @SuppressWarnings("unchecked")
     public <T> T choose(Collection<T> items) {
-        Object[] array = items.toArray(new Object[items.size()]);
-        return (T) array[nextInt(array.length)];
+        return Items.choose(items, this);
     }
 
     /**

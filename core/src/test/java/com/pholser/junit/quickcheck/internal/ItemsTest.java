@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -43,6 +44,7 @@ import static org.mockito.Mockito.*;
 
 public class ItemsTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
+    @Rule public final ExpectedException thrown = ExpectedException.none();
 
     @Mock private SourceOfRandomness random;
     private Weighted<String> first;
@@ -93,10 +95,15 @@ public class ItemsTest {
     }
 
     @Test public void choosingFromEmptyCollection() {
-        try {
-            Items.chooseWeighted(emptyList(), random);
-        } catch (AssertionError expected) {
-            assertEquals("sample = 0, range = 0", expected.getMessage());
-        }
+        thrown.expect(IllegalArgumentException.class);
+
+        Items.choose(emptyList(), random);
+    }
+
+    @Test public void choosingWeightedFromEmptyCollection() {
+        thrown.expect(AssertionError.class);
+        thrown.expectMessage("sample = 0, range = 0");
+
+        Items.chooseWeighted(emptyList(), random);
     }
 }
