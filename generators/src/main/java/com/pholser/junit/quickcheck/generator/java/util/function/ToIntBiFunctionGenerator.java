@@ -29,6 +29,8 @@ import java.util.function.ToIntBiFunction;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
@@ -40,13 +42,21 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <U> type of second parameter of produced function
  */
 public class ToIntBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToIntBiFunction> {
+    private Generator<Integer> generator;
+
     public ToIntBiFunctionGenerator() {
         super(ToIntBiFunction.class);
     }
 
+    @Override
+    public void provide(Generators provided) {
+        super.provide(provided);
+        generator = gen().type(int.class);
+    }
+
     @SuppressWarnings("unchecked")
     @Override public ToIntBiFunction<T, U> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(ToIntBiFunction.class, gen().type(int.class), status);
+        return makeLambda(ToIntBiFunction.class, generator, status);
     }
 
     @Override public int numberOfNeededComponents() {

@@ -29,6 +29,8 @@ import java.util.function.ToIntFunction;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
@@ -39,13 +41,21 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <T> type of parameter of produced function
  */
 public class ToIntFunctionGenerator<T> extends ComponentizedGenerator<ToIntFunction> {
+    private Generator<Integer> generator;
+
     public ToIntFunctionGenerator() {
         super(ToIntFunction.class);
     }
 
+    @Override
+    public void provide(Generators provided) {
+        super.provide(provided);
+        generator = gen().type(int.class);
+    }
+
     @SuppressWarnings("unchecked")
     @Override public ToIntFunction<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(ToIntFunction.class, gen().type(int.class), status);
+        return makeLambda(ToIntFunction.class, generator, status);
     }
 
     @Override public int numberOfNeededComponents() {
