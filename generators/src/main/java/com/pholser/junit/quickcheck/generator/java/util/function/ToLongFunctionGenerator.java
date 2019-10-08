@@ -29,6 +29,8 @@ import java.util.function.ToLongFunction;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
@@ -38,14 +40,28 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  *
  * @param <T> type of parameter of produced function
  */
-public class ToLongFunctionGenerator<T> extends ComponentizedGenerator<ToLongFunction> {
+public class ToLongFunctionGenerator<T>
+    extends ComponentizedGenerator<ToLongFunction> {
+
+    private Generator<Long> generator;
+
     public ToLongFunctionGenerator() {
         super(ToLongFunction.class);
     }
 
+    @Override
+    public void provide(Generators provided) {
+        super.provide(provided);
+
+        generator = gen().type(long.class);
+    }
+
     @SuppressWarnings("unchecked")
-    @Override public ToLongFunction<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(ToLongFunction.class, gen().type(long.class), status);
+    @Override public ToLongFunction<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(ToLongFunction.class, generator, status);
     }
 
     @Override public int numberOfNeededComponents() {

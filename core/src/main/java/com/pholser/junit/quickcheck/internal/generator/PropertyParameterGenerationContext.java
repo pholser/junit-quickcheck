@@ -101,8 +101,12 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         else
             ++discards;
 
-        if (tooManyDiscards())
-            throw new DiscardRatioExceededException(parameter, discards, successfulEvaluations);
+        if (tooManyDiscards()) {
+            throw new DiscardRatioExceededException(
+                parameter,
+                discards,
+                successfulEvaluations);
+        }
 
         return result;
     }

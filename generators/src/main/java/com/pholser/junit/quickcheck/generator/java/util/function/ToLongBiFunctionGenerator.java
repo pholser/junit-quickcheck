@@ -29,6 +29,8 @@ import java.util.function.ToLongBiFunction;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.pholser.junit.quickcheck.generator.Lambdas.*;
@@ -39,14 +41,28 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <T> type of first parameter of produced function
  * @param <U> type of second parameter of produced function
  */
-public class ToLongBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToLongBiFunction> {
+public class ToLongBiFunctionGenerator<T, U>
+    extends ComponentizedGenerator<ToLongBiFunction> {
+
+    private Generator<Long> generator;
+
     public ToLongBiFunctionGenerator() {
         super(ToLongBiFunction.class);
     }
 
+    @Override
+    public void provide(Generators provided) {
+        super.provide(provided);
+
+        generator = gen().type(long.class);
+    }
+
     @SuppressWarnings("unchecked")
-    @Override public ToLongBiFunction<T, U> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(ToLongBiFunction.class, gen().type(long.class), status);
+    @Override public ToLongBiFunction<T, U> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(ToLongBiFunction.class, generator, status);
     }
 
     @Override public int numberOfNeededComponents() {

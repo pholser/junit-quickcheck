@@ -74,15 +74,18 @@ public class Fields<T> extends Generator<T> {
         instantiate(type);
     }
 
-    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public T generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         Class<T> type = types().get(0);
         Object generated = instantiate(type);
 
-        for (Field each : fields) {
+        for (int i = 0; i < fields.size(); i++) {
             setField(
-                each,
+                fields.get(i),
                 generated,
-                gen().field(each).generate(random, status),
+                fieldGenerators.get(i).generate(random, status),
                 true);
         }
 
@@ -100,8 +103,10 @@ public class Fields<T> extends Generator<T> {
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        for (int i = 0; i < fields.size(); ++i)
-            fieldGenerators.get(i).configure(fields.get(i).getAnnotatedType());
+        for (int i = 0; i < fields.size(); ++i) {
+            fieldGenerators.get(i).configure(
+                fields.get(i).getAnnotatedType());
+        }
     }
 
     @Override public Generator<T> copy() {

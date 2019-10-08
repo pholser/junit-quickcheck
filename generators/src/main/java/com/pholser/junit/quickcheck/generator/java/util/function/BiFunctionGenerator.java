@@ -40,14 +40,22 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <U> type of second parameter of produced function
  * @param <R> return type of produced function
  */
-public class BiFunctionGenerator<T, U, R> extends ComponentizedGenerator<BiFunction> {
+public class BiFunctionGenerator<T, U, R>
+    extends ComponentizedGenerator<BiFunction> {
+
     public BiFunctionGenerator() {
         super(BiFunction.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public BiFunction<T, U, R> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(BiFunction.class, componentGenerators().get(2), status);
+    @Override public BiFunction<T, U, R> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            BiFunction.class,
+            componentGenerators().get(2),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {

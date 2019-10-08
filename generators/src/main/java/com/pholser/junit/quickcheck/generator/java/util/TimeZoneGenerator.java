@@ -37,11 +37,16 @@ import static java.util.TimeZone.*;
  * Produces values of type {@link TimeZone}.
  */
 public class TimeZoneGenerator extends Generator<TimeZone> {
+    private static final String[] AVAILABLE_IDS = getAvailableIDs();
+
     public TimeZoneGenerator() {
         super(TimeZone.class);
     }
 
-    @Override public TimeZone generate(SourceOfRandomness random, GenerationStatus status) {
-        return getTimeZone(random.choose(getAvailableIDs()));
+    @Override public TimeZone generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return getTimeZone(random.choose(AVAILABLE_IDS));
     }
 }
