@@ -41,7 +41,9 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <T> type of first parameter of produced function
  * @param <U> type of second parameter of produced function
  */
-public class ToLongBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToLongBiFunction> {
+public class ToLongBiFunctionGenerator<T, U>
+    extends ComponentizedGenerator<ToLongBiFunction> {
+
     private Generator<Long> generator;
 
     public ToLongBiFunctionGenerator() {
@@ -51,11 +53,15 @@ public class ToLongBiFunctionGenerator<T, U> extends ComponentizedGenerator<ToLo
     @Override
     public void provide(Generators provided) {
         super.provide(provided);
+
         generator = gen().type(long.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public ToLongBiFunction<T, U> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public ToLongBiFunction<T, U> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return makeLambda(ToLongBiFunction.class, generator, status);
     }
 

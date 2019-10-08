@@ -40,7 +40,9 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  *
  * @param <T> type of parameter of produced function
  */
-public class ToIntFunctionGenerator<T> extends ComponentizedGenerator<ToIntFunction> {
+public class ToIntFunctionGenerator<T>
+    extends ComponentizedGenerator<ToIntFunction> {
+
     private Generator<Integer> generator;
 
     public ToIntFunctionGenerator() {
@@ -50,11 +52,15 @@ public class ToIntFunctionGenerator<T> extends ComponentizedGenerator<ToIntFunct
     @Override
     public void provide(Generators provided) {
         super.provide(provided);
+
         generator = gen().type(int.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public ToIntFunction<T> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public ToIntFunction<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return makeLambda(ToIntFunction.class, generator, status);
     }
 

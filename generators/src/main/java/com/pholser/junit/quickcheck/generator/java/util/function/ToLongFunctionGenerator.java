@@ -40,7 +40,9 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  *
  * @param <T> type of parameter of produced function
  */
-public class ToLongFunctionGenerator<T> extends ComponentizedGenerator<ToLongFunction> {
+public class ToLongFunctionGenerator<T>
+    extends ComponentizedGenerator<ToLongFunction> {
+
     private Generator<Long> generator;
 
     public ToLongFunctionGenerator() {
@@ -50,11 +52,15 @@ public class ToLongFunctionGenerator<T> extends ComponentizedGenerator<ToLongFun
     @Override
     public void provide(Generators provided) {
         super.provide(provided);
+
         generator = gen().type(long.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public ToLongFunction<T> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public ToLongFunction<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return makeLambda(ToLongFunction.class, generator, status);
     }
 

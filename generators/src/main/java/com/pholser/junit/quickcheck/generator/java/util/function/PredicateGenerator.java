@@ -50,11 +50,15 @@ public class PredicateGenerator<T> extends ComponentizedGenerator<Predicate> {
     @Override
     public void provide(Generators provided) {
         super.provide(provided);
+
         generator = gen().type(boolean.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public Predicate<T> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Predicate<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return makeLambda(Predicate.class, generator, status);
     }
 

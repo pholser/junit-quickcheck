@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.generator.java.util;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -54,7 +53,9 @@ public final class RFC4122 {
         throw new UnsupportedOperationException();
     }
 
-    private abstract static class AbstractUUIDGenerator extends Generator<UUID> {
+    private abstract static class AbstractUUIDGenerator
+        extends Generator<UUID> {
+
         protected AbstractUUIDGenerator() {
             super(UUID.class);
         }
@@ -75,21 +76,33 @@ public final class RFC4122 {
         }
     }
 
-    private abstract static class NameBasedUUIDGenerator extends AbstractUUIDGenerator {
+    private abstract static class NameBasedUUIDGenerator
+        extends AbstractUUIDGenerator {
+
         private final StringGenerator stringGenerator = new StringGenerator();
         private final int versionMask;
         private final MessageDigest digest;
         private Namespace namespace;
 
-        protected NameBasedUUIDGenerator(String hashAlgorithmName, int versionMask) {
+        protected NameBasedUUIDGenerator(
+            String hashAlgorithmName,
+            int versionMask) {
+
             this.versionMask = versionMask;
             digest = MessageDigests.get(hashAlgorithmName);
         }
 
-        @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public UUID generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             digest.reset();
-            digest.update((namespace == null ? Namespaces.URL : namespace.value()).bytes);
-            digest.update(stringGenerator.generate(random, status).getBytes(StandardCharsets.UTF_8));
+
+            Namespaces namespaces = namespace == null ? URL : namespace.value();
+            digest.update(namespaces.bytes);
+            digest.update(
+                stringGenerator.generate(random, status)
+                    .getBytes(StandardCharsets.UTF_8));
 
             byte[] hash = digest.digest();
             setVersion(hash, (byte) versionMask);
@@ -141,7 +154,10 @@ public final class RFC4122 {
      * identifiers.
      */
     public static class Version4 extends AbstractUUIDGenerator {
-        @Override public UUID generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public UUID generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             byte[] bytes = random.nextBytes(16);
             setVersion(bytes, (byte) 0x40);
             setVariant(bytes);
@@ -202,7 +218,8 @@ public final class RFC4122 {
         final byte[] bytes;
 
         Namespaces(int difference) {
-            this.bytes = new byte[] { 0x6B, (byte) 0xA7, (byte) 0xB8, (byte) difference,
+            this.bytes = new byte[] {
+                0x6B, (byte) 0xA7, (byte) 0xB8, (byte) difference,
                 (byte) 0x9D, (byte) 0xAD,
                 0x11, (byte) 0xD1,
                 (byte) 0x80, (byte) 0xB4,

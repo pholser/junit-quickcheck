@@ -37,13 +37,16 @@ import static java.util.Locale.*;
  * Produces values of type {@link Locale}.
  */
 public class LocaleGenerator extends Generator<Locale> {
-    private final static Locale[] availableLocales = getAvailableLocales();
+    private static final Locale[] AVAILABLE_LOCALES = getAvailableLocales();
 
     public LocaleGenerator() {
         super(Locale.class);
     }
 
-    @Override public Locale generate(SourceOfRandomness random, GenerationStatus status) {
-        return random.choose(availableLocales);
+    @Override public Locale generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return random.choose(AVAILABLE_LOCALES);
     }
 }

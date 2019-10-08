@@ -52,7 +52,8 @@ public class OptionalGenerator extends ComponentizedGenerator<Optional> {
         double trial = random.nextDouble();
         return trial < 0.25
             ? Optional.empty()
-            : Optional.of(componentGenerators().get(0).generate(random, status));
+            : Optional.of(
+                componentGenerators().get(0).generate(random, status));
     }
 
     @Override public List<Optional> doShrink(

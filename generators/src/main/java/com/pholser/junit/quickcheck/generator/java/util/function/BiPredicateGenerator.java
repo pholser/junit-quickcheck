@@ -41,7 +41,9 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <T> type of first parameter of produced predicate
  * @param <U> type of second parameter of produced predicate
  */
-public class BiPredicateGenerator<T, U> extends ComponentizedGenerator<BiPredicate> {
+public class BiPredicateGenerator<T, U>
+    extends ComponentizedGenerator<BiPredicate> {
+
     private Generator<Boolean> generator;
 
     public BiPredicateGenerator() {
@@ -51,11 +53,15 @@ public class BiPredicateGenerator<T, U> extends ComponentizedGenerator<BiPredica
     @Override
     public void provide(Generators provided) {
         super.provide(provided);
+
         generator = gen().type(boolean.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public BiPredicate<T, U> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BiPredicate<T, U> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return makeLambda(BiPredicate.class, generator, status);
     }
 
