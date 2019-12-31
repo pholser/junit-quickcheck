@@ -49,7 +49,7 @@ public class ABox extends ComponentizedGenerator<Box> {
     }
 
     @Override public BigDecimal magnitude(Object value) {
-        return componentGenerators().get(0).magnitude(((Box) value).contents());
+        return componentGenerators().get(0).magnitude(((Box<?>) value).contents());
     }
 
     public void configure(X x) {

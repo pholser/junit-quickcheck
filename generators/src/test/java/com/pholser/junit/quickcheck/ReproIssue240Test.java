@@ -25,17 +25,30 @@
 
 package com.pholser.junit.quickcheck;
 
-import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public final class Types {
-    private Types() {
-        throw new UnsupportedOperationException();
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+
+import static org.junit.Assert.*;
+import static org.junit.experimental.results.PrintableResult.*;
+import static org.junit.experimental.results.ResultMatchers.*;
+
+public class ReproIssue240Test {
+    @Test public void issue240() {
+        assertThat(testResult(Issue240.class), isSuccessful());
     }
 
-    public static ParameterTypeContext typeOf(Class<?> c, String fieldName)
-        throws NoSuchFieldException {
+    @RunWith(JUnitQuickcheck.class)
+    public static class Issue240 {
+        @Property
+        public <X extends HashMap<Integer, Character>> void genericVars(
+            Callable<X> callable)
+            throws Exception {
 
-        return ParameterTypeContext.forField(c.getDeclaredField(fieldName))
-            .allowMixedTypes(true);
+            HashMap<Integer, Character> result = callable.call();
+        }
     }
 }

@@ -35,6 +35,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +54,8 @@ import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 
 public final class Reflection {
-    private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<>(16);
+    private static final Map<Class<?>, Class<?>> PRIMITIVES =
+        new HashMap<>(16);
 
     static {
         PRIMITIVES.put(Boolean.TYPE, Boolean.class);
@@ -75,7 +77,10 @@ public final class Reflection {
         return wrapped == null ? clazz : wrapped;
     }
 
-    public static <T> Constructor<T> findConstructor(Class<T> type, Class<?>... parameterTypes) {
+    public static <T> Constructor<T> findConstructor(
+        Class<T> type,
+        Class<?>... parameterTypes) {
+
         try {
             return type.getConstructor(parameterTypes);
         } catch (Exception ex) {
@@ -83,7 +88,10 @@ public final class Reflection {
         }
     }
 
-    public static <T> Constructor<T> findDeclaredConstructor(Class<T> type, Class<?>... parameterTypes) {
+    public static <T> Constructor<T> findDeclaredConstructor(
+        Class<T> type,
+        Class<?>... parameterTypes) {
+
         try {
             Constructor<T> ctor = type.getDeclaredConstructor(parameterTypes);
             ctor.setAccessible(true);
@@ -94,10 +102,14 @@ public final class Reflection {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Constructor<T> singleAccessibleConstructor(Class<T> type) {
+    public static <T> Constructor<T> singleAccessibleConstructor(
+        Class<T> type) {
+
         Constructor<?>[] constructors = type.getConstructors();
-        if (constructors.length != 1)
-            throw new ReflectionException(type + " needs a single accessible constructor");
+        if (constructors.length != 1) {
+            throw new ReflectionException(
+                type + " needs a single accessible constructor");
+        }
 
         return (Constructor<T>) constructors[0];
     }
@@ -125,7 +137,10 @@ public final class Reflection {
         return supertypes;
     }
 
-    public static Object defaultValueOf(Class<? extends Annotation> annotationType, String attribute) {
+    public static Object defaultValueOf(
+        Class<? extends Annotation> annotationType,
+        String attribute) {
+
         try {
             return annotationType.getMethod(attribute).getDefaultValue();
         } catch (Exception ex) {
@@ -145,19 +160,28 @@ public final class Reflection {
         return annotations;
     }
 
-    public static <T extends Annotation> List<T> allAnnotationsByType(AnnotatedElement e, Class<T> type) {
+    public static <T extends Annotation> List<T> allAnnotationsByType(
+        AnnotatedElement e,
+        Class<T> type) {
+
         List<T> annotations = new ArrayList<>();
         Collections.addAll(annotations, e.getAnnotationsByType(type));
 
         List<Annotation> thisAnnotations = nonSystemAnnotations(e);
 
-        for (Annotation each : thisAnnotations)
-            annotations.addAll(allAnnotationsByType(each.annotationType(), type));
+        for (Annotation each : thisAnnotations) {
+            annotations.addAll(
+                allAnnotationsByType(each.annotationType(), type));
+        }
 
         return annotations;
     }
 
-    public static Method findMethod(Class<?> target, String methodName, Class<?>... argTypes) {
+    public static Method findMethod(
+        Class<?> target,
+        String methodName,
+        Class<?>... argTypes) {
+
         try {
             return target.getMethod(methodName, argTypes);
         } catch (Exception ex) {
@@ -221,7 +245,9 @@ public final class Reflection {
         int abstractCount = 0;
         Method singleAbstractMethod = null;
         for (Method each : rawClass.getMethods()) {
-            if (isAbstract(each.getModifiers()) && !overridesJavaLangObjectMethod(each)) {
+            if (isAbstract(each.getModifiers())
+                && !overridesJavaLangObjectMethod(each)) {
+
                 singleAbstractMethod = each;
                 ++abstractCount;
             }
@@ -251,8 +277,10 @@ public final class Reflection {
     }
 
     public static RuntimeException reflectionException(Exception ex) {
-        if (ex instanceof InvocationTargetException)
-            return new ReflectionException(((InvocationTargetException) ex).getTargetException());
+        if (ex instanceof InvocationTargetException) {
+            return new ReflectionException(
+                ((InvocationTargetException) ex).getTargetException());
+        }
         if (ex instanceof RuntimeException)
             return (RuntimeException) ex;
 
@@ -261,20 +289,29 @@ public final class Reflection {
 
     private static List<Annotation> nonSystemAnnotations(AnnotatedElement e) {
         return stream(e.getAnnotations())
-            .filter(a -> !a.annotationType().getName().startsWith("java.lang.annotation."))
+            .filter(a ->
+                !a.annotationType().getName().startsWith(
+                    "java.lang.annotation."))
             .filter(a -> !a.annotationType().getName().startsWith("kotlin."))
             .collect(toList());
     }
 
-    public static List<AnnotatedType> annotatedComponentTypes(AnnotatedType annotatedType) {
-        if (annotatedType instanceof AnnotatedParameterizedType)
-            return asList(((AnnotatedParameterizedType) annotatedType).getAnnotatedActualTypeArguments());
+    public static List<AnnotatedType> annotatedComponentTypes(
+        AnnotatedType annotatedType) {
 
-        if (annotatedType instanceof AnnotatedArrayType)
-            return singletonList(((AnnotatedArrayType) annotatedType).getAnnotatedGenericComponentType());
-
+        if (annotatedType instanceof AnnotatedParameterizedType) {
+            return asList(
+                ((AnnotatedParameterizedType) annotatedType)
+                    .getAnnotatedActualTypeArguments());
+        }
+        if (annotatedType instanceof AnnotatedArrayType) {
+            return singletonList(
+                ((AnnotatedArrayType) annotatedType)
+                    .getAnnotatedGenericComponentType());
+        }
         if (annotatedType instanceof AnnotatedWildcardType) {
-            AnnotatedWildcardType wildcard = (AnnotatedWildcardType) annotatedType;
+            AnnotatedWildcardType wildcard =
+                (AnnotatedWildcardType) annotatedType;
             if (wildcard.getAnnotatedLowerBounds().length > 0)
                 return singletonList(wildcard.getAnnotatedLowerBounds()[0]);
 
@@ -282,5 +319,19 @@ public final class Reflection {
         }
 
         return emptyList();
+    }
+
+    public static int parameterIndex(Parameter parameter) {
+        try {
+            Field indexField = Parameter.class.getDeclaredField("index");
+            doPrivileged((PrivilegedAction<Void>) () -> {
+                indexField.setAccessible(true);
+                return null;
+            });
+
+            return (Integer) indexField.get(parameter);
+        } catch (Exception ex) {
+            throw reflectionException(ex);
+        }
     }
 }

@@ -25,19 +25,15 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.StreamSupport;
-
 import com.google.common.io.Resources;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static com.google.common.io.Resources.*;
 import static java.util.stream.Collectors.*;
@@ -69,45 +65,6 @@ final class Classes {
         return StreamSupport.stream(items.spliterator(), false)
             .map(Object::getClass)
             .collect(toList());
-    }
-
-    static Class<?> nearestCommonSuperclassOf(List<Class<?>> classes) {
-        return commonSuperclassesOf(classes).get(0);
-    }
-
-    private static List<Class<?>> commonSuperclassesOf(List<Class<?>> classes) {
-        Set<Class<?>> intersection =
-            new LinkedHashSet<>(getClassesBreadthFirst(classes.get(0)));
-
-        if (classes.size() > 1) {
-            for (Class<?> each : classes.subList(1, classes.size()))
-                intersection.retainAll(getClassesBreadthFirst(each));
-        }
-
-        return new ArrayList<>(intersection);
-    }
-
-    private static Set<Class<?>> getClassesBreadthFirst(Class<?> clazz) {
-        Set<Class<?>> classes = new LinkedHashSet<>();
-        Set<Class<?>> nextLevel = new LinkedHashSet<>();
-        nextLevel.add(clazz);
-
-        do {
-            classes.addAll(nextLevel);
-
-            Set<Class<?>> thisLevel = new LinkedHashSet<>(nextLevel);
-            nextLevel.clear();
-
-            for (Class<?> each : thisLevel) {
-                Class<?> superClass = each.getSuperclass();
-                if (superClass != null && superClass != Object.class)
-                    nextLevel.add(superClass);
-
-                Collections.addAll(nextLevel, each.getInterfaces());
-            }
-        } while (!nextLevel.isEmpty());
-
-        return classes;
     }
 
     static String resourceAsString(String name) throws IOException {

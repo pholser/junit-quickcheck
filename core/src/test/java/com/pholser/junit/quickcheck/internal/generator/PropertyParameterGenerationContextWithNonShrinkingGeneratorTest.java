@@ -54,8 +54,8 @@ public class PropertyParameterGenerationContextWithNonShrinkingGeneratorTest {
     @Test public void givesNoShrunkenValues() throws Exception {
         PropertyParameterContext parameter =
             new PropertyParameterContext(
-                new ParameterTypeContext("arg", annotatedType(), "declarer"))
-                .annotate(annotatedElement());
+                ParameterTypeContext.forParameter(parameter())
+                    .annotate(annotatedElement()));
 
         PropertyParameterGenerationContext gen =
             new PropertyParameterGenerationContext(

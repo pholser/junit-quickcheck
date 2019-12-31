@@ -271,7 +271,7 @@ public class PropertyParameterGenerationByConstructorTest {
     @Test public void autoGenerationOnUnresolvedGenericType() {
         assertThat(
             testResult(WithAutoGenerationOnUnresolvedGenericType.class),
-            hasSingleFailureContaining("No variable substitution established"));
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
