@@ -62,7 +62,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @param type class token for type of property parameter this generator is
      * applicable to
      */
-    @SuppressWarnings("unchecked") protected Generator(Class<T> type) {
+    protected Generator(Class<T> type) {
         this(singletonList(type));
     }
 
