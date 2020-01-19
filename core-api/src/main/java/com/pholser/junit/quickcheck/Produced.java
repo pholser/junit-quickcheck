@@ -23,42 +23,32 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.examples.geom;
+package com.pholser.junit.quickcheck;
 
-import java.util.List;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static com.google.common.collect.Streams.*;
-import static java.util.stream.Collectors.*;
-
-public class SegmentGenerator extends Generator<Segment> {
-    public SegmentGenerator() {
-        super(Segment.class);
-    }
-
-    @Override public Segment generate(
-        SourceOfRandomness r,
-        GenerationStatus s) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-        return new Segment(
-            pointGen.generate(r, s),
-            pointGen.generate(r, s));
-    }
-
-    @Override public List<Segment> doShrink(
-        SourceOfRandomness r,
-        Segment larger) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-
-        return zip(
-            pointGen.shrink(r, larger.a).stream(),
-            pointGen.shrink(r, larger.b).stream(),
-            Segment::new
-        ).collect(toList());
-    }
+/**
+ * <p>Mark a parameter of a {@link Property} method with this annotation to
+ * have random values supplied to it via one of the
+ * {@link Generator}s specified by the
+ * aggregated {@link From} annotations.</p>
+ *
+ * <p>Alternatively, you can specify many generators via many repetitions of
+ * {@link From}, without using this container annotation.</p>
+ *
+ * <p>On a given generation, one of the specified generators will be chosen at
+ * random with probability in proportion to {@link From#frequency()}.</p>
+ *
+ * @see From
+ */
+@Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
+@Retention(RUNTIME)
+public @interface Produced {
+    From[] value();
 }

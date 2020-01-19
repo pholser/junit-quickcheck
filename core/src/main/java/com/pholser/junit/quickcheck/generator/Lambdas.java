@@ -34,6 +34,7 @@ import java.util.Random;
 
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
+import com.pholser.junit.quickcheck.random.DefaultSourceOfRandomness;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.lang.System.*;
@@ -123,7 +124,7 @@ public final class Lambdas {
             if (method.isDefault())
                 return handleDefaultMethod(proxy, method, args);
 
-            SourceOfRandomness source = new SourceOfRandomness(new Random());
+            SourceOfRandomness source = new DefaultSourceOfRandomness(new Random());
             source.setSeed(Arrays.hashCode(args));
             GenerationStatus status =
                 new SimpleGenerationStatus(new GeometricDistribution(), source, attempts);

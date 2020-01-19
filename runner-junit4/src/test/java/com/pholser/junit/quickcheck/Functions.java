@@ -23,47 +23,23 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.examples.geom;
+package com.pholser.junit.quickcheck;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Random;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.random.DefaultSourceOfRandomness;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
-
-public class PolygonGenerator extends Generator<Polygon> {
-    private static final @Size(min = 3, max = 30) List<Point> POINTS = null;
-
-    public PolygonGenerator() {
-        super(Polygon.class);
+public final class Functions {
+    private Functions() {
+        throw new UnsupportedOperationException();
     }
 
-    @Override public Polygon generate(
-        SourceOfRandomness r,
-        GenerationStatus s) {
-
-        Generator<List<Point>> points =
-            (Generator<List<Point>>) gen().field(
-                getClass(),
-                "POINTS");
-
-        return new Polygon(points.generate(r, s));
-    }
-
-    @Override public List<Polygon> doShrink(
-        SourceOfRandomness r,
-        Polygon larger) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-
-        return singletonList(
-            new Polygon(
-                larger.points.stream()
-                    .map(p -> pointGen.shrink(r, p).get(0))
-                    .collect(toList())));
+    public static <T> T functionValue(Generator<T> generator, Object[] args) {
+        SourceOfRandomness source = new DefaultSourceOfRandomness(new Random());
+        source.setSeed(Arrays.hashCode(args));
+        return generator.generate(source, null);
     }
 }

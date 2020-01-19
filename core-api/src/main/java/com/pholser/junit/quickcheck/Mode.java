@@ -23,42 +23,26 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.examples.geom;
+package com.pholser.junit.quickcheck;
 
-import java.util.List;
+/**
+ * Represents different modes of execution of property-based tests.
+ *
+ * @see com.pholser.junit.quickcheck.generator.Only
+ * @see com.pholser.junit.quickcheck.generator.Also
+ */
+public enum Mode {
+    /**
+     * Verify {@link Property#trials()} tuples of arguments for a property's
+     * parameters.
+     */
+    SAMPLING,
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.google.common.collect.Streams.*;
-import static java.util.stream.Collectors.*;
-
-public class SegmentGenerator extends Generator<Segment> {
-    public SegmentGenerator() {
-        super(Segment.class);
-    }
-
-    @Override public Segment generate(
-        SourceOfRandomness r,
-        GenerationStatus s) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-        return new Segment(
-            pointGen.generate(r, s),
-            pointGen.generate(r, s));
-    }
-
-    @Override public List<Segment> doShrink(
-        SourceOfRandomness r,
-        Segment larger) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-
-        return zip(
-            pointGen.shrink(r, larger.a).stream(),
-            pointGen.shrink(r, larger.b).stream(),
-            Segment::new
-        ).collect(toList());
-    }
+    /**
+     * Generate {@link Property#trials()} arguments for each parameter
+     * property, and verify the cross-products of those sets of arguments.
+     * This behavior mirrors that of the JUnit
+     * {@link org.junit.experimental.theories.Theories} runner.
+     */
+    EXHAUSTIVE;
 }

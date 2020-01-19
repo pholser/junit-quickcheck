@@ -33,6 +33,7 @@ import com.google.common.base.Objects;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
+import com.pholser.junit.quickcheck.random.DefaultSourceOfRandomness;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static com.google.common.collect.Lists.*;
@@ -70,7 +71,7 @@ public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyPara
 
         String argument = "foobar";
 
-        SourceOfRandomness source = new SourceOfRandomness(new Random());
+        SourceOfRandomness source = new DefaultSourceOfRandomness(new Random());
         source.setSeed(Objects.hashCode(argument));
         Integer value = (Integer) repository.generatorFor(typeOf(getClass(), "integer")).generate(source, null);
 

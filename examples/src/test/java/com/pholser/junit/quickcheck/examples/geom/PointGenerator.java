@@ -27,7 +27,6 @@ package com.pholser.junit.quickcheck.examples.geom;
 
 import java.util.List;
 
-import com.pholser.junit.quickcheck.examples.geom.Point;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
