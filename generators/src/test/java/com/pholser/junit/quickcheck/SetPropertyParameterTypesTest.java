@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Set;
-
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.pholser.junit.quickcheck.Classes.*;
+import java.util.Set;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -56,10 +55,8 @@ public class SetPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class SetOfLowerBound {
         @Property(trials = 15) public void shouldHold(Set<? extends Integer> items) {
-            if (!items.isEmpty()) {
-                assertThat(
-                    Integer.class,
-                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items))));
+            for (Integer each : items) {
+                // testing type cast
             }
         }
     }
@@ -138,10 +135,8 @@ public class SetPropertyParameterTypesTest {
     public static class SetOfSetOfUpperBound {
         @Property public void shouldHold(Set<Set<? extends Number>> items) {
             for (Set<? extends Number> each : items) {
-                if (!items.isEmpty()) {
-                    assertThat(
-                        Number.class,
-                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
+                for (Number n : each) {
+                    // testing type cast
                 }
             }
         }

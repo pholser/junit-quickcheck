@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
 
 import com.pholser.junit.quickcheck.When;
@@ -57,8 +56,8 @@ public class PropertyParameterGenerationContextTest {
     @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() throws Exception {
         PropertyParameterContext parameter =
             new PropertyParameterContext(
-                new ParameterTypeContext("arg", annotatedType(), "declarer"))
-                .annotate(annotatedElement());
+                ParameterTypeContext.forParameter(parameter()))
+                    .annotate(annotatedElement());
 
         PropertyParameterGenerationContext gen =
             new PropertyParameterGenerationContext(
@@ -69,12 +68,13 @@ public class PropertyParameterGenerationContextTest {
                 new TupleParameterSampler(20));
 
         thrown.expect(DiscardRatioExceededException.class);
-        thrown.expectMessage(String.format(
-            DiscardRatioExceededException.MESSAGE_TEMPLATE,
-            parameter.typeContext().name(),
-            parameter.discardRatio(),
-            30,
-            10));
+        thrown.expectMessage(
+            String.format(
+                DiscardRatioExceededException.MESSAGE_TEMPLATE,
+                parameter.typeContext().name(),
+                parameter.discardRatio(),
+                30,
+                10));
 
         while (gen.attempts() < 100)
             gen.generate();
@@ -85,10 +85,6 @@ public class PropertyParameterGenerationContextTest {
 
     private AnnotatedElement annotatedElement() throws Exception {
         return parameter();
-    }
-
-    private AnnotatedType annotatedType() throws Exception {
-        return parameter().getAnnotatedType();
     }
 
     private Parameter parameter() throws Exception {

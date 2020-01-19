@@ -384,7 +384,7 @@
                                 <link>http://junit.org/junit4/javadoc/latest/</link>
                                 <link>http://google.github.io/guava/releases/19.0/api/docs/</link>
                             </links>
-                            <bottom><![CDATA[<i>&copy; Copyright 2010-2017 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
+                            <bottom><![CDATA[<i>&copy; Copyright 2010-2020 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
                         </configuration>
                     </execution>
                 </executions>

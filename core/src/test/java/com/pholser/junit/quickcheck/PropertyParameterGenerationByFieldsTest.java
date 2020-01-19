@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,9 +25,6 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 import com.pholser.junit.quickcheck.generator.Fields;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.internal.Zilch;
@@ -43,6 +40,9 @@ import org.junit.Test;
 import org.junit.experimental.results.PrintableResult;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
@@ -214,7 +214,7 @@ public class PropertyParameterGenerationByFieldsTest {
     @Test public void autoGenerationWithUnresolvedTypeVariablesInFields() {
         assertThat(
             testResult(AutoGenerationWithUnresolvedTypeVariablesInFields.class),
-            hasSingleFailureContaining("No variable substitution established"));
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)

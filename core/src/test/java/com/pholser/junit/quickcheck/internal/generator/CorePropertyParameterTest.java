@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -82,11 +81,9 @@ public abstract class CorePropertyParameterTest {
         if (auxiliarySource != null)
             repository.register(auxiliarySource);
 
-        AnnotatedType type = annotatedType();
         int trials = trials();
         PropertyParameterContext parameter =
-            new PropertyParameterContext(
-                new ParameterTypeContext("arg", type, type.toString()))
+            new PropertyParameterContext(typeContext())
                 .annotate(annotatedElement());
         parameter.addQuantifier(quantifier);
 
@@ -130,11 +127,11 @@ public abstract class CorePropertyParameterTest {
 
     protected abstract void primeSourceOfRandomness() throws Exception;
 
-    protected final AnnotatedType annotatedType() throws Exception {
+    protected final ParameterTypeContext typeContext() throws Exception {
         try {
-            return typeBearerField().getAnnotatedType();
+            return ParameterTypeContext.forField(typeBearerField());
         } catch (Exception e) {
-            return typeBearerParameter().getAnnotatedType();
+            return ParameterTypeContext.forParameter(typeBearerParameter());
         }
     }
 

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -52,7 +52,6 @@ import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.internal.Zilch;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
 
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
@@ -74,7 +73,10 @@ public class GeneratorRepository implements Generators {
         this(random, new HashMap<>());
     }
 
-    private GeneratorRepository(SourceOfRandomness random, Map<Class<?>, Set<Generator<?>>> generators) {
+    private GeneratorRepository(
+        SourceOfRandomness random,
+        Map<Class<?>, Set<Generator<?>>> generators) {
+
         this.random = random;
         this.generators = generators;
     }
@@ -154,7 +156,8 @@ public class GeneratorRepository implements Generators {
     @SuppressWarnings("unchecked")
     @Override public <T> Generator<T> type(Class<T> type, Class<?>... componentTypes) {
         Generator<T> generator =
-            (Generator<T>) produceGenerator(new ParameterTypeContext(type));
+            (Generator<T>) produceGenerator(
+                ParameterTypeContext.forClass(type));
         generator.addComponentGenerators(
             Arrays.stream(componentTypes).map(c -> type(c)).collect(toList()));
         return generator;
@@ -162,20 +165,12 @@ public class GeneratorRepository implements Generators {
 
     @Override public Generator<?> parameter(Parameter parameter) {
         return produceGenerator(
-            new ParameterTypeContext(
-                parameter.getName(),
-                parameter.getAnnotatedType(),
-                parameter.getDeclaringExecutable().getName()
-            ).annotate(parameter));
+            ParameterTypeContext.forParameter(parameter).annotate(parameter));
     }
 
     @Override public Generator<?> field(Field field) {
         return produceGenerator(
-            new ParameterTypeContext(
-                field.getName(),
-                field.getAnnotatedType(),
-                field.getDeclaringClass().getName()
-            ).annotate(field));
+            ParameterTypeContext.forField(field).annotate(field));
     }
 
     @SafeVarargs
@@ -306,12 +301,7 @@ public class GeneratorRepository implements Generators {
         Method method = singleAbstractMethodOf(parameter.getRawClass());
         if (method != null) {
             ParameterTypeContext returnType =
-                new ParameterTypeContext(
-                    "return value",
-                    method.getAnnotatedReturnType(),
-                    method.getName())
-                    .annotate(method.getAnnotatedReturnType())
-                    .allowMixedTypes(true);
+                parameter.methodReturnTypeContext(method);
             Generator<?> returnTypeGenerator = generatorFor(returnType);
 
             Generator<?> lambda =
@@ -361,18 +351,17 @@ public class GeneratorRepository implements Generators {
             : new CompositeGenerator(matches);
     }
 
-    private void applyComponentGenerators(Generator<?> generator, List<Generator<?>> componentGenerators) {
+    private void applyComponentGenerators(
+        Generator<?> generator,
+        List<Generator<?>> componentGenerators) {
+
         if (generator.hasComponents()) {
             if (componentGenerators.isEmpty()) {
                 List<Generator<?>> substitutes = new ArrayList<>();
-                Generator<?> zilch = generatorFor(
-                    new ParameterTypeContext(
-                        "Zilch",
-                        null,
-                        getClass().getName(),
-                        token(Zilch.class),
-                        emptyMap())
-                    .allowMixedTypes(true));
+                Generator<?> zilch =
+                    generatorFor(
+                        ParameterTypeContext.forClass(Zilch.class)
+                            .allowMixedTypes(true));
                 for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
                     substitutes.add(zilch);
 
@@ -399,10 +388,6 @@ public class GeneratorRepository implements Generators {
 
     private boolean hasGeneratorsFor(ParameterTypeContext parameter) {
         return generators.get(parameter.getRawClass()) != null;
-    }
-
-    private static org.javaruntype.type.Type<?> token(Type type) {
-        return Types.forJavaLangReflectType(type);
     }
 
     private static boolean isPrimitiveType(Type type) {
