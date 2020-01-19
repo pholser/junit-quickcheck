@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,6 +25,10 @@
 
 package com.pholser.junit.quickcheck;
 
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -33,12 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.Classes.*;
 import static java.util.Arrays.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -64,10 +62,8 @@ public class MapPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToUpperBound {
         @Property(trials = 20) public void shouldHold(Map<?, ? extends Short> items) {
-            if (!items.isEmpty()) {
-                assertThat(
-                    Short.class,
-                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items.values()))));
+            for (Short each : items.values()) {
+                // testing type cast
             }
         }
     }
@@ -163,10 +159,8 @@ public class MapPropertyParameterTypesTest {
     public static class MapOfHuhToListOfUpperBound {
         @Property(trials = 20) public void shouldHold(Map<?, List<? extends Serializable>> items) {
             for (List<? extends Serializable> each : items.values()) {
-                if (!each.isEmpty()) {
-                    assertThat(
-                        Serializable.class,
-                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
+                for (Serializable s : each) {
+                    // testing type cast
                 }
             }
         }
@@ -193,10 +187,8 @@ public class MapPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfUpperBoundToHuh {
         @Property(trials = 20) public void shouldHold(Map<? extends Number, ?> items) {
-            if (!items.isEmpty()) {
-                assertThat(
-                    Number.class,
-                    isAssignableFrom(nearestCommonSuperclassOf(classesOf(items.keySet()))));
+            for (Number each : items.keySet()) {
+                // testing type cast
             }
         }
     }
@@ -271,10 +263,8 @@ public class MapPropertyParameterTypesTest {
     public static class IterableOfUpperBoundToHuh {
         @Property(trials = 20) public void shouldHold(Map<Iterable<? extends Number>, ?> items) {
             for (Iterable<? extends Number> each : items.keySet()) {
-                if (!Iterables.isEmpty(each)) {
-                    assertThat(
-                        Number.class,
-                        isAssignableFrom(nearestCommonSuperclassOf(classesOf(each))));
+                for (Number n : each) {
+                    // testing type cast
                 }
             }
         }

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -271,7 +271,7 @@ public class PropertyParameterGenerationByConstructorTest {
     @Test public void autoGenerationOnUnresolvedGenericType() {
         assertThat(
             testResult(WithAutoGenerationOnUnresolvedGenericType.class),
-            hasSingleFailureContaining("No variable substitution established"));
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -54,8 +54,8 @@ public class PropertyParameterGenerationContextWithNonShrinkingGeneratorTest {
     @Test public void givesNoShrunkenValues() throws Exception {
         PropertyParameterContext parameter =
             new PropertyParameterContext(
-                new ParameterTypeContext("arg", annotatedType(), "declarer"))
-                .annotate(annotatedElement());
+                ParameterTypeContext.forParameter(parameter())
+                    .annotate(annotatedElement()));
 
         PropertyParameterGenerationContext gen =
             new PropertyParameterGenerationContext(

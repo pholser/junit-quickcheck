@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,21 +25,6 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.lang.reflect.AnnotatedArrayType;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.AnnotatedWildcardType;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -48,13 +33,31 @@ import org.javaruntype.type.StandardTypeParameter;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
+import ru.vyarus.java.generics.resolver.GenericsResolver;
+import ru.vyarus.java.generics.resolver.context.ConstructorGenericsContext;
+import ru.vyarus.java.generics.resolver.context.GenericsContext;
+import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
 
-import static java.lang.String.*;
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
+import java.lang.reflect.AnnotatedArrayType;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.AnnotatedWildcardType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static com.pholser.junit.quickcheck.internal.Items.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.lang.String.*;
+import static java.util.Collections.*;
 import static org.javaruntype.type.Types.*;
 
 public class ParameterTypeContext {
@@ -65,71 +68,121 @@ public class ParameterTypeContext {
     private final String parameterName;
     private final AnnotatedType parameterType;
     private final String declarerName;
-    private final org.javaruntype.type.Type<?> token;
+    private final org.javaruntype.type.Type<?> resolved;
     private final List<Weighted<Generator<?>>> explicits = new ArrayList<>();
-    private final Map<String, org.javaruntype.type.Type<?>> typeVariables;
+    private final GenericsContext generics;
+    private final int parameterIndex;
 
     private AnnotatedElement annotatedElement;
     private boolean allowMixedTypes;
 
-    public ParameterTypeContext(
-        String parameterName,
-        AnnotatedType parameterType,
-        String declarerName) {
-
-        this(
-            parameterName,
-            parameterType,
-            declarerName,
-            emptyMap());
-    }
-
-    public ParameterTypeContext(
-        String parameterName,
-        AnnotatedType parameterType,
-        String declarerName,
-        Map<String, Type> typeVariables) {
-
-        this(
-            parameterName,
-            parameterType,
-            declarerName,
-            Types.forJavaLangReflectType(
-                parameterType.getType(),
-                toTokens(typeVariables)),
-            toTokens(typeVariables));
-    }
-
-    public ParameterTypeContext(
-        String parameterName,
-        AnnotatedType parameterType,
-        String declarerName,
-        org.javaruntype.type.Type<?> token,
-        Map<String, org.javaruntype.type.Type<?>> typeVariables) {
-
-        this.parameterName = parameterName;
-        this.parameterType = parameterType;
-        this.declarerName = declarerName;
-        this.token = token;
-        this.typeVariables = typeVariables;
-    }
-
-    public ParameterTypeContext(Class<?> clazz) {
-        this(
+    public static ParameterTypeContext forClass(Class<?> clazz) {
+        return new ParameterTypeContext(
             clazz.getTypeName(),
             FakeAnnotatedTypeFactory.makeFrom(clazz),
             clazz.getTypeName(),
             Types.forJavaLangReflectType(clazz),
-            emptyMap());
+            GenericsResolver.resolve(clazz));
     }
 
-    private static Map<String, org.javaruntype.type.Type<?>> toTokens(
-        Map<String, Type> typeVariables) {
+    public static ParameterTypeContext forField(Field field) {
+        GenericsContext generics =
+            GenericsResolver.resolve(field.getDeclaringClass());
 
-        return typeVariables.entrySet().stream()
-            .collect(toMap(
-                Map.Entry::getKey,
-                e -> Types.forJavaLangReflectType(e.getValue())));
+        return new ParameterTypeContext(
+            field.getName(),
+            field.getAnnotatedType(),
+            field.getDeclaringClass().getName(),
+            Types.forJavaLangReflectType(generics.resolveFieldType(field)),
+            generics);
+    }
+
+    public static ParameterTypeContext forParameter(Parameter parameter) {
+        Executable exec = parameter.getDeclaringExecutable();
+        Class<?> clazz = exec.getDeclaringClass();
+        String declarerName = clazz.getName() + '.' + exec.getName();
+        int parameterIndex = parameterIndex(parameter);
+
+        GenericsContext generics;
+        org.javaruntype.type.Type<?> resolved;
+
+        if (exec instanceof Method) {
+            MethodGenericsContext methodGenerics =
+                GenericsResolver.resolve(clazz).method((Method) exec);
+            resolved =
+                Types.forJavaLangReflectType(
+                    methodGenerics.resolveParameterType(parameterIndex));
+            generics = methodGenerics;
+        } else if (exec instanceof Constructor<?>) {
+            ConstructorGenericsContext constructorGenerics =
+                GenericsResolver.resolve(clazz).constructor(
+                    (Constructor<?>) exec);
+            resolved =
+                Types.forJavaLangReflectType(
+                    constructorGenerics.resolveParameterType(parameterIndex));
+            generics = constructorGenerics;
+        } else {
+            throw new IllegalStateException("Unrecognized subtype of Executable");
+        }
+
+        return new ParameterTypeContext(
+            parameter.getName(),
+            parameter.getAnnotatedType(),
+            declarerName,
+            resolved,
+            generics,
+            parameterIndex);
+    }
+
+    public static ParameterTypeContext forParameter(
+        Parameter parameter,
+        MethodGenericsContext generics) {
+
+        Executable exec = parameter.getDeclaringExecutable();
+        Class<?> clazz = exec.getDeclaringClass();
+        String declarerName = clazz.getName() + '.' + exec.getName();
+        int parameterIndex = parameterIndex(parameter);
+
+        return new ParameterTypeContext(
+            parameter.getName(),
+            parameter.getAnnotatedType(),
+            declarerName,
+            Types.forJavaLangReflectType(
+                generics.resolveParameterType(parameterIndex)),
+            generics,
+            parameterIndex);
+    }
+
+    private ParameterTypeContext(
+        String parameterName,
+        AnnotatedType parameterType,
+        String declarerName,
+        org.javaruntype.type.Type<?> resolvedType,
+        GenericsContext generics) {
+
+        this(
+            parameterName,
+            parameterType,
+            declarerName,
+            resolvedType,
+            generics,
+            -1);
+    }
+
+    private ParameterTypeContext(
+        String parameterName,
+        AnnotatedType parameterType,
+        String declarerName,
+        org.javaruntype.type.Type<?> resolvedType,
+        GenericsContext generics,
+        int parameterIndex) {
+
+        this.parameterName = parameterName;
+        this.parameterType = parameterType;
+        this.declarerName = declarerName;
+        this.resolved = resolvedType;
+        this.generics = generics;
+        this.parameterIndex = parameterIndex;
     }
 
     public ParameterTypeContext annotate(AnnotatedElement element) {
@@ -150,6 +203,31 @@ public class ParameterTypeContext {
 
     public boolean allowMixedTypes() {
         return allowMixedTypes;
+    }
+
+    /**
+     * Gives a context for generation of the return type of a lambda method.
+     *
+     * @param method method whose return type we want to resolve
+     * @return an associated parameter context
+     */
+    public ParameterTypeContext methodReturnTypeContext(Method method) {
+        if (!(generics instanceof MethodGenericsContext)) {
+            throw new IllegalStateException(
+                "invoking methodReturnTypeContext in present of " + generics);
+        }
+
+        MethodGenericsContext testMethodGenerics =
+            (MethodGenericsContext) generics;
+        MethodGenericsContext argMethodGenerics =
+            testMethodGenerics.parameterType(parameterIndex).method(method);
+
+        return new ParameterTypeContext(
+            "return value",
+            method.getAnnotatedReturnType(),
+            method.getName(),
+            Types.forJavaLangReflectType(argMethodGenerics.resolveReturnType()),
+            argMethodGenerics);
     }
 
     private void addGenerators(List<From> generators) {
@@ -175,19 +253,16 @@ public class ParameterTypeContext {
 
     private Class<?> rawParameterType() {
         if (type() instanceof ParameterizedType)
-            return (Class<?>) ((ParameterizedType) type()).getRawType();
+            return resolved.getRawClass();
         if (type() instanceof TypeVariable<?>)
-            return typeVariables.get(((TypeVariable<?>) type()).getName()).getRawClass();
+            return resolved.getRawClass();
 
         return (Class<?>) type();
     }
 
     private void ensureCorrectType(Generator<?> generator) {
-        org.javaruntype.type.Type<?> parameterTypeToken =
-            Types.forJavaLangReflectType(type(), typeVariables);
-
         for (Class<?> each : generator.types()) {
-            if (!maybeWrap(parameterTypeToken.getRawClass()).isAssignableFrom(maybeWrap(each))) {
+            if (!maybeWrap(resolved.getRawClass()).isAssignableFrom(maybeWrap(each))) {
                 throw new IllegalArgumentException(
                     format(
                         EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
@@ -233,27 +308,25 @@ public class ParameterTypeContext {
      */
     @Deprecated
     public boolean topLevel() {
-        return annotatedElement instanceof Parameter || annotatedElement instanceof Field;
+        return annotatedElement instanceof Parameter
+            || annotatedElement instanceof Field;
     }
 
     public List<Weighted<Generator<?>>> explicitGenerators() {
         return unmodifiableList(explicits);
     }
 
-    public boolean isArray() {
-        return token.isArray();
-    }
-
     public ParameterTypeContext arrayComponentContext() {
         @SuppressWarnings("unchecked")
-        org.javaruntype.type.Type<?> component = arrayComponentOf((org.javaruntype.type.Type<Object[]>) token);
+        org.javaruntype.type.Type<?> component =
+            arrayComponentOf((org.javaruntype.type.Type<Object[]>) resolved);
         AnnotatedType annotatedComponent = annotatedArrayComponent(component);
         return new ParameterTypeContext(
             annotatedComponent.getType().getTypeName(),
             annotatedComponent,
             parameterType.getType().getTypeName(),
             component,
-            typeVariables)
+            generics)
             .annotate(annotatedComponent)
             .allowMixedTypes(true);
     }
@@ -264,8 +337,12 @@ public class ParameterTypeContext {
             : FakeAnnotatedTypeFactory.makeFrom(component.getComponentClass());
     }
 
+    public boolean isArray() {
+        return resolved.isArray();
+    }
+
     public Class<?> getRawClass() {
-        return token.getRawClass();
+        return resolved.getRawClass();
     }
 
     public boolean isEnum() {
@@ -273,7 +350,7 @@ public class ParameterTypeContext {
     }
 
     public List<TypeParameter<?>> getTypeParameters() {
-        return token.getTypeParameters();
+        return resolved.getTypeParameters();
     }
 
     public List<ParameterTypeContext> typeParameterContexts(SourceOfRandomness random) {
@@ -314,7 +391,7 @@ public class ParameterTypeContext {
                 a,
                 annotatedType().getType().getTypeName(),
                 p.getType(),
-                typeVariables)
+                generics)
             .allowMixedTypes(!(a instanceof TypeVariable))
             .annotate(a));
     }
@@ -329,7 +406,7 @@ public class ParameterTypeContext {
                 a,
                 annotatedType().getType().getTypeName(),
                 Types.forJavaLangReflectType(Zilch.class),
-                typeVariables)
+                GenericsResolver.resolve(Zilch.class))
                 .allowMixedTypes(true)
                 .annotate(a));
     }
@@ -345,7 +422,7 @@ public class ParameterTypeContext {
                 annotatedComponentTypes(a).get(0),
                 annotatedType().getType().getTypeName(),
                 p.getType(),
-                typeVariables)
+                generics)
                 .allowMixedTypes(false)
                 .annotate(a));
     }
@@ -365,14 +442,15 @@ public class ParameterTypeContext {
                 annotatedComponentTypes(a).get(0),
                 annotatedType().getType().getTypeName(),
                 choice,
-                typeVariables)
+                generics)
                 .allowMixedTypes(false)
                 .annotate(a));
     }
 
     private static AnnotatedType zilch() {
         try {
-            return ParameterTypeContext.class.getDeclaredField("zilch").getAnnotatedType();
+            return ParameterTypeContext.class.getDeclaredField("zilch")
+                .getAnnotatedType();
         } catch (NoSuchFieldException e) {
             throw new AssertionError(e);
         }

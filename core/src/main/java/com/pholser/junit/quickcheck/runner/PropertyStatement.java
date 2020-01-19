@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -25,16 +25,6 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import java.lang.reflect.Executable;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.Stream;
-
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterSampler;
@@ -44,9 +34,9 @@ import com.pholser.junit.quickcheck.internal.SeededValue;
 import com.pholser.junit.quickcheck.internal.ShrinkControl;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler;
 import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -54,10 +44,17 @@ import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
+import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
 
-import static java.util.stream.Collectors.*;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 
 import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+import static java.util.stream.Collectors.*;
 
 class PropertyStatement extends Statement {
     private final FrameworkMethod method;
@@ -85,18 +82,16 @@ class PropertyStatement extends Statement {
     }
 
     @Override public void evaluate() throws Throwable {
-        Map<String, Type> typeVariables =
-            GenericsResolver.resolve(testClass.getJavaClass())
-                .method(method.getMethod())
-                .genericsMap();
-
         Property marker = method.getAnnotation(Property.class);
         ParameterSampler sampler = sampler(marker);
         ShrinkControl shrinkControl = new ShrinkControl(marker);
 
-        List<PropertyParameterGenerationContext> parameters =
-            Arrays.stream(method.getMethod().getParameters())
-                .map(p -> parameterContextFor(p, typeVariables))
+        MethodGenericsContext generics =
+            GenericsResolver.resolve(testClass.getJavaClass())
+                .method(this.method.getMethod());
+        List<PropertyParameterGenerationContext> paramContexts =
+            Arrays.stream(this.method.getMethod().getParameters())
+                .map(p -> parameterContextFor(p, generics))
                 .map(p -> new PropertyParameterGenerationContext(
                     p,
                     repo,
@@ -106,7 +101,7 @@ class PropertyStatement extends Statement {
                 ))
                 .collect(toList());
 
-        Stream<List<SeededValue>> sample = sampler.sample(parameters);
+        Stream<List<SeededValue>> sample = sampler.sample(paramContexts);
         for (List<SeededValue> args : (Iterable<List<SeededValue>>) sample::iterator)
             property(args, shrinkControl).verify();
 
@@ -176,14 +171,10 @@ class PropertyStatement extends Statement {
 
     private PropertyParameterContext parameterContextFor(
         Parameter parameter,
-        Map<String, Type> typeVariables) {
+        MethodGenericsContext generics) {
 
         return new PropertyParameterContext(
-            new ParameterTypeContext(
-                parameter.getName(),
-                parameter.getAnnotatedType(),
-                declarerName(parameter),
-                typeVariables)
+            ParameterTypeContext.forParameter(parameter, generics)
                 .allowMixedTypes(true)
         ).annotate(parameter);
     }
@@ -197,10 +188,5 @@ class PropertyStatement extends Statement {
             default:
                 throw new AssertionError("Don't recognize mode " + marker.mode());
         }
-    }
-
-    private static String declarerName(Parameter p) {
-        Executable exec = p.getDeclaringExecutable();
-        return exec.getDeclaringClass().getName() + '.' + exec.getName();
     }
 }

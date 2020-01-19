@@ -8,18 +8,22 @@ import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.Con
 import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.NotAGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.junit.rules.ExpectedException.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisterGeneratorsByConvention {
+    @Rule public final ExpectedException thrown = none();
 
     private GeneratorRepository repo;
-
     @Mock private SourceOfRandomness random;
     @Mock private GenerationStatus generationStatus;
 
@@ -30,18 +34,13 @@ public class RegisterGeneratorsByConvention {
 
     @Test
     public void can_generate_values() {
-        Generator<?> generator = repo.generatorFor(new ParameterTypeContext(Convention.class));
-        assertNotNull(generator);
-        assertTrue(generator.generate(random, generationStatus) instanceof Convention);
-    }
+        Generator<?> generator =
+            repo.generatorFor(ParameterTypeContext.forClass(Convention.class));
 
-    private void assertThatNoGeneratorCanBeFound(Class<?> valueClass) {
-        try {
-            repo.generatorFor(new ParameterTypeContext(valueClass));
-            fail("Shouldn't have found a suitable generator for: " + valueClass.getSimpleName());
-        } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Cannot find generator for " + valueClass.getName()));
-        }
+        assertNotNull(generator);
+        assertThat(
+            generator.generate(random, generationStatus),
+            instanceOf(Convention.class));
     }
 
     @Test
@@ -57,5 +56,13 @@ public class RegisterGeneratorsByConvention {
     @Test
     public void does_not_find_a_generator_if_there_is_no_class_with_the_convention_following_name() {
         assertThatNoGeneratorCanBeFound(this.getClass());
+    }
+
+    private void assertThatNoGeneratorCanBeFound(Class<?> valueClass) {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(
+            "Cannot find generator for " + valueClass.getName());
+
+        repo.generatorFor(ParameterTypeContext.forClass(valueClass));
     }
 }

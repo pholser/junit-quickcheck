@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -35,10 +35,7 @@ public final class Types {
     public static ParameterTypeContext typeOf(Class<?> c, String fieldName)
         throws NoSuchFieldException {
 
-        return new ParameterTypeContext(
-            fieldName,
-            c.getDeclaredField(fieldName).getAnnotatedType(),
-            c.getName())
+        return ParameterTypeContext.forField(c.getDeclaredField(fieldName))
             .allowMixedTypes(true);
     }
 }

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -49,7 +49,7 @@ public class ABox extends ComponentizedGenerator<Box> {
     }
 
     @Override public BigDecimal magnitude(Object value) {
-        return componentGenerators().get(0).magnitude(((Box) value).contents());
+        return componentGenerators().get(0).magnitude(((Box<?>) value).contents());
     }
 
     public void configure(X x) {

@@ -1,7 +1,7 @@
 /*
  The MIT License
 
- Copyright (c) 2010-2018 Paul R. Holser, Jr.
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -62,7 +62,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @param type class token for type of property parameter this generator is
      * applicable to
      */
-    @SuppressWarnings("unchecked") protected Generator(Class<T> type) {
+    protected Generator(Class<T> type) {
         this(singletonList(type));
     }
 
