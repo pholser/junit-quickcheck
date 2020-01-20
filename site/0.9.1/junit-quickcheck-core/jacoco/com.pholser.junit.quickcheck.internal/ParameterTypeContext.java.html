@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ParameterTypeContext.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">ParameterTypeContext.java</span></div><h1>ParameterTypeContext.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal;
+
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
+import ru.vyarus.java.generics.resolver.GenericsResolver;
+import ru.vyarus.java.generics.resolver.context.ConstructorGenericsContext;
+import ru.vyarus.java.generics.resolver.context.GenericsContext;
+import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
+
+import java.lang.reflect.AnnotatedArrayType;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.AnnotatedWildcardType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static com.pholser.junit.quickcheck.internal.Items.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static java.lang.String.*;
+import static java.util.Collections.*;
+import static org.javaruntype.type.Types.*;
+
+public class ParameterTypeContext {
+    private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =
+        &quot;The generator %s named in @%s on parameter %s does not produce a type-compatible object&quot;;
+    private static Zilch zilch;
+
+    private final String parameterName;
+    private final AnnotatedType parameterType;
+    private final String declarerName;
+    private final org.javaruntype.type.Type&lt;?&gt; resolved;
+<span class="fc" id="L72">    private final List&lt;Weighted&lt;Generator&lt;?&gt;&gt;&gt; explicits = new ArrayList&lt;&gt;();</span>
+    private final GenericsContext generics;
+    private final int parameterIndex;
+
+    private AnnotatedElement annotatedElement;
+    private boolean allowMixedTypes;
+
+    public static ParameterTypeContext forClass(Class&lt;?&gt; clazz) {
+<span class="fc" id="L80">        return new ParameterTypeContext(</span>
+<span class="fc" id="L81">            clazz.getTypeName(),</span>
+<span class="fc" id="L82">            FakeAnnotatedTypeFactory.makeFrom(clazz),</span>
+<span class="fc" id="L83">            clazz.getTypeName(),</span>
+<span class="fc" id="L84">            Types.forJavaLangReflectType(clazz),</span>
+<span class="fc" id="L85">            GenericsResolver.resolve(clazz));</span>
+    }
+
+    public static ParameterTypeContext forField(Field field) {
+<span class="fc" id="L89">        GenericsContext generics =</span>
+<span class="fc" id="L90">            GenericsResolver.resolve(field.getDeclaringClass());</span>
+
+<span class="fc" id="L92">        return new ParameterTypeContext(</span>
+<span class="fc" id="L93">            field.getName(),</span>
+<span class="fc" id="L94">            field.getAnnotatedType(),</span>
+<span class="fc" id="L95">            field.getDeclaringClass().getName(),</span>
+<span class="fc" id="L96">            Types.forJavaLangReflectType(generics.resolveFieldType(field)),</span>
+            generics);
+    }
+
+    public static ParameterTypeContext forParameter(Parameter parameter) {
+<span class="fc" id="L101">        Executable exec = parameter.getDeclaringExecutable();</span>
+<span class="fc" id="L102">        Class&lt;?&gt; clazz = exec.getDeclaringClass();</span>
+<span class="fc" id="L103">        String declarerName = clazz.getName() + '.' + exec.getName();</span>
+<span class="fc" id="L104">        int parameterIndex = parameterIndex(parameter);</span>
+
+        GenericsContext generics;
+        org.javaruntype.type.Type&lt;?&gt; resolved;
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (exec instanceof Method) {</span>
+<span class="fc" id="L110">            MethodGenericsContext methodGenerics =</span>
+<span class="fc" id="L111">                GenericsResolver.resolve(clazz).method((Method) exec);</span>
+<span class="fc" id="L112">            resolved =</span>
+<span class="fc" id="L113">                Types.forJavaLangReflectType(</span>
+<span class="fc" id="L114">                    methodGenerics.resolveParameterType(parameterIndex));</span>
+<span class="fc" id="L115">            generics = methodGenerics;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        } else if (exec instanceof Constructor&lt;?&gt;) {</span>
+<span class="fc" id="L117">            ConstructorGenericsContext constructorGenerics =</span>
+<span class="fc" id="L118">                GenericsResolver.resolve(clazz).constructor(</span>
+                    (Constructor&lt;?&gt;) exec);
+<span class="fc" id="L120">            resolved =</span>
+<span class="fc" id="L121">                Types.forJavaLangReflectType(</span>
+<span class="fc" id="L122">                    constructorGenerics.resolveParameterType(parameterIndex));</span>
+<span class="fc" id="L123">            generics = constructorGenerics;</span>
+<span class="fc" id="L124">        } else {</span>
+<span class="nc" id="L125">            throw new IllegalStateException(&quot;Unrecognized subtype of Executable&quot;);</span>
+        }
+
+<span class="fc" id="L128">        return new ParameterTypeContext(</span>
+<span class="fc" id="L129">            parameter.getName(),</span>
+<span class="fc" id="L130">            parameter.getAnnotatedType(),</span>
+            declarerName,
+            resolved,
+            generics,
+            parameterIndex);
+    }
+
+    public static ParameterTypeContext forParameter(
+        Parameter parameter,
+        MethodGenericsContext generics) {
+
+<span class="fc" id="L141">        Executable exec = parameter.getDeclaringExecutable();</span>
+<span class="fc" id="L142">        Class&lt;?&gt; clazz = exec.getDeclaringClass();</span>
+<span class="fc" id="L143">        String declarerName = clazz.getName() + '.' + exec.getName();</span>
+<span class="fc" id="L144">        int parameterIndex = parameterIndex(parameter);</span>
+
+<span class="fc" id="L146">        return new ParameterTypeContext(</span>
+<span class="fc" id="L147">            parameter.getName(),</span>
+<span class="fc" id="L148">            parameter.getAnnotatedType(),</span>
+            declarerName,
+<span class="fc" id="L150">            Types.forJavaLangReflectType(</span>
+<span class="fc" id="L151">                generics.resolveParameterType(parameterIndex)),</span>
+            generics,
+            parameterIndex);
+    }
+
+    private ParameterTypeContext(
+        String parameterName,
+        AnnotatedType parameterType,
+        String declarerName,
+        org.javaruntype.type.Type&lt;?&gt; resolvedType,
+        GenericsContext generics) {
+
+<span class="fc" id="L163">        this(</span>
+            parameterName,
+            parameterType,
+            declarerName,
+            resolvedType,
+            generics,
+            -1);
+<span class="fc" id="L170">    }</span>
+
+    private ParameterTypeContext(
+        String parameterName,
+        AnnotatedType parameterType,
+        String declarerName,
+        org.javaruntype.type.Type&lt;?&gt; resolvedType,
+        GenericsContext generics,
+<span class="fc" id="L178">        int parameterIndex) {</span>
+
+<span class="fc" id="L180">        this.parameterName = parameterName;</span>
+<span class="fc" id="L181">        this.parameterType = parameterType;</span>
+<span class="fc" id="L182">        this.declarerName = declarerName;</span>
+<span class="fc" id="L183">        this.resolved = resolvedType;</span>
+<span class="fc" id="L184">        this.generics = generics;</span>
+<span class="fc" id="L185">        this.parameterIndex = parameterIndex;</span>
+<span class="fc" id="L186">    }</span>
+
+    public ParameterTypeContext annotate(AnnotatedElement element) {
+<span class="fc" id="L189">        this.annotatedElement = element;</span>
+
+<span class="fc" id="L191">        List&lt;From&gt; generators = allAnnotationsByType(element, From.class);</span>
+<span class="fc bfc" id="L192" title="All 4 branches covered.">        if (!generators.isEmpty() &amp;&amp; element instanceof AnnotatedWildcardType)</span>
+<span class="fc" id="L193">            throw new IllegalArgumentException(&quot;Wildcards cannot be marked with @From&quot;);</span>
+
+<span class="fc" id="L195">        addGenerators(generators);</span>
+<span class="fc" id="L196">        return this;</span>
+    }
+
+    public ParameterTypeContext allowMixedTypes(boolean value) {
+<span class="fc" id="L200">        this.allowMixedTypes = value;</span>
+<span class="fc" id="L201">        return this;</span>
+    }
+
+    public boolean allowMixedTypes() {
+<span class="fc" id="L205">        return allowMixedTypes;</span>
+    }
+
+    /**
+     * Gives a context for generation of the return type of a lambda method.
+     *
+     * @param method method whose return type we want to resolve
+     * @return an associated parameter context
+     */
+    public ParameterTypeContext methodReturnTypeContext(Method method) {
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (!(generics instanceof MethodGenericsContext)) {</span>
+<span class="nc" id="L216">            throw new IllegalStateException(</span>
+                &quot;invoking methodReturnTypeContext in present of &quot; + generics);
+        }
+
+<span class="fc" id="L220">        MethodGenericsContext testMethodGenerics =</span>
+            (MethodGenericsContext) generics;
+<span class="fc" id="L222">        MethodGenericsContext argMethodGenerics =</span>
+<span class="fc" id="L223">            testMethodGenerics.parameterType(parameterIndex).method(method);</span>
+
+<span class="fc" id="L225">        return new ParameterTypeContext(</span>
+            &quot;return value&quot;,
+<span class="fc" id="L227">            method.getAnnotatedReturnType(),</span>
+<span class="fc" id="L228">            method.getName(),</span>
+<span class="fc" id="L229">            Types.forJavaLangReflectType(argMethodGenerics.resolveReturnType()),</span>
+            argMethodGenerics);
+    }
+
+    private void addGenerators(List&lt;From&gt; generators) {
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        for (From each : generators) {</span>
+<span class="fc" id="L235">            Generator&lt;?&gt; generator = makeGenerator(each.value());</span>
+<span class="fc" id="L236">            ensureCorrectType(generator);</span>
+<span class="fc" id="L237">            explicits.add(new Weighted&lt;&gt;(generator, each.frequency()));</span>
+<span class="fc" id="L238">        }</span>
+<span class="fc" id="L239">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private Generator&lt;?&gt; makeGenerator(Class&lt;? extends Generator&gt; generatorType) {
+        Constructor&lt;? extends Generator&gt; ctor;
+        try {
+            // for Ctor/Fields
+<span class="fc" id="L246">            ctor = findConstructor(generatorType, Class.class);</span>
+<span class="fc" id="L247">        } catch (ReflectionException ex) {</span>
+<span class="fc" id="L248">            return instantiate(generatorType);</span>
+<span class="fc" id="L249">        }</span>
+
+<span class="fc" id="L251">        return instantiate(ctor, rawParameterType());</span>
+    }
+
+    private Class&lt;?&gt; rawParameterType() {
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (type() instanceof ParameterizedType)</span>
+<span class="fc" id="L256">            return resolved.getRawClass();</span>
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">        if (type() instanceof TypeVariable&lt;?&gt;)</span>
+<span class="nc" id="L258">            return resolved.getRawClass();</span>
+
+<span class="fc" id="L260">        return (Class&lt;?&gt;) type();</span>
+    }
+
+    private void ensureCorrectType(Generator&lt;?&gt; generator) {
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        for (Class&lt;?&gt; each : generator.types()) {</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">            if (!maybeWrap(resolved.getRawClass()).isAssignableFrom(maybeWrap(each))) {</span>
+<span class="fc" id="L266">                throw new IllegalArgumentException(</span>
+<span class="fc" id="L267">                    format(</span>
+                        EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
+                        each,
+<span class="fc" id="L270">                        From.class.getName(),</span>
+                        parameterName));
+            }
+<span class="fc" id="L273">        }</span>
+<span class="fc" id="L274">    }</span>
+
+    public String name() {
+<span class="fc" id="L277">        return declarerName + ':' + parameterName;</span>
+    }
+
+    public AnnotatedType annotatedType() {
+<span class="fc" id="L281">        return parameterType;</span>
+    }
+
+    public Type type() {
+<span class="fc" id="L285">        return parameterType.getType();</span>
+    }
+
+    /**
+     * @deprecated This will likely go away when languages whose compilers
+     * and interpreters produce class files that support annotations on type
+     * uses.
+     * @see &lt;a href=&quot;https://github.com/pholser/junit-quickcheck/issues/77&quot;&gt;
+     * this issue&lt;/a&gt;
+     * @return the annotated program element this context represents
+     */
+    @Deprecated
+    public AnnotatedElement annotatedElement() {
+<span class="fc" id="L298">        return annotatedElement;</span>
+    }
+
+    /**
+     * @deprecated This will likely go away when languages whose compilers
+     * and interpreters produce class files that support annotations on type
+     * uses.
+     * @see &lt;a href=&quot;https://github.com/pholser/junit-quickcheck/issues/77&quot;&gt;
+     * this issue&lt;/a&gt;
+     * @return the annotated program element this context represents
+     */
+    @Deprecated
+    public boolean topLevel() {
+<span class="fc bfc" id="L311" title="All 4 branches covered.">        return annotatedElement instanceof Parameter</span>
+            || annotatedElement instanceof Field;
+    }
+
+    public List&lt;Weighted&lt;Generator&lt;?&gt;&gt;&gt; explicitGenerators() {
+<span class="fc" id="L316">        return unmodifiableList(explicits);</span>
+    }
+
+    public ParameterTypeContext arrayComponentContext() {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L321">        org.javaruntype.type.Type&lt;?&gt; component =</span>
+<span class="fc" id="L322">            arrayComponentOf((org.javaruntype.type.Type&lt;Object[]&gt;) resolved);</span>
+<span class="fc" id="L323">        AnnotatedType annotatedComponent = annotatedArrayComponent(component);</span>
+<span class="fc" id="L324">        return new ParameterTypeContext(</span>
+<span class="fc" id="L325">            annotatedComponent.getType().getTypeName(),</span>
+            annotatedComponent,
+<span class="fc" id="L327">            parameterType.getType().getTypeName(),</span>
+            component,
+            generics)
+<span class="fc" id="L330">            .annotate(annotatedComponent)</span>
+<span class="fc" id="L331">            .allowMixedTypes(true);</span>
+    }
+
+    private AnnotatedType annotatedArrayComponent(org.javaruntype.type.Type&lt;?&gt; component) {
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        return parameterType instanceof AnnotatedArrayType</span>
+<span class="pc" id="L336">            ? ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType()</span>
+<span class="nc" id="L337">            : FakeAnnotatedTypeFactory.makeFrom(component.getComponentClass());</span>
+    }
+
+    public boolean isArray() {
+<span class="fc" id="L341">        return resolved.isArray();</span>
+    }
+
+    public Class&lt;?&gt; getRawClass() {
+<span class="fc" id="L345">        return resolved.getRawClass();</span>
+    }
+
+    public boolean isEnum() {
+<span class="fc" id="L349">        return getRawClass().isEnum();</span>
+    }
+
+    public List&lt;TypeParameter&lt;?&gt;&gt; getTypeParameters() {
+<span class="fc" id="L353">        return resolved.getTypeParameters();</span>
+    }
+
+    public List&lt;ParameterTypeContext&gt; typeParameterContexts(SourceOfRandomness random) {
+<span class="fc" id="L357">        List&lt;ParameterTypeContext&gt; typeParameterContexts = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L358">        List&lt;TypeParameter&lt;?&gt;&gt; typeParameters = getTypeParameters();</span>
+<span class="fc" id="L359">        List&lt;AnnotatedType&gt; annotatedTypeParameters = annotatedComponentTypes(annotatedType());</span>
+
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        for (int i = 0; i &lt; typeParameters.size(); ++i) {</span>
+<span class="fc" id="L362">            TypeParameter&lt;?&gt; p = typeParameters.get(i);</span>
+<span class="fc" id="L363">            AnnotatedType a =</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">                annotatedTypeParameters.size() &gt; i</span>
+<span class="fc" id="L365">                    ? annotatedTypeParameters.get(i)</span>
+<span class="fc" id="L366">                    : zilch();</span>
+
+<span class="fc bfc" id="L368" title="All 2 branches covered.">            if (p instanceof StandardTypeParameter&lt;?&gt;)</span>
+<span class="fc" id="L369">                addStandardTypeParameterContext(typeParameterContexts, p, a);</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">            else if (p instanceof WildcardTypeParameter)</span>
+<span class="fc" id="L371">                addWildcardTypeParameterContext(typeParameterContexts, a);</span>
+<span class="pc bpc" id="L372" title="1 of 2 branches missed.">            else if (p instanceof ExtendsTypeParameter&lt;?&gt;)</span>
+<span class="nc" id="L373">                addExtendsTypeParameterContext(typeParameterContexts, p, a);</span>
+            else {
+                // must be &quot;? super X&quot;
+<span class="fc" id="L376">                addSuperTypeParameterContext(random, typeParameterContexts, p, a);</span>
+            }
+        }
+
+<span class="fc" id="L380">        return typeParameterContexts;</span>
+    }
+
+    private void addStandardTypeParameterContext(
+        List&lt;ParameterTypeContext&gt; typeParameterContexts,
+        TypeParameter&lt;?&gt; p,
+        AnnotatedType a) {
+
+<span class="fc" id="L388">        typeParameterContexts.add(</span>
+            new ParameterTypeContext(
+<span class="fc" id="L390">                p.getType().getName(),</span>
+                a,
+<span class="fc" id="L392">                annotatedType().getType().getTypeName(),</span>
+<span class="pc bpc" id="L393" title="1 of 2 branches missed.">                p.getType(),</span>
+                generics)
+<span class="fc" id="L395">            .allowMixedTypes(!(a instanceof TypeVariable))</span>
+<span class="fc" id="L396">            .annotate(a));</span>
+<span class="fc" id="L397">    }</span>
+
+    private void addWildcardTypeParameterContext(
+        List&lt;ParameterTypeContext&gt; typeParameterContexts,
+        AnnotatedType a) {
+
+<span class="fc" id="L403">        typeParameterContexts.add(</span>
+            new ParameterTypeContext(
+                &quot;Zilch&quot;,
+                a,
+<span class="fc" id="L407">                annotatedType().getType().getTypeName(),</span>
+<span class="fc" id="L408">                Types.forJavaLangReflectType(Zilch.class),</span>
+<span class="fc" id="L409">                GenericsResolver.resolve(Zilch.class))</span>
+<span class="fc" id="L410">                .allowMixedTypes(true)</span>
+<span class="fc" id="L411">                .annotate(a));</span>
+<span class="fc" id="L412">    }</span>
+
+    private void addExtendsTypeParameterContext(
+        List&lt;ParameterTypeContext&gt; typeParameterContexts,
+        TypeParameter&lt;?&gt; p,
+        AnnotatedType a) {
+
+<span class="nc" id="L419">        typeParameterContexts.add(</span>
+            new ParameterTypeContext(
+<span class="nc" id="L421">                p.getType().getName(),</span>
+<span class="nc" id="L422">                annotatedComponentTypes(a).get(0),</span>
+<span class="nc" id="L423">                annotatedType().getType().getTypeName(),</span>
+<span class="nc" id="L424">                p.getType(),</span>
+                generics)
+<span class="nc" id="L426">                .allowMixedTypes(false)</span>
+<span class="nc" id="L427">                .annotate(a));</span>
+<span class="nc" id="L428">    }</span>
+
+    private void addSuperTypeParameterContext(
+        SourceOfRandomness random,
+        List&lt;ParameterTypeContext&gt; typeParameterContexts,
+        TypeParameter&lt;?&gt; p,
+        AnnotatedType a) {
+
+<span class="fc" id="L436">        Set&lt;org.javaruntype.type.Type&lt;?&gt;&gt; supertypes = supertypes(p.getType());</span>
+<span class="fc" id="L437">        org.javaruntype.type.Type&lt;?&gt; choice = choose(supertypes, random);</span>
+
+<span class="fc" id="L439">        typeParameterContexts.add(</span>
+            new ParameterTypeContext(
+<span class="fc" id="L441">                p.getType().getName(),</span>
+<span class="fc" id="L442">                annotatedComponentTypes(a).get(0),</span>
+<span class="fc" id="L443">                annotatedType().getType().getTypeName(),</span>
+                choice,
+                generics)
+<span class="fc" id="L446">                .allowMixedTypes(false)</span>
+<span class="fc" id="L447">                .annotate(a));</span>
+<span class="fc" id="L448">    }</span>
+
+    private static AnnotatedType zilch() {
+        try {
+<span class="fc" id="L452">            return ParameterTypeContext.class.getDeclaredField(&quot;zilch&quot;)</span>
+<span class="fc" id="L453">                .getAnnotatedType();</span>
+<span class="nc" id="L454">        } catch (NoSuchFieldException e) {</span>
+<span class="nc" id="L455">            throw new AssertionError(e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
