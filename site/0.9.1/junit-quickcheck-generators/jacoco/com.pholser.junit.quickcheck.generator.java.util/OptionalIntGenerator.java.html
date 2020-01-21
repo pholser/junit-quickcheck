@@ -77,24 +77,24 @@ public class OptionalIntGenerator extends Generator&lt;OptionalInt&gt; {
         SourceOfRandomness random,
         OptionalInt larger) {
 
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (!larger.isPresent())</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (!larger.isPresent())</span>
 <span class="fc" id="L81">            return new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L83">        List&lt;OptionalInt&gt; shrinks = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L84">        shrinks.add(OptionalInt.empty());</span>
-<span class="nc" id="L85">        shrinks.addAll(</span>
-<span class="nc" id="L86">            integerGenerator.shrink(random, larger.getAsInt())</span>
-<span class="nc" id="L87">                .stream()</span>
-<span class="nc" id="L88">                .map(OptionalInt::of)</span>
-<span class="nc" id="L89">                .collect(toList()));</span>
-<span class="nc" id="L90">        return shrinks;</span>
+<span class="fc" id="L83">        List&lt;OptionalInt&gt; shrinks = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L84">        shrinks.add(OptionalInt.empty());</span>
+<span class="fc" id="L85">        shrinks.addAll(</span>
+<span class="fc" id="L86">            integerGenerator.shrink(random, larger.getAsInt())</span>
+<span class="fc" id="L87">                .stream()</span>
+<span class="fc" id="L88">                .map(OptionalInt::of)</span>
+<span class="fc" id="L89">                .collect(toList()));</span>
+<span class="fc" id="L90">        return shrinks;</span>
     }
 
     @Override public BigDecimal magnitude(Object value) {
 <span class="fc" id="L94">        OptionalInt narrowed = narrow(value);</span>
 
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        return narrowed.isPresent()</span>
-<span class="pc" id="L97">            ? BigDecimal.valueOf(narrowed.getAsInt())</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        return narrowed.isPresent()</span>
+<span class="fc" id="L97">            ? BigDecimal.valueOf(narrowed.getAsInt())</span>
             : ZERO;
     }
 }
