@@ -82,7 +82,7 @@ public class FunctionPropertyParameterTypesTest {
 
     @Test public void arrayOfFunction() throws Exception {
         assertThat(testResult(ArrayOfFunction.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), SuperShortToExtendsInteger.iterations);
+        assertEquals(defaultPropertyTrialCount(), ArrayOfFunction.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
