@@ -23,42 +23,50 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.examples.geom;
+package com.pholser.junit.quickcheck;
 
-import java.util.List;
+import com.pholser.junit.quickcheck.generator.Gen;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Objects;
 
-import static com.google.common.collect.Streams.*;
-import static java.util.stream.Collectors.*;
+/**
+ * Typed pair of elements.
+ *
+ * @param <F> type of first element of pair
+ * @param <S> type of second element of pair
+ * @see Gen#frequency(Pair, Pair[])
+ */
+public final class Pair<F, S> {
+    public final F first;
+    public final S second;
 
-public class SegmentGenerator extends Generator<Segment> {
-    public SegmentGenerator() {
-        super(Segment.class);
+    /**
+     * Makes a pair.
+     *
+     * @param first first element of the pair
+     * @param second second element of the pair
+     */
+    public Pair(F first, S second) {
+        this.first = first;
+        this.second = second;
     }
 
-    @Override public Segment generate(
-        SourceOfRandomness r,
-        GenerationStatus s) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-        return new Segment(
-            pointGen.generate(r, s),
-            pointGen.generate(r, s));
+    @Override public int hashCode() {
+        return Objects.hash(first, second);
     }
 
-    @Override public List<Segment> doShrink(
-        SourceOfRandomness r,
-        Segment larger) {
+    @Override public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Pair<?, ?>))
+            return false;
 
-        Generator<Point> pointGen = gen().type(Point.class);
+        Pair<?, ?> other = (Pair<?, ?>) o;
+        return Objects.equals(first, other.first)
+            && Objects.equals(second, other.second);
+    }
 
-        return zip(
-            pointGen.shrink(r, larger.a).stream(),
-            pointGen.shrink(r, larger.b).stream(),
-            Segment::new
-        ).collect(toList());
+    @Override public String toString() {
+        return String.format("[%s = %s]", first, second);
     }
 }

@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.Generators;
+import com.pholser.junit.quickcheck.generator.NullAllowed;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 

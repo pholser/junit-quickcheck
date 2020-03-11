@@ -23,42 +23,46 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.pholser.junit.quickcheck.examples.geom;
+package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.List;
+import java.util.Objects;
 
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+public class Box<T> {
+    private final T contents;
+    private final boolean marked;
 
-import static com.google.common.collect.Streams.*;
-import static java.util.stream.Collectors.*;
-
-public class SegmentGenerator extends Generator<Segment> {
-    public SegmentGenerator() {
-        super(Segment.class);
+    public Box(T contents) {
+        this(contents, false);
     }
 
-    @Override public Segment generate(
-        SourceOfRandomness r,
-        GenerationStatus s) {
-
-        Generator<Point> pointGen = gen().type(Point.class);
-        return new Segment(
-            pointGen.generate(r, s),
-            pointGen.generate(r, s));
+    public Box(T contents, boolean marked) {
+        this.contents = contents;
+        this.marked = marked;
     }
 
-    @Override public List<Segment> doShrink(
-        SourceOfRandomness r,
-        Segment larger) {
+    public T contents() {
+        return contents;
+    }
 
-        Generator<Point> pointGen = gen().type(Point.class);
+    public boolean marked() {
+        return marked;
+    }
 
-        return zip(
-            pointGen.shrink(r, larger.a).stream(),
-            pointGen.shrink(r, larger.b).stream(),
-            Segment::new
-        ).collect(toList());
+    @Override public int hashCode() {
+        return Objects.hashCode(contents);
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || !getClass().equals(o.getClass()))
+            return false;
+
+        Box<?> other = (Box<?>) o;
+        return Objects.equals(contents, other.contents);
+    }
+
+    @Override public String toString() {
+        return "Box[[" + String.valueOf(contents) + "]]";
     }
 }

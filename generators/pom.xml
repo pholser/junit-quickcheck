@@ -17,15 +17,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.pholser</groupId>
-            <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.10-SNAPSHOT</version>
+            <artifactId>junit-quickcheck-junit4</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
@@ -58,8 +58,13 @@
         </dependency>
         <dependency>
             <groupId>com.pholser</groupId>
-            <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.10-SNAPSHOT</version>
+            <artifactId>junit-quickcheck-core-api</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.pholser</groupId>
+            <artifactId>junit-quickcheck-junit4</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
