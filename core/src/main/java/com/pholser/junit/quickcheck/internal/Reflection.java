@@ -32,6 +32,7 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -321,17 +322,4 @@ public final class Reflection {
         return emptyList();
     }
 
-    public static int parameterIndex(Parameter parameter) {
-        try {
-            Field indexField = Parameter.class.getDeclaredField("index");
-            doPrivileged((PrivilegedAction<Void>) () -> {
-                indexField.setAccessible(true);
-                return null;
-            });
-
-            return (Integer) indexField.get(parameter);
-        } catch (Exception ex) {
-            throw reflectionException(ex);
-        }
-    }
 }
