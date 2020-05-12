@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CollectionGenerator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.util</a> &gt; <span class="el_source">CollectionGenerator.java</span></div><h1>CollectionGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.util;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
+
+import com.pholser.junit.quickcheck.generator.*;
+import com.pholser.junit.quickcheck.internal.Lists;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.*;
+
+import static com.pholser.junit.quickcheck.internal.Lists.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
+
+/**
+ * &lt;p&gt;Base class for generators of {@link Collection}s.&lt;/p&gt;
+ *
+ * &lt;p&gt;The generated collection has a number of elements limited by
+ * {@link GenerationStatus#size()}, or else by the attributes of a {@link Size}
+ * marking. The individual elements will have a type corresponding to the
+ * collection's type argument.&lt;/p&gt;
+ *
+ * @param &lt;T&gt; the type of collection generated
+ */
+public abstract class CollectionGenerator&lt;T extends Collection&gt;
+    extends ComponentizedGenerator&lt;T&gt; {
+
+    private Size sizeRange;
+    private boolean distinct;
+
+    protected CollectionGenerator(Class&lt;T&gt; type) {
+<span class="fc" id="L65">        super(type);</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * &lt;p&gt;Tells this generator to add elements to the generated collection
+     * a number of times within a specified minimum and/or maximum, inclusive,
+     * chosen with uniform distribution.&lt;/p&gt;
+     *
+     * &lt;p&gt;Note that some kinds of collections disallow duplicates, so the
+     * number of elements added may not be equal to the collection's
+     * {@link Collection#size()}.&lt;/p&gt;
+     *
+     * @param size annotation that gives the size constraints
+     */
+    public void configure(Size size) {
+<span class="fc" id="L80">        this.sizeRange = size;</span>
+<span class="fc" id="L81">        checkRange(INTEGRAL, size.min(), size.max());</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Tells this generator to add elements which are distinct from each other.
+     *
+     * @param distinct Generated elements will be distinct if this param is
+     * not null
+     */
+    public void configure(Distinct distinct) {
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        this.distinct = distinct != null;</span>
+<span class="fc" id="L92">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override public T generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+<span class="fc" id="L99">        int size = size(random, status);</span>
+
+<span class="fc" id="L101">        Generator&lt;?&gt; generator = componentGenerators().get(0);</span>
+<span class="fc" id="L102">        Stream&lt;?&gt; itemStream =</span>
+<span class="fc" id="L103">            Stream.generate(() -&gt; generator.generate(random, status))</span>
+<span class="fc" id="L104">                .sequential();</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (distinct)</span>
+<span class="fc" id="L106">            itemStream = itemStream.distinct();</span>
+
+<span class="fc" id="L108">        T items = empty();</span>
+<span class="fc" id="L109">        itemStream.limit(size).forEach(items::add);</span>
+<span class="fc" id="L110">        return items;</span>
+    }
+
+    @Override public List&lt;T&gt; doShrink(SourceOfRandomness random, T larger) {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L115">        List&lt;Object&gt; asList = new ArrayList&lt;&gt;(larger);</span>
+
+<span class="fc" id="L117">        List&lt;T&gt; shrinks = new ArrayList&lt;&gt;(removals(asList));</span>
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L120">        Shrink&lt;Object&gt; generator = (Shrink&lt;Object&gt;) componentGenerators().get(0);</span>
+
+<span class="fc" id="L122">        Stream&lt;List&lt;Object&gt;&gt; oneItemShrinks =</span>
+<span class="fc" id="L123">            shrinksOfOneItem(random, asList, generator)</span>
+<span class="fc" id="L124">                .stream();</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (distinct)</span>
+<span class="fc" id="L126">            oneItemShrinks = oneItemShrinks.filter(Lists::isDistinct);</span>
+
+<span class="fc" id="L128">        shrinks.addAll(</span>
+            oneItemShrinks
+<span class="fc" id="L130">                .map(this::convert)</span>
+<span class="fc" id="L131">                .filter(this::inSizeRange)</span>
+<span class="fc" id="L132">                .collect(toList()));</span>
+
+<span class="fc" id="L134">        return shrinks;</span>
+    }
+
+    @Override public int numberOfNeededComponents() {
+<span class="fc" id="L138">        return 1;</span>
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+<span class="fc" id="L142">        Collection&lt;?&gt; narrowed = narrow(value);</span>
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (narrowed.isEmpty())</span>
+<span class="fc" id="L145">            return ZERO;</span>
+
+<span class="fc" id="L147">        BigDecimal elementsMagnitude =</span>
+<span class="fc" id="L148">            narrowed.stream()</span>
+<span class="fc" id="L149">                .map(e -&gt; componentGenerators().get(0).magnitude(e))</span>
+<span class="fc" id="L150">                .reduce(ZERO, BigDecimal::add);</span>
+<span class="fc" id="L151">        return BigDecimal.valueOf(narrowed.size()).multiply(elementsMagnitude);</span>
+    }
+
+    protected final T empty() {
+<span class="fc" id="L155">        return instantiate(findConstructor(types().get(0)));</span>
+    }
+
+    private boolean inSizeRange(T items) {
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        return sizeRange == null</span>
+<span class="pc bpc" id="L160" title="1 of 4 branches missed.">            || (items.size() &gt;= sizeRange.min() &amp;&amp; items.size() &lt;= sizeRange.max());</span>
+    }
+
+    private int size(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        return sizeRange != null</span>
+<span class="fc" id="L165">            ? random.nextInt(sizeRange.min(), sizeRange.max())</span>
+<span class="fc" id="L166">            : status.size();</span>
+    }
+
+    private List&lt;T&gt; removals(List&lt;?&gt; items) {
+<span class="fc" id="L170">        return stream(halving(items.size()).spliterator(), false)</span>
+<span class="fc" id="L171">            .map(i -&gt; removeFrom(items, i))</span>
+<span class="fc" id="L172">            .flatMap(Collection::stream)</span>
+<span class="fc" id="L173">            .map(this::convert)</span>
+<span class="fc" id="L174">            .filter(this::inSizeRange)</span>
+<span class="fc" id="L175">            .collect(toList());</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private T convert(List&lt;?&gt; items) {
+<span class="fc" id="L180">        T converted = empty();</span>
+<span class="fc" id="L181">        converted.addAll(items);</span>
+<span class="fc" id="L182">        return converted;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
