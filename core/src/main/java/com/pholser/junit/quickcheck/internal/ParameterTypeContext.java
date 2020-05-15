@@ -101,22 +101,23 @@ public class ParameterTypeContext {
         Executable exec = parameter.getDeclaringExecutable();
         Class<?> clazz = exec.getDeclaringClass();
         String declarerName = clazz.getName() + '.' + exec.getName();
-        int parameterIndex = parameterIndex(parameter);
+        int parameterIndex = parameterIndex(exec, parameter);
 
         GenericsContext generics;
         org.javaruntype.type.Type<?> resolved;
 
         if (exec instanceof Method) {
+            Method method = (Method) exec;
             MethodGenericsContext methodGenerics =
-                GenericsResolver.resolve(clazz).method((Method) exec);
+                GenericsResolver.resolve(clazz).method(method);
             resolved =
                 Types.forJavaLangReflectType(
                     methodGenerics.resolveParameterType(parameterIndex));
             generics = methodGenerics;
         } else if (exec instanceof Constructor<?>) {
+            Constructor<?> ctor = (Constructor<?>) exec;
             ConstructorGenericsContext constructorGenerics =
-                GenericsResolver.resolve(clazz).constructor(
-                    (Constructor<?>) exec);
+                GenericsResolver.resolve(clazz).constructor(ctor);
             resolved =
                 Types.forJavaLangReflectType(
                     constructorGenerics.resolveParameterType(parameterIndex));
@@ -141,7 +142,7 @@ public class ParameterTypeContext {
         Executable exec = parameter.getDeclaringExecutable();
         Class<?> clazz = exec.getDeclaringClass();
         String declarerName = clazz.getName() + '.' + exec.getName();
-        int parameterIndex = parameterIndex(parameter);
+        int parameterIndex = parameterIndex(exec, parameter);
 
         return new ParameterTypeContext(
             parameter.getName(),
@@ -151,6 +152,18 @@ public class ParameterTypeContext {
                 generics.resolveParameterType(parameterIndex)),
             generics,
             parameterIndex);
+    }
+
+    private static int parameterIndex(Executable exec, Parameter parameter) {
+        Parameter[] parameters = exec.getParameters();
+        for (int i = 0; i < parameters.length; ++i) {
+            if (parameters[i].equals(parameter)) {
+                return i;
+            }
+        }
+
+        throw new IllegalStateException(
+            "Cannot find parameter " + parameter + " on " + exec);
     }
 
     private ParameterTypeContext(
