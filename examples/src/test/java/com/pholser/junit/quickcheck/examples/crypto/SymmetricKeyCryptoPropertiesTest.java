@@ -25,18 +25,16 @@
 
 package com.pholser.junit.quickcheck.examples.crypto;
 
-import java.security.Key;
-
-import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.examples.crypto.SymmetricCrypto;
 import com.pholser.junit.quickcheck.examples.crypto.SymmetricCrypto.EncryptionResult;
-import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnitQuickcheck.class)
 public class SymmetricKeyCryptoPropertiesTest {
@@ -48,10 +46,10 @@ public class SymmetricKeyCryptoPropertiesTest {
         SymmetricCrypto crypto = new SymmetricCrypto();
 
         EncryptionResult enciphered =
-            crypto.encrypt(plaintext.getBytes("UTF-8"), key);
+            crypto.encrypt(plaintext.getBytes(StandardCharsets.UTF_8), key);
 
         assertEquals(
             plaintext,
-            new String(crypto.decrypt(enciphered, key)));
+            new String(crypto.decrypt(enciphered, key), StandardCharsets.UTF_8 ));
     }
 }
