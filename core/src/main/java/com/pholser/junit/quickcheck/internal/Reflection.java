@@ -239,6 +239,15 @@ public final class Reflection {
         }
     }
 
+    public static boolean jdk9OrBetter() {
+        try {
+            Runtime.class.getMethod("version");
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
     public static Method singleAbstractMethodOf(Class<?> rawClass) {
         if (!rawClass.isInterface())
             return null;
@@ -321,5 +330,4 @@ public final class Reflection {
 
         return emptyList();
     }
-
 }
