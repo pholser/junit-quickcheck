@@ -60,6 +60,12 @@ final class FakeAnnotatedTypeFactory {
             return makeFrom(type.getComponentType());
         }
 
+        // Not introduced until JDK 9 -- not marking as...
+        // @Override
+        public AnnotatedType getAnnotatedOwnerType() {
+            return null;
+        }
+
         @Override public Type getType() {
             return type;
         }

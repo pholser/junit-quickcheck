@@ -8,8 +8,6 @@ import org.junit.internal.AssumptionViolatedException;
 class NoValuesSatisfiedPropertyAssumptions
     extends org.junit.AssumptionViolatedException {
 
-    private final List<? extends AssumptionViolatedException> violations;
-
     NoValuesSatisfiedPropertyAssumptions(
         List<? extends AssumptionViolatedException> violations) {
 
@@ -17,6 +15,5 @@ class NoValuesSatisfiedPropertyAssumptions
             "No values satisfied property assumptions. Violated assumptions: "
                 + violations);
 
-        this.violations = new ArrayList<>(violations);
     }
 }
