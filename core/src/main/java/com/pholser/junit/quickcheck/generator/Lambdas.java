@@ -25,7 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.invoke.MethodHandles;
+import com.pholser.junit.quickcheck.internal.DefaultMethodHandleMaker;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -45,12 +47,6 @@ import static com.pholser.junit.quickcheck.internal.Reflection.*;
  * Helper class for creating instances of "functional interfaces".
  */
 public final class Lambdas {
-    private static final Constructor<MethodHandles.Lookup> METHOD_LOOKUP_CTOR =
-        findDeclaredConstructor(
-            MethodHandles.Lookup.class,
-            Class.class,
-            int.class);
-
     private Lambdas() {
         throw new UnsupportedOperationException();
     }
@@ -100,10 +96,14 @@ public final class Lambdas {
                     status.attempts())));
     }
 
-    private static class LambdaInvocationHandler<T, U> implements InvocationHandler {
+    private static class LambdaInvocationHandler<T, U>
+        implements InvocationHandler {
+
         private final Class<T> lambdaType;
         private final Generator<U> returnValueGenerator;
         private final int attempts;
+        private final DefaultMethodHandleMaker methodHandleMaker =
+            new DefaultMethodHandleMaker();
 
         LambdaInvocationHandler(
             Class<T> lambdaType,
@@ -144,16 +144,15 @@ public final class Lambdas {
             return "a randomly generated instance of " + lambdaType;
         }
 
-        private Object handleDefaultMethod(Object proxy, Method method, Object[] args)
+        private Object handleDefaultMethod(
+            Object proxy,
+            Method method,
+            Object[] args)
             throws Throwable {
 
-            MethodHandles.Lookup lookup =
-                METHOD_LOOKUP_CTOR.newInstance(
-                    method.getDeclaringClass(),
-                    MethodHandles.Lookup.PRIVATE);
-            return lookup.unreflectSpecial(method, method.getDeclaringClass())
-                .bindTo(proxy)
-                .invokeWithArguments(args);
+            MethodHandle handle =
+                methodHandleMaker.handleForSpecialMethod(method);
+            return handle.bindTo(proxy).invokeWithArguments(args);
         }
     }
 }
