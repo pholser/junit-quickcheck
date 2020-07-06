@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ArrayGenerator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-examples</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal.generator</a> &gt; <span class="el_source">ArrayGenerator.java</span></div><h1>ArrayGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal.generator;
+
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import com.pholser.junit.quickcheck.generator.*;
+import com.pholser.junit.quickcheck.internal.Lists;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.math.BigDecimal.*;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.StreamSupport.*;
+
+import static com.pholser.junit.quickcheck.internal.Lists.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static com.pholser.junit.quickcheck.internal.Sequences.*;
+
+public class ArrayGenerator extends Generator&lt;Object&gt; {
+    private final Class&lt;?&gt; componentType;
+    private final Generator&lt;?&gt; component;
+
+    private Size lengthRange;
+    private boolean distinct;
+
+    ArrayGenerator(Class&lt;?&gt; componentType, Generator&lt;?&gt; component) {
+<span class="fc" id="L60">        super(Object.class);</span>
+
+<span class="fc" id="L62">        this.componentType = componentType;</span>
+<span class="fc" id="L63">        this.component = component;</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Tells this generator to produce values with a length within a specified
+     * minimum and/or maximum, inclusive, chosen with uniform distribution.
+     *
+     * @param size annotation that gives the length constraints
+     */
+    public void configure(Size size) {
+<span class="fc" id="L73">        this.lengthRange = size;</span>
+<span class="fc" id="L74">        checkRange(INTEGRAL, size.min(), size.max());</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Tells this generator to produce values which are distinct from each
+     * other.
+     *
+     * @param distinct Generated values will be distinct if this param is not
+     * null.
+     */
+    public void configure(Distinct distinct) {
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        this.distinct = distinct != null;</span>
+<span class="fc" id="L86">    }</span>
+
+    @Override public Object generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+<span class="fc" id="L92">        int length = length(random, status);</span>
+<span class="fc" id="L93">        Object array = Array.newInstance(componentType, length);</span>
+
+<span class="fc" id="L95">        Stream&lt;?&gt; items =</span>
+<span class="fc" id="L96">            Stream.generate(() -&gt; component.generate(random, status))</span>
+<span class="fc" id="L97">                .sequential();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (distinct)</span>
+<span class="fc" id="L99">            items = items.distinct();</span>
+
+<span class="fc" id="L101">        Iterator&lt;?&gt; iterator = items.iterator();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (int i = 0; i &lt; length; ++i)</span>
+<span class="fc" id="L103">            Array.set(array, i, iterator.next());</span>
+
+<span class="fc" id="L105">        return array;</span>
+    }
+
+    @Override public boolean canShrink(Object larger) {
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        return larger.getClass().getComponentType() == componentType;</span>
+    }
+
+    @Override public List&lt;Object&gt; doShrink(SourceOfRandomness random, Object larger) {
+<span class="fc" id="L113">        int length = Array.getLength(larger);</span>
+<span class="fc" id="L114">        List&lt;Object&gt; asList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (int i = 0; i &lt; length; ++i)</span>
+<span class="fc" id="L116">            asList.add(Array.get(larger, i));</span>
+
+<span class="fc" id="L118">        List&lt;Object&gt; shrinks = new ArrayList&lt;&gt;(removals(asList));</span>
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L121">        Stream&lt;List&lt;Object&gt;&gt; oneItemShrinks =</span>
+<span class="fc" id="L122">            shrinksOfOneItem(random, asList, (Shrink&lt;Object&gt;) component)</span>
+<span class="fc" id="L123">                .stream();</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (distinct)</span>
+<span class="fc" id="L125">            oneItemShrinks = oneItemShrinks.filter(Lists::isDistinct);</span>
+
+<span class="fc" id="L127">        shrinks.addAll(</span>
+            oneItemShrinks
+<span class="fc" id="L129">                .map(this::convert)</span>
+<span class="fc" id="L130">                .filter(this::inLengthRange)</span>
+<span class="fc" id="L131">                .collect(toList()));</span>
+
+<span class="fc" id="L133">        return shrinks;</span>
+    }
+
+    @Override public void provide(Generators provided) {
+<span class="fc" id="L137">        super.provide(provided);</span>
+
+<span class="fc" id="L139">        component.provide(provided);</span>
+<span class="fc" id="L140">    }</span>
+
+    @Override public BigDecimal magnitude(Object value) {
+<span class="fc" id="L143">        int length = Array.getLength(value);</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (length == 0)</span>
+<span class="fc" id="L145">            return ZERO;</span>
+
+<span class="fc" id="L147">        BigDecimal elementsMagnitude =</span>
+<span class="fc" id="L148">            IntStream.range(0, length)</span>
+<span class="fc" id="L149">                .mapToObj(i -&gt; component.magnitude(Array.get(value, i)))</span>
+<span class="fc" id="L150">                .reduce(ZERO, BigDecimal::add);</span>
+<span class="fc" id="L151">        return BigDecimal.valueOf(length).multiply(elementsMagnitude);</span>
+    }
+
+    @Override public void configure(AnnotatedType annotatedType) {
+<span class="fc" id="L155">        super.configure(annotatedType);</span>
+
+<span class="fc" id="L157">        List&lt;AnnotatedType&gt; annotated = annotatedComponentTypes(annotatedType);</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (!annotated.isEmpty())</span>
+<span class="fc" id="L159">            component.configure(annotated.get(0));</span>
+<span class="fc" id="L160">    }</span>
+
+    private int length(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        return lengthRange != null</span>
+<span class="fc" id="L164">            ? random.nextInt(lengthRange.min(), lengthRange.max())</span>
+<span class="fc" id="L165">            : status.size();</span>
+    }
+
+    private boolean inLengthRange(Object items) {
+<span class="fc" id="L169">        int length = Array.getLength(items);</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        return lengthRange == null</span>
+<span class="pc bpc" id="L171" title="1 of 4 branches missed.">            || (length &gt;= lengthRange.min() &amp;&amp; length &lt;= lengthRange.max());</span>
+    }
+
+    private List&lt;Object&gt; removals(List&lt;?&gt; items) {
+<span class="fc" id="L175">        return stream(halving(items.size()).spliterator(), false)</span>
+<span class="fc" id="L176">            .map(i -&gt; removeFrom(items, i))</span>
+<span class="fc" id="L177">            .flatMap(Collection::stream)</span>
+<span class="fc" id="L178">            .map(this::convert)</span>
+<span class="fc" id="L179">            .filter(this::inLengthRange)</span>
+<span class="fc" id="L180">            .collect(toList());</span>
+    }
+
+    private Object convert(List&lt;?&gt; items) {
+<span class="fc" id="L184">        Object array = Array.newInstance(componentType, items.size());</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        for (int i = 0; i &lt; items.size(); ++i)</span>
+<span class="fc" id="L186">            Array.set(array, i, items.get(i));</span>
+<span class="fc" id="L187">        return array;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

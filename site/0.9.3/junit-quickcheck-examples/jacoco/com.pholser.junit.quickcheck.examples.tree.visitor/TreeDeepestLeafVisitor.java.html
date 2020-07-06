@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreeDeepestLeafVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-examples</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.examples.tree.visitor</a> &gt; <span class="el_source">TreeDeepestLeafVisitor.java</span></div><h1>TreeDeepestLeafVisitor.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.examples.tree.visitor;
+
+import java.util.AbstractMap.SimpleImmutableEntry;
+
+import com.pholser.junit.quickcheck.examples.tree.Empty;
+import com.pholser.junit.quickcheck.examples.tree.Leaf;
+import com.pholser.junit.quickcheck.examples.tree.Node;
+import com.pholser.junit.quickcheck.examples.tree.TreeVisitor;
+
+<span class="fc" id="L35">public class TreeDeepestLeafVisitor implements TreeVisitor {</span>
+    @Override public SimpleImmutableEntry&lt;String, Integer&gt; visit(Empty empty) {
+<span class="fc" id="L37">        return new SimpleImmutableEntry&lt;&gt;(&quot;&quot;, 0);</span>
+    }
+
+    @Override public SimpleImmutableEntry&lt;String, Integer&gt; visit(Leaf leaf) {
+<span class="fc" id="L41">        return new SimpleImmutableEntry&lt;&gt;(leaf.value(), 0);</span>
+    }
+
+    @Override public SimpleImmutableEntry&lt;String, Integer&gt; visit(Node node) {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L46">        SimpleImmutableEntry&lt;String, Integer&gt; leftResult =</span>
+<span class="fc" id="L47">            (SimpleImmutableEntry&lt;String, Integer&gt;) node.left().accept(this);</span>
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L50">        SimpleImmutableEntry&lt;String, Integer&gt; rightResult =</span>
+<span class="fc" id="L51">            (SimpleImmutableEntry&lt;String, Integer&gt;) node.right().accept(this);</span>
+
+<span class="fc" id="L53">        int leftDepth = leftResult.getValue();</span>
+<span class="fc" id="L54">        int rightDepth = rightResult.getValue();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        return leftDepth &gt;= rightDepth</span>
+<span class="fc" id="L56">            ? new SimpleImmutableEntry&lt;&gt;(leftResult.getKey(), 1 + leftDepth)</span>
+<span class="fc" id="L57">            : new SimpleImmutableEntry&lt;&gt;(rightResult.getKey(), 1 + rightDepth);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
