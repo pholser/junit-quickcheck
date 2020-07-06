@@ -42,10 +42,15 @@ public class SizeConstrainedSetPropertyParameterTypesTest {
         assertThat(testResult(SizeConstrainedSets.class), isSuccessful());
     }
 
+    public enum TestEnum {
+        E1, E2, E3, E4, E5
+    }
+
     @RunWith(JUnitQuickcheck.class)
     public static class SizeConstrainedSets {
-        @Property public void shouldHold(@Size(min = 2, max = 5) Set<String> items) {
+        @Property public void shouldHold(@Size(min = 2, max = 5) Set<TestEnum> items) {
             assertThat(items.size(), lessThanOrEqualTo(5));
+            assertThat(items.size(), greaterThanOrEqualTo(2));
         }
     }
 
