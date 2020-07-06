@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultMethodHandleMaker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">DefaultMethodHandleMaker.java</span></div><h1>DefaultMethodHandleMaker.java</h1><pre class="source lang-java linenums">package com.pholser.junit.quickcheck.internal;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.findDeclaredConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.jdk9OrBetter;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+<span class="fc" id="L13">public final class DefaultMethodHandleMaker {</span>
+    private static volatile Constructor&lt;Lookup&gt; methodLookupCtorJDK8;
+
+    private static Constructor&lt;Lookup&gt; methodLookupCtorJDK8() {
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (methodLookupCtorJDK8 == null) {</span>
+<span class="fc" id="L18">            methodLookupCtorJDK8 =</span>
+<span class="fc" id="L19">                findDeclaredConstructor(Lookup.class, Class.class, int.class);</span>
+        }
+
+<span class="fc" id="L22">        return methodLookupCtorJDK8;</span>
+    }
+
+    public MethodHandle handleForSpecialMethod(Method method)
+        throws Exception {
+
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        return jdk9OrBetter()</span>
+<span class="pc" id="L29">            ? jdk9OrBetterMethodHandle(method)</span>
+<span class="fc" id="L30">            : jdk8MethodHandleForDefault(method);</span>
+    }
+
+    private MethodHandle jdk9OrBetterMethodHandle(Method method)
+        throws Exception {
+
+<span class="nc" id="L36">        return MethodHandles.lookup()</span>
+<span class="nc" id="L37">            .findSpecial(</span>
+<span class="nc" id="L38">                method.getDeclaringClass(),</span>
+<span class="nc" id="L39">                method.getName(),</span>
+<span class="nc" id="L40">                MethodType.methodType(</span>
+<span class="nc" id="L41">                    method.getReturnType(),</span>
+<span class="nc" id="L42">                    method.getParameterTypes()),</span>
+<span class="nc" id="L43">                method.getDeclaringClass());</span>
+    }
+
+    private MethodHandle jdk8MethodHandleForDefault(Method method)
+        throws Exception {
+
+        Lookup lookup =
+<span class="fc" id="L50">            methodLookupCtorJDK8().newInstance(</span>
+<span class="fc" id="L51">                method.getDeclaringClass(),</span>
+<span class="fc" id="L52">                Lookup.PRIVATE);</span>
+<span class="fc" id="L53">        return lookup.unreflectSpecial(method, method.getDeclaringClass());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
