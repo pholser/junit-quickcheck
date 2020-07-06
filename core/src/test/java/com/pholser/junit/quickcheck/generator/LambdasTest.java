@@ -85,6 +85,8 @@ public class LambdasTest {
     }
 
     @Test public void invokingDefaultMethodOnFunctionalInterface() {
+        System.out.println(System.getProperty("java.version"));
+
         @SuppressWarnings("unchecked")
         Predicate<Integer> another = makeLambda(Predicate.class, returnValueGenerator, status);
 
