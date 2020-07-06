@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.generator.Size;
+
 import java.util.Set;
 
 /**
@@ -35,5 +37,11 @@ import java.util.Set;
 public abstract class SetGenerator<T extends Set> extends CollectionGenerator<T> {
     protected SetGenerator(Class<T> type) {
         super(type);
+    }
+
+    @Override public void configure(Size size) {
+        super.configure(size);
+
+        setDistinct(true);
     }
 }
