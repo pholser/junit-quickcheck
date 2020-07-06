@@ -143,12 +143,12 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>23.0</version>
+                <version>29.0-jre</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava-testlib</artifactId>
-                <version>23.0</version>
+                <version>29.0-jre</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -408,7 +408,7 @@
                             <links>
                                 <link>https://docs.oracle.com/javase/8/docs/api</link>
                                 <link>http://junit.org/junit4/javadoc/latest/</link>
-                                <link>http://google.github.io/guava/releases/19.0/api/docs/</link>
+                                <link>https://guava.dev/releases/29.0-jre/api/docs/</link>
                             </links>
                             <bottom><![CDATA[<i>&copy; Copyright 2010-2020 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
                         </configuration>

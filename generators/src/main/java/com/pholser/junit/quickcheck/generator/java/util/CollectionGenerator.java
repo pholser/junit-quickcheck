@@ -88,7 +88,11 @@ public abstract class CollectionGenerator<T extends Collection>
      * not null
      */
     public void configure(Distinct distinct) {
-        this.distinct = distinct != null;
+        setDistinct(distinct != null);
+    }
+
+    protected final void setDistinct(boolean distinct) {
+        this.distinct = distinct;
     }
 
     @SuppressWarnings("unchecked")
