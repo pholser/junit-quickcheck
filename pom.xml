@@ -141,12 +141,12 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>23.0</version>
+                <version>29.0-jre</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava-testlib</artifactId>
-                <version>23.0</version>
+                <version>29.0-jre</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
