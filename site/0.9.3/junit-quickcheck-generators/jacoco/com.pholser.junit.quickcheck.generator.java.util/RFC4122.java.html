@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RFC4122.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.util</a> &gt; <span class="el_source">RFC4122.java</span></div><h1>RFC4122.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.util;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
+import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+
+import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.Namespaces.*;
+
+/**
+ * Home for machinery to produce {@link UUID}s according to
+ * &lt;a href=&quot;http://www.ietf.org/rfc/rfc4122.txt&quot;&gt;RFC 4122&lt;/a&gt;.
+ */
+public final class RFC4122 {
+<span class="fc" id="L52">    private RFC4122() {</span>
+<span class="fc" id="L53">        throw new UnsupportedOperationException();</span>
+    }
+
+    private abstract static class AbstractUUIDGenerator
+        extends Generator&lt;UUID&gt; {
+
+        protected AbstractUUIDGenerator() {
+<span class="fc" id="L60">            super(UUID.class);</span>
+<span class="fc" id="L61">        }</span>
+
+        protected final void setVersion(byte[] bytes, byte mask) {
+<span class="fc" id="L64">            bytes[6] &amp;= 0x0F;</span>
+<span class="fc" id="L65">            bytes[6] |= mask;</span>
+<span class="fc" id="L66">        }</span>
+
+        protected final void setVariant(byte[] bytes) {
+<span class="fc" id="L69">            bytes[8] &amp;= 0x3F;</span>
+<span class="fc" id="L70">            bytes[8] |= 0x80;</span>
+<span class="fc" id="L71">        }</span>
+
+        protected final UUID newUUID(byte[] bytes) {
+<span class="fc" id="L74">            ByteBuffer bytesIn = ByteBuffer.wrap(bytes);</span>
+<span class="fc" id="L75">            return new UUID(bytesIn.getLong(), bytesIn.getLong());</span>
+        }
+    }
+
+    private abstract static class NameBasedUUIDGenerator
+        extends AbstractUUIDGenerator {
+
+<span class="fc" id="L82">        private final StringGenerator stringGenerator = new StringGenerator();</span>
+        private final int versionMask;
+        private final MessageDigest digest;
+        private Namespace namespace;
+
+        protected NameBasedUUIDGenerator(
+            String hashAlgorithmName,
+<span class="fc" id="L89">            int versionMask) {</span>
+
+<span class="fc" id="L91">            this.versionMask = versionMask;</span>
+<span class="fc" id="L92">            digest = MessageDigests.get(hashAlgorithmName);</span>
+<span class="fc" id="L93">        }</span>
+
+        @Override public UUID generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
+<span class="fc" id="L99">            digest.reset();</span>
+
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            Namespaces namespaces = namespace == null ? URL : namespace.value();</span>
+<span class="fc" id="L102">            digest.update(namespaces.bytes);</span>
+<span class="fc" id="L103">            digest.update(</span>
+<span class="fc" id="L104">                stringGenerator.generate(random, status)</span>
+<span class="fc" id="L105">                    .getBytes(StandardCharsets.UTF_8));</span>
+
+<span class="fc" id="L107">            byte[] hash = digest.digest();</span>
+<span class="fc" id="L108">            setVersion(hash, (byte) versionMask);</span>
+<span class="fc" id="L109">            setVariant(hash);</span>
+<span class="fc" id="L110">            return newUUID(hash);</span>
+        }
+
+        protected void setNamespace(Namespace namespace) {
+<span class="fc" id="L114">            this.namespace = namespace;</span>
+<span class="fc" id="L115">        }</span>
+    }
+
+    static final class MessageDigests {
+<span class="fc" id="L119">        private MessageDigests() {</span>
+<span class="fc" id="L120">            throw new UnsupportedOperationException();</span>
+        }
+
+        static MessageDigest get(String algorithmName) {
+            try {
+<span class="fc" id="L125">                return MessageDigest.getInstance(algorithmName);</span>
+<span class="fc" id="L126">            } catch (NoSuchAlgorithmException shouldNeverHappen) {</span>
+<span class="fc" id="L127">                throw new IllegalStateException(shouldNeverHappen);</span>
+            }
+        }
+    }
+
+    /**
+     * Produces values of type {@link UUID} that are RFC 4122 Version 3
+     * identifiers.
+     */
+    public static class Version3 extends NameBasedUUIDGenerator {
+        public Version3() {
+<span class="fc" id="L138">            super(&quot;MD5&quot;, 0x30);</span>
+<span class="fc" id="L139">        }</span>
+
+        /**
+         * Tells this generator to prepend the given &quot;namespace&quot; UUID to the
+         * names it generates for UUID production.
+         *
+         * @param namespace a handle for a &quot;namespace&quot; UUID
+         */
+        public void configure(Namespace namespace) {
+<span class="fc" id="L148">            setNamespace(namespace);</span>
+<span class="fc" id="L149">        }</span>
+    }
+
+    /**
+     * Produces values of type {@link UUID} that are RFC 4122 Version 4
+     * identifiers.
+     */
+<span class="fc" id="L156">    public static class Version4 extends AbstractUUIDGenerator {</span>
+        @Override public UUID generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
+<span class="fc" id="L161">            byte[] bytes = random.nextBytes(16);</span>
+<span class="fc" id="L162">            setVersion(bytes, (byte) 0x40);</span>
+<span class="fc" id="L163">            setVariant(bytes);</span>
+<span class="fc" id="L164">            return newUUID(bytes);</span>
+        }
+    }
+
+    /**
+     * Produces values of type {@link UUID} that are RFC 4122 Version 5
+     * identifiers.
+     */
+    public static class Version5 extends NameBasedUUIDGenerator {
+        public Version5() {
+<span class="fc" id="L174">            super(&quot;SHA-1&quot;, 0x50);</span>
+<span class="fc" id="L175">        }</span>
+
+        /**
+         * Tells this generator to prepend the given &quot;namespace&quot; UUID to the
+         * names it generates for UUID production.
+         *
+         * @param namespace a handle for a &quot;namespace&quot; UUID
+         */
+        public void configure(Namespace namespace) {
+<span class="fc" id="L184">            setNamespace(namespace);</span>
+<span class="fc" id="L185">        }</span>
+    }
+
+    /**
+     * Used in version 3 and version 5 UUID generation to specify a
+     * &quot;namespace&quot; UUID for use in generation.
+     */
+    @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
+    @Retention(RUNTIME)
+    @GeneratorConfiguration
+    public @interface Namespace {
+        /**
+         * @return a handle on a &quot;namespace&quot; UUID to use in generation
+         */
+        Namespaces value() default URL;
+    }
+
+    /**
+     * Well-known &quot;namespace&quot; UUIDs.
+     */
+<span class="fc" id="L205">    public enum Namespaces {</span>
+        /** Fully-qualified DNS name. */
+<span class="fc" id="L207">        DNS(0x10),</span>
+
+        /** URL. */
+<span class="fc" id="L210">        URL(0x11),</span>
+
+        /** ISO object identifier. */
+<span class="fc" id="L213">        ISO_OID(0x12),</span>
+
+        /** X.500 distinguished name. */
+<span class="fc" id="L216">        X500_DN(0x14);</span>
+
+        final byte[] bytes;
+
+<span class="fc" id="L220">        Namespaces(int difference) {</span>
+<span class="fc" id="L221">            this.bytes = new byte[] {</span>
+                0x6B, (byte) 0xA7, (byte) 0xB8, (byte) difference,
+                (byte) 0x9D, (byte) 0xAD,
+                0x11, (byte) 0xD1,
+                (byte) 0x80, (byte) 0xB4,
+                0x00, (byte) 0xC0, 0x4F, (byte) 0xD4, 0x30, (byte) 0xC8 };
+<span class="fc" id="L227">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

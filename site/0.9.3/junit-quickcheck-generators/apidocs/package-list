@@ -1,0 +1,9 @@
+com.pholser.junit.quickcheck.generator
+com.pholser.junit.quickcheck.generator.java.lang
+com.pholser.junit.quickcheck.generator.java.lang.strings
+com.pholser.junit.quickcheck.generator.java.math
+com.pholser.junit.quickcheck.generator.java.nio.charset
+com.pholser.junit.quickcheck.generator.java.time
+com.pholser.junit.quickcheck.generator.java.util
+com.pholser.junit.quickcheck.generator.java.util.concurrent
+com.pholser.junit.quickcheck.generator.java.util.function

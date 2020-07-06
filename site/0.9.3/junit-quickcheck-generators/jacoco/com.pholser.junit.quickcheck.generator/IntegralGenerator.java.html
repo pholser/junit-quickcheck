@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntegralGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">IntegralGenerator.java</span></div><h1>IntegralGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import static com.pholser.junit.quickcheck.internal.Sequences.halvingIntegral;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * Base class for generators of integral types, such as {@code int} and
+ * {@link BigInteger}. All numbers are converted to/from BigInteger for processing.
+ *
+ * @param &lt;T&gt; type of values this generator produces
+ */
+public abstract class IntegralGenerator&lt;T extends Number&gt; extends Generator&lt;T&gt; {
+    protected IntegralGenerator(Class&lt;T&gt; type) {
+<span class="fc" id="L49">        super(singletonList(type));</span>
+<span class="fc" id="L50">    }</span>
+
+    protected IntegralGenerator(List&lt;Class&lt;T&gt;&gt; types) {
+<span class="fc" id="L53">        super(types);</span>
+<span class="fc" id="L54">    }</span>
+
+    @Override public List&lt;T&gt; doShrink(SourceOfRandomness random, T larger) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (larger.equals(leastMagnitude()))</span>
+<span class="fc" id="L58">            return emptyList();</span>
+
+<span class="fc" id="L60">        List&lt;T&gt; results =new ArrayList&lt;&gt;();</span>
+
+        // Positive numbers are considered easier than negative ones
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (negative(larger))</span>
+<span class="fc" id="L64">            results.add(negate(larger));</span>
+
+        // Try your luck by testing the smallest possible value
+<span class="fc" id="L67">        results.add(leastMagnitude());</span>
+
+        // Try values between smallest and largest, with smaller and smaller increments as we approach the largest
+<span class="fc" id="L70">        results.addAll(stream(</span>
+<span class="fc" id="L71">                halvingIntegral(</span>
+                    // We work with BigInteger, so convert all inputs
+<span class="fc" id="L73">                    widen().apply(larger),</span>
+<span class="fc" id="L74">                    widen().apply(leastMagnitude())</span>
+<span class="fc" id="L75">                ).spliterator(),</span>
+                false)
+<span class="fc" id="L77">                .limit(15)</span>
+<span class="fc" id="L78">                .map(narrow())</span>
+<span class="fc" id="L79">                .filter(inRange())</span>
+<span class="fc" id="L80">                .distinct()</span>
+<span class="fc" id="L81">                .collect(toList()));</span>
+
+<span class="fc" id="L83">        return results;</span>
+    }
+
+    /**
+     * @return a function converting a value of the base type into a {@link BigInteger}.
+     */
+    protected Function&lt;T, BigInteger&gt; widen() {
+<span class="fc" id="L90">        return n -&gt; BigInteger.valueOf(n.longValue());</span>
+    }
+
+    /**
+     * @return a function converting a {@link BigInteger} into the equivalent value in the base type.
+     */
+    protected abstract Function&lt;BigInteger, T&gt; narrow();
+
+    /**
+     * @return a predicate checking whether its input is in the configured range.
+     */
+    protected abstract Predicate&lt;T&gt; inRange();
+
+    /**
+     * @return the lowest magnitude number, respecting the configured range. The ideal shrink value is always this value (i.e. this value cannot be shrunk any further).
+     */
+    protected abstract T leastMagnitude();
+
+    /**
+     * @return whether the given number is negative or not.
+     */
+    protected abstract boolean negative(T target);
+
+    /**
+     * Used when shrinking negative numbers to add the positive equivalent value at the top of shrinks list.
+     *
+     * @param target always a negative number
+     * @return the positive equivalent to target
+     */
+    protected abstract T negate(T target);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
