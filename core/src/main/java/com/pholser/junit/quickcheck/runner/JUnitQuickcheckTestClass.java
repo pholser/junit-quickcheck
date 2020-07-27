@@ -23,9 +23,10 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package org.junit.runners.model;
+package com.pholser.junit.quickcheck.runner;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -37,6 +38,9 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.junit.internal.MethodSorter;
+import org.junit.runners.model.FrameworkField;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.TestClass;
 
 import static java.util.stream.Collectors.*;
 
@@ -66,9 +70,20 @@ public class JUnitQuickcheckTestClass extends TestClass {
                 addToAnnotationLists(new FrameworkMethod(each), annotatedMethods);
             }
             for (Field each : applicableFieldsOf(c)) {
-                addToAnnotationLists(new FrameworkField(each), annotatedFields);
+                addToAnnotationLists(makeFrameworkField(each), annotatedFields);
             }
         });
+    }
+
+    private FrameworkField makeFrameworkField(Field field) {
+        try {
+            Constructor<FrameworkField> ctor =
+                FrameworkField.class.getDeclaredConstructor(Field.class);
+            ctor.setAccessible(true);
+            return ctor.newInstance(field);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static List<Method> applicableMethodsOf(Class<?> clazz) {
