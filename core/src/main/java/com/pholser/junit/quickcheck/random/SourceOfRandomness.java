@@ -368,6 +368,16 @@ public class SourceOfRandomness {
         return items[nextInt(items.length)];
     }
 
+    /**
+     * Gives a reference to the JDK-random delegate of this instance.
+     * Intended for subclasses.
+     *
+     * @return the JDK-random delegate
+     */
+    protected final Random delegate() {
+        return delegate;
+    }
+
     private long[] nextSecondsAndNanos(
         long minSeconds,
         long minNanos,
