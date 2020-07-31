@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck</artifactId>
-        <version>0.9.4</version>
+        <version>0.9.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>junit-quickcheck-examples</artifactId>
-    <version>0.9.4</version>
+    <version>0.9.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>junit-quickcheck-examples</name>
     <description>Property-based testing, JUnit-style: examples</description>
@@ -23,12 +23,12 @@
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.9.4</version>
+            <version>0.9.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-generators</artifactId>
-            <version>0.9.4</version>
+            <version>0.9.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.9.4</version>
+            <version>0.9.5-SNAPSHOT</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
