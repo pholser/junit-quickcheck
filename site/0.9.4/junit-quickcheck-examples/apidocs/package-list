@@ -1,0 +1,9 @@
+com.pholser.junit.quickcheck.examples.counter
+com.pholser.junit.quickcheck.examples.crypto
+com.pholser.junit.quickcheck.examples.dummy
+com.pholser.junit.quickcheck.examples.func
+com.pholser.junit.quickcheck.examples.geom
+com.pholser.junit.quickcheck.examples.money
+com.pholser.junit.quickcheck.examples.number
+com.pholser.junit.quickcheck.examples.tree
+com.pholser.junit.quickcheck.examples.tree.visitor

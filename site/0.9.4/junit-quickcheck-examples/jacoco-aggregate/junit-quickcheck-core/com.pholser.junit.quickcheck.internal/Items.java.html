@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Items.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-examples</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">Items.java</span></div><h1>Items.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.RandomAccess;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+public final class Items {
+<span class="fc" id="L35">    private Items() {</span>
+<span class="fc" id="L36">        throw new UnsupportedOperationException();</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static &lt;T&gt; T choose(Collection&lt;T&gt; items, SourceOfRandomness random) {
+<span class="fc" id="L41">        int size = items.size();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (size == 0) {</span>
+<span class="fc" id="L43">            throw new IllegalArgumentException(</span>
+                &quot;Collection is empty, can't pick an element from it&quot;);
+        }
+
+<span class="pc bpc" id="L47" title="1 of 4 branches missed.">        if (items instanceof RandomAccess &amp;&amp; items instanceof List&lt;?&gt;) {</span>
+<span class="fc" id="L48">            List&lt;T&gt; list = (List&lt;T&gt;) items;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            return size == 1</span>
+<span class="fc" id="L50">                ? list.get(0)</span>
+<span class="fc" id="L51">                : list.get(random.nextInt(size));</span>
+        }
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (size == 1) {</span>
+<span class="fc" id="L55">            return items.iterator().next();</span>
+        }
+
+<span class="fc" id="L58">        Object[] array = items.toArray(new Object[0]);</span>
+<span class="fc" id="L59">        return (T) array[random.nextInt(array.length)];</span>
+    }
+
+    public static &lt;T&gt; T chooseWeighted(
+        Collection&lt;Weighted&lt;T&gt;&gt; items,
+        SourceOfRandomness random) {
+
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (items.size() == 1)</span>
+<span class="fc" id="L67">            return items.iterator().next().item;</span>
+
+<span class="fc" id="L69">        int range = items.stream().mapToInt(i -&gt; i.weight).sum();</span>
+<span class="fc" id="L70">        int sample = random.nextInt(range);</span>
+
+<span class="fc" id="L72">        int threshold = 0;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (Weighted&lt;T&gt; each : items) {</span>
+<span class="fc" id="L74">            threshold += each.weight;</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (sample &lt; threshold)</span>
+<span class="fc" id="L76">                return each.item;</span>
+<span class="fc" id="L77">        }</span>
+
+<span class="fc" id="L79">        throw new AssertionError(</span>
+<span class="fc" id="L80">            String.format(&quot;sample = %d, range = %d&quot;, sample, range));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
