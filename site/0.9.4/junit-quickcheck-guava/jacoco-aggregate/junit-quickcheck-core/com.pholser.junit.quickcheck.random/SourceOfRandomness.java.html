@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>SourceOfRandomness.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-guava</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.random</a> &gt; <span class="el_source">SourceOfRandomness.java</span></div><h1>SourceOfRandomness.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.random;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.math.BigInteger;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Random;
+
+import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Ranges;
+
+import static java.util.concurrent.TimeUnit.*;
+
+import static com.pholser.junit.quickcheck.internal.Ranges.*;
+
+/**
+ * A source of randomness, fed to
+ * {@linkplain com.pholser.junit.quickcheck.generator.Generator generators}
+ * so they can produce random values for property parameters.
+ */
+public class SourceOfRandomness {
+<span class="fc" id="L52">    private static final BigInteger NANOS_PER_SECOND =</span>
+<span class="fc" id="L53">        BigInteger.valueOf(SECONDS.toNanos(1));</span>
+
+    private final Random delegate;
+
+    private long seed;
+
+    /**
+     * Makes a new source of randomness.
+     *
+     * @param delegate a JDK source of randomness, to which the new instance
+     * will delegate
+     */
+<span class="fc" id="L65">    public SourceOfRandomness(Random delegate) {</span>
+<span class="fc" id="L66">        seed = delegate.nextLong();</span>
+<span class="fc" id="L67">        this.delegate = delegate;</span>
+<span class="fc" id="L68">        delegate.setSeed(seed);</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * &lt;p&gt;Gives a JDK source of randomness, with the same internal state as
+     * this source of randomness.&lt;/p&gt;
+     *
+     * @return a JDK &quot;clone&quot; of self
+     */
+    public Random toJDKRandom() {
+<span class="fc" id="L78">        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();</span>
+
+<span class="fc" id="L80">        try (ObjectOutputStream objectOut = new ObjectOutputStream(bytesOut)) {</span>
+<span class="fc" id="L81">            objectOut.writeObject(delegate);</span>
+<span class="nc" id="L82">        } catch (IOException ex) {</span>
+<span class="nc" id="L83">            throw new IllegalStateException(ex);</span>
+<span class="fc" id="L84">        }</span>
+
+<span class="fc" id="L86">        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());</span>
+<span class="fc" id="L87">        try (ObjectInputStream objectIn = new ObjectInputStream(bytesIn)) {</span>
+<span class="fc" id="L88">            return (Random) objectIn.readObject();</span>
+<span class="nc" id="L89">        } catch (IOException ex) {</span>
+<span class="nc" id="L90">            throw new IllegalStateException(ex);</span>
+<span class="nc" id="L91">        } catch (ClassNotFoundException shouldNeverHappen) {</span>
+<span class="nc" id="L92">            throw new AssertionError(shouldNeverHappen);</span>
+        }
+    }
+
+    /**
+     * @return a uniformly distributed boolean value
+     * @see java.util.Random#nextBoolean()
+     */
+    public boolean nextBoolean() {
+<span class="fc" id="L101">        return delegate.nextBoolean();</span>
+    }
+
+    /**
+     * @param bytes a byte array to fill with random values
+     * @see java.util.Random#nextBytes(byte[])
+     */
+    public void nextBytes(byte[] bytes) {
+<span class="fc" id="L109">        delegate.nextBytes(bytes);</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * Gives an array of a given length containing random bytes.
+     *
+     * @param count the desired length of the random byte array
+     * @return random bytes
+     * @see java.util.Random#nextBytes(byte[])
+     */
+    public byte[] nextBytes(int count) {
+<span class="fc" id="L120">        byte[] buffer = new byte[count];</span>
+<span class="fc" id="L121">        delegate.nextBytes(buffer);</span>
+<span class="fc" id="L122">        return buffer;</span>
+    }
+
+    /**
+     * @return a uniformly distributed random {@code double} value in the
+     * interval {@code [0.0, 1.0)}
+     * @see java.util.Random#nextDouble()
+     */
+    public double nextDouble() {
+<span class="fc" id="L131">        return delegate.nextDouble();</span>
+    }
+
+    /**
+     * @return a uniformly distributed random {@code float} value in the
+     * interval {@code [0.0, 1.0)}
+     * @see java.util.Random#nextFloat()
+     */
+    public float nextFloat() {
+<span class="fc" id="L140">        return delegate.nextFloat();</span>
+    }
+
+    /**
+     * @return a Gaussian-distributed random double value
+     * @see java.util.Random#nextGaussian()
+     */
+    public double nextGaussian() {
+<span class="fc" id="L148">        return delegate.nextGaussian();</span>
+    }
+
+    /**
+     * @return a uniformly distributed random {@code int} value
+     * @see java.util.Random#nextInt()
+     */
+    public int nextInt() {
+<span class="fc" id="L156">        return delegate.nextInt();</span>
+    }
+
+    /**
+     * @param n upper bound
+     * @return a uniformly distributed random {@code int} value in the interval
+     * {@code [0, n)}
+     * @see java.util.Random#nextInt(int)
+     */
+    public int nextInt(int n) {
+<span class="fc" id="L166">        return delegate.nextInt(n);</span>
+    }
+
+    /**
+     * @return a uniformly distributed random {@code long} value
+     * @see java.util.Random#nextLong()
+     */
+    public long nextLong() {
+<span class="fc" id="L174">        return delegate.nextLong();</span>
+    }
+
+    /**
+     * @param seed value with which to seed this source of randomness
+     * @see java.util.Random#setSeed(long)
+     */
+    public void setSeed(long seed) {
+<span class="fc" id="L182">        this.seed = seed;</span>
+<span class="fc" id="L183">        delegate.setSeed(seed);</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * @return the value used to initially seed this source of randomness
+     */
+    public long seed() {
+<span class="fc" id="L190">        return seed;</span>
+    }
+
+    /**
+     * Gives a random {@code byte} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public byte nextByte(byte min, byte max) {
+<span class="fc" id="L202">        return (byte) nextLong(min, max);</span>
+    }
+
+    /**
+     * Gives a random {@code char} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public char nextChar(char min, char max) {
+<span class="fc" id="L214">        checkRange(Ranges.Type.CHARACTER, min, max);</span>
+
+<span class="fc" id="L216">        return (char) nextLong(min, max);</span>
+    }
+
+    /**
+     * &lt;p&gt;Gives a random {@code double} value in the interval
+     * {@code [min, max)}.&lt;/p&gt;
+     *
+     * &lt;p&gt;This naive implementation takes a random {@code double} value from
+     * {@link Random#nextDouble()} and scales/shifts the value into the desired
+     * interval. This may give surprising results for large ranges.&lt;/p&gt;
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public double nextDouble(double min, double max) {
+<span class="fc" id="L232">        int comparison = checkRange(Ranges.Type.FLOAT, min, max);</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        return comparison == 0 ? min : min + (max - min) * nextDouble();</span>
+    }
+
+    /**
+     * &lt;p&gt;Gives a random {@code float} value in the interval
+     * {@code [min, max)}.&lt;/p&gt;
+     *
+     * &lt;p&gt;This naive implementation takes a random {@code float} value from
+     * {@link Random#nextFloat()} and scales/shifts the value into the desired
+     * interval. This may give surprising results for large ranges.&lt;/p&gt;
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public float nextFloat(float min, float max) {
+<span class="fc" id="L249">        int comparison = checkRange(Ranges.Type.FLOAT, min, max);</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        return comparison == 0 ? min : min + (max - min) * nextFloat();</span>
+    }
+
+    /**
+     * Gives a random {@code int} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public int nextInt(int min, int max) {
+<span class="fc" id="L262">        return (int) nextLong(min, max);</span>
+    }
+
+    /**
+     * Gives a random {@code long} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public long nextLong(long min, long max) {
+<span class="fc" id="L274">        int comparison = checkRange(Ranges.Type.INTEGRAL, min, max);</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        if (comparison == 0)</span>
+<span class="fc" id="L276">            return min;</span>
+
+<span class="fc" id="L278">        return Ranges.choose(this, min, max);</span>
+    }
+
+    /**
+     * Gives a random {@code short} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public short nextShort(short min, short max) {
+<span class="fc" id="L290">        return (short) nextLong(min, max);</span>
+    }
+
+    /**
+     * Gives a random {@code BigInteger} representable by the given number
+     * of bits.
+     *
+     * @param numberOfBits the desired number of bits
+     * @return a random {@code BigInteger}
+     * @see BigInteger#BigInteger(int, java.util.Random)
+     */
+    public BigInteger nextBigInteger(int numberOfBits) {
+<span class="fc" id="L302">        return new BigInteger(numberOfBits, delegate);</span>
+    }
+
+    /**
+     * Gives a random {@code Instant} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public Instant nextInstant(Instant min, Instant max) {
+<span class="fc" id="L314">        int comparison = checkRange(Ranges.Type.STRING, min, max);</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        if (comparison == 0)</span>
+<span class="fc" id="L316">            return min;</span>
+
+<span class="fc" id="L318">        long[] next = nextSecondsAndNanos(</span>
+<span class="fc" id="L319">            min.getEpochSecond(),</span>
+<span class="fc" id="L320">            min.getNano(),</span>
+<span class="fc" id="L321">            max.getEpochSecond(),</span>
+<span class="fc" id="L322">            max.getNano());</span>
+
+<span class="fc" id="L324">        return Instant.ofEpochSecond(next[0], next[1]);</span>
+    }
+
+    /**
+     * Gives a random {@code Duration} value, uniformly distributed across the
+     * interval {@code [min, max]}.
+     *
+     * @param min lower bound of the desired interval
+     * @param max upper bound of the desired interval
+     * @return a random value
+     */
+    public Duration nextDuration(Duration min, Duration max) {
+<span class="fc" id="L336">        int comparison = checkRange(Ranges.Type.STRING, min, max);</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        if (comparison == 0)</span>
+<span class="fc" id="L338">            return min;</span>
+
+<span class="fc" id="L340">        long[] next = nextSecondsAndNanos(</span>
+<span class="fc" id="L341">            min.getSeconds(),</span>
+<span class="fc" id="L342">            min.getNano(),</span>
+<span class="fc" id="L343">            max.getSeconds(),</span>
+<span class="fc" id="L344">            max.getNano());</span>
+
+<span class="fc" id="L346">        return Duration.ofSeconds(next[0], next[1]);</span>
+    }
+
+    /**
+     * Gives a random element of the given collection.
+     *
+     * @param &lt;T&gt; type of items in the collection
+     * @param items a collection
+     * @return a randomly chosen element from the collection
+     */
+    public &lt;T&gt; T choose(Collection&lt;T&gt; items) {
+<span class="fc" id="L357">        return Items.choose(items, this);</span>
+    }
+
+    /**
+     * Gives a random element of the given array.
+     *
+     * @param &lt;T&gt; type of items in the array
+     * @param items an array
+     * @return a randomly chosen element from the array
+     */
+    public &lt;T&gt; T choose(T[] items) {
+<span class="fc" id="L368">        return items[nextInt(items.length)];</span>
+    }
+
+    /**
+     * Gives a reference to the JDK-random delegate of this instance.
+     * Intended for subclasses.
+     *
+     * @return the JDK-random delegate
+     */
+    protected final Random delegate() {
+<span class="fc" id="L378">        return delegate;</span>
+    }
+
+    private long[] nextSecondsAndNanos(
+        long minSeconds,
+        long minNanos,
+        long maxSeconds,
+        long maxNanos) {
+
+<span class="fc" id="L387">        BigInteger nanoMin = BigInteger.valueOf(minSeconds)</span>
+<span class="fc" id="L388">            .multiply(NANOS_PER_SECOND)</span>
+<span class="fc" id="L389">            .add(BigInteger.valueOf(minNanos));</span>
+<span class="fc" id="L390">        BigInteger nanoMax = BigInteger.valueOf(maxSeconds)</span>
+<span class="fc" id="L391">            .multiply(NANOS_PER_SECOND)</span>
+<span class="fc" id="L392">            .add(BigInteger.valueOf(maxNanos));</span>
+
+<span class="fc" id="L394">        BigInteger[] generated = Ranges.choose(this, nanoMin, nanoMax)</span>
+<span class="fc" id="L395">            .divideAndRemainder(NANOS_PER_SECOND);</span>
+
+<span class="fc" id="L397">        return new long[] { generated[0].longValue(), generated[1].longValue() };</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
