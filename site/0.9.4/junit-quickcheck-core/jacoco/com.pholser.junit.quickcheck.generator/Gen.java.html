@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Gen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">Gen.java</span></div><h1>Gen.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import com.pholser.junit.quickcheck.Pair;
+import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Weighted;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.util.stream.Collectors.*;
+
+/**
+ * Represents a strategy for generating random values.
+ *
+ * @param &lt;T&gt; type of values generated
+ */
+@FunctionalInterface
+public interface Gen&lt;T&gt; {
+    /**
+     * Generates a value, possibly influenced by a source of randomness and
+     * metadata about the generation.
+     *
+     * @param random source of randomness to be used when generating the value
+     * @param status an object that can be used to influence the generated
+     * value. For example, generating lists can use the {@link
+     * GenerationStatus#size() size} method to generate lists with a given
+     * number of elements.
+     * @return the generated value
+     */
+    T generate(SourceOfRandomness random, GenerationStatus status);
+
+    /**
+     * Gives a generation strategy that produces a random value by having this
+     * strategy produce a random value, then applying the given function to
+     * that value, and returning the result.
+     *
+     * @param &lt;U&gt; type of values produced by the mapped generation strategy
+     * @param mapper function that converts receiver's random values to
+     * result's values
+     * @return a new generation strategy
+     */
+    default &lt;U&gt; Gen&lt;U&gt; map(Function&lt;? super T, ? extends U&gt; mapper) {
+<span class="fc" id="L73">        return (random, status) -&gt; mapper.apply(_gen(random, status));</span>
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by having this
+     * strategy produce a random value, then applying the given function to
+     * that value, and asking the result to produce a value.
+     *
+     * @param &lt;U&gt; type of values produced by the mapped generation strategy
+     * @param mapper function that converts receiver's random values to
+     * another kind of generation strategy
+     * @return a new generation strategy
+     */
+    default &lt;U&gt; Gen&lt;U&gt; flatMap(Function&lt;? super T, ? extends Gen&lt;? extends U&gt;&gt; mapper) {
+<span class="fc" id="L87">        return (random, status) -&gt;</span>
+<span class="fc" id="L88">            mapper.apply(_gen(random, status))._gen(random, status);</span>
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by having this
+     * strategy produce random values until one satisfies the given condition,
+     * then using that value as the result.
+     *
+     * @param condition a condition the generated value is to meet
+     * @return a new generation strategy
+     */
+    default Gen&lt;T&gt; filter(Predicate&lt;? super T&gt; condition) {
+<span class="fc" id="L100">        return (random, status) -&gt; {</span>
+<span class="fc" id="L101">            T next = _gen(random, status);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            while (!condition.test(next)) {</span>
+<span class="fc" id="L103">                next = _gen(random, status);</span>
+            }
+<span class="fc" id="L105">            return next;</span>
+        };
+    }
+
+    /**
+     * &lt;p&gt;Gives a generation strategy that produces a random value by having
+     * this strategy produce a random value and wrapping it in an
+     * {@link Optional}; if the value meets the given condition, the wrapping
+     * optional will be {@linkplain Optional#isPresent() present}.&lt;/p&gt;
+     *
+     * &lt;p&gt;If the value meets the condition but is {@code null}, the wrapping
+     * optional will not be considered
+     * {@linkplain Optional#isPresent() present}.&lt;/p&gt;
+     *
+     * @param condition a condition the generated value is to meet
+     * @return a new generation strategy
+     */
+    default Gen&lt;Optional&lt;T&gt;&gt; filterOptional(Predicate&lt;? super T&gt; condition) {
+<span class="fc" id="L123">        return (random, status) -&gt; {</span>
+<span class="fc" id="L124">            T next = _gen(random, status);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            return condition.test(next)</span>
+<span class="fc" id="L126">                ? Optional.ofNullable(next)</span>
+<span class="fc" id="L127">                : Optional.empty();</span>
+        };
+    }
+
+    default Gen&lt;List&lt;T&gt;&gt; times(int times) {
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (times &lt; 0)</span>
+<span class="fc" id="L133">            throw new IllegalArgumentException(&quot;negative times: &quot; + times);</span>
+
+<span class="fc" id="L135">        return (random, status) -&gt; {</span>
+<span class="fc" id="L136">            List&lt;T&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            for (int i = 0; i &lt; times; ++i)</span>
+<span class="fc" id="L138">                values.add(_gen(random, status));</span>
+<span class="fc" id="L139">            return values;</span>
+        };
+    }
+
+    /**
+     * Gives a generation strategy that produces the given value, always.
+     *
+     * @param &lt;U&gt; type of values produced by the resulting strategy
+     * @param constant the value to be returned by the resulting strategy
+     * @return a new generation strategy
+     */
+    static &lt;U&gt; Gen&lt;U&gt; pure(U constant) {
+<span class="fc" id="L151">        return (random, status) -&gt; constant;</span>
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given values at random with (approximately) equal
+     * probability.
+     *
+     * @param &lt;U&gt; type of values produced by the resulting strategy
+     * @param first first possible choice
+     * @param rest the other possible choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs static &lt;U&gt; Gen&lt;U&gt; oneOf(U first, U... rest) {
+<span class="fc" id="L165">        List&lt;U&gt; choices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L166">        choices.add(first);</span>
+<span class="fc" id="L167">        Collections.addAll(choices, rest);</span>
+
+<span class="fc" id="L169">        return (random, status) -&gt; Items.choose(choices, random);</span>
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given generators at random with (approximately) equal
+     * probability, and having it generate a value.
+     *
+     * @param &lt;U&gt; type of values produced by the resulting strategy
+     * @param first first possible generator choice
+     * @param rest the other possible generator choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs static &lt;U&gt; Gen&lt;U&gt; oneOf(
+        Gen&lt;? extends U&gt; first,
+        Gen&lt;? extends U&gt;... rest) {
+
+<span class="fc" id="L186">        List&lt;Gen&lt;? extends U&gt;&gt; choices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L187">        choices.add(first);</span>
+<span class="fc" id="L188">        Collections.addAll(choices, rest);</span>
+
+<span class="fc" id="L190">        return (random, status) -&gt;</span>
+<span class="fc" id="L191">            Items.choose(choices, random)._gen(random, status);</span>
+    }
+
+    /**
+     * Gives a generation strategy that produces a random value by choosing
+     * one of the given generators at random with probability in proportion
+     * to their given weights, and having it generate a value.
+     *
+     * @param &lt;U&gt; type of values produced by the resulting strategy
+     * @param first first possible (weighted) generator choice
+     * @param rest the other possible (weighted) generator choices
+     * @return a new generation strategy
+     */
+    @SafeVarargs static &lt;U&gt; Gen&lt;U&gt; frequency(
+        Pair&lt;Integer, Gen&lt;? extends U&gt;&gt; first,
+        Pair&lt;Integer, Gen&lt;? extends U&gt;&gt;... rest) {
+
+<span class="fc" id="L208">        List&lt;Pair&lt;Integer, Gen&lt;? extends U&gt;&gt;&gt; pairs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L209">        pairs.add(first);</span>
+<span class="fc" id="L210">        Collections.addAll(pairs, rest);</span>
+
+<span class="fc" id="L212">        List&lt;Weighted&lt;Gen&lt;? extends U&gt;&gt;&gt; weighted =</span>
+<span class="fc" id="L213">            pairs.stream()</span>
+<span class="fc" id="L214">                .map(p -&gt; new Weighted&lt;Gen&lt;? extends U&gt;&gt;(p.second, p.first))</span>
+<span class="fc" id="L215">                .collect(toList());</span>
+
+<span class="fc" id="L217">        return (random, status) -&gt;</span>
+<span class="fc" id="L218">            Items.chooseWeighted(weighted, random)._gen(random, status);</span>
+    }
+
+    /**
+     * Helper for making a weighted generator indicator for
+     * {@link #frequency(Pair, Pair[])}.
+     *
+     * @param &lt;U&gt; type of values produced by the given generation strategy
+     * @param weight an integer weight
+     * @param generator a generator
+     * @return a weight-generator pair
+     */
+    static &lt;U&gt; Pair&lt;Integer, Gen&lt;? extends U&gt;&gt; freq(
+        int weight,
+        Gen&lt;? extends U&gt; generator) {
+
+<span class="fc" id="L234">        return new Pair&lt;&gt;(weight, generator);</span>
+    }
+
+    /**
+     * @deprecated For use by junit-quickcheck only -- when we migrate to Java 9,
+     * this method will likely become {@code private}.
+     *
+     * @param random source of randomness to be used when generating the value
+     * @param status an object that can be used to influence the generated
+     * value. For example, generating lists can use the {@link
+     * GenerationStatus#size() size} method to generate lists with a given
+     * number of elements.
+     * @return the generated value
+     */
+    @Deprecated
+    default T _gen(SourceOfRandomness random, GenerationStatus status) {
+<span class="fc" id="L250">        T result = generate(random, status);</span>
+
+<span class="fc" id="L252">        status.semiAttempt();</span>
+
+<span class="fc" id="L254">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
