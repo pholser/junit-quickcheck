@@ -32,13 +32,12 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.AnnotatedWildcardType;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -264,6 +263,15 @@ public final class Reflection {
         }
 
         return abstractCount == 1 ? singleAbstractMethod : null;
+    }
+
+    public static boolean isMarkerInterface(Class<?> clazz) {
+        if (!clazz.isInterface())
+            return false;
+
+        return Arrays.stream(clazz.getMethods())
+            .filter(m -> !m.isDefault())
+            .noneMatch(m -> !overridesJavaLangObjectMethod(m));
     }
 
     private static boolean overridesJavaLangObjectMethod(Method method) {
