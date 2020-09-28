@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShrinkNode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">ShrinkNode.java</span></div><h1>ShrinkNode.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.runner;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.TestClass;
+
+import static java.util.Comparator.*;
+import static java.util.function.Function.*;
+import static java.util.stream.Collectors.*;
+
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
+
+final class ShrinkNode implements Comparable&lt;ShrinkNode&gt; {
+    private final FrameworkMethod method;
+    private final TestClass testClass;
+    private final List&lt;PropertyParameterGenerationContext&gt; params;
+    private final Object[] args;
+    private final long[] seeds;
+    private final int[] depths;
+    private final int totalDepth;
+    private final BigDecimal totalMagnitude;
+
+    private AssertionError failure;
+
+    private ShrinkNode(
+        FrameworkMethod method,
+        TestClass testClass,
+        List&lt;PropertyParameterGenerationContext&gt; params,
+        Object[] args,
+        long[] seeds,
+        int[] depths,
+<span class="fc" id="L64">        AssertionError failure) {</span>
+
+<span class="fc" id="L66">        this.method = method;</span>
+<span class="fc" id="L67">        this.testClass = testClass;</span>
+<span class="fc" id="L68">        this.params = params;</span>
+<span class="fc" id="L69">        this.args = args;</span>
+<span class="fc" id="L70">        this.seeds = seeds;</span>
+<span class="fc" id="L71">        this.depths = depths;</span>
+<span class="fc" id="L72">        this.totalDepth = IntStream.of(depths).sum();</span>
+<span class="fc" id="L73">        this.totalMagnitude = computeTotalMagnitude();</span>
+
+<span class="fc" id="L75">        this.failure = failure;</span>
+<span class="fc" id="L76">    }</span>
+
+    static ShrinkNode root(
+        FrameworkMethod method,
+        TestClass testClass,
+        List&lt;PropertyParameterGenerationContext&gt; params,
+        Object[] args,
+        long[] seeds,
+        AssertionError failure) {
+
+<span class="fc" id="L86">        return new ShrinkNode(</span>
+            method,
+            testClass,
+            params,
+            args,
+            seeds,
+            new int[args.length],
+            failure);
+    }
+
+    List&lt;ShrinkNode&gt; shrinks() {
+<span class="fc" id="L97">        return IntStream.range(0, params.size())</span>
+<span class="fc" id="L98">            .mapToObj(i -&gt; params.get(i).shrink(args[i]).stream()</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">                .filter(o -&gt; !o.equals(args[i]))</span>
+<span class="fc" id="L100">                .map(o -&gt; shrinkNodeFor(o, i)))</span>
+<span class="fc" id="L101">            .flatMap(identity())</span>
+<span class="fc" id="L102">            .collect(toList());</span>
+    }
+
+    boolean verifyProperty() throws Throwable {
+<span class="fc" id="L106">        boolean[] result = new boolean[1];</span>
+
+<span class="fc" id="L108">        property(result).verify();</span>
+
+<span class="fc" id="L110">        return result[0];</span>
+    }
+
+    AssertionError fail(AssertionError originalFailure, Object[] originalArgs) {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        return originalFailure == failure</span>
+<span class="fc" id="L115">            ? counterexampleFound(</span>
+<span class="fc" id="L116">                method.getName(),</span>
+                args,
+                seeds,
+                failure)
+<span class="fc" id="L120">            : smallerCounterexampleFound(</span>
+<span class="fc" id="L121">                method.getName(),</span>
+                originalArgs,
+                args,
+                seeds,
+                failure,
+                originalFailure);
+    }
+
+    Object[] args() {
+<span class="fc" id="L130">        return args;</span>
+    }
+
+    int depth() {
+<span class="fc" id="L134">        return totalDepth;</span>
+    }
+
+    BigDecimal magnitude() {
+<span class="nc" id="L138">        return totalMagnitude;</span>
+    }
+
+    private PropertyVerifier property(boolean[] result) throws InitializationError {
+<span class="fc" id="L142">        return new PropertyVerifier(</span>
+            testClass,
+            method,
+            args,
+            seeds,
+<span class="nc" id="L147">            s -&gt; result[0] = true,</span>
+<span class="fc" id="L148">            v -&gt; result[0] = true,</span>
+            (e, repeatTestOption) -&gt; {
+<span class="fc" id="L150">                failure = e;</span>
+<span class="fc" id="L151">                result[0] = false;</span>
+<span class="fc" id="L152">            });</span>
+    }
+
+    private ShrinkNode shrinkNodeFor(Object shrunk, int index) {
+<span class="fc" id="L156">        Object[] shrunkArgs = new Object[args.length];</span>
+<span class="fc" id="L157">        System.arraycopy(args, 0, shrunkArgs, 0, args.length);</span>
+<span class="fc" id="L158">        shrunkArgs[index] = shrunk;</span>
+
+<span class="fc" id="L160">        int[] newDepths = new int[depths.length];</span>
+<span class="fc" id="L161">        System.arraycopy(depths, 0, newDepths, 0, depths.length);</span>
+<span class="fc" id="L162">        ++newDepths[index];</span>
+
+<span class="fc" id="L164">        return new ShrinkNode(</span>
+            method,
+            testClass,
+            params,
+            shrunkArgs,
+            seeds,
+            newDepths,
+            failure);
+    }
+
+    private BigDecimal computeTotalMagnitude() {
+<span class="fc" id="L175">        BigDecimal total = BigDecimal.ZERO;</span>
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        for (int i = 0; i &lt; args.length; ++i) {</span>
+<span class="fc" id="L178">            BigDecimal magnitude = magnitudeAt(i);</span>
+<span class="fc" id="L179">            BigDecimal factor = BigDecimal.valueOf(2).pow(args.length - i - 1);</span>
+<span class="fc" id="L180">            total = total.add(magnitude.multiply(factor));</span>
+        }
+
+<span class="fc" id="L183">        return total;</span>
+    }
+
+    private BigDecimal magnitudeAt(int index) {
+<span class="fc" id="L187">        return params.get(index).magnitude(args[index]);</span>
+    }
+
+    @Override public boolean equals(Object o) {
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (!(o instanceof ShrinkNode))</span>
+<span class="nc" id="L192">            return false;</span>
+
+<span class="nc" id="L194">        ShrinkNode other = (ShrinkNode) o;</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        return Arrays.equals(args, other.args)</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            &amp;&amp; Arrays.equals(depths, other.depths);</span>
+    }
+
+    @Override public int hashCode() {
+<span class="nc" id="L200">        return Arrays.hashCode(args) ^ Arrays.hashCode(depths);</span>
+    }
+
+    @Override public int compareTo(ShrinkNode other) {
+        // Nodes at lesser depth compare less than nodes of greater depth.
+        // Nodes at equal depth needs to compare their args one by one.
+        // prefer larger-magnitude args before smaller.
+
+<span class="nc" id="L208">        Comparator&lt;ShrinkNode&gt; comparison = comparing(ShrinkNode::depth);</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        for (int i = 0; i &lt; params.size(); ++i) {</span>
+<span class="nc" id="L210">            int index = i;</span>
+<span class="nc" id="L211">            Comparator&lt;ShrinkNode&gt; byMagnitude = comparing(s -&gt; s.magnitudeAt(index));</span>
+<span class="nc" id="L212">            comparison = comparison.thenComparing(byMagnitude.reversed());</span>
+        }
+
+<span class="nc" id="L215">        return comparison.compare(this, other);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
