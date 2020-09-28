@@ -293,6 +293,75 @@ public class ReflectionTest {
         String toString(Object o);
     }
 
+    @Test
+    public void aClassIsNotAMarkerInterface() {
+        assertFalse(isMarkerInterface(Object.class));
+    }
+
+    @Test
+    public void anInterfaceWithAMethodIsNotAMarkerInterface() {
+        assertFalse(isMarkerInterface(NotAMarker.class));
+    }
+
+    public interface NotAMarker {
+        String foo();
+    }
+
+    @Test
+    public void anInterfaceWithNoMethodsButSuperMethodsIsNotAMarkerInterface() {
+        assertFalse(isMarkerInterface(SubNotAMarker.class));
+    }
+
+    public interface SubNotAMarker extends NotAMarker {
+    }
+
+    @Test public void anInterfaceThatOverridesEqualsIsAMarkerInterface() {
+        assertTrue(isMarkerInterface(OverridingEquals.class));
+    }
+
+    @Test public void anInterfaceThatOverloadsEqualsIsNotAMarkerInterface() {
+        assertFalse(isMarkerInterface(OverloadingEquals.class));
+    }
+
+    @Test public void
+    anInterfaceThatOverloadsEqualsWithMoreThanOneParameterIsNotAMarkerInterface() {
+        assertFalse(
+            isMarkerInterface(OverloadingEqualsWithMoreParameters.class));
+    }
+
+    @Test public void
+    anInterfaceThatOverloadsEqualsWithMixedParameterTypesIsNotAMarkerInterface() {
+        assertFalse(
+            isMarkerInterface(OverloadingEqualsWithMixedParameterTypes.class));
+    }
+
+    @Test public void anInterfaceThatOverridesHashCodeIsAMarkerInterface() {
+        assertTrue(isMarkerInterface(OverridingHashCode.class));
+    }
+
+    @Test public void anInterfaceThatOverloadsHashCodeIsNotAMarkerInterface() {
+        assertFalse(isMarkerInterface(OverloadingHashCode.class));
+    }
+
+    @Test public void anInterfaceThatOverridesToStringIsAMarkerInterface() {
+        assertTrue(isMarkerInterface(OverridingToString.class));
+    }
+
+    @Test public void
+    anInterfaceThatOverloadsToStringIsNotAMarkerInterface() {
+        assertFalse(isMarkerInterface(OverloadingToString.class));
+    }
+
+    @Test public void anInterfaceWithOnlyDefaultMethodsIsAMarkerInterface() {
+        assertTrue(isMarkerInterface(OnlyDefaultMethods.class));
+    }
+
+    public interface OnlyDefaultMethods {
+        default String foo() {
+            return "foo";
+        }
+    }
+
     @Test public void settingFieldWithoutBypassingProtection() throws Exception {
         WithAccessibleField target = new WithAccessibleField();
 
