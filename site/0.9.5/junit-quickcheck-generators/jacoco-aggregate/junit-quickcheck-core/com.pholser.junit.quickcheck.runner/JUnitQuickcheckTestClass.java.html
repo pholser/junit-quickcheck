@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>JUnitQuickcheckTestClass.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">JUnitQuickcheckTestClass.java</span></div><h1>JUnitQuickcheckTestClass.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.runner;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import org.junit.internal.MethodSorter;
+import org.junit.runners.model.FrameworkField;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.TestClass;
+
+import static java.util.stream.Collectors.*;
+
+/**
+ * Extension of JUnit framework class for junit-quickcheck's discovery
+ * of JUnit annotations/methods/fields.
+ *
+ * This is a member of a JUnit package so that it has access to
+ * {@link FrameworkField}.
+ */
+public class JUnitQuickcheckTestClass extends TestClass {
+    /**
+     * Makes a new instance, wrapping the given test class.
+     *
+     * @param testClass class with junit-quickcheck tests
+     */
+    public JUnitQuickcheckTestClass(Class&lt;?&gt; testClass) {
+<span class="fc" id="L61">        super(testClass);</span>
+<span class="fc" id="L62">    }</span>
+
+    @Override protected void scanAnnotatedMembers(
+        Map&lt;Class&lt;? extends Annotation&gt;, List&lt;FrameworkMethod&gt;&gt; annotatedMethods,
+        Map&lt;Class&lt;? extends Annotation&gt;, List&lt;FrameworkField&gt;&gt; annotatedFields) {
+
+<span class="fc" id="L68">        ancestry().forEachOrdered(c -&gt; {</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            for (Method each : applicableMethodsOf(c)) {</span>
+<span class="fc" id="L70">                addToAnnotationLists(new FrameworkMethod(each), annotatedMethods);</span>
+<span class="fc" id="L71">            }</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            for (Field each : applicableFieldsOf(c)) {</span>
+<span class="fc" id="L73">                addToAnnotationLists(makeFrameworkField(each), annotatedFields);</span>
+            }
+<span class="fc" id="L75">        });</span>
+<span class="fc" id="L76">    }</span>
+
+    private FrameworkField makeFrameworkField(Field field) {
+        try {
+<span class="fc" id="L80">            Constructor&lt;FrameworkField&gt; ctor =</span>
+<span class="fc" id="L81">                FrameworkField.class.getDeclaredConstructor(Field.class);</span>
+<span class="fc" id="L82">            ctor.setAccessible(true);</span>
+<span class="fc" id="L83">            return ctor.newInstance(field);</span>
+<span class="nc" id="L84">        } catch (ReflectiveOperationException e) {</span>
+<span class="nc" id="L85">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    private static List&lt;Method&gt; applicableMethodsOf(Class&lt;?&gt; clazz) {
+<span class="fc" id="L90">        return Arrays.stream(MethodSorter.getDeclaredMethods(clazz))</span>
+<span class="fc" id="L91">            .filter(m -&gt;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">                !m.getDeclaringClass().isInterface()</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">                    || m.isDefault()</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">                    || Modifier.isStatic(m.getModifiers()))</span>
+<span class="fc" id="L95">            .collect(toList());</span>
+    }
+
+    private static Field[] applicableFieldsOf(Class&lt;?&gt; clazz) {
+<span class="fc" id="L99">        Field[] declaredFields = clazz.getDeclaredFields();</span>
+<span class="fc" id="L100">        Arrays.sort(declaredFields, Comparator.comparing(Field::getName));</span>
+<span class="fc" id="L101">        return declaredFields;</span>
+    }
+
+    private Stream&lt;Class&lt;?&gt;&gt; ancestry() {
+<span class="fc" id="L105">        return superclassHierarchy(getJavaClass())</span>
+<span class="fc" id="L106">            .flatMap(JUnitQuickcheckTestClass::interfaceAncestry);</span>
+    }
+
+    private static Stream&lt;Class&lt;?&gt;&gt; superclassHierarchy(Class&lt;?&gt; clazz) {
+<span class="fc" id="L110">        List&lt;Class&lt;?&gt;&gt; hierarchy = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (Class&lt;?&gt; c = clazz; c != null; c = c.getSuperclass())</span>
+<span class="fc" id="L112">            hierarchy.add(c);</span>
+<span class="fc" id="L113">        return hierarchy.stream();</span>
+    }
+
+    private static Stream&lt;Class&lt;?&gt;&gt; interfaceAncestry(Class&lt;?&gt; clazz) {
+<span class="fc" id="L117">        return Stream.concat(</span>
+<span class="fc" id="L118">            Stream.of(clazz),</span>
+<span class="fc" id="L119">            Arrays.stream(clazz.getInterfaces())</span>
+<span class="fc" id="L120">                .flatMap(JUnitQuickcheckTestClass::interfaceAncestry));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
