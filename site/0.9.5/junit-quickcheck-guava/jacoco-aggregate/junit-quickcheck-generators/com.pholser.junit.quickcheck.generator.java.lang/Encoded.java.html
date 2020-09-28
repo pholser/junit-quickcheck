@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Encoded.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-guava</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.lang</a> &gt; <span class="el_source">Encoded.java</span></div><h1>Encoded.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.lang;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.nio.charset.Charset;
+
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
+import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+
+/**
+ * &lt;p&gt;Produces {@link String}s whose code points correspond to code points in
+ * a given {@link java.nio.charset.Charset}
+ * ({@link java.nio.charset.Charset#defaultCharset() by default}).&lt;/p&gt;
+ */
+public class Encoded extends AbstractStringGenerator {
+    private CodePoints charsetPoints;
+
+<span class="fc" id="L47">    public Encoded() {</span>
+<span class="fc" id="L48">        initialize(Charset.defaultCharset());</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Tells this generator to emit strings in the given charset.
+     *
+     * @param charset a charset to use as the source for characters of
+     * generated strings
+     */
+    public void configure(InCharset charset) {
+<span class="fc" id="L58">        initialize(Charset.forName(charset.value()));</span>
+<span class="fc" id="L59">    }</span>
+
+    private void initialize(Charset charset) {
+<span class="fc" id="L62">        charsetPoints = CodePoints.forCharset(charset);</span>
+<span class="fc" id="L63">    }</span>
+
+    @Override protected int nextCodePoint(SourceOfRandomness random) {
+<span class="fc" id="L66">        return charsetPoints.at(random.nextInt(0, charsetPoints.size() - 1));</span>
+    }
+
+    @Override protected boolean codePointInRange(int codePoint) {
+<span class="fc" id="L70">        return charsetPoints.contains(codePoint);</span>
+    }
+
+    /**
+     * Names a {@link java.nio.charset.Charset}.
+     */
+    @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
+    @Retention(RUNTIME)
+    @GeneratorConfiguration
+    public @interface InCharset {
+        String value();
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
