@@ -29,18 +29,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Iterables;
-import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.RangeAttributes;
-import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.Lists.*;
+import static com.pholser.junit.quickcheck.Mode.*;
 import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.number.OrderingComparison.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -68,30 +67,34 @@ public class PrimitivePropertyParameterTypesTest {
         }
     }
 
-    @Test public void primitiveBooleanWithValuesOf() {
-        assertThat(testResult(PrimitiveBooleanWithValuesOf.class), isSuccessful());
-        assertEquals(repeat(asList(false, true), 50), PrimitiveBooleanWithValuesOf.values);
+    @Test public void primitiveBooleanWithAllValues() {
+        assertThat(
+            testResult(PrimitiveBooleanWithAllValues.class),
+            isSuccessful());
+        assertEquals(asList(false, true), PrimitiveBooleanWithAllValues.values);
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class PrimitiveBooleanWithValuesOf {
+    public static class PrimitiveBooleanWithAllValues {
         static List<Boolean> values = new ArrayList<>();
 
-        @Property public void shouldHold(@ValuesOf boolean b) {
+        @Property(mode = EXHAUSTIVE) public void shouldHold(boolean b) {
             values.add(b);
         }
     }
 
-    @Test public void wrapperBooleanWithValuesOf() {
-        assertThat(testResult(WrapperBooleanWithValuesOf.class), isSuccessful());
-        assertEquals(repeat(asList(false, true), 50), WrapperBooleanWithValuesOf.values);
+    @Test public void wrapperBooleanWithAllValues() {
+        assertThat(
+            testResult(WrapperBooleanWithAllValues.class),
+            isSuccessful());
+        assertEquals(asList(false, true), WrapperBooleanWithAllValues.values);
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WrapperBooleanWithValuesOf {
+    public static class WrapperBooleanWithAllValues {
         static List<Boolean> values = new ArrayList<>();
 
-        @Property public void shouldHold(@ValuesOf Boolean b) {
+        @Property(mode = EXHAUSTIVE) public void shouldHold(Boolean b) {
             values.add(b);
         }
     }
@@ -1109,18 +1112,6 @@ public class PrimitivePropertyParameterTypesTest {
     public static class RightOpenEndedRangedWrapperShort {
         @Property public void shouldHold(@InRange(min = "-21") Short s) {
             assertThat(s, greaterThanOrEqualTo((short) -21));
-        }
-    }
-
-    @Test public void valuesOfNotApplicableOnNonBooleanNonEnum() throws Exception {
-        assertThat(
-            testResult(ValuesOfOnInt.class),
-            hasSingleFailureContaining(GeneratorConfigurationException.class.getName()));
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class ValuesOfOnInt {
-        @Property public void shouldHold(@ValuesOf int i) {
         }
     }
 

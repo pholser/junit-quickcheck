@@ -28,15 +28,12 @@ package com.pholser.junit.quickcheck;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.EnumPropertyParameterTypesTest.TestEnum.*;
-import static com.pholser.junit.quickcheck.Lists.*;
-import static java.util.Arrays.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -61,20 +58,6 @@ public class EnumPropertyParameterTypesTest {
         }
     }
 
-    @Test public void cyclesThroughEnumValuesWhenMarkedWithValuesOf() {
-        assertThat(testResult(EnumWithValuesOf.class), isSuccessful());
-        assertEquals(repeat(asList(E1, E2, E3, E4, E5), 20), EnumWithValuesOf.values);
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class EnumWithValuesOf {
-        static List<TestEnum> values = new ArrayList<>();
-
-        @Property public void shouldHold(@ValuesOf TestEnum e) {
-            values.add(e);
-        }
-    }
-
     @Test public void whenConstrained() throws Exception {
         assertThat(testResult(EnumWithConstraint.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), EnumWithConstraint.values.size());
@@ -87,24 +70,6 @@ public class EnumPropertyParameterTypesTest {
 
         @Property public void shouldHold(
             @When(satisfies = "#_ != @com.pholser.junit.quickcheck.EnumPropertyParameterTypesTest$TestEnum@E3")
-            TestEnum e) {
-
-            values.add(e);
-        }
-    }
-
-    @Test public void whenCyclingAndConstrained() {
-        assertThat(testResult(EnumWithValuesOfAndConstraint.class), isSuccessful());
-        assertEquals(repeat(asList(E1, E2, E4, E5), 25), EnumWithValuesOfAndConstraint.values);
-    }
-
-    @RunWith(JUnitQuickcheck.class)
-    public static class EnumWithValuesOfAndConstraint {
-        static List<TestEnum> values = new ArrayList<>();
-
-        @Property public void shouldHold(
-            @When(satisfies = "#_ != @com.pholser.junit.quickcheck.EnumPropertyParameterTypesTest$TestEnum@E3")
-            @ValuesOf
             TestEnum e) {
 
             values.add(e);
