@@ -27,13 +27,10 @@ package com.pholser.junit.quickcheck.internal.generator;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class EnumGenerator extends Generator<Enum> {
     private final Class<?> enumType;
-
-    private ValuesOf turnOffRandomness;
 
     public EnumGenerator(Class<?> enumType) {
         super(Enum.class);
@@ -41,15 +38,12 @@ public class EnumGenerator extends Generator<Enum> {
         this.enumType = enumType;
     }
 
-    public void configure(ValuesOf flag) {
-        turnOffRandomness = flag;
-    }
+    @Override public Enum<?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
 
-    @Override public Enum<?> generate(SourceOfRandomness random, GenerationStatus status) {
         Object[] values = enumType.getEnumConstants();
-        int index = turnOffRandomness == null
-            ? random.nextInt(0, values.length - 1)
-            : status.attempts() % values.length;
+        int index = random.nextInt(0, values.length - 1);
         return (Enum<?>) values[index];
     }
 

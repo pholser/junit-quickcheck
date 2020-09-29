@@ -30,7 +30,6 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import static java.math.BigDecimal.*;
@@ -41,31 +40,21 @@ import static java.util.Collections.*;
  * Produces values of type {@code boolean} or {@link Boolean}.
  */
 public class BooleanGenerator extends Generator<Boolean> {
-    private ValuesOf turnOffRandomness;
-
-    @SuppressWarnings("unchecked") public BooleanGenerator() {
+    public BooleanGenerator() {
         super(asList(Boolean.class, boolean.class));
     }
 
-    /**
-     * <p>Tells this generator to generate the values {@code true} and
-     * {@code false} on alternating requests.</p>
-     *
-     * <p>Without this configuration, {@code true} and {@code false} are
-     * generated with approximately equal probability.</p>
-     *
-     * @param flag annotation to turn off random generation and replace it
-     * with alternating values
-     */
-    public void configure(ValuesOf flag) {
-        turnOffRandomness = flag;
+    @Override public Boolean generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return random.nextBoolean();
     }
 
-    @Override public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
-        return turnOffRandomness == null ? random.nextBoolean() : status.attempts() % 2 != 0;
-    }
+    @Override public List<Boolean> doShrink(
+        SourceOfRandomness random,
+        Boolean larger) {
 
-    @Override public List<Boolean> doShrink(SourceOfRandomness random, Boolean larger) {
         return larger ? singletonList(false) : emptyList();
     }
 

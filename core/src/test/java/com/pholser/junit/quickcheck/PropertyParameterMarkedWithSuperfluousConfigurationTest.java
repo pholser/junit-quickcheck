@@ -25,17 +25,15 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Formatter;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
-import com.pholser.junit.quickcheck.generator.ValuesOf;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.X;
+import java.util.Formatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,7 +51,7 @@ public class PropertyParameterMarkedWithSuperfluousConfigurationTest {
     @RunWith(JUnitQuickcheck.class)
     public static class WithSuperfluousConfiguration {
         @Property public void shouldHold(
-            @ValuesOf @Between(min = 3, max = 6) Formatter.BigDecimalLayoutForm f) {
+            @X @Between(min = 3, max = 6) Formatter.BigDecimalLayoutForm f) {
         }
     }
 
