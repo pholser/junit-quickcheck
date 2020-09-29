@@ -25,7 +25,6 @@
         <connection>scm:git:git://github.com/pholser/junit-quickcheck.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/pholser/junit-quickcheck.git</developerConnection>
         <url>http://github.com/pholser/junit-quickcheck</url>
-        <tag>junit-quickcheck-0.9</tag>
     </scm>
     <issueManagement>
         <system>GitHub Issues</system>

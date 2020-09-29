@@ -258,6 +258,7 @@ public class GeneratorRepository implements Generators {
         if (!hasGeneratorsFor(parameter)) {
             maybeAddGeneratorByNamingConvention(parameter, matches);
             maybeAddLambdaGenerator(parameter, matches);
+            maybeAddMarkerInterfaceGenerator(parameter, matches);
         } else {
             maybeAddGeneratorsFor(parameter, matches);
         }
@@ -271,9 +272,9 @@ public class GeneratorRepository implements Generators {
     }
 
     private void maybeAddGeneratorByNamingConvention(
-            ParameterTypeContext parameter,
-            List<Generator<?>> matches
-    ) {
+        ParameterTypeContext parameter,
+        List<Generator<?>> matches) {
+
         Class<?> genClass;
         try {
             genClass = Class.forName(parameter.getRawClass().getName() + "Gen");
@@ -307,6 +308,18 @@ public class GeneratorRepository implements Generators {
             Generator<?> lambda =
                 new LambdaGenerator<>(parameter.getRawClass(), returnTypeGenerator);
             matches.add(lambda);
+        }
+    }
+
+    private void maybeAddMarkerInterfaceGenerator(
+        ParameterTypeContext parameter,
+        List<Generator<?>> matches) {
+
+        Class<?> rawClass = parameter.getRawClass();
+        if (isMarkerInterface(rawClass)) {
+            Generator<?> marker =
+                new MarkerInterfaceGenerator<>(parameter.getRawClass());
+            matches.add(marker);
         }
     }
 
