@@ -31,7 +31,6 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.When;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -51,6 +50,7 @@ import org.slf4j.Logger;
 
 import static com.pholser.junit.quickcheck.Objects.*;
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -60,14 +60,12 @@ public abstract class CorePropertyParameterTest {
     @Mock protected SourceOfRandomness randomForParameterGenerator;
     @Mock protected SourceOfRandomness randomForGeneratorRepo;
     @Mock protected GeometricDistribution distro;
-    @Mock protected Logger log;
     protected Iterable<Generator<?>> source;
     protected GeneratorRepository repository;
 
     @Mock private Property propertyMetadata;
     @Mock private When quantifier;
-    @Mock private From explicitGenerators;
-    private List<Object> propertyParameters = new ArrayList<>();
+    private final List<Object> propertyParameters = new ArrayList<>();
 
     @Before public final void beforeEach() throws Exception {
         source = generatorSource();
@@ -148,7 +146,8 @@ public abstract class CorePropertyParameterTest {
     }
 
     private Parameter typeBearerParameter() throws Exception {
-        return getClass().getMethod("TYPE_BEARER", Integer.class).getParameters()[0];
+        return getClass().getMethod("TYPE_BEARER", Integer.class)
+            .getParameters()[0];
     }
 
     protected abstract int trials();
@@ -163,7 +162,12 @@ public abstract class CorePropertyParameterTest {
             verifyEquivalenceOfPropertyParameter(i, values.get(i), propertyParameters.get(i));
     }
 
-    protected void verifyEquivalenceOfPropertyParameter(int index, Object expected, Object actual) throws Exception {
+    protected void verifyEquivalenceOfPropertyParameter(
+        int index,
+        Object expected,
+        Object actual)
+        throws Exception {
+
         assertThat(index + "'th value", expected, deepEquals(actual));
     }
 

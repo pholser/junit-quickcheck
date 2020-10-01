@@ -46,14 +46,13 @@ public class LambdasTest {
     @Rule public final ExpectedException thrown = none();
 
     private ABool returnValueGenerator;
-    private SourceOfRandomness random;
     private SimpleGenerationStatus status;
     private Predicate<Integer> predicate;
 
     @SuppressWarnings("unchecked")
     @Before public void setUp() {
         returnValueGenerator = new ABool();
-        random = new SourceOfRandomness(new Random());
+        SourceOfRandomness random = new SourceOfRandomness(new Random());
         random.setSeed(-1L);
         status = new SimpleGenerationStatus(new GeometricDistribution(), random, 0);
 

@@ -31,17 +31,12 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static java.util.Collections.*;
 import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class BasicCapabilitiesOfGeneratorTest {
-    @Rule public final ExpectedException thrown = none();
-
     private Generator<Object> generator;
     private Generator<Object> nonShrinkingGenerator;
 
@@ -84,8 +79,8 @@ public class BasicCapabilitiesOfGeneratorTest {
     }
 
     @Test public void nonShrinkingGeneratorAttemptingToShrink() {
-        thrown.expect(IllegalStateException.class);
-
-        nonShrinkingGenerator.shrink(null, new Object());
+        assertThrows(
+            IllegalStateException.class,
+            () -> nonShrinkingGenerator.shrink(null, new Object()));
     }
 }

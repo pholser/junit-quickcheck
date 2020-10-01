@@ -28,16 +28,11 @@ package com.pholser.junit.quickcheck.generator.java.lang.strings;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class CodePointsTest {
-    @Rule public final ExpectedException thrown = none();
-
     @Test public void versusCharsetThatDoesNotSupportEncoding() {
         Charset noEncoding;
 
@@ -47,9 +42,9 @@ public class CodePointsTest {
             return;
         }
 
-        thrown.expect(IllegalArgumentException.class);
-
-        CodePoints.forCharset(noEncoding);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> CodePoints.forCharset(noEncoding));
     }
 
     @Test public void middlingTree() {
@@ -93,15 +88,15 @@ public class CodePointsTest {
     }
 
     @Test public void lowIndex() {
-        thrown.expect(IndexOutOfBoundsException.class);
-
-        new CodePoints().at(-1);
+        assertThrows(
+            IndexOutOfBoundsException.class,
+            () -> new CodePoints().at(-1));
     }
 
     @Test public void highIndex() {
-        thrown.expect(IndexOutOfBoundsException.class);
-
-        new CodePoints().at(0);
+        assertThrows(
+            IndexOutOfBoundsException.class,
+            () -> new CodePoints().at(0));
     }
 
     @Test public void sizeOfEmpty() {
