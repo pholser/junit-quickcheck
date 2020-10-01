@@ -39,6 +39,8 @@ import java.util.Random;
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Ranges;
 
+import javax.annotation.Nonnull;
+
 import static java.util.concurrent.TimeUnit.*;
 
 import static com.pholser.junit.quickcheck.internal.Ranges.*;
@@ -298,6 +300,7 @@ public class SourceOfRandomness {
      * @return a random {@code BigInteger}
      * @see BigInteger#BigInteger(int, java.util.Random)
      */
+    @Nonnull
     public BigInteger nextBigInteger(int numberOfBits) {
         return new BigInteger(numberOfBits, delegate);
     }
@@ -310,6 +313,7 @@ public class SourceOfRandomness {
      * @param max upper bound of the desired interval
      * @return a random value
      */
+    @Nonnull
     public Instant nextInstant(Instant min, Instant max) {
         int comparison = checkRange(Ranges.Type.STRING, min, max);
         if (comparison == 0)
@@ -332,6 +336,7 @@ public class SourceOfRandomness {
      * @param max upper bound of the desired interval
      * @return a random value
      */
+    @Nonnull
     public Duration nextDuration(Duration min, Duration max) {
         int comparison = checkRange(Ranges.Type.STRING, min, max);
         if (comparison == 0)

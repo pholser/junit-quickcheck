@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -65,6 +67,7 @@ public interface GenerationStatus {
      * @param value the associated value
      * @return self, so that calls to this method can be chained
      */
+    @Nonnull
     <T> GenerationStatus setValue(Key<T> key, T value);
 
     /**
@@ -74,6 +77,7 @@ public interface GenerationStatus {
      * @param key key to look up
      * @return the (optional) associated value
      */
+    @Nonnull
     <T> Optional<T> valueOf(Key<T> key);
 
     /**
@@ -96,6 +100,7 @@ public interface GenerationStatus {
             this.type = type;
         }
 
+        @Nullable
         public T cast(Object o) {
             return type.cast(o);
         }

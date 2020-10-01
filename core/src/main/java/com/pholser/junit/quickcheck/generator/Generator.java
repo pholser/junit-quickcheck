@@ -42,6 +42,8 @@ import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
 
+import javax.annotation.Nonnull;
+
 import static java.math.BigDecimal.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
@@ -82,6 +84,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @return class tokens for the types of property parameters this generator
      * is applicable to
      */
+    @Nonnull
     public List<Class<T>> types() {
         return unmodifiableList(types);
     }
@@ -105,7 +108,8 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * participate} in shrinking the given value, and if so, they
      * {@linkplain #doShrink(SourceOfRandomness, Object) produce shrinks}.</p>
      */
-    @Override public final List<T> shrink(SourceOfRandomness random, Object larger) {
+    @Nonnull
+    @Override public final List<T> shrink(@Nonnull SourceOfRandomness random, Object larger) {
         if (!canShrink(larger)) {
             throw new IllegalStateException(
                 getClass() + " not capable of shrinking " + larger);
@@ -141,7 +145,8 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @param larger the larger object
      * @return objects that are "smaller" than the larger object. Smaller objects should be provided before bigger objects to make shrinking process faster.
      */
-    public List<T> doShrink(SourceOfRandomness random, T larger) {
+    @Nonnull
+    public List<T> doShrink(@Nonnull SourceOfRandomness random, T larger) {
         return emptyList();
     }
 
@@ -159,6 +164,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * @param value the value to assess
      * @return a measure of the given value's magnitude
      */
+    @Nonnull
     public BigDecimal magnitude(Object value) {
         return ONE;
     }
@@ -214,7 +220,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      *
      * @param newComponents component generators to add
      */
-    public void addComponentGenerators(List<Generator<?>> newComponents) {
+    public void addComponentGenerators(@Nonnull List<Generator<?>> newComponents) {
         // do nothing by default
     }
 
@@ -224,7 +230,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * for property parameters that have the given type parameters in their
      * signatures
      */
-    public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+    public boolean canGenerateForParametersOfTypes(@Nonnull List<TypeParameter<?>> typeParameters) {
         return true;
     }
 
@@ -254,14 +260,14 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      * "understand" one of the generation configuration annotations on
      * the annotated type
      */
-    public void configure(AnnotatedType annotatedType) {
+    public void configure(@Nonnull AnnotatedType annotatedType) {
         configureStrict(collectConfigurationAnnotations(annotatedType));
     }
 
     /**
      * @param element an annotated program element
      */
-    public void configure(AnnotatedElement element) {
+    public void configure(@Nonnull AnnotatedElement element) {
         configureLenient(collectConfigurationAnnotations(element));
     }
 
@@ -282,6 +288,7 @@ public abstract class Generator<T> implements Gen<T>, Shrink<T> {
      *
      * @return a copy of the receiver
      */
+    @Nonnull
     @SuppressWarnings("unchecked")
     public Generator<T> copy() {
         return (Generator<T>) instantiate(getClass());

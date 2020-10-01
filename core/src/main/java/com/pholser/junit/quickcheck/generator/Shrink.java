@@ -29,6 +29,8 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents a strategy for producing objects "smaller than" a given object.
  *
@@ -43,5 +45,6 @@ public interface Shrink<T> {
      * @param larger the larger object
      * @return objects that are "smaller" than the larger object
      */
-    List<T> shrink(SourceOfRandomness random, Object larger);
+    @Nonnull
+    List<T> shrink(@Nonnull SourceOfRandomness random, Object larger);
 }
