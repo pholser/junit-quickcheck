@@ -28,7 +28,8 @@ package com.pholser.junit.quickcheck;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
@@ -40,7 +41,7 @@ public abstract class EqualsHashCodePropertiesTest<T> {
     @Property public void equalsIsReflexive(T o) {
         assumeThat(o, not(equalTo(null)));
 
-        assertTrue(o.equals(o));
+        assertEquals(o, o);
     }
 
     @Property public void equalsIsSymmetric(T x, T y) {
@@ -48,7 +49,7 @@ public abstract class EqualsHashCodePropertiesTest<T> {
         assumeThat(y, not(equalTo(null)));
         assumeTrue(y.equals(x));
 
-        assertTrue(x.equals(y));
+        assertEquals(x, y);
     }
 
     @Property public void equalsIsTransitive(T x, T y, T z) {
@@ -57,7 +58,7 @@ public abstract class EqualsHashCodePropertiesTest<T> {
         assumeThat(z, not(equalTo(null)));
         assumeTrue(x.equals(y) && y.equals(z));
 
-        assertTrue(z.equals(x));
+        assertEquals(z, x);
     }
 
     @Property public void equalsIsConsistent(T x, T y) {
@@ -71,7 +72,7 @@ public abstract class EqualsHashCodePropertiesTest<T> {
     @Property public void equalsReturnsFalseOnNull(T x) {
         assumeThat(x, not(equalTo(null)));
 
-        assertFalse(x.equals(null));
+        assertNotEquals(x, null);
     }
 
     @Property public void hashCodeIsSelfConsistent(T x) {
@@ -93,13 +94,13 @@ public abstract class EqualsHashCodePropertiesTest<T> {
         assumeThat(x, not(equalTo(null)));
         assumeTrue(x == y);
 
-        assertTrue(x.equals(y));
+        assertEquals(x, y);
     }
 
     @Property public void notEqualsWorks(T x, T y) {
         assumeThat(x, not(equalTo(null)));
         assumeTrue(x != y);
 
-        assertFalse(x.equals(y));
+        assertNotEquals(x, y);
     }
 }

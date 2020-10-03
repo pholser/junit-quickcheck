@@ -61,6 +61,7 @@ import static com.pholser.junit.quickcheck.Mode.*;
 import static java.math.RoundingMode.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -171,7 +172,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         }
     }
 
-    @Test public void wrapperChars() throws Exception {
+    @Test public void wrapperChars() {
         assertThat(testResult(WrapperChars.class), isSuccessful());
         assertEquals(23, WrapperChars.iterations);
         assertEquals(
@@ -558,7 +559,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         }
     }
 
-    @Test public void noImplicitConversion() throws Exception {
+    @Test public void noImplicitConversion() {
         assertThat(
             testResult(NoImplicitConversion.class),
             hasSingleFailureContaining(ReflectionException.class.getName()));
@@ -626,7 +627,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         }
     }
 
-    @Test public void manyParameters() throws Exception {
+    @Test public void manyParameters() {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(16, ManyParameters.iterations);
         assertEquals(
@@ -663,7 +664,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         }
     }
 
-    @Test public void manyParametersWithBooleanAndEnum() throws Exception {
+    @Test public void manyParametersWithBooleanAndEnum() {
         assertThat(testResult(ManyParametersWithBooleanAndEnum.class), isSuccessful());
 
         int expectedCount = 4 * 4 * 2 * RoundingMode.values().length;
@@ -674,24 +675,41 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
             assertEquals(
                 String.valueOf(i),
                 asList(3, 7),
-                ManyParametersWithBooleanAndEnum.firstTestCases.subList(i * 4, i * 4 + 2));
+                ManyParametersWithBooleanAndEnum.firstTestCases.subList(
+                    i * 4,
+                    i * 4 + 2));
         }
         for (int i = 0; i < expectedCount / 16; ++i) {
             assertEquals(
                 String.valueOf(i),
                 asList('a', 'a', 'a', 'a', 'b', 'b', 'b', 'b', 'c', 'c', 'c', 'c'),
-                ManyParametersWithBooleanAndEnum.secondTestCases.subList(i * 16, i * 16 + 12));
+                ManyParametersWithBooleanAndEnum.secondTestCases.subList(
+                    i * 16,
+                    i * 16 + 12));
         }
         for (int i = 0; i < expectedCount / 32; ++i) {
             assertEquals(
-                asList(false, false, false, false, false, false, false, false,
+                asList(
+                    false, false, false, false, false, false, false, false,
                     false, false, false, false, false, false, false, false),
-                ManyParametersWithBooleanAndEnum.thirdTestCases.subList(i * 32, i * 32 + 16));
+                ManyParametersWithBooleanAndEnum.thirdTestCases.subList(
+                    i * 32,
+                    i * 32 + 16));
             assertEquals(
-                asList(true, true, true, true, true, true, true, true,
+                asList(
+                    true, true, true, true, true, true, true, true,
                     true, true, true, true, true, true, true, true),
-                ManyParametersWithBooleanAndEnum.thirdTestCases.subList(i * 32 + 16, i * 32 + 32));
+                ManyParametersWithBooleanAndEnum.thirdTestCases.subList(
+                    i * 32 + 16,
+                    i * 32 + 32));
         }
+
+        assertEquals(
+            expectedCount,
+            ManyParametersWithBooleanAndEnum.fourthTestCases.size());
+        assertEquals(
+            EnumSet.allOf(RoundingMode.class),
+            new HashSet<>(ManyParametersWithBooleanAndEnum.fourthTestCases));
     }
 
     @RunWith(JUnitQuickcheck.class)
