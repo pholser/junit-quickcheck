@@ -30,15 +30,16 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class MessageDigestsTest {
     @Test public void treatsNoSuchAlgorithmAsIllegalState() {
-        try {
-            MessageDigests.get("foobar");
-        } catch (IllegalStateException expected) {
-            assertThat(expected.getCause(), instanceOf(NoSuchAlgorithmException.class));
-        }
+        IllegalStateException ex =
+            assertThrows(
+                IllegalStateException.class,
+                () -> MessageDigests.get("foobar"));
+        assertThat(ex.getCause(), instanceOf(NoSuchAlgorithmException.class));
     }
 }

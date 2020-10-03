@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -63,20 +63,28 @@ public class LocalDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.n")
             LocalDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.n");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.n");
 
             assertThat(
                 t,
                 allOf(
-                    greaterThanOrEqualTo(LocalDateTime.parse("01/01/2012T00:00:00.0", formatter)),
-                    lessThanOrEqualTo(LocalDateTime.parse("12/31/2012T23:59:59.999999999", formatter))));
+                    greaterThanOrEqualTo(
+                        LocalDateTime.parse(
+                            "01/01/2012T00:00:00.0",
+                            formatter)),
+                    lessThanOrEqualTo(
+                        LocalDateTime.parse(
+                            "12/31/2012T23:59:59.999999999",
+                            formatter))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinLocalDateTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -93,7 +101,8 @@ public class LocalDateTimePropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxLocalDateTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -110,7 +119,8 @@ public class LocalDateTimePropertyParameterTypesTest {
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatLocalDateTime.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -136,11 +146,14 @@ public class LocalDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.n")
             LocalDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.n");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.n");
             assertThat(
                 t,
                 lessThanOrEqualTo(
-                    LocalDateTime.parse("12/31/2012T23:59:59.999999999", formatter)));
+                    LocalDateTime.parse(
+                        "12/31/2012T23:59:59.999999999",
+                        formatter)));
         }
     }
 
@@ -156,18 +169,22 @@ public class LocalDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.n")
             LocalDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.n");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.n");
             assertThat(
                 t,
                 greaterThanOrEqualTo(
-                    LocalDateTime.parse("12/31/2012T23:59:59.999999999", formatter)));
+                    LocalDateTime.parse(
+                        "12/31/2012T23:59:59.999999999",
+                        formatter)));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

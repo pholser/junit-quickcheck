@@ -30,7 +30,6 @@ import java.util.List;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -41,18 +40,16 @@ import static java.util.Collections.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class ListsTest {
-    @Rule public final ExpectedException thrown = none();
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
 
     @Mock private SourceOfRandomness random;
 
     @Test public void rejectsNegativeRemovalCount() {
-        thrown.expect(IllegalArgumentException.class);
-
-        Lists.removeFrom(newArrayList("abc"), -1);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> Lists.removeFrom(newArrayList("abc"), -1));
     }
 
     @Test public void removalsOfZeroElementsFromAList() {
@@ -66,7 +63,9 @@ public class ListsTest {
     }
 
     @Test public void singleRemovalsFromASingletonList() {
-        assertEquals(singletonList(emptyList()), Lists.removeFrom(singletonList('a'), 1));
+        assertEquals(
+            singletonList(emptyList()),
+            Lists.removeFrom(singletonList('a'), 1));
     }
 
     @Test public void singleRemovalsFromADoubletonList() {
@@ -76,25 +75,32 @@ public class ListsTest {
     }
 
     @Test public void doubleRemovalsFromADoubletonList() {
-        assertEquals(singletonList(emptyList()), Lists.removeFrom(newArrayList('a', 'b'), 2));
+        assertEquals(
+            singletonList(emptyList()),
+            Lists.removeFrom(newArrayList('a', 'b'), 2));
     }
 
     @Test public void tooManyRemovalsFromADoubletonList() {
-        assertEquals(emptyList(), Lists.removeFrom(newArrayList('a', 'b'), 3));
+        assertEquals(
+            emptyList(),
+            Lists.removeFrom(newArrayList('a', 'b'), 3));
     }
 
     @Test public void shrinksOfEmptyList() {
-        assertEquals(emptyList(), Lists.shrinksOfOneItem(random, emptyList(), null));
+        assertEquals(
+            emptyList(),
+            Lists.shrinksOfOneItem(random, emptyList(), null));
     }
 
     @Test public void shrinksOfNonEmptyList() {
-        List<List<Integer>> shrinks = Lists.shrinksOfOneItem(
-            random,
-            newArrayList(1, 2, 3),
-            (r, i) -> {
-                assumeThat(r, sameInstance(random));
-                return newArrayList(4, 5);
-            });
+        List<List<Integer>> shrinks =
+            Lists.shrinksOfOneItem(
+                random,
+                newArrayList(1, 2, 3),
+                (r, i) -> {
+                    assumeThat(r, sameInstance(random));
+                    return newArrayList(4, 5);
+                });
 
         assertEquals(
             newArrayList(

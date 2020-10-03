@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -42,7 +43,9 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class MinimalCounterexampleHookTest {
-    public static class StoreFailingSetInGlobalVariable implements MinimalCounterexampleHook {
+    public static class StoreFailingSetInGlobalVariable
+        implements MinimalCounterexampleHook {
+
         static Object[] counterexample = null;
         static int counter = 0;
 
@@ -71,7 +74,8 @@ public class MinimalCounterexampleHookTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SuccessfulTest {
-        @Property(onMinimalCounterexample = StoreFailingSetInGlobalVariable.class)
+        @Property(
+            onMinimalCounterexample = StoreFailingSetInGlobalVariable.class)
         public void shouldHold(Foo f) {
         }
     }
@@ -83,14 +87,21 @@ public class MinimalCounterexampleHookTest {
 
         assertEquals(1, StoreFailingSetInGlobalVariable.counter);
         assertNotNull(StoreFailingSetInGlobalVariable.counterexample);
-        assertThat(StoreFailingSetInGlobalVariable.counterexample, instanceOf(Object[].class));
-        assertEquals(1, StoreFailingSetInGlobalVariable.counterexample.length);
-        assertThat(StoreFailingSetInGlobalVariable.counterexample[0], instanceOf(Foo.class));
+        assertThat(
+            StoreFailingSetInGlobalVariable.counterexample,
+            instanceOf(Object[].class));
+        assertEquals(
+            1,
+            StoreFailingSetInGlobalVariable.counterexample.length);
+        assertThat(
+            StoreFailingSetInGlobalVariable.counterexample[0],
+            instanceOf(Foo.class));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class FailingTestWithShrinking {
-        @Property(onMinimalCounterexample = StoreFailingSetInGlobalVariable.class)
+        @Property(
+            onMinimalCounterexample = StoreFailingSetInGlobalVariable.class)
         public void shouldHold(Foo f) {
             assumeThat(f.i(), greaterThan(Integer.MAX_VALUE / 2));
             assertThat(f.i(), lessThan(Integer.MAX_VALUE / 2));
@@ -104,14 +115,22 @@ public class MinimalCounterexampleHookTest {
 
         assertEquals(1, StoreFailingSetInGlobalVariable.counter);
         assertNotNull(StoreFailingSetInGlobalVariable.counterexample);
-        assertThat(StoreFailingSetInGlobalVariable.counterexample, instanceOf(Object[].class));
-        assertEquals(1, StoreFailingSetInGlobalVariable.counterexample.length);
-        assertThat(StoreFailingSetInGlobalVariable.counterexample[0], instanceOf(Foo.class));
+        assertThat(
+            StoreFailingSetInGlobalVariable.counterexample,
+            instanceOf(Object[].class));
+        assertEquals(
+            1,
+            StoreFailingSetInGlobalVariable.counterexample.length);
+        assertThat(
+            StoreFailingSetInGlobalVariable.counterexample[0],
+            instanceOf(Foo.class));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class FailingTestWithShrinkingDisabled {
-        @Property(onMinimalCounterexample = StoreFailingSetInGlobalVariable.class, shrink = false)
+        @Property(
+            onMinimalCounterexample = StoreFailingSetInGlobalVariable.class,
+            shrink = false)
         public void shouldHold(Foo f) {
             assumeThat(f.i(), greaterThan(Integer.MAX_VALUE / 2));
             assertThat(f.i(), lessThan(Integer.MAX_VALUE / 2));
@@ -126,7 +145,8 @@ public class MinimalCounterexampleHookTest {
             testResult(FailingTestWhichIsRepeatedThreeTimesAfterFailure.class),
             not(isSuccessful()));
 
-        List<Integer> calls = FailingTestWhichIsRepeatedThreeTimesAfterFailure.calls;
+        List<Integer> calls =
+            FailingTestWhichIsRepeatedThreeTimesAfterFailure.calls;
         assertThat(calls.size(), greaterThanOrEqualTo(3));
 
         // at least the last three calls should be equal
@@ -134,7 +154,9 @@ public class MinimalCounterexampleHookTest {
         assertEquals(calls.get(calls.size() - 1), calls.get(calls.size() - 3));
     }
 
-    public static class RepeatFailingTestThreeTimes implements MinimalCounterexampleHook {
+    public static class RepeatFailingTestThreeTimes
+        implements MinimalCounterexampleHook {
+
         @Override
         public void handle(Object[] counterexample, Runnable action) {
             for (int i = 0; i < 3; i++) {
@@ -170,31 +192,38 @@ public class MinimalCounterexampleHookTest {
             FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.calls,
             iterableWithSize(0));
         assumeThat(
-            testResult(FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.class),
+            testResult(
+                FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.class),
             not(isSuccessful()));
 
-        // should result in four identical calls (the first try immediately fails, followed by three repetitions)
-        List<Integer> calls = FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.calls;
+        // should result in four identical calls (the first try
+        // immediately fails, followed by three repetitions)
+        List<Integer> calls =
+            FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.calls;
         assertEquals(4, calls.size());
         assertEquals(1, new HashSet<>(calls).size());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking {
+    public static class
+    FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking {
         static List<Integer> calls = new ArrayList<>();
 
         static void reset() {
             calls = new ArrayList<>();
         }
 
-        @Property(onMinimalCounterexample = RepeatFailingTestThreeTimes.class, shrink = false)
+        @Property(
+            onMinimalCounterexample = RepeatFailingTestThreeTimes.class,
+            shrink = false)
         public void shouldHold(Foo f) {
             calls.add(f.i());
             fail();
         }
     }
 
-    @Before public void resetFailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking() {
+    @Before public void
+    resetFailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking() {
         FailingTestWhichIsRepeatedThreeTimesAfterFailureWithoutShrinking.reset();
     }
 }

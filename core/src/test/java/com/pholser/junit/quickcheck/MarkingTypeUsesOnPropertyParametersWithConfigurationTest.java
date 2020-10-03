@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -56,7 +57,8 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
 
     @Test public void parameterConfiguredButGenericParameterNotConfigured() {
         assertThat(
-            testResult(ParameterConfiguredButGenericParameterNotConfigured.class),
+            testResult(
+                ParameterConfiguredButGenericParameterNotConfigured.class),
             isSuccessful());
     }
 
@@ -85,13 +87,16 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
 
     @Test public void twoGenericParametersOfSameTypeConfiguredDifferently() {
         assertThat(
-            testResult(TwoGenericParametersOfSameTypeConfiguredDifferently.class),
+            testResult(
+                TwoGenericParametersOfSameTypeConfiguredDifferently.class),
             isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class TwoGenericParametersOfSameTypeConfiguredDifferently {
-        @Property public void holds(Pair<@X Box<@Same(1) Foo>, Box<@X @Same(2) Foo>> pair) {
+        @Property public void holds(
+            Pair<@X Box<@Same(1) Foo>, Box<@X @Same(2) Foo>> pair) {
+
             assertFalse(pair.marked());
 
             assertTrue(pair.first().marked());
@@ -112,7 +117,9 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class TwoGenericParametersReferringToSameType {
-        @Property public void holds(Pair<@X @Same(1) Foo, Box<@X @Same(2) Foo>> pair) {
+        @Property public void holds(
+            Pair<@X @Same(1) Foo, Box<@X @Same(2) Foo>> pair) {
+
             assertFalse(pair.marked());
 
             assertTrue(pair.first().marked());

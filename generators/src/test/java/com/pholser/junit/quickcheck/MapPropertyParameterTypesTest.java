@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -61,7 +62,9 @@ public class MapPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToUpperBound {
-        @Property(trials = 20) public void shouldHold(Map<?, ? extends Short> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<?, ? extends Short> items) {
+
             for (Short each : items.values()) {
                 // testing type cast
             }
@@ -74,17 +77,22 @@ public class MapPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToLowerBound {
-        @Property(trials = 20) public void shouldHold(Map<?, ? super Date> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<?, ? super Date> items) {
         }
     }
 
     @Test public void huhToArrayOfSerializable() {
-        assertThat(testResult(MapOfHuhToArrayOfSerializable.class), isSuccessful());
+        assertThat(
+            testResult(MapOfHuhToArrayOfSerializable.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToArrayOfSerializable {
-        @Property(trials = 20) public void shouldHold(Map<?, Serializable[]> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<?, Serializable[]> items) {
+
             for (Serializable[] each : items.values()) {
                 for (Serializable s : each) {
                     // ensuring the cast works
@@ -107,12 +115,16 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void huhToMapOfIntegerToString() {
-        assertThat(testResult(MapOfHuhToMapOfIntegerToString.class), isSuccessful());
+        assertThat(
+            testResult(MapOfHuhToMapOfIntegerToString.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToMapOfIntegerToString {
-        @Property(trials = 20) public void shouldHold(Map<?, Map<Integer, String>> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<?, Map<Integer, String>> items) {
+
             for (Map<Integer, String> each : items.values()) {
                 for (Map.Entry<Integer, String> eachEntry : each.entrySet()) {
                     // ensuring the cast works
@@ -124,19 +136,27 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingMapOfIntegerToMapOfByteToShort() {
-        assertThat(testResult(ShrinkingMapOfIntegerToMapOfByteToShort.class), failureCountIs(1));
-        assertThat(ShrinkingMapOfIntegerToMapOfByteToShort.failed.size(), greaterThan(3));
+        assertThat(
+            testResult(ShrinkingMapOfIntegerToMapOfByteToShort.class),
+            failureCountIs(1));
+        assertThat(
+            ShrinkingMapOfIntegerToMapOfByteToShort.failed.size(),
+            greaterThan(3));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingMapOfIntegerToMapOfByteToShort {
         static Map<Integer, Map<Byte, Short>> failed;
 
-        @Property(trials = 20) public void shouldHold(Map<Integer, Map<Byte, Short>> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<Integer, Map<Byte, Short>> items) {
+
             assumeThat(items.size(), greaterThan(3));
 
             // ensuring casts work
-            for (Map.Entry<Integer, Map<Byte, Short>> eachEntry : items.entrySet()) {
+            for (Map.Entry<Integer, Map<Byte, Short>> eachEntry :
+                items.entrySet()) {
+
                 Integer key = eachEntry.getKey();
                 Map<Byte, Short> value = eachEntry.getValue();
                 for (Map.Entry<Byte, Short> eachSubEntry : value.entrySet()) {
@@ -152,12 +172,16 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void huhToListOfUpperBound() {
-        assertThat(testResult(MapOfHuhToListOfUpperBound.class), isSuccessful());
+        assertThat(
+            testResult(MapOfHuhToListOfUpperBound.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToListOfUpperBound {
-        @Property(trials = 20) public void shouldHold(Map<?, List<? extends Serializable>> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<?, List<? extends Serializable>> items) {
+
             for (List<? extends Serializable> each : items.values()) {
                 for (Serializable s : each) {
                     // testing type cast
@@ -167,12 +191,16 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void huhToSetOfLowerBound() {
-        assertThat(testResult(MapOfHuhToSetOfLowerBound.class), isSuccessful());
+        assertThat(
+            testResult(MapOfHuhToSetOfLowerBound.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfHuhToSetOfLowerBound {
-        @Property(trials = 20) public void shouldHold(Map<?, Set<? super HashMap<?, ?>>> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<?, Set<? super HashMap<?, ?>>> items) {
+
             for (Set<? super HashMap<?, ?>> each : items.values()) {
                 for (Object eachItem : each) {
                 }
@@ -186,7 +214,9 @@ public class MapPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfUpperBoundToHuh {
-        @Property(trials = 20) public void shouldHold(Map<? extends Number, ?> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<? extends Number, ?> items) {
+
             for (Number each : items.keySet()) {
                 // testing type cast
             }
@@ -199,7 +229,8 @@ public class MapPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfLowerBoundToHuh {
-        @Property(trials = 20) public void shouldHold(Map<? super int[], ?> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<? super int[], ?> items) {
         }
     }
 
@@ -232,16 +263,24 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void mapOfIntegerToStringToMapOfShortToDate() {
-        assertThat(testResult(MapOfIntegerToStringToMapOfShortToDate.class), isSuccessful());
+        assertThat(
+            testResult(MapOfIntegerToStringToMapOfShortToDate.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapOfIntegerToStringToMapOfShortToDate {
-        @Property(trials = 20) public void shouldHold(Map<Map<Integer, String>, Map<Short, Date>> items) {
-            for (Map.Entry<Map<Integer, String>, Map<Short, Date>> entry : items.entrySet()) {
+        @Property(trials = 20) public void shouldHold(
+            Map<Map<Integer, String>, Map<Short, Date>> items) {
+
+            for (Map.Entry<Map<Integer, String>, Map<Short, Date>> entry :
+                items.entrySet()) {
+
                 Map<Integer, String> byInteger = entry.getKey();
                 Map<Short, Date> byShort = entry.getValue();
-                for (Map.Entry<Integer, String> integerEntry : byInteger.entrySet()) {
+                for (Map.Entry<Integer, String> integerEntry :
+                    byInteger.entrySet()) {
+
                     // ensuring the cast works
                     Integer key = integerEntry.getKey();
                     String value = integerEntry.getValue();
@@ -256,12 +295,16 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void iterableOfUpperBoundToHuh() {
-        assertThat(testResult(IterableOfUpperBoundToHuh.class), isSuccessful());
+        assertThat(
+            testResult(IterableOfUpperBoundToHuh.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class IterableOfUpperBoundToHuh {
-        @Property(trials = 20) public void shouldHold(Map<Iterable<? extends Number>, ?> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<Iterable<? extends Number>, ?> items) {
+
             for (Iterable<? extends Number> each : items.keySet()) {
                 for (Number n : each) {
                     // testing type cast
@@ -271,12 +314,16 @@ public class MapPropertyParameterTypesTest {
     }
 
     @Test public void collectionOfLowerBoundToHuh() {
-        assertThat(testResult(CollectionOfLowerBoundToHuh.class), isSuccessful());
+        assertThat(
+            testResult(CollectionOfLowerBoundToHuh.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class CollectionOfLowerBoundToHuh {
-        @Property(trials = 20) public void shouldHold(Map<Collection<? super List<?>>, ?> items) {
+        @Property(trials = 20) public void shouldHold(
+            Map<Collection<? super List<?>>, ?> items) {
+
             for (Collection<? super List<?>> each : items.keySet()) {
                 for (Object item : each) {
                 }
@@ -290,7 +337,10 @@ public class MapPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MapMerging {
-        @Property public void mergeMapSize(Map<Integer, Integer> m1, Map<Integer, Integer> m2) {
+        @Property public void mergeMapSize(
+            Map<Integer, Integer> m1,
+            Map<Integer, Integer> m2) {
+
             int intersectionSize = intersectByKeys(m1, m2).size();
             int mergeSize = merge(asList(m1, m2)).size();
 
@@ -306,7 +356,10 @@ public class MapPropertyParameterTypesTest {
             return result;
         }
 
-        private static <K1, V1, V2> Map<K1, V1> intersectByKeys(Map<K1, V1> m1, Map<K1, V2> m2) {
+        private static <K1, V1, V2> Map<K1, V1> intersectByKeys(
+            Map<K1, V1> m1,
+            Map<K1, V2> m2) {
+
             Map<K1, V1> result = new HashMap<>();
             m1.forEach((k1, v1) -> {
                 if (m2.containsKey(k1))

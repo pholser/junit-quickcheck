@@ -32,7 +32,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -47,7 +47,11 @@ public class LongConsumerPropertyParameterTest {
             consumer.accept(arg);
         }
 
-        @Property public void chained(LongConsumer first, LongConsumer second, long arg) {
+        @Property public void chained(
+            LongConsumer first,
+            LongConsumer second,
+            long arg) {
+
             first.andThen(second).accept(arg);
         }
     }

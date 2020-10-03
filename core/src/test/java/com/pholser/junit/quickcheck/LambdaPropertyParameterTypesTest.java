@@ -35,6 +35,7 @@ import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.Functions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -52,8 +53,10 @@ public class LambdaPropertyParameterTypesTest {
         @Property public void shouldHold(FooBoxOpener b) {
             ++iterations;
 
-            @SuppressWarnings("unchecked")
-            Foo value = functionValue(new AFoo(), new Object[] { new Box<>(new Foo(2)) });
+            Foo value =
+                functionValue(
+                    new AFoo(),
+                    new Object[] { new Box<>(new Foo(2)) });
             for (int i = 0; i < 10000; ++i)
                 assertEquals(value, b.open(new Box<>(new Foo(2))));
         }
