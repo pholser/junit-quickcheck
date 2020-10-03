@@ -47,12 +47,13 @@ import static com.pholser.junit.quickcheck.Mode.*;
 import static java.math.RoundingMode.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ExhaustingAGivenSetTest {
-    @Test public void primitiveBooleans() throws Exception {
+    @Test public void primitiveBooleans() {
         assertThat(testResult(PrimitiveBooleans.class), isSuccessful());
         assertEquals(1, PrimitiveBooleans.iterations);
         assertEquals(singleton(true), PrimitiveBooleans.testCases);
@@ -71,7 +72,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperBooleans() throws Exception {
+    @Test public void wrapperBooleans() {
         assertThat(testResult(WrapperBooleans.class), isSuccessful());
         assertEquals(1, WrapperBooleans.iterations);
         assertEquals(singleton(false), WrapperBooleans.testCases);
@@ -90,7 +91,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void booleansUnmarked() throws Exception {
+    @Test public void booleansUnmarked() {
         assertThat(testResult(UnmarkedBooleans.class), isSuccessful());
         assertEquals(2, UnmarkedBooleans.iterations);
         assertEquals(new HashSet<>(asList(true, false)), UnmarkedBooleans.testCases);
@@ -109,7 +110,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveBytes() throws Exception {
+    @Test public void primitiveBytes() {
         assertThat(testResult(PrimitiveBytes.class), isSuccessful());
         assertEquals(2, PrimitiveBytes.iterations);
         assertEquals(
@@ -130,7 +131,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperBytes() throws Exception {
+    @Test public void wrapperBytes() {
         assertThat(testResult(WrapperBytes.class), isSuccessful());
         assertEquals(2, WrapperBytes.iterations);
         assertEquals(
@@ -151,7 +152,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveChars() throws Exception {
+    @Test public void primitiveChars() {
         assertThat(testResult(PrimitiveChars.class), isSuccessful());
         assertEquals(2, PrimitiveChars.iterations);
         assertEquals(
@@ -172,7 +173,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperChars() throws Exception {
+    @Test public void wrapperChars() {
         assertThat(testResult(WrapperChars.class), isSuccessful());
         assertEquals(2, WrapperChars.iterations);
         assertEquals(
@@ -193,7 +194,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveDoubles() throws Exception {
+    @Test public void primitiveDoubles() {
         assertThat(testResult(PrimitiveDoubles.class), isSuccessful());
         assertEquals(2, PrimitiveDoubles.iterations);
         assertEquals(
@@ -214,7 +215,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperDoubles() throws Exception {
+    @Test public void wrapperDoubles() {
         assertThat(testResult(WrapperDoubles.class), isSuccessful());
         assertEquals(2, WrapperDoubles.iterations);
         assertEquals(
@@ -234,7 +235,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveFloats() throws Exception {
+    @Test public void primitiveFloats() {
         assertThat(testResult(PrimitiveFloats.class), isSuccessful());
         assertEquals(2, PrimitiveFloats.iterations);
         assertEquals(
@@ -255,7 +256,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperFloats() throws Exception {
+    @Test public void wrapperFloats() {
         assertThat(testResult(WrapperFloats.class), isSuccessful());
         assertEquals(2, WrapperFloats.iterations);
         assertEquals(
@@ -276,7 +277,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveIntegers() throws Exception {
+    @Test public void primitiveIntegers() {
         assertThat(testResult(PrimitiveIntegers.class), isSuccessful());
         assertEquals(3, PrimitiveIntegers.iterations);
         assertEquals(
@@ -297,7 +298,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperIntegers() throws Exception {
+    @Test public void wrapperIntegers() {
         assertThat(testResult(WrapperIntegers.class), isSuccessful());
         assertEquals(2, WrapperIntegers.iterations);
         assertEquals(
@@ -318,7 +319,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveLongs() throws Exception {
+    @Test public void primitiveLongs() {
         assertThat(testResult(PrimitiveLongs.class), isSuccessful());
         assertEquals(3, PrimitiveLongs.iterations);
         assertEquals(
@@ -339,7 +340,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperLongs() throws Exception {
+    @Test public void wrapperLongs() {
         assertThat(testResult(WrapperLongs.class), isSuccessful());
         assertEquals(3, WrapperLongs.iterations);
         assertEquals(
@@ -360,7 +361,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void primitiveShorts() throws Exception {
+    @Test public void primitiveShorts() {
         assertThat(testResult(PrimitiveShorts.class), isSuccessful());
         assertEquals(2, PrimitiveShorts.iterations);
         assertEquals(
@@ -381,7 +382,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void wrapperShorts() throws Exception {
+    @Test public void wrapperShorts() {
         assertThat(testResult(WrapperShorts.class), isSuccessful());
         assertEquals(2, WrapperShorts.iterations);
         assertEquals(
@@ -402,7 +403,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void strings() throws Exception {
+    @Test public void strings() {
         assertThat(testResult(Strings.class), isSuccessful());
         assertEquals(2, Strings.iterations);
         assertEquals(
@@ -423,7 +424,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void enums() throws Exception {
+    @Test public void enums() {
         assertThat(testResult(Enums.class), isSuccessful());
         assertEquals(2, Enums.iterations);
         assertEquals(EnumSet.of(HALF_UP, HALF_EVEN), Enums.testCases);
@@ -442,7 +443,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void enumsUnmarked() throws Exception {
+    @Test public void enumsUnmarked() {
         assertThat(testResult(EnumsUnmarked.class), isSuccessful());
         assertEquals(EnumSet.allOf(RoundingMode.class).size(), EnumsUnmarked.iterations);
         assertEquals(EnumSet.allOf(RoundingMode.class), EnumsUnmarked.testCases);
@@ -461,7 +462,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void ctorOnly() throws Exception {
+    @Test public void ctorOnly() {
         assertThat(testResult(CtorOnly.class), isSuccessful());
         assertEquals(2, CtorOnly.iterations);
         assertEquals(
@@ -500,7 +501,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void favorValueOf() throws Exception {
+    @Test public void favorValueOf() {
         assertThat(testResult(FavorValueOf.class), isSuccessful());
         assertEquals(2, FavorValueOf.iterations);
         assertEquals(
@@ -552,7 +553,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void noImplicitConversion() throws Exception {
+    @Test public void noImplicitConversion() {
         assertThat(
             testResult(NoImplicitConversion.class),
             hasSingleFailureContaining(ReflectionException.class.getName()));
@@ -572,7 +573,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void explicitConversion() throws Exception {
+    @Test public void explicitConversion() {
         assertThat(testResult(ExplicitConversion.class), isSuccessful());
         assertEquals(2, ExplicitConversion.iterations);
         assertEquals(
@@ -608,7 +609,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void manyParameters() throws Exception {
+    @Test public void manyParameters() {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(6, ManyParameters.iterations);
         assertEquals(
@@ -638,7 +639,7 @@ public class ExhaustingAGivenSetTest {
         }
     }
 
-    @Test public void manyParametersWithBooleanAndEnum() throws Exception {
+    @Test public void manyParametersWithBooleanAndEnum() {
         assertThat(testResult(ManyParametersWithBooleanAndEnum.class), isSuccessful());
 
         assertEquals(

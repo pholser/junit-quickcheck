@@ -39,7 +39,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
-import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,10 +68,12 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
      * @throws InitializationError if there is a problem with the properties class
      */
     public JUnitQuickcheck(Class<?> clazz) throws InitializationError {
-        super(clazz);
+        super(new JUnitQuickcheckTestClass(clazz));
 
         SourceOfRandomness random = new SourceOfRandomness(new Random());
-        repo = new GeneratorRepository(random).register(new ServiceLoaderGeneratorSource());
+        repo =
+            new GeneratorRepository(random)
+                .register(new ServiceLoaderGeneratorSource());
         distro = new GeometricDistribution();
         logger = LoggerFactory.getLogger("junit-quickcheck.value-reporting");
     }
@@ -83,8 +84,8 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
     }
 
     private void validatePropertyMethods(List<Throwable> errors) {
-        for (FrameworkMethod each : getTestClass().getAnnotatedMethods(Property.class))
-            each.validatePublicVoid(false, errors);
+        getTestClass().getAnnotatedMethods(Property.class)
+            .forEach(m -> m.validatePublicVoid(false, errors));
     }
 
     @Override protected List<FrameworkMethod> computeTestMethods() {
@@ -98,9 +99,5 @@ public class JUnitQuickcheck extends BlockJUnit4ClassRunner {
         return method.getAnnotation(Test.class) != null
             ? super.methodBlock(method)
             : new PropertyStatement(method, getTestClass(), repo, distro, logger);
-    }
-
-    @Override protected TestClass createTestClass(Class<?> testClass) {
-        return new JUnitQuickcheckTestClass(testClass);
     }
 }

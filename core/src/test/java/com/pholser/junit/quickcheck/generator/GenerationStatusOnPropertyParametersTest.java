@@ -33,21 +33,17 @@ import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.GenerationStatus.Key;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class GenerationStatusOnPropertyParametersTest {
-    @Rule public final ExpectedException thrown = none();
-
-    @Test public void sizeNeverExceedsSampleSize() throws Exception {
+    @Test public void sizeNeverExceedsSampleSize() {
         assertThat(testResult(SizeProperties.class), isSuccessful());
     }
 
@@ -125,15 +121,15 @@ public class GenerationStatusOnPropertyParametersTest {
     }
 
     @Test public void rejectsNullStatusKeyName() {
-        thrown.expect(NullPointerException.class);
-
-        new Key<>(null, int.class);
+        assertThrows(
+            NullPointerException.class,
+            () -> new Key<>(null, int.class));
     }
 
     @Test public void rejectsNullStatusKeyType() {
-        thrown.expect(NullPointerException.class);
-
-        new Key<>("name", null);
+        assertThrows(
+            NullPointerException.class,
+            () -> new Key<>("name", null));
     }
 
     @Test public void downcastsValues() {
