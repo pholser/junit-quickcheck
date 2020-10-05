@@ -39,21 +39,22 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import static java.util.Arrays.*;
-import static org.junit.rules.ExpectedException.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class PropertyParameterGenerationContextTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
-    @Rule public final ExpectedException thrown = none();
 
     @Mock private SourceOfRandomness random;
 
-    @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses() throws Exception {
+    @Test public void whenDiscardRatioExceededEvenWithSomeSuccesses()
+        throws Exception {
+
         PropertyParameterContext parameter =
             new PropertyParameterContext(
                 ParameterTypeContext.forParameter(parameter()))
@@ -67,20 +68,25 @@ public class PropertyParameterGenerationContextTest {
                 random,
                 new TupleParameterSampler(20));
 
-        thrown.expect(DiscardRatioExceededException.class);
-        thrown.expectMessage(
+        DiscardRatioExceededException ex =
+            assertThrows(
+                DiscardRatioExceededException.class,
+                () -> {
+                    while (gen.attempts() < 100)
+                        gen.generate();
+                });
+        assertEquals(
             String.format(
                 DiscardRatioExceededException.MESSAGE_TEMPLATE,
                 parameter.typeContext().name(),
                 parameter.discardRatio(),
                 30,
-                10));
-
-        while (gen.attempts() < 100)
-            gen.generate();
+                10),
+            ex.getMessage());
     }
 
-    public static void parameterHaver(@When(discardRatio = 3, satisfies = "#_ > 0") int x) {
+    public static void parameterHaver(
+        @When(discardRatio = 3, satisfies = "#_ > 0") int x) {
     }
 
     private AnnotatedElement annotatedElement() throws Exception {
@@ -88,7 +94,9 @@ public class PropertyParameterGenerationContextTest {
     }
 
     private Parameter parameter() throws Exception {
-        return getClass().getMethod("parameterHaver", int.class).getParameters()[0];
+        return getClass()
+            .getMethod("parameterHaver", int.class)
+            .getParameters()[0];
     }
 
     public static class Countdown extends Generator<Integer> {
@@ -98,7 +106,10 @@ public class PropertyParameterGenerationContextTest {
             super(asList(Integer.class, int.class));
         }
 
-        @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Integer generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return count--;
         }
     }

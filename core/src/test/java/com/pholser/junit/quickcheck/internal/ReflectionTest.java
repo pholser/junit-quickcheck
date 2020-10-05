@@ -35,44 +35,39 @@ import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static com.pholser.junit.quickcheck.internal.Reflection.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class ReflectionTest {
-    @Rule public final ExpectedException thrown = none();
-
-    @Test public void findingConstructorQuietly() {
+    @Test public void findingConstructor() {
         Constructor<Integer> ctor = findConstructor(Integer.class, int.class);
 
         assertEquals(int.class, ctor.getParameterTypes()[0]);
     }
 
-    @Test public void findingConstructorQuietlyWhenNoSuchConstructor() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(NoSuchMethodException.class.getName());
-
-        assertNull(findConstructor(Integer.class, Object.class));
+    @Test public void findingConstructorWhenNoSuchConstructor() {
+        assertThrows(
+            ReflectionException.class,
+            () -> findConstructor(Integer.class, Object.class));
     }
 
-    @Test public void findingDeclaredConstructorQuietly() {
-        Constructor<Integer> ctor = findDeclaredConstructor(Integer.class, int.class);
+    @Test public void findingDeclaredConstructor() {
+        Constructor<Integer> ctor =
+            findDeclaredConstructor(Integer.class, int.class);
 
         assertEquals(int.class, ctor.getParameterTypes()[0]);
     }
 
-    @Test public void findingDeclaredConstructorQuietlyWhenNoSuchConstructor() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(NoSuchMethodException.class.getName());
-
-        assertNull(findDeclaredConstructor(Integer.class, Object.class));
+    @Test public void findingDeclaredConstructorWhenNoSuchConstructor() {
+        assertThrows(
+            ReflectionException.class,
+            () -> findDeclaredConstructor(Integer.class, Object.class));
     }
 
     @Test public void findingSingleAccessibleConstructorSuccessfully() {
@@ -81,31 +76,42 @@ public class ReflectionTest {
         assertEquals(0, ctor.getParameterTypes().length);
     }
 
-    @Test public void rejectsFindingSingleAccessibleConstructorOnNonConformingClass() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(Integer.class + " needs a single accessible constructor");
-
-        singleAccessibleConstructor(Integer.class);
+    @Test public void
+    rejectsFindingSingleAccessibleConstructorOnNonConformingClass() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> singleAccessibleConstructor(Integer.class));
+        assertEquals(
+            Integer.class + " needs a single accessible constructor",
+            ex.getMessage());
     }
 
-    @Test public void invokingZeroArgConstructorQuietlyWrapsInstantiationException() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(InstantiationException.class.getName());
-
-        instantiate(ZeroArgInstantiationProblematic.class);
+    @Test public void invokingZeroArgConstructorWrapsInstantiationException() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> instantiate(ZeroArgInstantiationProblematic.class));
+        assertThat(
+            ex.getMessage(),
+            containsString(InstantiationException.class.getName()));
     }
 
-    @Test public void invokingZeroArgConstructorQuietlyWrapsIllegalAccessException() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(IllegalAccessException.class.getName());
-
-        instantiate(ZeroArgIllegalAccessProblematic.class);
+    @Test public void invokingZeroArgConstructorWrapsIllegalAccessException() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> instantiate(ZeroArgIllegalAccessProblematic.class));
+        assertThat(
+            ex.getMessage(),
+            containsString(IllegalAccessException.class.getName()));
     }
 
-    @Test public void invokingZeroArgConstructorPropagatesExceptionsRaisedByConstructor() {
-        thrown.expect(IllegalStateException.class);
-
-        instantiate(InvocationTargetProblematic.class);
+    @Test public void
+    invokingZeroArgConstructorPropagatesExceptionsRaisedByConstructor() {
+        assertThrows(
+            IllegalStateException.class,
+            () -> instantiate(InvocationTargetProblematic.class));
     }
 
     private abstract static class MultiArgInstantiationProblematic {
@@ -114,31 +120,55 @@ public class ReflectionTest {
         }
     }
 
-    @Test public void invokingNonZeroArgConstructorQuietlyWrapsInstantiationException() throws Exception {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(InstantiationException.class.getName());
-
-        instantiate(MultiArgInstantiationProblematic.class.getConstructor(int.class), 2);
+    @Test public void
+    invokingNonZeroArgConstructorQuietlyWrapsInstantiationException() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> instantiate(
+                    MultiArgInstantiationProblematic.class
+                        .getConstructor(int.class),
+                    2));
+        assertThat(
+            ex.getMessage(),
+            containsString(InstantiationException.class.getName()));
     }
 
-    @Test public void invokingNonZeroArgConstructorQuietlyWrapsIllegalAccessException() throws Exception {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(IllegalAccessException.class.getName());
-
-        instantiate(MultiArgIllegalAccessProblematic.class.getDeclaredConstructor(int.class), 2);
+    @Test public void
+    invokingNonZeroArgConstructorQuietlyWrapsIllegalAccessException() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> instantiate(
+                    MultiArgIllegalAccessProblematic.class
+                        .getDeclaredConstructor(int.class),
+                    2));
+        assertThat(
+            ex.getMessage(),
+            containsString(IllegalAccessException.class.getName()));
     }
 
-    @Test public void invokingNonZeroArgConstructorQuietlyPropagatesIllegalArgumentException() throws Exception {
-        thrown.expect(IllegalArgumentException.class);
-
-        instantiate(Integer.class.getDeclaredConstructor(int.class), "2");
+    @Test public void
+    invokingNonZeroArgConstructorQuietlyPropagatesIllegalArgumentException() {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> instantiate(
+                Integer.class.getDeclaredConstructor(int.class),
+                "2"));
     }
 
-    @Test public void invokingNonZeroArgConstructorWrapsExceptionsRaisedByConstructor() throws Exception {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(IndexOutOfBoundsException.class.getName());
-
-        instantiate(InvocationTargetProblematic.class.getConstructor(int.class), 2);
+    @Test public void
+    invokingNonZeroArgConstructorWrapsExceptionsRaisedByConstructor() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> instantiate(
+                    InvocationTargetProblematic.class.getConstructor(
+                        int.class),
+                    2));
+        assertThat(
+            ex.getMessage(),
+            containsString(IndexOutOfBoundsException.class.getName()));
     }
 
     private abstract static class ZeroArgInstantiationProblematic {
@@ -147,54 +177,71 @@ public class ReflectionTest {
         }
     }
 
-    @Test public void findingNonExistentMethodQuietlyWrapsNoSuchMethodException() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(NoSuchMethodException.class.getName());
-
-        findMethod(getClass(), "foo");
+    @Test public void
+    findingNonExistentMethodQuietlyWrapsNoSuchMethodException() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> findMethod(getClass(), "foo"));
+        assertThat(
+            ex.getMessage(),
+            containsString(NoSuchMethodException.class.getName()));
     }
 
-    @Test public void invokingMethodQuietlyWrapsIllegalAccessException() throws Exception {
-        Method method = ZeroArgIllegalAccessProblematic.class.getDeclaredMethod("foo");
+    @Test public void invokingMethodQuietlyWrapsIllegalAccessException()
+        throws Exception {
 
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(IllegalAccessException.class.getName());
+        Method method =
+            ZeroArgIllegalAccessProblematic.class.getDeclaredMethod("foo");
 
-        invoke(method, new ZeroArgIllegalAccessProblematic(0));
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> invoke(method, new ZeroArgIllegalAccessProblematic(0)));
+        assertThat(
+            ex.getMessage(),
+            containsString(IllegalAccessException.class.getName()));
     }
 
-    @Test public void invokingMethodQuietlyPropagatesExceptionRaisedByMethod() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(NumberFormatException.class.getName());
-
-        invoke(findMethod(getClass(), "bar"), this);
+    @Test public void
+    invokingMethodQuietlyPropagatesExceptionRaisedByMethod() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> invoke(findMethod(getClass(), "bar"), this));
+        assertThat(
+            ex.getMessage(),
+            containsString(NumberFormatException.class.getName()));
     }
 
     @Test public void invokingMethodPropagatesIllegalArgumentException() {
-        thrown.expect(IllegalArgumentException.class);
-
-        invoke(findMethod(getClass(), "bar"), this, "baz");
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> invoke(findMethod(getClass(), "bar"), this, "baz"));
     }
 
-    @Test public void invokingMethodQuietlyPropagatesOtherRuntimeExceptions() throws Exception {
-        thrown.expect(NullPointerException.class);
-
-        invoke(findMethod(getClass(), "bar"), null);
+    @Test public void invokingMethodQuietlyPropagatesOtherRuntimeExceptions() {
+        assertThrows(
+            NullPointerException.class,
+            () -> invoke(findMethod(getClass(), "bar"), null));
     }
 
     public void bar() {
         throw new NumberFormatException();
     }
 
-    @Test public void findingDefaultValueOfAnnotationAttribute() throws Exception {
+    @Test public void findingDefaultValueOfAnnotationAttribute() {
         assertEquals("baz", defaultValueOf(Foo.class, "bar"));
     }
 
-    @Test public void missingAnnotationAttribute() throws Exception {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(NoSuchMethodException.class.getName());
-
-        defaultValueOf(Foo.class, "noneSuch");
+    @Test public void missingAnnotationAttribute() {
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> defaultValueOf(Foo.class, "noneSuch"));
+        assertThat(
+            ex.getMessage(),
+            containsString(NoSuchMethodException.class.getName()));
     }
 
     public @interface Foo {
@@ -205,17 +252,21 @@ public class ReflectionTest {
         assertNull(singleAbstractMethodOf(String.class));
     }
 
-    @Test public void anInterfaceWithNoMethodsIsNotASingleAbstractMethodType() {
+    @Test public void
+    anInterfaceWithNoMethodsIsNotASingleAbstractMethodType() {
         assertNull(singleAbstractMethodOf(Serializable.class));
     }
 
-    @Test public void anInterfaceWithASingleAbstractMethodIsASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceWithASingleAbstractMethodIsASingleAbstractMethodType()
+    throws Exception {
         assertEquals(
             Comparator.class.getMethod("compare", Object.class, Object.class),
             singleAbstractMethodOf(Comparator.class));
     }
 
-    @Test public void anInterfaceThatOverridesEqualsIsNotASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceThatOverridesEqualsIsNotASingleAbstractMethodType() {
         assertNull(singleAbstractMethodOf(OverridingEquals.class));
     }
 
@@ -223,7 +274,9 @@ public class ReflectionTest {
         boolean equals(Object o);
     }
 
-    @Test public void anInterfaceThatOverloadsEqualsCanBeASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceThatOverloadsEqualsCanBeASingleAbstractMethodType()
+    throws Exception {
         assertEquals(
             OverloadingEquals.class.getMethod("equals", String.class),
             singleAbstractMethodOf(OverloadingEquals.class));
@@ -233,31 +286,42 @@ public class ReflectionTest {
         boolean equals(String s);
     }
 
-    @Test public void anInterfaceThatOverloadsEqualsWithMoreThanOneParameterCanBeASingleAbstractMethodType()
-        throws Exception {
+    @Test public void
+    anInterfaceThatOverloadsEqualsWithMoreThanOneParameterCanBeASingleAbstractMethodType()
+    throws Exception {
 
         assertEquals(
-            OverloadingEqualsWithMoreParameters.class.getMethod("equals", Object.class, Object.class),
-            singleAbstractMethodOf(OverloadingEqualsWithMoreParameters.class));
+            OverloadingEqualsWithMoreParameters.class.getMethod(
+                "equals",
+                Object.class,
+                Object.class),
+            singleAbstractMethodOf(
+                OverloadingEqualsWithMoreParameters.class));
     }
 
     interface OverloadingEqualsWithMoreParameters {
         boolean equals(Object first, Object second);
     }
 
-    @Test public void anInterfaceThatOverloadsEqualsWithMixedParameterTypesIsNotASingleAbstractMethodType()
-        throws Exception {
-
+    @Test public void
+    anInterfaceThatOverloadsEqualsWithMixedParameterTypesIsNotASingleAbstractMethodType()
+    throws Exception {
         assertEquals(
-            OverloadingEqualsWithMixedParameterTypes.class.getMethod("equals", Object.class, String.class, int.class),
-            singleAbstractMethodOf(OverloadingEqualsWithMixedParameterTypes.class));
+            OverloadingEqualsWithMixedParameterTypes.class.getMethod(
+                "equals",
+                Object.class,
+                String.class,
+                int.class),
+            singleAbstractMethodOf(
+                OverloadingEqualsWithMixedParameterTypes.class));
     }
 
     interface OverloadingEqualsWithMixedParameterTypes {
         boolean equals(Object first, String second, int third);
     }
 
-    @Test public void anInterfaceThatOverridesHashCodeIsNotASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceThatOverridesHashCodeIsNotASingleAbstractMethodType() {
         assertNull(singleAbstractMethodOf(OverridingHashCode.class));
     }
 
@@ -265,7 +329,9 @@ public class ReflectionTest {
         int hashCode();
     }
 
-    @Test public void anInterfaceThatOverloadsHashCodeCanBeASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceThatOverloadsHashCodeCanBeASingleAbstractMethodType()
+    throws Exception {
         assertEquals(
             OverloadingHashCode.class.getMethod("hashCode", Object.class),
             singleAbstractMethodOf(OverloadingHashCode.class));
@@ -275,7 +341,8 @@ public class ReflectionTest {
         int hashCode(Object o);
     }
 
-    @Test public void anInterfaceThatOverridesToStringIsNotASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceThatOverridesToStringIsNotASingleAbstractMethodType() {
         assertNull(singleAbstractMethodOf(OverridingToString.class));
     }
 
@@ -283,7 +350,9 @@ public class ReflectionTest {
         String toString();
     }
 
-    @Test public void anInterfaceThatOverloadsToStringCanBeASingleAbstractMethodType() throws Exception {
+    @Test public void
+    anInterfaceThatOverloadsToStringCanBeASingleAbstractMethodType()
+    throws Exception {
         assertEquals(
             OverloadingToString.class.getMethod("toString", Object.class),
             singleAbstractMethodOf(OverloadingToString.class));
@@ -308,7 +377,8 @@ public class ReflectionTest {
     }
 
     @Test
-    public void anInterfaceWithNoMethodsButSuperMethodsIsNotAMarkerInterface() {
+    public void
+    anInterfaceWithNoMethodsButSuperMethodsIsNotAMarkerInterface() {
         assertFalse(isMarkerInterface(SubNotAMarker.class));
     }
 
@@ -362,7 +432,9 @@ public class ReflectionTest {
         }
     }
 
-    @Test public void settingFieldWithoutBypassingProtection() throws Exception {
+    @Test public void settingFieldWithoutBypassingProtection()
+        throws Exception {
+
         WithAccessibleField target = new WithAccessibleField();
 
         setField(target.getClass().getField("i"), target, 2, false);
@@ -374,7 +446,9 @@ public class ReflectionTest {
         public int i;
     }
 
-    @Test public void settingInaccessibleFieldBypassingProtection() throws Exception {
+    @Test public void settingInaccessibleFieldBypassingProtection()
+        throws Exception {
+
         WithInaccessibleField target = new WithInaccessibleField();
 
         setField(target.getClass().getDeclaredField("i"), target, 3, true);
@@ -386,13 +460,22 @@ public class ReflectionTest {
         private int i;
     }
 
-    @Test public void settingInaccessibleFieldWithoutBypassingProtection() throws Exception {
+    @Test public void settingInaccessibleFieldWithoutBypassingProtection() {
         WithInaccessibleField target = new WithInaccessibleField();
 
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(IllegalAccessException.class.getName());
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () ->
+                    setField(
+                        target.getClass().getDeclaredField("i"),
+                        target,
+                        4,
+                        false));
 
-        setField(target.getClass().getDeclaredField("i"), target, 4, false);
+        assertThat(
+            ex.getMessage(),
+            containsString(IllegalAccessException.class.getName()));
     }
 
     @Test public void findingAllDeclaredFieldsOnAClass() throws Exception {
@@ -410,10 +493,13 @@ public class ReflectionTest {
     }
 
     @Test public void findingNonExistentField() {
-        thrown.expect(ReflectionException.class);
-        thrown.expectMessage(NoSuchFieldException.class.getName());
-
-        findField(Parent.class, "missing");
+        ReflectionException ex =
+            assertThrows(
+                ReflectionException.class,
+                () -> findField(Parent.class, "missing"));
+        assertThat(
+            ex.getMessage(),
+            containsString(NoSuchFieldException.class.getName()));
     }
 
     public static class Parent {
@@ -424,7 +510,9 @@ public class ReflectionTest {
         private String s;
     }
 
-    @Test public void findingAllDeclaredFieldsOnAClassExcludesSynthetics() throws Exception {
+    @Test public void findingAllDeclaredFieldsOnAClassExcludesSynthetics()
+        throws Exception {
+
         List<Field> fields = allDeclaredFieldsOf(Outer.Inner.class);
 
         assertEquals(1, fields.size());
@@ -438,9 +526,11 @@ public class ReflectionTest {
     }
 
     @Test public void findingAnnotationsRecursively() {
-        Method method = findMethod(this.getClass(), "withMarker", String.class);
+        Method method =
+            findMethod(this.getClass(), "withMarker", String.class);
 
-        List<Annotation> annotations = allAnnotations(method.getParameters()[0]);
+        List<Annotation> annotations =
+            allAnnotations(method.getParameters()[0]);
 
         assertEquals(4, annotations.size());
         assertEquals(X.class, annotations.get(0).annotationType());

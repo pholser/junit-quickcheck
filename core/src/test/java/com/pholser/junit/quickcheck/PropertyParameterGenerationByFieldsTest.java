@@ -51,8 +51,6 @@ import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PropertyParameterGenerationByFieldsTest {
-    private static Object object;
-
     @Test public void autoGeneration() {
         assertThat(testResult(AutoGeneration.class), isSuccessful());
     }
