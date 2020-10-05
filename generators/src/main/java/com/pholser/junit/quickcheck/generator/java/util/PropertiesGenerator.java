@@ -59,7 +59,10 @@ public class PropertiesGenerator extends Generator<Properties> {
         stringGenerator = encoded;
     }
 
-    @Override public Properties generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Properties generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         int size = status.size();
 
         Properties properties = new Properties();
@@ -72,7 +75,6 @@ public class PropertiesGenerator extends Generator<Properties> {
         return properties;
     }
 
-    @SuppressWarnings("unchecked")
     @Override public boolean canRegisterAsType(Class<?> type) {
         Set<Class<?>> exclusions =
             new HashSet<>(

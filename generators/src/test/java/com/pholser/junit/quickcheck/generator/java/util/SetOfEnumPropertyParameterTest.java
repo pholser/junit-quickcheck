@@ -36,7 +36,9 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class SetOfEnumPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class SetOfEnumPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Set<Ternary> TYPE_BEARER = null;
 
     enum Ternary {
@@ -47,17 +49,20 @@ public class SetOfEnumPropertyParameterTest extends BasicGeneratorPropertyParame
         when(Generating.ints(randomForParameterGenerator, 0, 2))
             .thenReturn(0).thenReturn(1).thenReturn(2)
             .thenReturn(0).thenReturn(1).thenReturn(2);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
-        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator))
+            .thenReturn(3);
     }
 
     @Override protected int trials() {
         return 4;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
         return asList(
             newHashSet(),

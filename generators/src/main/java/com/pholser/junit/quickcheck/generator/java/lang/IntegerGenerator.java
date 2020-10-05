@@ -47,7 +47,7 @@ public class IntegerGenerator extends IntegralGenerator<Integer> {
     private int min = (Integer) defaultValueOf(InRange.class, "minInt");
     private int max = (Integer) defaultValueOf(InRange.class, "maxInt");
 
-    @SuppressWarnings("unchecked") public IntegerGenerator() {
+    public IntegerGenerator() {
         super(asList(Integer.class, int.class));
     }
 
@@ -61,11 +61,18 @@ public class IntegerGenerator extends IntegralGenerator<Integer> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minInt() : Integer.parseInt(range.min());
-        max = range.max().isEmpty() ? range.maxInt() : Integer.parseInt(range.max());
+        min = range.min().isEmpty()
+            ? range.minInt()
+            : Integer.parseInt(range.min());
+        max = range.max().isEmpty()
+            ? range.maxInt()
+            : Integer.parseInt(range.max());
     }
 
-    @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Integer generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextInt(min, max);
     }
 

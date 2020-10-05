@@ -46,7 +46,7 @@ public class CharacterGenerator extends Generator<Character> {
     private char min = (Character) defaultValueOf(InRange.class, "minChar");
     private char max = (Character) defaultValueOf(InRange.class, "maxChar");
 
-    @SuppressWarnings("unchecked") public CharacterGenerator() {
+    public CharacterGenerator() {
         super(asList(Character.class, char.class));
     }
 
@@ -64,11 +64,17 @@ public class CharacterGenerator extends Generator<Character> {
         max = range.max().isEmpty() ? range.maxChar() : range.max().charAt(0);
     }
 
-    @Override public Character generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Character generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextChar(min, max);
     }
 
-    @Override public List<Character> doShrink(SourceOfRandomness random, Character larger) {
+    @Override public List<Character> doShrink(
+        SourceOfRandomness random,
+        Character larger) {
+
         return new CodePointShrink(cp -> cp >= min && cp <= max)
             .shrink(random, (int) larger)
             .stream()

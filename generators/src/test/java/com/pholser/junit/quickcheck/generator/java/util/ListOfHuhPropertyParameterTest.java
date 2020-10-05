@@ -33,7 +33,9 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.mockito.Mockito.*;
 
-public class ListOfHuhPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class ListOfHuhPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final List<?> TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
@@ -46,9 +48,11 @@ public class ListOfHuhPropertyParameterTest extends BasicGeneratorPropertyParame
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), singletonList(false), asList(false, false));
+        return asList(
+            emptyList(),
+            singletonList(false),
+            asList(false, false));
     }
 
     @Override public void verifyInteractionWithRandomness() {

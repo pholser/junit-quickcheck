@@ -34,11 +34,14 @@ import static java.util.Arrays.*;
  * {@link Void}.
  */
 public class VoidGenerator extends Generator<Void> {
-    @SuppressWarnings("unchecked") public VoidGenerator() {
+    public VoidGenerator() {
         super(asList(Void.class, void.class));
     }
 
-    @Override public Void generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Void generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return null;
     }
 

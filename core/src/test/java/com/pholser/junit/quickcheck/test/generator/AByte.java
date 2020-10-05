@@ -34,11 +34,14 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class AByte extends Generator<Byte> {
-    @SuppressWarnings("unchecked") public AByte() {
+    public AByte() {
         super(asList(Byte.class, byte.class));
     }
 
-    @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Byte generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return (byte) random.nextInt();
     }
 

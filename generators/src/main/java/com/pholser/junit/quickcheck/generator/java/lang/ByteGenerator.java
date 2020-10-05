@@ -47,7 +47,7 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
     private byte min = (Byte) defaultValueOf(InRange.class, "minByte");
     private byte max = (Byte) defaultValueOf(InRange.class, "maxByte");
 
-    @SuppressWarnings("unchecked") public ByteGenerator() {
+    public ByteGenerator() {
         super(asList(Byte.class, byte.class));
     }
 
@@ -65,7 +65,10 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
         max = range.max().isEmpty() ? range.maxByte() : Byte.parseByte(range.max());
     }
 
-    @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Byte generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextByte(min, max);
     }
 

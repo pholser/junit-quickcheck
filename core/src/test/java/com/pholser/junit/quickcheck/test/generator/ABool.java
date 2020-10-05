@@ -32,11 +32,14 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class ABool extends Generator<Boolean> {
-    @SuppressWarnings("unchecked") public ABool() {
+    public ABool() {
         super(asList(Boolean.class, boolean.class));
     }
 
-    @Override public Boolean generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Boolean generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextBoolean();
     }
 }

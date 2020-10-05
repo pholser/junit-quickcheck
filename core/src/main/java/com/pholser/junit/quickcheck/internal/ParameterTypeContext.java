@@ -251,9 +251,9 @@ public class ParameterTypeContext {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
         Constructor<? extends Generator> ctor;
+
         try {
             // for Ctor/Fields
             ctor = findConstructor(generatorType, Class.class);

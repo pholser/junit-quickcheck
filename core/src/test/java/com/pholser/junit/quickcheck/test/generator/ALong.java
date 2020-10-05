@@ -34,11 +34,14 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class ALong extends Generator<Long> {
-    @SuppressWarnings("unchecked") public ALong() {
+    public ALong() {
         super(asList(Long.class, long.class));
     }
 
-    @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Long generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextLong();
     }
 

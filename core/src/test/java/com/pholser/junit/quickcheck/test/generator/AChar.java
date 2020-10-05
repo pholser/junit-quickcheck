@@ -34,11 +34,14 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class AChar extends Generator<Character> {
-    @SuppressWarnings("unchecked") public AChar() {
+    public AChar() {
         super(asList(Character.class, char.class));
     }
 
-    @Override public Character generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Character generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return (char) random.nextInt();
     }
 

@@ -41,7 +41,7 @@ import static java.util.stream.Collectors.*;
 public class AnInt extends Generator<Integer> {
     private Between range;
 
-    @SuppressWarnings("unchecked") public AnInt() {
+    public AnInt() {
         super(asList(Integer.class, int.class));
     }
 
@@ -49,11 +49,19 @@ public class AnInt extends Generator<Integer> {
         this.range = range;
     }
 
-    @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
-        return range == null ? random.nextInt() : random.nextInt(range.min(), range.max());
+    @Override public Integer generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return range == null
+            ? random.nextInt()
+            : random.nextInt(range.min(), range.max());
     }
 
-    @Override public List<Integer> doShrink(SourceOfRandomness random, Integer larger) {
+    @Override public List<Integer> doShrink(
+        SourceOfRandomness random,
+        Integer larger) {
+
         return larger == 0
             ? emptyList()
             : Stream.of(larger / 2)

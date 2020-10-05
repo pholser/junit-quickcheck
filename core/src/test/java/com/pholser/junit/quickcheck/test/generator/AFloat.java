@@ -34,11 +34,14 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class AFloat extends Generator<Float> {
-    @SuppressWarnings("unchecked") public AFloat() {
+    public AFloat() {
         super(asList(Float.class, float.class));
     }
 
-    @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Float generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextFloat();
     }
 

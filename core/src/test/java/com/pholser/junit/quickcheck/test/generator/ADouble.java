@@ -34,11 +34,14 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import static java.util.Arrays.*;
 
 public class ADouble extends Generator<Double> {
-    @SuppressWarnings("unchecked") public ADouble() {
+    public ADouble() {
         super(asList(Double.class, double.class));
     }
 
-    @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Double generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextDouble();
     }
 

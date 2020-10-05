@@ -46,7 +46,7 @@ public class FloatGenerator extends DecimalGenerator<Float> {
     private float min = (Float) defaultValueOf(InRange.class, "minFloat");
     private float max = (Float) defaultValueOf(InRange.class, "maxFloat");
 
-    @SuppressWarnings("unchecked") public FloatGenerator() {
+    public FloatGenerator() {
         super(asList(Float.class, float.class));
     }
 
@@ -60,11 +60,18 @@ public class FloatGenerator extends DecimalGenerator<Float> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minFloat() : Float.parseFloat(range.min());
-        max = range.max().isEmpty() ? range.maxFloat() : Float.parseFloat(range.max());
+        min = range.min().isEmpty()
+            ? range.minFloat()
+            : Float.parseFloat(range.min());
+        max = range.max().isEmpty()
+            ? range.maxFloat()
+            : Float.parseFloat(range.max());
     }
 
-    @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Float generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextFloat(min, max);
     }
 

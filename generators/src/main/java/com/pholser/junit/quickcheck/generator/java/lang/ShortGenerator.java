@@ -47,7 +47,7 @@ public class ShortGenerator extends IntegralGenerator<Short> {
     private short min = (Short) defaultValueOf(InRange.class, "minShort");
     private short max = (Short) defaultValueOf(InRange.class, "maxShort");
 
-    @SuppressWarnings("unchecked") public ShortGenerator() {
+    public ShortGenerator() {
         super(asList(Short.class, short.class));
     }
 
@@ -61,11 +61,18 @@ public class ShortGenerator extends IntegralGenerator<Short> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minShort() : Short.parseShort(range.min());
-        max = range.max().isEmpty() ? range.maxShort() : Short.parseShort(range.max());
+        min = range.min().isEmpty()
+            ? range.minShort()
+            : Short.parseShort(range.min());
+        max = range.max().isEmpty()
+            ? range.maxShort()
+            : Short.parseShort(range.max());
     }
 
-    @Override public Short generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Short generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextShort(min, max);
     }
 
