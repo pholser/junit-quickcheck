@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static java.lang.Character.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -50,6 +51,7 @@ public class PropertiesPropertyParameterTypesTest {
             p.forEach((key, value) -> {
                 assertThat(key, instanceOf(String.class));
                 assertThat(value, instanceOf(String.class));
+
                 IntPredicate inCharset = ch -> ch >= 0 && ch < MIN_SURROGATE;
                 assertMatches((String) key, inCharset);
                 assertMatches((String) value, inCharset);
@@ -67,6 +69,7 @@ public class PropertiesPropertyParameterTypesTest {
             p.forEach((key, value) -> {
                 assertThat(key, instanceOf(String.class));
                 assertThat(value, instanceOf(String.class));
+
                 IntPredicate inCharset = ch -> ch >= 0 && ch < 0x80;
                 assertMatches((String) key, inCharset);
                 assertMatches((String) value, inCharset);

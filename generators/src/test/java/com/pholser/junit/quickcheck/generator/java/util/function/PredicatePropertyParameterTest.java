@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -49,16 +50,24 @@ public class PredicatePropertyParameterTest {
     }
 
     @Test public void callingDefaultPredicateMethod() {
-        assertThat(testResult(CallingDefaultPredicateMethod.class), isSuccessful());
+        assertThat(
+            testResult(CallingDefaultPredicateMethod.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class CallingDefaultPredicateMethod {
-        @Property public <T, U extends T> void and(Predicate<U> first, Predicate<T> second, U arg) {
+        @Property public <T, U extends T> void and(
+            Predicate<U> first,
+            Predicate<T> second,
+            U arg) {
+
             boolean firstResult = first.test(arg);
             boolean secondResult = second.test(arg);
 
-            assertEquals(firstResult && secondResult, first.and(second).test(arg));
+            assertEquals(
+                firstResult && secondResult,
+                first.and(second).test(arg));
         }
 
         @Property public <T> void negate(Predicate<T> p, T arg) {

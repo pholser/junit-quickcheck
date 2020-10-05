@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -65,15 +65,18 @@ public class PeriodPropertyParameterTypesTest {
             assertThat(
                 toBigInteger(p),
                 allOf(
-                    greaterThanOrEqualTo(toBigInteger(Period.parse("P1Y2M3D"))),
-                    lessThanOrEqualTo(toBigInteger(Period.parse("P36Y2M3D")))));
+                    greaterThanOrEqualTo(
+                        toBigInteger(Period.parse("P1Y2M3D"))),
+                    lessThanOrEqualTo(
+                        toBigInteger(Period.parse("P36Y2M3D")))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinPeriod.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -86,7 +89,8 @@ public class PeriodPropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxPeriod.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -125,7 +129,8 @@ public class PeriodPropertyParameterTypesTest {
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

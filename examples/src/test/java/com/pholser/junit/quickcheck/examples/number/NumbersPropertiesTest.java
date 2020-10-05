@@ -26,12 +26,11 @@
 package com.pholser.junit.quickcheck.examples.number;
 
 import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.examples.number.NonNegative;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class NumbersPropertiesTest {

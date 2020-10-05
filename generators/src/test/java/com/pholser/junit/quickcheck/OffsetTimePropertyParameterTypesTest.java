@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -63,20 +63,28 @@ public class OffsetTimePropertyParameterTypesTest {
                 format = "HH:mm:ss.nxxx")
             OffsetTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
 
             assertThat(
                 t,
                 allOf(
-                    greaterThanOrEqualTo(OffsetTime.parse("00:00:00.0+01:00", formatter)),
-                    lessThanOrEqualTo(OffsetTime.parse("23:59:59.999999999+01:00", formatter))));
+                    greaterThanOrEqualTo(
+                        OffsetTime.parse(
+                            "00:00:00.0+01:00",
+                            formatter)),
+                    lessThanOrEqualTo(
+                        OffsetTime.parse(
+                            "23:59:59.999999999+01:00",
+                            formatter))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinOffsetTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -93,7 +101,8 @@ public class OffsetTimePropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxOffsetTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -110,7 +119,8 @@ public class OffsetTimePropertyParameterTypesTest {
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatOffsetTime.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -136,7 +146,8 @@ public class OffsetTimePropertyParameterTypesTest {
                 format = "HH:mm:ss.nxxx")
             OffsetTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
             assertThat(
                 t,
                 lessThanOrEqualTo(
@@ -156,17 +167,21 @@ public class OffsetTimePropertyParameterTypesTest {
                 format = "HH:mm:ss.nxxx")
             OffsetTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss.nxxx");
+
             assertThat(
                 t,
-                greaterThanOrEqualTo(OffsetTime.parse("00:00:00.0+00:00", formatter)));
+                greaterThanOrEqualTo(
+                    OffsetTime.parse("00:00:00.0+00:00", formatter)));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

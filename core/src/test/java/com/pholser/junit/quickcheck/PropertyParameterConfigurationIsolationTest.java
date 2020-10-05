@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -40,7 +41,9 @@ import static org.junit.experimental.results.ResultMatchers.*;
 public class PropertyParameterConfigurationIsolationTest {
     @Test public void acrossParametersOfSameType() throws Exception {
         assertThat(testResult(ParametersOfSameType.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ParametersOfSameType.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ParametersOfSameType.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -55,9 +58,15 @@ public class PropertyParameterConfigurationIsolationTest {
         }
     }
 
-    @Test public void acrossParametersOfSameTypeWithOneConstant() throws Exception {
-        assertThat(testResult(ParametersOfSameTypeWithOneConstant.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ParametersOfSameTypeWithOneConstant.iterations);
+    @Test public void acrossParametersOfSameTypeWithOneConstant()
+        throws Exception {
+
+        assertThat(
+            testResult(ParametersOfSameTypeWithOneConstant.class),
+            isSuccessful());
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ParametersOfSameTypeWithOneConstant.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -72,16 +81,24 @@ public class PropertyParameterConfigurationIsolationTest {
         }
     }
 
-    @Test public void acrossParametersOfSameParameterizedType() throws Exception {
-        assertThat(testResult(ParametersOfSameParameterizedType.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ParametersOfSameParameterizedType.iterations);
+    @Test public void acrossParametersOfSameParameterizedType()
+        throws Exception {
+
+        assertThat(
+            testResult(ParametersOfSameParameterizedType.class),
+            isSuccessful());
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ParametersOfSameParameterizedType.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ParametersOfSameParameterizedType {
         static int iterations;
 
-        @Property public void holds(Box<@Same(2) Foo> first, Box<@Same(3) Foo> second) {
+        @Property public void holds(
+            Box<@Same(2) Foo> first, Box<@Same(3) Foo> second) {
+
             ++iterations;
 
             assertEquals(2, first.contents().i());
@@ -89,8 +106,12 @@ public class PropertyParameterConfigurationIsolationTest {
         }
     }
 
-    @Test public void acrossParametersOfSameParameterizedTypeWithOneConstant() throws Exception {
-        assertThat(testResult(ParametersOfSameParameterizedTypeWithOneConstant.class), isSuccessful());
+    @Test public void acrossParametersOfSameParameterizedTypeWithOneConstant()
+        throws Exception {
+
+        assertThat(
+            testResult(ParametersOfSameParameterizedTypeWithOneConstant.class),
+            isSuccessful());
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameParameterizedTypeWithOneConstant.iterations);
@@ -108,19 +129,19 @@ public class PropertyParameterConfigurationIsolationTest {
         }
     }
 
-    @Test public void acrossParametersOfParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant()
-        throws Exception {
-
+    @Test public void
+    acrossParametersOfParameterizedAndNotTypesWithOneConstant()
+    throws Exception {
         assertThat(
-            testResult(ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant.class),
+            testResult(ParametersOfParameterizedAndNotTypesWithOneConstant.class),
             isSuccessful());
         assertEquals(
             defaultPropertyTrialCount(),
-            ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant.iterations);
+            ParametersOfParameterizedAndNotTypesWithOneConstant.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ParametersOfParameterizedTypeAndUnparameterizedTypeWithOneConstant {
+    public static class ParametersOfParameterizedAndNotTypesWithOneConstant {
         static int iterations;
 
         @Property public void holds(Box<@Same(2) Foo> first, Foo second) {
@@ -132,15 +153,22 @@ public class PropertyParameterConfigurationIsolationTest {
     }
 
     @Test public void acrossParametersOfSameArrayType() throws Exception {
-        assertThat(testResult(ParametersOfSameArrayType.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ParametersOfSameArrayType.iterations);
+        assertThat(
+            testResult(ParametersOfSameArrayType.class),
+            isSuccessful());
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ParametersOfSameArrayType.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ParametersOfSameArrayType {
         static int iterations;
 
-        @Property public void holds(@Same(2) Foo[] first, @Same(3) Foo[][] second) {
+        @Property public void holds(
+            @Same(2) Foo[] first,
+            @Same(3) Foo[][] second) {
+
             ++iterations;
 
             for (Foo f : first)
@@ -152,8 +180,11 @@ public class PropertyParameterConfigurationIsolationTest {
         }
     }
 
-    @Test public void acrossParametersOfSameArrayTypeWithOneConstant() throws Exception {
-        assertThat(testResult(ParametersOfSameArrayTypeWithOneConstant.class), isSuccessful());
+    @Test public void acrossParametersOfSameArrayTypeWithOneConstant()
+        throws Exception {
+        assertThat(
+            testResult(ParametersOfSameArrayTypeWithOneConstant.class),
+            isSuccessful());
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameArrayTypeWithOneConstant.iterations);
@@ -173,15 +204,19 @@ public class PropertyParameterConfigurationIsolationTest {
         }
     }
 
-    @Test public void acrossParametersOfParametersOfArrayTypeAndTypeWithOneConstant() throws Exception {
-        assertThat(testResult(ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.class), isSuccessful());
+    @Test public void acrossParametersOfArrayTypeAndTypeWithOneConstant()
+        throws Exception {
+
+        assertThat(
+            testResult(ParametersOfArrayTypeAndTypeWithOneConstant.class),
+            isSuccessful());
         assertEquals(
             defaultPropertyTrialCount(),
-            ParametersOfParametersOfArrayTypeAndTypeWithOneConstant.iterations);
+            ParametersOfArrayTypeAndTypeWithOneConstant.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class ParametersOfParametersOfArrayTypeAndTypeWithOneConstant {
+    public static class ParametersOfArrayTypeAndTypeWithOneConstant {
         static int iterations;
 
         @Property public void holds(@Same(2) Foo[] first, Foo second) {

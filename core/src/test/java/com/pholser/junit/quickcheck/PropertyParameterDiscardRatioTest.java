@@ -31,6 +31,7 @@ import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -52,10 +53,11 @@ public class PropertyParameterDiscardRatioTest {
         }
     }
 
-    @Test public void willStopGeneratingValuesAfterDiscardRatioExceeded() {
+    @Test public void stopsGeneratingValuesAfterDiscardRatioExceeded() {
         assertThat(
             testResult(ExceededDiscardRatio.class),
-            hasFailureContaining(DiscardRatioExceededException.class.getName()));
+            hasFailureContaining(
+                DiscardRatioExceededException.class.getName()));
         assertEquals(0, ExceededDiscardRatio.iterations);
     }
 
@@ -63,7 +65,9 @@ public class PropertyParameterDiscardRatioTest {
     public static class ExceededDiscardRatio {
         static int iterations;
 
-        @Property public void shouldHold(@When(discardRatio = 3, satisfies = "false") Foo f) {
+        @Property public void shouldHold(
+            @When(discardRatio = 3, satisfies = "false") Foo f) {
+
             ++iterations;
         }
     }
@@ -71,7 +75,8 @@ public class PropertyParameterDiscardRatioTest {
     @Test public void zeroRatioStopsAfterDiscardsExceedSampleSize() {
         assertThat(
             testResult(DefaultDiscardRatio.class),
-            hasFailureContaining(DiscardRatioExceededException.class.getName()));
+            hasFailureContaining(
+                DiscardRatioExceededException.class.getName()));
         assertEquals(0, DefaultDiscardRatio.iterations);
     }
 

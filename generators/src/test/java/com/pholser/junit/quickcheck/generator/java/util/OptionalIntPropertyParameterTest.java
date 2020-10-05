@@ -35,6 +35,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -48,15 +49,21 @@ public class OptionalIntPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MaybeAnInt {
-        @Property public void works(@InRange(minInt = -2, maxInt = 3) OptionalInt i) {
+        @Property public void works(
+            @InRange(minInt = -2, maxInt = 3) OptionalInt i) {
+
             assumeTrue(i.isPresent());
-            assertThat(i.getAsInt(), allOf(greaterThanOrEqualTo(-2), lessThanOrEqualTo(3)));
+            assertThat(
+                i.getAsInt(),
+                allOf(greaterThanOrEqualTo(-2), lessThanOrEqualTo(3)));
         }
     }
 
     @Test public void shrinking() {
         assertThat(testResult(ShrinkingOptionalInt.class), failureCountIs(1));
-        assertTrue(ShrinkingOptionalInt.failed.stream().anyMatch(o -> !o.isPresent()));
+        assertTrue(
+            ShrinkingOptionalInt.failed.stream().anyMatch(
+                o -> !o.isPresent()));
     }
 
     @RunWith(JUnitQuickcheck.class)

@@ -35,14 +35,21 @@ import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.Mode.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PropertyExhaustiveSampleSizeTest {
-    @Test public void shouldFeedADefaultNumberOfValuesToAProperty() throws Exception {
-        assertThat(testResult(ForDefaultNumberOfValues.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ForDefaultNumberOfValues.iterations);
+    @Test public void shouldFeedADefaultNumberOfValuesToAProperty()
+        throws Exception {
+
+        assertThat(
+            testResult(ForDefaultNumberOfValues.class),
+            isSuccessful());
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ForDefaultNumberOfValues.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -55,7 +62,9 @@ public class PropertyExhaustiveSampleSizeTest {
     }
 
     @Test public void shouldRespectTrialCountIfSpecified() {
-        assertThat(testResult(ForSpecifiedNumberOfValues.class), isSuccessful());
+        assertThat(
+            testResult(ForSpecifiedNumberOfValues.class),
+            isSuccessful());
         assertEquals(5, ForSpecifiedNumberOfValues.iterations);
     }
 
@@ -69,8 +78,11 @@ public class PropertyExhaustiveSampleSizeTest {
         }
     }
 
-    @Test public void trialCountHoldsForEntirePropertyRatherThanIndividualParameters() {
-        assertThat(testResult(ForValuesOfMultipleParameters.class), isSuccessful());
+    @Test public void
+    trialCountHoldsForEntirePropertyRatherThanIndividualParameters() {
+        assertThat(
+            testResult(ForValuesOfMultipleParameters.class),
+            isSuccessful());
 
         assertEquals(4, ForValuesOfMultipleParameters.iterations);
         List<Foo> foos = ForValuesOfMultipleParameters.foos;
