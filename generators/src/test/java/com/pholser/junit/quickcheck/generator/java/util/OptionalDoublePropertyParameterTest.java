@@ -62,7 +62,7 @@ public class OptionalDoublePropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingOptionalDouble {
-        static List<OptionalDouble> failed = new ArrayList<>();
+        static final List<OptionalDouble> failed = new ArrayList<>();
 
         @Property public void works(OptionalDouble optional) {
             failed.add(optional);

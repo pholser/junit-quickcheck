@@ -70,12 +70,14 @@ public class BigNumberPropertyParameterTypesTest {
     @Test public void rangedBigIntegerWithBackwardsRange() {
         assertThat(
             testResult(RangedBigIntegerWithBackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigIntegerWithBackwardsRange {
-        @Property public void shouldHold(@InRange(min = "1", max = "0") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "1", max = "0") BigInteger i) {
         }
     }
 
@@ -87,7 +89,8 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigIntegerWithMalformedMin {
-        @Property public void shouldHold(@InRange(min = "-(*&!(#*!@", max = "0") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "-(*&!(#*!@", max = "0") BigInteger i) {
         }
     }
 
@@ -99,12 +102,15 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigIntegerWithMalformedMax {
-        @Property public void shouldHold(@InRange(min = "-1234", max = "237KJAHDLKAJHS") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "-1234", max = "237KJAHDLKAJHS") BigInteger i) {
         }
     }
 
     @Test public void rangedBigIntegerWithNoMin() {
-        assertThat(testResult(RangedBigIntegerWithNoMin.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigIntegerWithNoMin.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -115,7 +121,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void rangedBigIntegerWithNoMax() {
-        assertThat(testResult(RangedBigIntegerWithNoMax.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigIntegerWithNoMax.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -126,12 +134,16 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void rangedBigIntegerWithMinAndMax() {
-        assertThat(testResult(RangedBigIntegerWithMinAndMax.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigIntegerWithMinAndMax.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigIntegerWithMinAndMax {
-        @Property public void shouldHold(@InRange(min = "1", max = "10000000") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "1", max = "10000000") BigInteger i) {
+
             assertThat(
                 i,
                 allOf(
@@ -141,7 +153,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPositiveBigInteger() {
-        assertThat(testResult(ShrinkingPositiveBigInteger.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingPositiveBigInteger.class),
+            failureCountIs(1));
         assertEquals(
             BigInteger.valueOf(12341234),
             Iterables.getLast(ShrinkingPositiveBigInteger.values));
@@ -149,9 +163,11 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPositiveBigInteger {
-        static List<BigInteger> values = new ArrayList<>();
+        static final List<BigInteger> values = new ArrayList<>();
 
-        @Property public void shouldHold(@InRange(min = "12341234", max = "555555555555") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "12341234", max = "555555555555") BigInteger i) {
+
             values.add(i);
 
             fail();
@@ -159,7 +175,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingNegativeBigInteger() {
-        assertThat(testResult(ShrinkingNegativeBigInteger.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingNegativeBigInteger.class),
+            failureCountIs(1));
 
         assertEquals(
             BigInteger.valueOf(-114477),
@@ -168,9 +186,11 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingNegativeBigInteger {
-        static List<BigInteger> values = new ArrayList<>();
+        static final List<BigInteger> values = new ArrayList<>();
 
-        @Property public void shouldHold(@InRange(min = "-999888777666", max = "-114477") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "-999888777666", max = "-114477") BigInteger i) {
+
             values.add(i);
 
             fail();
@@ -178,7 +198,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingBigIntegerStraddlingZero() {
-        assertThat(testResult(ShrinkingBigIntegerStraddlingZero.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingBigIntegerStraddlingZero.class),
+            failureCountIs(1));
 
         assertThat(
             Iterables.getLast(ShrinkingBigIntegerStraddlingZero.values),
@@ -187,7 +209,7 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingBigIntegerStraddlingZero {
-        static List<BigInteger> values = new ArrayList<>();
+        static final List<BigInteger> values = new ArrayList<>();
 
         @Property public void shouldHold(BigInteger i) {
             values.add(i);
@@ -207,7 +229,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void bigDecimalWithSpecifiedPrecision() {
-        assertThat(testResult(BigDecimalWithSpecifiedPrecision.class), isSuccessful());
+        assertThat(
+            testResult(BigDecimalWithSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -220,12 +244,14 @@ public class BigNumberPropertyParameterTypesTest {
     @Test public void rangedBigDecimalWithBackwardsRange() {
         assertThat(
             testResult(RangedBigDecimalWithBackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithBackwardsRange {
-        @Property public void shouldHold(@InRange(min = "1.02", max = "1.01999") BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(min = "1.02", max = "1.01999") BigDecimal d) {
         }
     }
 
@@ -237,7 +263,8 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithMalformedMin {
-        @Property public void shouldHold(@InRange(min = "ZXCZXC", max = "-34.56") BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(min = "ZXCZXC", max = "-34.56") BigDecimal d) {
         }
     }
 
@@ -249,90 +276,119 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithMalformedMax {
-        @Property public void shouldHold(@InRange(min = "-1234.5678", max = "***@*@*") BigInteger i) {
+        @Property public void shouldHold(
+            @InRange(min = "-1234.5678", max = "***@*@*") BigInteger i) {
         }
     }
 
     @Test public void rangedBigDecimalWithNoMin() {
-        assertThat(testResult(RangedBigDecimalWithNoMin.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithNoMin.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithNoMin {
-        @Property public void shouldHold(@InRange(max = "-0.000123123") BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(max = "-0.000123123") BigDecimal d) {
+
             assertEquals(9, d.scale());
             assertThat(d, lessThanOrEqualTo(new BigDecimal("-0.000123123")));
         }
     }
 
     @Test public void rangedBigDecimalWithNoMinLesserSpecifiedPrecision() {
-        assertThat(testResult(RangedBigDecimalWithNoMinLesserSpecifiedPrecision.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithNoMinLesserSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithNoMinLesserSpecifiedPrecision {
-        @Property public void shouldHold(@InRange(max = "-0.000123123") @Precision(scale = 8) BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(max = "-0.000123123") @Precision(scale = 8) BigDecimal d) {
+
             assertEquals(9, d.scale());
             assertThat(d, lessThanOrEqualTo(new BigDecimal("-0.000123123")));
         }
     }
 
     @Test public void rangedBigDecimalWithNoMinGreaterSpecifiedPrecision() {
-        assertThat(testResult(RangedBigDecimalWithNoMinGreaterSpecifiedPrecision.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithNoMinGreaterSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithNoMinGreaterSpecifiedPrecision {
-        @Property public void shouldHold(@InRange(max = "-0.000123123") @Precision(scale = 10) BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(max = "-0.000123123") @Precision(scale = 10)
+                BigDecimal d) {
+
             assertEquals(10, d.scale());
             assertThat(d, lessThanOrEqualTo(new BigDecimal("-0.000123123")));
         }
     }
 
     @Test public void rangedBigDecimalWithNoMax() {
-        assertThat(testResult(RangedBigDecimalWithNoMax.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithNoMax.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithNoMax {
-        @Property public void shouldHold(@InRange(min = "1.23456789") BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(min = "1.23456789") BigDecimal d) {
+
             assertEquals(8, d.scale());
             assertThat(d, greaterThanOrEqualTo(new BigDecimal("1.23456789")));
         }
     }
 
     @Test public void rangedBigDecimalWithNoMaxLesserSpecifiedPrecision() {
-        assertThat(testResult(RangedBigDecimalWithNoMaxLesserSpecifiedPrecision.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithNoMaxLesserSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithNoMaxLesserSpecifiedPrecision {
-        @Property public void shouldHold(@InRange(min = "1.23456789") @Precision(scale = 7) BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(min = "1.23456789") @Precision(scale = 7) BigDecimal d) {
+
             assertEquals(8, d.scale());
             assertThat(d, greaterThanOrEqualTo(new BigDecimal("1.23456789")));
         }
     }
 
     @Test public void rangedBigDecimalWithNoMaxGreaterSpecifiedPrecision() {
-        assertThat(testResult(RangedBigDecimalWithNoMaxGreaterSpecifiedPrecision.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithNoMaxGreaterSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithNoMaxGreaterSpecifiedPrecision {
-        @Property public void shouldHold(@InRange(min = "1.23456789") @Precision(scale = 9) BigDecimal d) {
+        @Property public void shouldHold(
+            @InRange(min = "1.23456789") @Precision(scale = 9) BigDecimal d) {
+
             assertEquals(9, d.scale());
             assertThat(d, greaterThanOrEqualTo(new BigDecimal("1.23456789")));
         }
     }
 
     @Test public void rangedBigDecimalWithMinAndMax() {
-        assertThat(testResult(RangedBigDecimalWithMinAndMax.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithMinAndMax.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithMinAndMax {
         @Property public void shouldHold(
-            @InRange(min = "-123456789.0123", max = "99999999.87654321") BigDecimal d) {
+            @InRange(min = "-123456789.0123", max = "99999999.87654321")
+                BigDecimal d) {
 
             assertEquals(8, d.scale());
             assertThat(
@@ -344,13 +400,17 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void rangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision() {
-        assertThat(testResult(RangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision.class), isSuccessful());
+        assertThat(
+            testResult(RangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedBigDecimalWithMinAndMaxLesserSpecifiedPrecision {
         @Property public void shouldHold(
-            @InRange(min = "-123456789.0123", max = "99999999.87654321") @Precision(scale = 7) BigDecimal d) {
+            @InRange(min = "-123456789.0123", max = "99999999.87654321")
+            @Precision(scale = 7)
+                BigDecimal d) {
 
             assertEquals(8, d.scale());
             assertThat(
@@ -361,14 +421,20 @@ public class BigNumberPropertyParameterTypesTest {
         }
     }
 
-    @Test public void rangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision() {
-        assertThat(testResult(RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision.class), isSuccessful());
+    @Test public void
+    rangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision() {
+        assertThat(
+            testResult(RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision {
+    public static class
+    RangedBigDecimalWithMinAndMaxGreaterSpecifiedPrecision {
         @Property public void shouldHold(
-            @InRange(min = "-123456789.0123", max = "99999999.87654321") @Precision(scale = 11) BigDecimal d) {
+            @InRange(min = "-123456789.0123", max = "99999999.87654321")
+            @Precision(scale = 11)
+                BigDecimal d) {
 
             assertEquals(11, d.scale());
             assertThat(
@@ -380,7 +446,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void bigDecimalByAggregateAnnotations() {
-        assertThat(testResult(BigDecimalByAggregateAnnotations.class), isSuccessful());
+        assertThat(
+            testResult(BigDecimalByAggregateAnnotations.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -403,7 +471,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPositiveBigDecimal() {
-        assertThat(testResult(ShrinkingPositiveBigDecimal.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingPositiveBigDecimal.class),
+            failureCountIs(1));
         assertEquals(
             new BigDecimal("123.45678909891"),
             Iterables.getLast(ShrinkingPositiveBigDecimal.values));
@@ -411,10 +481,11 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPositiveBigDecimal {
-        static List<BigDecimal> values = new ArrayList<>();
+        static final List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
-            @InRange(min = "123.45678909891", max = "5555.23213123123") BigDecimal d) {
+            @InRange(min = "123.45678909891", max = "5555.23213123123")
+                BigDecimal d) {
 
             values.add(d);
 
@@ -423,7 +494,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingNegativeBigDecimal() {
-        assertThat(testResult(ShrinkingNegativeBigDecimal.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingNegativeBigDecimal.class),
+            failureCountIs(1));
 
         assertThat(
             Iterables.getLast(ShrinkingNegativeBigDecimal.values),
@@ -438,7 +511,10 @@ public class BigNumberPropertyParameterTypesTest {
         static List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
-            @InRange(min = "-999888777666.55443322211", max = "-114477.1234123412341234") BigDecimal d) {
+            @InRange(
+                min = "-999888777666.55443322211",
+                max = "-114477.1234123412341234")
+                BigDecimal d) {
 
             values.add(d);
 
@@ -447,7 +523,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingNegativeBigDecimalTowardsZero() {
-        assertThat(testResult(ShrinkingNegativeBigDecimalTowardsZero.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingNegativeBigDecimalTowardsZero.class),
+            failureCountIs(1));
 
         assertThat(
             Iterables.getLast(ShrinkingNegativeBigDecimalTowardsZero.values),
@@ -456,7 +534,7 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingNegativeBigDecimalTowardsZero {
-        static List<BigDecimal> values = new ArrayList<>();
+        static final List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @InRange(min = "-999999999.999", max = "0") BigDecimal d) {
@@ -468,8 +546,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingNegativeBigIntegerTowardsZero() {
-        assertThat(testResult(ShrinkingNegativeBigIntegerTowardsZero.class), failureCountIs(1));
-
+        assertThat(
+            testResult(ShrinkingNegativeBigIntegerTowardsZero.class),
+            failureCountIs(1));
         assertThat(
             Iterables.getLast(ShrinkingNegativeBigIntegerTowardsZero.values),
             equalTo(BigInteger.ZERO));
@@ -477,7 +556,7 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingNegativeBigIntegerTowardsZero {
-        static List<BigInteger> values = new ArrayList<>();
+        static final List<BigInteger> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @InRange(min = "-999999999", max = "0") BigInteger d) {
@@ -489,7 +568,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPositiveBigDecimalTowardsZero() {
-        assertThat(testResult(ShrinkingPositiveBigDecimalTowardsZero.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingPositiveBigDecimalTowardsZero.class),
+            failureCountIs(1));
 
         assertThat(
             Iterables.getLast(ShrinkingPositiveBigDecimalTowardsZero.values),
@@ -498,7 +579,7 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPositiveBigDecimalTowardsZero {
-        static List<BigDecimal> values = new ArrayList<>();
+        static final List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @InRange(min = "0", max = "999999999.999") BigDecimal d) {
@@ -510,8 +591,9 @@ public class BigNumberPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingBigDecimalStraddlingZero() {
-        assertThat(testResult(ShrinkingBigDecimalStraddlingZero.class), failureCountIs(1));
-
+        assertThat(
+            testResult(ShrinkingBigDecimalStraddlingZero.class),
+            failureCountIs(1));
         assertThat(
             Iterables.getLast(ShrinkingBigDecimalStraddlingZero.values),
             lessThanOrEqualTo(BigDecimal.TEN));
@@ -519,7 +601,7 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingBigDecimalStraddlingZero {
-        static List<BigDecimal> values = new ArrayList<>();
+        static final List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(BigDecimal d) {
             values.add(d);

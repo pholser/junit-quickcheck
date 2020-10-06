@@ -63,6 +63,6 @@ public class Box<T> {
     }
 
     @Override public String toString() {
-        return "Box[[" + String.valueOf(contents) + "]]";
+        return "Box[[" + contents + "]]";
     }
 }

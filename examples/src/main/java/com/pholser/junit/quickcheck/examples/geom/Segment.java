@@ -59,10 +59,7 @@ final class Segment {
         if (o3 == COLLINEAR && a.between(other.a, other.b))
             return true;
 
-        if (o4 == COLLINEAR && b.between(other.a, other.b))
-            return true;
-
-        return false;
+        return o4 == COLLINEAR && b.between(other.a, other.b);
     }
 
     @Override public String toString() {

@@ -261,7 +261,7 @@ public class ShrinkingTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingInPresenceOfConstraintExpression {
-        private static List<Foo> values = new ArrayList<>();
+        private static final List<Foo> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @When(satisfies = "#_.i >= 0") Foo f) {

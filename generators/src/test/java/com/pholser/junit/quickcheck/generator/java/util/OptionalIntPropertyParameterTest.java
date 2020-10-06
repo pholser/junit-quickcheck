@@ -68,7 +68,7 @@ public class OptionalIntPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingOptionalInt {
-        static List<OptionalInt> failed = new ArrayList<>();
+        static final List<OptionalInt> failed = new ArrayList<>();
 
         @Property public void works(OptionalInt optional) {
             failed.add(optional);

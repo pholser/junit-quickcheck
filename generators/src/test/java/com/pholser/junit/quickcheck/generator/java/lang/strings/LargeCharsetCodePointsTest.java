@@ -41,8 +41,8 @@ import static org.junit.Assert.*;
 @Category(LongRunning.class)
 @RunWith(Parameterized.class)
 public class LargeCharsetCodePointsTest {
-    private Charset charset;
-    private CodePoints points;
+    private final Charset charset;
+    private final CodePoints points;
 
     public LargeCharsetCodePointsTest(Charset charset) {
         this.charset = charset;
@@ -63,7 +63,12 @@ public class LargeCharsetCodePointsTest {
         for (int index = 0, i = 0; i < 0x10FFFF; ++i) {
             buffer[0] = i;
             if (encoder.canEncode(new String(buffer, 0, 1))) {
-                String message = String.format("The %d'th character in %s should be %06x", index, charset.name(), i);
+                String message =
+                    String.format(
+                        "The %d'th character in %s should be %06x",
+                        index,
+                        charset.name(),
+                        i);
                 assertEquals(message, i, points.at(index));
                 ++index;
             }

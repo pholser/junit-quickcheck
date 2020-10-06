@@ -48,6 +48,7 @@ public class PolygonGenerator extends Generator<Polygon> {
         SourceOfRandomness r,
         GenerationStatus s) {
 
+        @SuppressWarnings("unchecked")
         Generator<List<Point>> points =
             (Generator<List<Point>>) gen().field(
                 getClass(),

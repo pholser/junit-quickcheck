@@ -67,7 +67,7 @@ public class EnumPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class EnumWithConstraint {
-        static List<TestEnum> values = new ArrayList<>();
+        static final List<TestEnum> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @When(satisfies = "#_ != @com.pholser.junit.quickcheck.EnumPropertyParameterTypesTest$TestEnum@E3")

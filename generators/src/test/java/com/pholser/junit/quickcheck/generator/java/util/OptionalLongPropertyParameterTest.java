@@ -68,7 +68,7 @@ public class OptionalLongPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingOptionalLong {
-        static List<OptionalLong> failed = new ArrayList<>();
+        static final List<OptionalLong> failed = new ArrayList<>();
 
         @Property public void works(OptionalLong optional) {
             failed.add(optional);

@@ -11,7 +11,7 @@ methods.
 
 ```java
     import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-    import com.pholser.junit.quickcheck.Property;
+    import com.pholser.junit.quickcheck.Property;import java.nio.charset.StandardCharsets;
 
     class Crypto {
         byte[] encrypt(byte[] plaintext, Key key) {
@@ -31,7 +31,9 @@ methods.
             Crypto crypto = new Crypto();
 
             byte[] ciphertext =
-                crypto.encrypt(plaintext.getBytes("US-ASCII"), key);
+                crypto.encrypt(
+                    plaintext.getBytes(StandardCharsets.US_ASCII),
+                    key);
 
             assertEquals(
                 plaintext,

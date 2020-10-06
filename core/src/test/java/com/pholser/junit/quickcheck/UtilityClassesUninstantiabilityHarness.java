@@ -28,20 +28,14 @@ package com.pholser.junit.quickcheck;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static java.lang.reflect.Modifier.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public abstract class UtilityClassesUninstantiabilityHarness {
-    @Rule public final ExpectedException thrown = none();
-
     private final Class<?> utility;
 
     protected UtilityClassesUninstantiabilityHarness(Class<?> utility) {
@@ -50,27 +44,19 @@ public abstract class UtilityClassesUninstantiabilityHarness {
 
     @Test public final void attemptToInstantiate() throws Exception {
         Constructor<?> constructor = utility.getDeclaredConstructor();
-        assertTrue("need a private no-arg constructor", isPrivate(constructor.getModifiers()));
+        assertTrue(
+            "need a private no-arg constructor",
+            isPrivate(constructor.getModifiers()));
 
         constructor.setAccessible(true);
 
-        thrown.expect(InvocationTargetException.class);
-        thrown.expect(causeOfType(UnsupportedOperationException.class));
-
-        constructor.newInstance();
-    }
-
-    private static Matcher<InvocationTargetException> causeOfType(final Class<? extends Throwable> type) {
-        return new TypeSafeMatcher<InvocationTargetException>() {
-            @Override public boolean matchesSafely(InvocationTargetException target) {
-                return type.isInstance(target.getTargetException());
-            }
-
-            @Override public void describeTo(Description description) {
-                description.appendText("an InvocationTargetException with target exception of ");
-                description.appendValue(type);
-            }
-        };
+        InvocationTargetException ex =
+            assertThrows(
+                InvocationTargetException.class,
+                constructor::newInstance);
+        assertThat(
+            ex.getCause(),
+            instanceOf(UnsupportedOperationException.class));
     }
 }
 
