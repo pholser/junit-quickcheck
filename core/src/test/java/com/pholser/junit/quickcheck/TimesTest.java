@@ -32,18 +32,15 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import static java.util.Collections.*;
 import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class TimesTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
-    @Rule public final ExpectedException thrown = none();
 
     @Mock private SourceOfRandomness random;
     @Mock private GenerationStatus status;
@@ -67,8 +64,8 @@ public class TimesTest {
     }
 
     @Test public void negativeTimes() {
-        thrown.expect(IllegalArgumentException.class);
-
-        Gen.pure(2).times(-1);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> Gen.pure(2).times(-1));
     }
 }

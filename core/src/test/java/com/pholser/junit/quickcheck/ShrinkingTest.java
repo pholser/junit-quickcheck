@@ -36,6 +36,7 @@ import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -46,12 +47,15 @@ public class ShrinkingTest {
     @Test public void complete() {
         assertThat(
             testResult(ShrinkingCompletely.class),
-            hasSingleFailureContaining(String.format("With arguments: [%s]", new Foo(1))));
+            hasSingleFailureContaining(
+                String.format("With arguments: [%s]", new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingCompletely {
-        @Property(maxShrinks = Integer.MAX_VALUE, maxShrinkDepth = Integer.MAX_VALUE)
+        @Property(
+            maxShrinks = Integer.MAX_VALUE,
+            maxShrinkDepth = Integer.MAX_VALUE)
         public void shouldHold(Foo f) {
             assumeThat(f.i(), greaterThan(0));
 
@@ -142,9 +146,12 @@ public class ShrinkingTest {
     }
 
     @Test public void shrinkingLengthConstrainedArray() {
-        assertThat(testResult(ShrinkingLengthConstrainedArray.class), failureCountIs(1));
-        assertTrue(ShrinkingLengthConstrainedArray.attempts.stream()
-            .allMatch(a -> a.length >= 2 && a.length <= 4));
+        assertThat(
+            testResult(ShrinkingLengthConstrainedArray.class),
+            failureCountIs(1));
+        assertTrue(
+            ShrinkingLengthConstrainedArray.attempts.stream()
+                .allMatch(a -> a.length >= 2 && a.length <= 4));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -172,7 +179,8 @@ public class ShrinkingTest {
     @Test public void unexpectedErrorInProperty() {
         assertThat(
             testResult(UnexpectedErrorInProperty.class),
-            hasSingleFailureContaining("Unexpected error in property shouldHold with args ["));
+            hasSingleFailureContaining(
+                "Unexpected error in property shouldHold with args ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -185,7 +193,8 @@ public class ShrinkingTest {
     @Test public void unexpectedErrorDuringShrinking() {
         assertThat(
             testResult(UnexpectedErrorDuringShrinking.class),
-            hasSingleFailureContaining("Unexpected error in property shouldHold with args ["));
+            hasSingleFailureContaining(
+                "Unexpected error in property shouldHold with args ["));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -205,7 +214,10 @@ public class ShrinkingTest {
         assertThat(
             testResult(ShrinkingMoreThanOnePropertyParameter.class),
             hasSingleFailureContaining(
-                String.format("With arguments: [%s, %s]", new Foo(1), new Foo(1))));
+                String.format(
+                    "With arguments: [%s, %s]",
+                    new Foo(1),
+                    new Foo(1))));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -251,7 +263,8 @@ public class ShrinkingTest {
     public static class ShrinkingInPresenceOfConstraintExpression {
         private static List<Foo> values = new ArrayList<>();
 
-        @Property public void shouldHold(@When(satisfies = "#_.i >= 0") Foo f) {
+        @Property public void shouldHold(
+            @When(satisfies = "#_.i >= 0") Foo f) {
             values.add(f);
 
             fail();

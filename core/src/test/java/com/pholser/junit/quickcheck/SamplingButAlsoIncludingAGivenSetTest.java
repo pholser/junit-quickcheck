@@ -35,13 +35,11 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.Only;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
@@ -61,6 +59,7 @@ import org.junit.runner.RunWith;
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static java.math.RoundingMode.*;
 import static java.util.Arrays.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -68,7 +67,9 @@ import static org.junit.experimental.results.ResultMatchers.*;
 public class SamplingButAlsoIncludingAGivenSetTest {
     @Test public void primitiveBooleans() throws Exception {
         assertThat(testResult(PrimitiveBooleans.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), PrimitiveBooleans.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            PrimitiveBooleans.iterations);
         assertEquals(true, PrimitiveBooleans.values.get(0));
         assertEquals(
             new HashSet<>(asList(true, false)),
@@ -81,7 +82,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Boolean> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also("true") @From(ABool.class) boolean b) {
+        @Property public void shouldHold(
+            @Also("true") @From(ABool.class) boolean b) {
+
             values.add(b);
             ++iterations;
         }
@@ -102,7 +105,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Boolean> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also("false") @From(ABool.class) Boolean b) {
+        @Property public void shouldHold(
+            @Also("false") @From(ABool.class) Boolean b) {
+
             values.add(b);
             ++iterations;
         }
@@ -122,7 +127,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Byte> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"12", "-13"}) @From(AByte.class) byte b) {
+        @Property public void shouldHold(
+            @Also({"12", "-13"}) @From(AByte.class) byte b) {
+
             values.add(b);
             ++iterations;
         }
@@ -142,7 +149,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Byte> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"14", "-15"}) @From(AByte.class) Byte b) {
+        @Property public void shouldHold(
+            @Also({"14", "-15"}) @From(AByte.class) Byte b) {
+
             values.add(b);
             ++iterations;
         }
@@ -162,7 +171,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Character> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"Z", "z"}) @From(AChar.class) char ch) {
+        @Property public void shouldHold(
+            @Also({"Z", "z"}) @From(AChar.class) char ch) {
+
             values.add(ch);
             ++iterations;
         }
@@ -182,7 +193,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Character> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"@", "#"}) @From(AChar.class) Character ch) {
+        @Property public void shouldHold(
+            @Also({"@", "#"}) @From(AChar.class) Character ch) {
+
             values.add(ch);
             ++iterations;
         }
@@ -202,7 +215,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Double> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"3.2", "-4"}) @From(ADouble.class) double d) {
+        @Property public void shouldHold(
+            @Also({"3.2", "-4"}) @From(ADouble.class) double d) {
+
             values.add(d);
             ++iterations;
         }
@@ -222,7 +237,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Double> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"2.7", "-3.14"}) @From(ADouble.class) Double d) {
+        @Property public void shouldHold(
+            @Also({"2.7", "-3.14"}) @From(ADouble.class) Double d) {
+
             values.add(d);
             ++iterations;
         }
@@ -242,7 +259,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Float> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"3.3", "-5"}) @From(AFloat.class) float f) {
+        @Property public void shouldHold(
+            @Also({"3.3", "-5"}) @From(AFloat.class) float f) {
+
             values.add(f);
             ++iterations;
         }
@@ -262,7 +281,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Float> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"1.7", "-4.14"}) @From(AFloat.class) Float f) {
+        @Property public void shouldHold(
+            @Also({"1.7", "-4.14"}) @From(AFloat.class) Float f) {
+
             values.add(f);
             ++iterations;
         }
@@ -270,7 +291,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
     @Test public void primitiveIntegers() throws Exception {
         assertThat(testResult(PrimitiveIntegers.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), PrimitiveIntegers.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            PrimitiveIntegers.iterations);
         assertEquals(
             new HashSet<>(asList(1, 2, 3)),
             new HashSet<>(PrimitiveIntegers.values.subList(0, 3)));
@@ -282,7 +305,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Integer> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"1", "2", "3"}) @From(AnInt.class) int i) {
+        @Property public void shouldHold(
+            @Also({"1", "2", "3"}) @From(AnInt.class) int i) {
+
             values.add(i);
             ++iterations;
         }
@@ -302,7 +327,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Integer> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"4", "5"}) @From(AnInt.class) Integer i) {
+        @Property public void shouldHold(
+            @Also({"4", "5"}) @From(AnInt.class) Integer i) {
+
             values.add(i);
             ++iterations;
         }
@@ -322,7 +349,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Long> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"-6", "-7", "-8"}) @From(ALong.class) long ell) {
+        @Property public void shouldHold(
+            @Also({"-6", "-7", "-8"}) @From(ALong.class) long ell) {
+
             values.add(ell);
             ++iterations;
         }
@@ -342,7 +371,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Long> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"10", "11", "12"}) @From(ALong.class) Long ell) {
+        @Property public void shouldHold(
+            @Also({"10", "11", "12"}) @From(ALong.class) Long ell) {
+
             values.add(ell);
             ++iterations;
         }
@@ -362,7 +393,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Short> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"9", "8"}) @From(AShort.class) short sh) {
+        @Property public void shouldHold(
+            @Also({"9", "8"}) @From(AShort.class) short sh) {
+
             values.add(sh);
             ++iterations;
         }
@@ -382,7 +415,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Short> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"-13", "-14"}) @From(AShort.class) Short sh) {
+        @Property public void shouldHold(
+            @Also({"-13", "-14"}) @From(AShort.class) Short sh) {
+
             values.add(sh);
             ++iterations;
         }
@@ -402,7 +437,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<String> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"some", "values"}) @From(AString.class) String s) {
+        @Property public void shouldHold(
+            @Also({"some", "values"}) @From(AString.class) String s) {
+
             values.add(s);
             ++iterations;
         }
@@ -422,7 +459,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<RoundingMode> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+        @Property public void shouldHold(
+            @Also({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+
             values.add(mode);
             ++iterations;
         }
@@ -432,7 +471,8 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertThat(testResult(CtorOnly.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), CtorOnly.iterations);
         assertEquals(
-            new HashSet<>(asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))),
+            new HashSet<>(
+                asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))),
             new HashSet<>(CtorOnly.values.subList(0, 2)));
     }
 
@@ -450,7 +490,8 @@ public class SamplingButAlsoIncludingAGivenSetTest {
             }
 
             @Override public boolean equals(Object o) {
-                return o instanceof Target && Objects.equals(s, ((Target) o).s);
+                return o instanceof Target
+                    && Objects.equals(s, ((Target) o).s);
             }
         }
 
@@ -459,7 +500,10 @@ public class SamplingButAlsoIncludingAGivenSetTest {
                 super(Target.class);
             }
 
-            @Override public Target generate(SourceOfRandomness r, GenerationStatus s) {
+            @Override public Target generate(
+                SourceOfRandomness r,
+                GenerationStatus s) {
+
                 String value = "abcdefghij";
                 int index = r.nextInt(value.length());
                 return new Target("abcdefghij".substring(index));
@@ -470,7 +514,9 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Target> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"a", "b"}) @From(Targets.class) Target t) {
+        @Property public void shouldHold(
+            @Also({"a", "b"}) @From(Targets.class) Target t) {
+
             values.add(t);
             ++iterations;
         }
@@ -480,7 +526,10 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertThat(testResult(FavorValueOf.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), FavorValueOf.iterations);
         assertEquals(
-            new HashSet<>(asList(FavorValueOf.Target.valueOf("a"), FavorValueOf.Target.valueOf("b"))),
+            new HashSet<>(
+                asList(
+                    FavorValueOf.Target.valueOf("a"),
+                    FavorValueOf.Target.valueOf("b"))),
             new HashSet<>(FavorValueOf.values.subList(0, 2)));
     }
 
@@ -502,7 +551,8 @@ public class SamplingButAlsoIncludingAGivenSetTest {
             }
 
             @Override public boolean equals(Object o) {
-                return o instanceof Target && Objects.equals(s, ((Target) o).s);
+                return o instanceof Target
+                    && Objects.equals(s, ((Target) o).s);
             }
 
             public static Target valueOf(String s) {
@@ -517,7 +567,10 @@ public class SamplingButAlsoIncludingAGivenSetTest {
                 super(Target.class);
             }
 
-            @Override public Target generate(SourceOfRandomness r, GenerationStatus s) {
+            @Override public Target generate(
+                SourceOfRandomness r,
+                GenerationStatus s) {
+
                 String value = "abcdefghij";
                 int index = r.nextInt(value.length());
                 return Target.valueOf("abcdefghij".substring(index));
@@ -528,13 +581,15 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
         private static final List<Target> values = new ArrayList<>();
 
-        @Property public void shouldHold(@Also({"a", "b"}) @From(Targets.class) Target t) {
+        @Property public void shouldHold(
+            @Also({"a", "b"}) @From(Targets.class) Target t) {
+
             values.add(t);
             ++iterations;
         }
     }
 
-    @Test public void noImplicitConversion() throws Exception {
+    @Test public void noImplicitConversion() {
         assertThat(
             testResult(NoImplicitConversion.class),
             hasSingleFailureContaining(ReflectionException.class.getName()));
@@ -555,11 +610,14 @@ public class SamplingButAlsoIncludingAGivenSetTest {
 
     @Test public void explicitConversion() throws Exception {
         assertThat(testResult(ExplicitConversion.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ExplicitConversion.iterations);
         assertEquals(
-            new HashSet<>(asList(
-                LocalDate.of(2017, 1, 1),
-                LocalDate.of(2001, 12, 25))),
+            defaultPropertyTrialCount(),
+            ExplicitConversion.iterations);
+        assertEquals(
+            new HashSet<>(
+                asList(
+                    LocalDate.of(2017, 1, 1),
+                    LocalDate.of(2001, 12, 25))),
             new HashSet<>(ExplicitConversion.values.subList(0, 2)));
     }
 
@@ -579,7 +637,10 @@ public class SamplingButAlsoIncludingAGivenSetTest {
                 super(LocalDate.class);
             }
 
-            @Override public LocalDate generate(SourceOfRandomness r, GenerationStatus s) {
+            @Override public LocalDate generate(
+                SourceOfRandomness r,
+                GenerationStatus s) {
+
                 return Instant.ofEpochMilli(r.nextLong())
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
@@ -600,7 +661,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         }
     }
 
-    @Test public void manyParameters() throws Exception {
+    @Test public void manyParameters() {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(10, ManyParameters.iterations);
         assertEquals(
@@ -628,9 +689,13 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         }
     }
 
-    @Test public void alsoHonorsGeneratorsApartFromFixedSet() throws Exception {
+    @Test public void alsoHonorsGeneratorsApartFromFixedSet()
+        throws Exception {
+
         assertThat(testResult(AlsoHonorsGenerators.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), AlsoHonorsGenerators.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            AlsoHonorsGenerators.iterations);
         assertEquals(
             new HashSet<>(asList(1, 2, 3)),
             new HashSet<>(AlsoHonorsGenerators.values.subList(0, 3)));
@@ -649,7 +714,10 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         private static final List<Integer> values = new ArrayList<>();
 
         @Property public void shouldHold(
-            @Also({"1", "2", "3"}) @From(AnInt.class) @Between(min = 4, max = 5) int i) {
+            @Also({"1", "2", "3"})
+            @From(AnInt.class)
+            @Between(min = 4, max = 5)
+                int i) {
 
             values.add(i);
             ++iterations;

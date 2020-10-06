@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 

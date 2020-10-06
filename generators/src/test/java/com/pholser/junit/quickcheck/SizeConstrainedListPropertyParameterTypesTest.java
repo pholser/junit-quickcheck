@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -44,13 +45,19 @@ public class SizeConstrainedListPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SizeConstrainedLists {
-        @Property public void shouldHold(@Size(min = 2, max = 5) List<?> items) {
-            assertThat(items.size(), allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(5)));
+        @Property public void shouldHold(
+            @Size(min = 2, max = 5) List<?> items) {
+
+            assertThat(
+                items.size(),
+                allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(5)));
         }
     }
 
     @Test public void shrinkingSizeConstrainedLists() {
-        assertThat(testResult(ShrinkingSizeConstrainedLists.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingSizeConstrainedLists.class),
+            failureCountIs(1));
         assertThat(
             ShrinkingSizeConstrainedLists.failed.size(),
             allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(5)));
@@ -60,7 +67,9 @@ public class SizeConstrainedListPropertyParameterTypesTest {
     public static class ShrinkingSizeConstrainedLists {
         static List<?> failed;
 
-        @Property public void shouldHold(@Size(min = 2, max = 5) List<?> items) {
+        @Property public void shouldHold(
+            @Size(min = 2, max = 5) List<?> items) {
+
             failed = items;
 
             fail();
@@ -70,13 +79,18 @@ public class SizeConstrainedListPropertyParameterTypesTest {
     @Test public void outOfWhackSizeRange() {
         assertThat(
             testResult(OutOfWhackSizeRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OutOfWhackSizeRange {
-        @Property public void shouldHold(@Size(min = 4, max = 3) List<?> items) {
-            assertThat(items.size(), allOf(greaterThanOrEqualTo(4), lessThanOrEqualTo(3)));
+        @Property public void shouldHold(
+            @Size(min = 4, max = 3) List<?> items) {
+
+            assertThat(
+                items.size(),
+                allOf(greaterThanOrEqualTo(4), lessThanOrEqualTo(3)));
         }
     }
 }

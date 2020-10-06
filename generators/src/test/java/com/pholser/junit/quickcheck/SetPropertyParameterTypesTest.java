@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -54,7 +55,9 @@ public class SetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SetOfLowerBound {
-        @Property(trials = 15) public void shouldHold(Set<? extends Integer> items) {
+        @Property(trials = 15) public void shouldHold(
+            Set<? extends Integer> items) {
+
             for (Integer each : items) {
                 // testing type cast
             }
@@ -72,7 +75,9 @@ public class SetPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingUpperBounded() {
-        assertThat(testResult(ShrinkingSetOfUpperBounded.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingSetOfUpperBounded.class),
+            failureCountIs(1));
         assertThat(ShrinkingSetOfUpperBounded.failed.size(), greaterThan(0));
     }
 
@@ -148,7 +153,9 @@ public class SetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SetOfSetOfLowerBound {
-        @Property(trials = 10) public void shouldHold(Set<Set<? super Float>> items) {
+        @Property(trials = 10) public void shouldHold(
+            Set<Set<? super Float>> items) {
+
             for (Set<? super Float> each : items) {
             }
         }

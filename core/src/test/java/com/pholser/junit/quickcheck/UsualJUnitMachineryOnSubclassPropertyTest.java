@@ -43,6 +43,7 @@ import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Classes.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -50,7 +51,8 @@ import static org.junit.runners.MethodSorters.*;
 
 public class UsualJUnitMachineryOnSubclassPropertyTest {
     private static final OutputStream bytesOut = new ByteArrayOutputStream();
-    private static final PrintStream fakeOut = new PrintStream(bytesOut, true);
+    private static final PrintStream fakeOut =
+        new PrintStream(bytesOut, true);
 
     @ClassRule public static final ExternalResource sysoutRedirection =
         new ExternalResource() {
@@ -71,21 +73,26 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
     }
 
     public static abstract class Root {
-        @ClassRule public static final ExternalResource firstRootClassRuleField =
+        @ClassRule
+        public static final ExternalResource firstRootClassRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Root::firstRootClassRuleField::before");
+                    System.out.println(
+                        "Root::firstRootClassRuleField::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Root::firstRootClassRuleField::after");
+                    System.out.println(
+                        "Root::firstRootClassRuleField::after");
                 }
             };
 
-        @ClassRule public static final ExternalResource secondRootClassRuleField =
+        @ClassRule
+        public static final ExternalResource secondRootClassRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Root::secondRootClassRuleField::before");
+                    System.out.println(
+                        "Root::secondRootClassRuleField::before");
                 }
 
                 @Override protected void after() {
@@ -96,11 +103,13 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
         @ClassRule public static ExternalResource firstRootClassRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Root::firstRootClassRuleMethod::before");
+                    System.out.println(
+                        "Root::firstRootClassRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Root::firstRootClassRuleMethod::after");
+                    System.out.println(
+                        "Root::firstRootClassRuleMethod::after");
                 }
             };
         }
@@ -108,11 +117,13 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
         @ClassRule public static ExternalResource secondRootClassRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Root::secondRootClassRuleMethod::before");
+                    System.out.println(
+                        "Root::secondRootClassRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Root::secondRootClassRuleMethod::after");
+                    System.out.println(
+                        "Root::secondRootClassRuleMethod::after");
                 }
             };
         }
@@ -191,7 +202,7 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
             System.out.println(currentMethodName());
         }
 
-        @AfterClass public static void rootClassUninitialize() {
+        @AfterClass public static void rootClassReset() {
             System.out.println(currentMethodName());
         }
 
@@ -205,48 +216,60 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
     }
 
     public static class Internal extends Root {
-        @ClassRule public static final ExternalResource firstInternalClassRuleField =
+        @ClassRule
+        public static final ExternalResource firstInternalClassRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::firstInternalClassRuleField::before");
+                    System.out.println(
+                        "Internal::firstInternalClassRuleField::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::firstInternalClassRuleField::after");
+                    System.out.println(
+                        "Internal::firstInternalClassRuleField::after");
                 }
             };
 
-        @ClassRule public static final ExternalResource secondInternalClassRuleField =
+        @ClassRule
+        public static final ExternalResource secondInternalClassRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::secondInternalClassRuleField::before");
+                    System.out.println(
+                        "Internal::secondInternalClassRuleField::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::secondInternalClassRuleField::after");
+                    System.out.println(
+                        "Internal::secondInternalClassRuleField::after");
                 }
             };
 
-        @ClassRule public static ExternalResource firstInternalClassRuleMethod() {
+        @ClassRule
+        public static ExternalResource firstInternalClassRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::firstInternalClassRuleMethod::before");
+                    System.out.println(
+                        "Internal::firstInternalClassRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::firstInternalClassRuleMethod::after");
+                    System.out.println(
+                        "Internal::firstInternalClassRuleMethod::after");
                 }
             };
         }
 
-        @ClassRule public static ExternalResource secondInternalClassRuleMethod() {
+        @ClassRule
+        public static ExternalResource secondInternalClassRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::secondInternalClassRuleMethod::before");
+                    System.out.println(
+                        "Internal::secondInternalClassRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::secondInternalClassRuleMethod::after");
+                    System.out.println(
+                        "Internal::secondInternalClassRuleMethod::after");
                 }
             };
         }
@@ -254,33 +277,39 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
         @Rule public final ExternalResource firstInternalRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::firstInternalRuleField::before");
+                    System.out.println(
+                        "Internal::firstInternalRuleField::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::firstInternalRuleField::after");
+                    System.out.println(
+                        "Internal::firstInternalRuleField::after");
                 }
             };
 
         @Rule public final ExternalResource secondInternalRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::secondInternalRuleField::before");
+                    System.out.println(
+                        "Internal::secondInternalRuleField::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::secondInternalRuleField::after");
+                    System.out.println(
+                        "Internal::secondInternalRuleField::after");
                 }
             };
 
         @Rule public final ExternalResource firstInternalRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::firstInternalRuleMethod::before");
+                    System.out.println(
+                        "Internal::firstInternalRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::firstInternalRuleMethod::after");
+                    System.out.println(
+                        "Internal::firstInternalRuleMethod::after");
                 }
             };
         }
@@ -288,11 +317,13 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
         @Rule public final ExternalResource secondInternalRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Internal::secondInternalRuleMethod::before");
+                    System.out.println(
+                        "Internal::secondInternalRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Internal::secondInternalRuleMethod::after");
+                    System.out.println(
+                        "Internal::secondInternalRuleMethod::after");
                 }
             };
         }
@@ -325,7 +356,7 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
             System.out.println(currentMethodName());
         }
 
-        @AfterClass public static void internalClassUninitialize() {
+        @AfterClass public static void internalClassReset() {
             System.out.println(currentMethodName());
         }
 
@@ -341,10 +372,12 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
     @RunWith(JUnitQuickcheck.class)
     @FixMethodOrder(NAME_ASCENDING)
     public static class Leaf extends Internal {
-        @ClassRule public static final ExternalResource firstLeafClassRuleField =
+        @ClassRule
+        public static final ExternalResource firstLeafClassRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Leaf::firstLeafClassRuleField::before");
+                    System.out.println(
+                        "Leaf::firstLeafClassRuleField::before");
                 }
 
                 @Override protected void after() {
@@ -352,25 +385,30 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
                 }
             };
 
-        @ClassRule public static final ExternalResource secondLeafClassRuleField =
+        @ClassRule
+        public static final ExternalResource secondLeafClassRuleField =
             new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Leaf::secondLeafClassRuleField::before");
+                    System.out.println(
+                        "Leaf::secondLeafClassRuleField::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Leaf::secondLeafClassRuleField::after");
+                    System.out.println(
+                        "Leaf::secondLeafClassRuleField::after");
                 }
             };
 
         @ClassRule public static ExternalResource firstLeafClassRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Leaf::firstLeafClassRuleMethod::before");
+                    System.out.println(
+                        "Leaf::firstLeafClassRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Leaf::firstLeafClassRuleMethod::after");
+                    System.out.println(
+                        "Leaf::firstLeafClassRuleMethod::after");
                 }
             };
         }
@@ -378,11 +416,13 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
         @ClassRule public static ExternalResource secondLeafClassRuleMethod() {
             return new ExternalResource() {
                 @Override protected void before() {
-                    System.out.println("Leaf::secondLeafClassRuleMethod::before");
+                    System.out.println(
+                        "Leaf::secondLeafClassRuleMethod::before");
                 }
 
                 @Override protected void after() {
-                    System.out.println("Leaf::secondLeafClassRuleMethod::after");
+                    System.out.println(
+                        "Leaf::secondLeafClassRuleMethod::after");
                 }
             };
         }
@@ -461,7 +501,7 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
             System.out.println(currentMethodName());
         }
 
-        @AfterClass public static void leafClassUninitialize() {
+        @AfterClass public static void leafClassReset() {
             System.out.println(currentMethodName());
         }
 

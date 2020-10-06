@@ -31,6 +31,7 @@ import com.pholser.junit.quickcheck.test.generator.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -55,10 +56,12 @@ public class ResolvingGenericPropertyParameterTypesTest {
         }
     }
 
-    public static class ConcreteFooPairProperties extends FooPairProperties<Foo, Foo> {
+    public static class ConcreteFooPairProperties
+        extends FooPairProperties<Foo, Foo> {
     }
 
-    public static class PairOfPairProperties<F, S, F1 extends F, F2 extends F, S1 extends S, S2 extends S>
+    public static class
+    PairOfPairProperties<F, S, F1 extends F, F2 extends F, S1 extends S, S2 extends S>
         extends PairProperties<Pair<F1, S1>, Pair<F2, S2>> {
 
         @Property public void x(Pair<Pair<F1, S1>, Pair<F2, S2>> p) {
@@ -80,7 +83,9 @@ public class ResolvingGenericPropertyParameterTypesTest {
     }
 
     @Test public void concreteFirstAndSecond() {
-        assertThat(testResult(ConcreteFooPairProperties.class), isSuccessful());
+        assertThat(
+            testResult(ConcreteFooPairProperties.class),
+            isSuccessful());
     }
 
     @Test public void unresolvedPairOfPair() {

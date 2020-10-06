@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.nio.charset.Charset;
-
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.generator.java.lang.Encoded.*;
 import static java.nio.charset.Charset.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -68,13 +68,17 @@ public class StringPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SomeOtherCharset {
-        @Property public void shouldHold(@From(Encoded.class) @InCharset("UTF-8") String s) {
-            assertTrue(Charset.forName("UTF-8").newEncoder().canEncode(s));
+        @Property public void shouldHold(
+            @From(Encoded.class) @InCharset("UTF-8") String s) {
+
+            assertTrue(StandardCharsets.UTF_8.newEncoder().canEncode(s));
         }
     }
 
     @Test public void shrinkingFromAnyStringSource() {
-        assertThat(testResult(ShrinkingAnyStringSource.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingAnyStringSource.class),
+            failureCountIs(1));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -91,7 +95,9 @@ public class StringPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingInDefaultCharset() {
-        assertThat(testResult(ShrinkingDefaultCharset.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingDefaultCharset.class),
+            failureCountIs(1));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -109,16 +115,20 @@ public class StringPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingInSomeOtherCharset() {
-        assertThat(testResult(ShrinkingSomeOtherCharset.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingSomeOtherCharset.class),
+            failureCountIs(1));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingSomeOtherCharset {
         static String failed;
 
-        @Property public void shouldHold(@From(Encoded.class) @InCharset("ISO-8859-1") String s) {
+        @Property public void shouldHold(
+            @From(Encoded.class) @InCharset("ISO-8859-1") String s) {
+
             assumeThat(s.length(), greaterThan(5));
-            assertTrue(Charset.forName("ISO-8859-1").newEncoder().canEncode(s));
+            assertTrue(StandardCharsets.ISO_8859_1.newEncoder().canEncode(s));
 
             failed = s;
 

@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -48,14 +49,18 @@ public class SizeConstrainedSetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SizeConstrainedSets {
-        @Property public void shouldHold(@Size(min = 2, max = 5) Set<TestEnum> items) {
+        @Property public void shouldHold(
+            @Size(min = 2, max = 5) Set<TestEnum> items) {
+
             assertThat(items.size(), lessThanOrEqualTo(5));
             assertThat(items.size(), greaterThanOrEqualTo(2));
         }
     }
 
     @Test public void shrinkingSizeConstrainedSets() {
-        assertThat(testResult(ShrinkingSizeConstrainedSets.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingSizeConstrainedSets.class),
+            failureCountIs(1));
         assertThat(
             ShrinkingSizeConstrainedSets.failed.size(),
             allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(5)));
@@ -65,7 +70,9 @@ public class SizeConstrainedSetPropertyParameterTypesTest {
     public static class ShrinkingSizeConstrainedSets {
         static Set<Integer> failed;
 
-        @Property public void shouldHold(@Size(min = 2, max = 5) Set<Integer> items) {
+        @Property public void shouldHold(
+            @Size(min = 2, max = 5) Set<Integer> items) {
+
             failed = items;
 
             fail();
@@ -75,12 +82,15 @@ public class SizeConstrainedSetPropertyParameterTypesTest {
     @Test public void outOfWhackSizeRange() {
         assertThat(
             testResult(OutOfWhackSizeRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OutOfWhackSizeRange {
-        @Property public void shouldHold(@Size(min = 4, max = 3) Set<String> items) {
+        @Property public void shouldHold(
+            @Size(min = 4, max = 3) Set<String> items) {
+
             assertThat(items.size(), lessThanOrEqualTo(3));
         }
     }

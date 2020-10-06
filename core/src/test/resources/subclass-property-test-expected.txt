@@ -349,12 +349,12 @@ Internal::firstInternalRuleField::after
 Internal::secondInternalRuleField::after
 Root::firstRootRuleField::after
 Root::secondRootRuleField::after
+com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Leaf::leafClassReset
 com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Leaf::leafClassTearDown
-com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Leaf::leafClassUninitialize
 com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Internal::internalClassTearDown
-com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Internal::internalClassUninitialize
-com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Root::rootClassUninitialize
+com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Internal::internalClassReset
 com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Root::rootClassTearDown
+com.pholser.junit.quickcheck.UsualJUnitMachineryOnSubclassPropertyTest$Root::rootClassReset
 Leaf::firstLeafClassRuleMethod::after
 Leaf::secondLeafClassRuleMethod::after
 Internal::secondInternalClassRuleMethod::after

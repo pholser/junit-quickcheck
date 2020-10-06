@@ -42,34 +42,36 @@ import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 
 import static java.util.Arrays.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 import static org.junit.runners.MethodSorters.*;
 
 public class UsualJUnitMachineryOnPropertyBasedTest {
-    private List<String> expectedStatements = asList(
-        "second class rule before", "first class rule before",
-        "class set up", "class init",
-        "second rule before", "first rule before",
-        "set up", "init",
-        "test",
-        "reset", "tear down",
-        "first rule after", "second rule after",
-        "second rule before", "first rule before",
-        "set up", "init",
-        "property",
-        "reset", "tear down",
-        "first rule after", "second rule after",
-        "second rule before", "first rule before",
-        "set up", "init",
-        "property",
-        "reset", "tear down",
-        "first rule after", "second rule after",
-        "class tear down", "class reset",
-        "first class rule after", "second class rule after");
+    private final List<String> expectedStatements =
+        asList(
+            "second class rule before", "first class rule before",
+            "class set up", "class init",
+            "second rule before", "first rule before",
+            "set up", "init",
+            "test",
+            "reset", "tear down",
+            "first rule after", "second rule after",
+            "second rule before", "first rule before",
+            "set up", "init",
+            "property",
+            "reset", "tear down",
+            "first rule after", "second rule after",
+            "second rule before", "first rule before",
+            "set up", "init",
+            "property",
+            "reset", "tear down",
+            "first rule after", "second rule after",
+            "class reset", "class tear down",
+            "first class rule after", "second class rule after");
 
-    @Test public void orderingOfStatements() throws Exception {
+    @Test public void orderingOfStatements() {
         assertThat(testResult(PropertyBasedTests.class), isSuccessful());
         assertEquals(expectedStatements, PropertyBasedTests.LOGS);
     }
@@ -79,45 +81,49 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
     public static class PropertyBasedTests {
         static final List<String> LOGS = new ArrayList<>();
 
-        @ClassRule public static final ExternalResource firstClassRule = new ExternalResource() {
-            @Override protected void before() {
-                LOGS.add("first class rule before");
-            }
+        @ClassRule public static final ExternalResource firstClassRule =
+            new ExternalResource() {
+                @Override protected void before() {
+                    LOGS.add("first class rule before");
+                }
 
-            @Override protected void after() {
-                LOGS.add("first class rule after");
-            }
-        };
+                @Override protected void after() {
+                    LOGS.add("first class rule after");
+                }
+            };
 
-        @ClassRule public static final ExternalResource secondClassRule = new ExternalResource() {
-            @Override protected void before() {
-                LOGS.add("second class rule before");
-            }
+        @ClassRule public static final ExternalResource secondClassRule =
+            new ExternalResource() {
+                @Override protected void before() {
+                    LOGS.add("second class rule before");
+                }
 
-            @Override protected void after() {
-                LOGS.add("second class rule after");
-            }
-        };
+                @Override protected void after() {
+                    LOGS.add("second class rule after");
+                }
+            };
 
-        @Rule public final ExternalResource firstRule = new ExternalResource() {
-            @Override protected void before() {
-                LOGS.add("first rule before");
-            }
+        @Rule public final ExternalResource firstRule =
+            new ExternalResource() {
+                @Override protected void before() {
+                    LOGS.add("first rule before");
+                }
 
-            @Override protected void after() {
-                LOGS.add("first rule after");
-            }
-        };
+                @Override protected void after() {
+                    LOGS.add("first rule after");
+                }
+            };
 
-        @Rule public final ExternalResource secondRule = new ExternalResource() {
-            @Override protected void before() {
-                LOGS.add("second rule before");
-            }
+        @Rule public final ExternalResource secondRule =
+            new ExternalResource() {
+                @Override protected void before() {
+                    LOGS.add("second rule before");
+                }
 
-            @Override protected void after() {
-                LOGS.add("second rule after");
-            }
-        };
+                @Override protected void after() {
+                    LOGS.add("second rule after");
+                }
+            };
 
         @BeforeClass public static void classInitialize() {
             LOGS.add("class init");
@@ -147,7 +153,7 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
             LOGS.add("class tear down");
         }
 
-        @AfterClass public static void classUninitialize() {
+        @AfterClass public static void classReset() {
             LOGS.add("class reset");
         }
 
