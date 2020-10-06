@@ -118,7 +118,10 @@ public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator
         T items = empty();
         Generator<?> valueGenerator = componentGenerators().get(1);
         keyStream
-            .map(key -> new SimpleEntry(key, valueGenerator.generate(random, status)))
+            .map(key ->
+                new SimpleEntry<>(
+                    key,
+                    valueGenerator.generate(random, status)))
             .filter(entry -> okToAdd(entry.getKey(), entry.getValue()))
             .limit(size)
             .forEach(entry -> items.put(entry.getKey(), entry.getValue()));

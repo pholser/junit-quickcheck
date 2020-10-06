@@ -67,9 +67,9 @@ class CodePointShrink implements Shrink<Integer> {
                 .thenComparing((Function<Integer, Boolean>) Character::isSpaceChar)
                 .thenComparing(naturalOrder());
         return shrinks.stream()
-                .filter(filter)
-                .filter(cp -> comparator.compare(cp, codePoint) < 0)
-                .distinct()
-                .collect(toList());
+            .filter(filter)
+            .filter(cp -> comparator.compare(cp, codePoint) < 0)
+            .distinct()
+            .collect(toList());
     }
 }

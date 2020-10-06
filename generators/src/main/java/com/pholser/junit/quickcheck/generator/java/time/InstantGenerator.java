@@ -65,8 +65,10 @@ public class InstantGenerator extends Generator<Instant> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = Instant.parse(range.max());
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", range.min(), range.max()));
+        }
     }
 
     @Override public Instant generate(SourceOfRandomness random, GenerationStatus status) {

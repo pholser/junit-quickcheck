@@ -35,7 +35,10 @@ public class ZilchGenerator extends Generator<Zilch> {
         super(Zilch.class);
     }
 
-    @Override public Zilch generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Zilch generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return Zilch.INSTANCE;
     }
 }

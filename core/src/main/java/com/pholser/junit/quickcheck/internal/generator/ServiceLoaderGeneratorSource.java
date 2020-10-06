@@ -30,7 +30,6 @@ import static java.util.Comparator.comparing;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;

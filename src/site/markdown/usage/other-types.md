@@ -58,7 +58,7 @@ attribute (default is 1).
 ```
 
 junit-quickcheck has built-in facilities for generating values for types that
-are functional interfaces (whether or not they are marked with
+are functional interfaces (whether they are marked with
 [FunctionalInterface]
 (http://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html),
 arrays, or `enum`s. Explicitly naming generators for parameters of these types
@@ -68,9 +68,9 @@ functional interfaces that involve generics.
 
 ## Implied generators by Placement and Naming
 
-If the generator is in the same package as the class you're generating and it
-has the same name with an additional `Gen` suffix, then it should be found
-automatically.
+If the generator is in the same package as the class you're generating,
+and it has the same name with an additional `Gen` suffix, then it should be
+found automatically.
 
 
 ## Implied generators via `ServiceLoader`
@@ -86,12 +86,12 @@ to discover it.
 - Each line of this file should contain the fully-qualified name of a
 concrete generator class.
 
-Ensure your generator class and the provider configuration file are on the
-class path. junit-quickcheck will make generators packaged in this way
-available for use.
+Ensure that both your generator class and the provider configuration file
+are on the class path. junit-quickcheck will make generators packaged in
+this way available for use.
 
-The generators in the module `junit-quickcheck-generators` are loaded via
-this mechanism also. Any generators you supply and make available to the
+The generators in the module `junit-quickcheck-generators` are also loaded via
+this mechanism. Any generators you supply and make available to the
 `ServiceLoader` complement these generators rather than override them.
 
 

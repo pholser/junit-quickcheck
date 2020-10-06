@@ -27,11 +27,11 @@ package com.pholser.junit.quickcheck.internal;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyIterator;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
@@ -46,11 +46,7 @@ public class CartesianIteratorTest {
 
     @Test public void singleSourceIsEmpty() {
         CartesianIterator<Integer> iter =
-            new CartesianIterator<>(
-                singletonList(
-                    new ArrayList<Integer>().iterator()
-                )
-            );
+            new CartesianIterator<>(singletonList(emptyIterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -60,15 +56,9 @@ public class CartesianIteratorTest {
     @Test public void multipleSourcesAreEmpty() {
         CartesianIterator<Integer> iter =
             new CartesianIterator<>(
-                asList(
-                    new ArrayList<Integer>().iterator(),
-                    new ArrayList<Integer>().iterator(),
-                    new ArrayList<Integer>().iterator()
-                )
-            );
+                asList(emptyIterator(), emptyIterator(), emptyIterator()));
 
         List<List<Integer>> result = newArrayList(iter);
-
         assertEquals(0, result.size());
     }
 
@@ -77,7 +67,7 @@ public class CartesianIteratorTest {
             new CartesianIterator<>(
                 asList(
                     asList(1, 2, 3).iterator(),
-                    new ArrayList<Integer>().iterator(),
+                    emptyIterator(),
                     asList(4, 5, 6, 7).iterator()
                 )
             );

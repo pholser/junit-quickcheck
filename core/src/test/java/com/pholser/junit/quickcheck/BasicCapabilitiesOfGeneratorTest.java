@@ -34,7 +34,6 @@ import static org.junit.Assert.assertTrue;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,7 +68,7 @@ public class BasicCapabilitiesOfGeneratorTest {
     }
 
     @Test public void addingComponentsDoesNothing() {
-        generator.addComponentGenerators(Collections.<Generator<?>> emptyList());
+        generator.addComponentGenerators(emptyList());
     }
 
     @Test public void abilityToShrink() {

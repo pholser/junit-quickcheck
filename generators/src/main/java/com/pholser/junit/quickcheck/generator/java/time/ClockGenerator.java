@@ -72,11 +72,16 @@ public class ClockGenerator extends Generator<Clock> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = Instant.parse(range.max());
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", range.min(), range.max()));
+        }
     }
 
-    @Override public Clock generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Clock generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return Clock.fixed(random.nextInstant(min, max), UTC_ZONE_ID);
     }
 }

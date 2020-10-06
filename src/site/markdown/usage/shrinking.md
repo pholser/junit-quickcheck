@@ -1,9 +1,10 @@
 # Shrinking
 
 Version 0.6 of junit-quickcheck introduces one of the most compelling features
-of a proper QuickCheck: _shrinking_. When a property is disproved for a given
-set of values, junit-quickcheck will attempt to find "smaller" sets of values
-that also disprove the property, and will report the smallest such set, leading to an easier bug investigation for the developer.
+of a proper QuickCheck: _shrinking_. When junit-quickcheck disproves a property
+for a given set of values, it will attempt to find "smaller" sets of values
+that also disprove the property, and will report the smallest such set,
+leading to an easier bug investigation for the developer.
 
 For example, imagine the following disprovable property, without shrinking:
 
@@ -29,8 +30,8 @@ Verifying the property might yield a failure like:
 
 It might not be obvious from looking at this particular failing value why
 the implementation of `Integers.isPrime()` is incorrect. It would be nice
-to find smaller values, if possible, for which the property is also shown
-not to hold. When shrinking is enabled:
+to find smaller values, if possible, for which the property also does not
+hold. With shrinking enabled:
 
 ```java
     @RunWith(JUnitQuickcheck.class)
@@ -66,7 +67,8 @@ override `doShrink()` to offer "smaller" values to the shrinking process.
 Your custom generators can, of course, do the same. As of version 0.8,
 you can also override `magnitude()` to give the shrinking machinery hints
 as to the relative "size" of values that your generator produces.
-Shrinkers should provide small values before big ones to make the shrinking process more efficient.
+Shrinkers should provide "smaller" values before "larger" ones to make
+the shrinking process more efficient.
 
 ```java
     import java.awt.Point;
@@ -102,7 +104,7 @@ Shrinkers should provide small values before big ones to make the shrinking proc
                 .distinct()
                 .collect(Collectors.toList());
         }
-        
+
         @Override public BigDecimal magnitude(Object value) {
             return BigDecimal.valueOf(x)
                 // For business reasons, y contributes twice as much to the total "magnitude" of a Point as x

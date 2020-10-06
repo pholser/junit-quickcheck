@@ -24,7 +24,7 @@ As with JUnit 5, this allows for tests for interface contracts:
     @RunWith(JUnitQuickcheck.class)
     public class StringCaseInsensitiveProperties
         implements ComparatorContract<String> {
-    
+
         @Override public Comparator<String> subject() {
             return String::compareToIgnoreCase;
         }
@@ -40,13 +40,13 @@ As with JUnit 5, this allows for tests for interface contracts:
             assertEquals(thing, other);
         }
     }
-    
+
     @RunWith(JUnitQuickcheck.class)
     public class StringProperties
         implements ComparableVersusEqualsContract<String> {
 
         @Override public String thingComparableTo(String s) {
-            return new String(s);
+            return new String(s.toCharArray());
         }
     }
 ```

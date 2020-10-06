@@ -3,7 +3,7 @@
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/pholser/junit-quickcheck.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/pholser/junit-quickcheck/alerts)
 
 <a href="http://www.yegor256.com/2015/10/17/award-2016.html">
-  <img src="http://www.yegor256.com/images/award/2016/winner-pholser.png" width="203" height="45"/>
+  <img src="http://www.yegor256.com/images/award/2016/winner-pholser.png" width="203" height="45" alt="Software Quality Award 2016"/>
 </a>
 
 # junit-quickcheck: Property-based testing, JUnit-style
@@ -23,11 +23,11 @@ factorization of a positive integer `m` greater than 1 and not equal to
 Rather than testing such properties for all possible inputs, junit-quickcheck
 and other QuickCheck kin generate some number of random inputs, and verify
 that the properties hold at least for the generated inputs. This gives us
-some reasonable assurance over time that the properties hold true for any
-valid inputs.
+some reasonable assurance upon repeated test runs that the properties
+hold true for any valid inputs.
 
 ## Documentation
- 
+
 [Documentation for the current stable version](https://pholser.github.io/junit-quickcheck/index.html)
 
 ## Basic example

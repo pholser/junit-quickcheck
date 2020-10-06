@@ -37,7 +37,7 @@ detect it.
         public void configure(NonNegative nonNegative) {
             this.nonNegative = nonNegative;
         }
-        
+
         // Ever-so-slightly favors +(MIN_VALUE + 1).
         // Math.abs(MIN_VALUE) is negative.
         private static int abs(int i) {
@@ -91,9 +91,10 @@ based on its type:
 Only the available generators that can produce something that is
 `java.io.Serializable` *and* that support all the configuration annotations on
 a property parameter will be called on to generate a value for that parameter.
-So, for example, for parameter `s` above, generators for integral values might
-be called upon, whereas generators for `ArrayList`s would not. junit-quickcheck
-will complain loudly if there are no such generators available.
+So, for example, for parameter `s` above, junit-quickcheck might choose
+generators for integral values, but not generators for `ArrayList`s.
+junit-quickcheck will complain loudly if there are no such generators
+available.
 
 If you have a family of generators that can produce members of a hierarchy,
 you may want to ensure that all the generators respect the same attributes

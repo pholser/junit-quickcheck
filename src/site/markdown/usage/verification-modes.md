@@ -71,7 +71,7 @@ For example, a property such as:
     }
 ```
 
-might be verified with these executions:
+might run with these parameter lists:
 
 ```
     sum(12987133, 456123400)
@@ -91,7 +91,7 @@ In "exhaustive" mode:
     }
 ```
 
-this might be verified with these executions:
+this might run with these parameter lists:
 
 ```
     sum(-891273491, 573198457)
@@ -108,7 +108,7 @@ this might be verified with these executions:
 ## `@Only` and `@Also`
 
 These annotations can influence how junit-quickcheck chooses the set of values
-from which the value of a property parameter is drawn.
+from which to draw the value of a property parameter.
 
 In "sampling" mode, there will be `Property.trials()` values for each
 parameter.
@@ -143,14 +143,14 @@ For example:
 @RunWith(JUnitQuickcheck.class)
 public class OnlyAndAlso {
     public enum Response { YES, NO, UNSURE }
-    
+
     @Property(trials = 45)
     public void samplingWithOnly(
         int arg0,
         boolean arg1,
         Response arg2,
         @Only({"1", "2", "0", "-1"}) int arg3) {
-    
+
         /*
         Invoked 45 times.
         45 tuples (arg0, arg1, arg2, arg3) generated.
@@ -158,14 +158,14 @@ public class OnlyAndAlso {
         Domain of arg3 narrowed by @Only.
         */
     }
-    
+
     @Property(trials = 77, mode = EXHAUSTIVE)
     public void exhaustiveWithOnly(
         int arg0,
         boolean arg1,
         Response arg2,
         @Only({"1", "2", "0", "-1"}) int arg3) {
-    
+
         /*
         Invoked 77 * 2 * 3 * 4 times --
         once for each choice of 77 randomly chosen arg0,
@@ -180,7 +180,7 @@ public class OnlyAndAlso {
         boolean arg1,
         Response arg2,
         @Also({"1", "2", "0", "-1"}) int arg3) {
-    
+
         /*
         Invoked 45 times.
         45 tuples (arg0, arg1, arg2, arg3) generated.
@@ -188,14 +188,14 @@ public class OnlyAndAlso {
         except arg3 uses 1, 2, 0, -1, and 41 other randomly generated values.
         */
     }
-    
+
     @Property(trials = 77, mode = EXHAUSTIVE)
     public void exhaustiveWithOnly(
         int arg0,
         boolean arg1,
         Response arg2,
         @Also({"1", "2", "0", "-1"}) int arg3) {
-    
+
         /*
         Invoked 77 * 2 * 3 * 77 times --
         once for each choice of 77 randomly chosen arg0,

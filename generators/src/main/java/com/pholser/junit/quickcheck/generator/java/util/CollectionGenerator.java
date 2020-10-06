@@ -126,7 +126,8 @@ public abstract class CollectionGenerator<T extends Collection>
         List<T> shrinks = new ArrayList<>(removals(asList));
 
         @SuppressWarnings("unchecked")
-        Shrink<Object> generator = (Shrink<Object>) componentGenerators().get(0);
+        Shrink<Object> generator =
+            (Shrink<Object>) componentGenerators().get(0);
 
         Stream<List<Object>> oneItemShrinks =
             shrinksOfOneItem(random, asList, generator)

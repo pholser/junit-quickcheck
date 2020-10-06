@@ -25,31 +25,33 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import static java.util.Arrays.asList;
+
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 public class TestGeneratorSource implements Iterable<Generator<?>> {
     @Override public Iterator<Generator<?>> iterator() {
-        List<Generator<?>> generators = Arrays.<Generator<?>> asList(
-            new ABox(),
-            new AList(),
-            new ADecimal(),
-            new ABigInt(),
-            new ABool(),
-            new AByte(),
-            new ACallable<>(),
-            new AChar(),
-            new ADouble(),
-            new AFloat(),
-            new AMap(),
-            new AnInt(),
-            new ALong(),
-            new AShort(),
-            new AString(),
-            new ZilchGenerator());
+        List<Generator<?>> generators =
+            asList(
+                new ABox(),
+                new AList(),
+                new ADecimal(),
+                new ABigInt(),
+                new ABool(),
+                new AByte(),
+                new ACallable<>(),
+                new AChar(),
+                new ADouble(),
+                new AFloat(),
+                new AMap(),
+                new AnInt(),
+                new ALong(),
+                new AShort(),
+                new AString(),
+                new ZilchGenerator());
 
         return generators.iterator();
     }

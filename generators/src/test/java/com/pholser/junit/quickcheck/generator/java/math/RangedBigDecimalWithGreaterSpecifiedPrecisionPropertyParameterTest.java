@@ -39,7 +39,6 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.List;
 
 public class RangedBigDecimalWithGreaterSpecifiedPrecisionPropertyParameterTest
