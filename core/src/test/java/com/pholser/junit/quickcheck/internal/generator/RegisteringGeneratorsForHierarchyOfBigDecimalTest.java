@@ -25,24 +25,23 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import static com.pholser.junit.quickcheck.Types.typeOf;
+import static com.pholser.junit.quickcheck.internal.generator.Generators.assertGenerators;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.ADecimal;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.pholser.junit.quickcheck.Types.*;
-import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

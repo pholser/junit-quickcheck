@@ -25,11 +25,12 @@
 
 package com.pholser.junit.quickcheck.examples.number;
 
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.math.BigInteger.*;
 
 final class PrimeFactors {
     static List<BigInteger> of(BigInteger n) {

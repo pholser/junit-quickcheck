@@ -25,19 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalDouble;
+import static java.math.BigDecimal.ZERO;
+import static java.util.stream.Collectors.toList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.java.lang.DoubleGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.math.BigDecimal.*;
-import static java.util.stream.Collectors.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
 
 /**
  * Produces values of type {@link OptionalDouble}.

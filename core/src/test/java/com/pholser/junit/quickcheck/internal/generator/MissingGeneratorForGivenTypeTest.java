@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static com.pholser.junit.quickcheck.Types.typeOf;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,8 +34,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.pholser.junit.quickcheck.Types.*;
 
 public class MissingGeneratorForGivenTypeTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

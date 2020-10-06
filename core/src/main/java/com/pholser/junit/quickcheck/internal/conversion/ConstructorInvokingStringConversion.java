@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal.conversion;
 
-import java.lang.reflect.Constructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.reflectionException;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.lang.reflect.Constructor;
 
 public class ConstructorInvokingStringConversion implements StringConversion {
     private final Constructor<?> ctor;

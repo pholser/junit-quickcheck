@@ -25,17 +25,16 @@
 
 package com.pholser.junit.quickcheck;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import java.util.concurrent.Callable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.concurrent.Callable;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ReproIssue240Test {
     @Test public void issue240() {

@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static java.lang.Math.ulp;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,10 +37,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static java.lang.Math.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class GeometricDistributionTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

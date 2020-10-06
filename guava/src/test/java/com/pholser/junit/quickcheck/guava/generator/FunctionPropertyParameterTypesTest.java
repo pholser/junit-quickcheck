@@ -25,6 +25,12 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
+import static com.pholser.junit.quickcheck.Annotations.defaultPropertyTrialCount;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.google.common.base.Function;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.Zilch;
@@ -33,12 +39,6 @@ import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.Annotations.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class FunctionPropertyParameterTypesTest {
     @Test public void fooToZilch() throws Exception {

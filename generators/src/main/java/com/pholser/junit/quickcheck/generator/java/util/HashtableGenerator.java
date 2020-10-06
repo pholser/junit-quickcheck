@@ -25,10 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import com.pholser.junit.quickcheck.generator.Generator;
 import java.util.Hashtable;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.generator.Generator;
 
 /**
  * Produces values of type {@link Hashtable}.

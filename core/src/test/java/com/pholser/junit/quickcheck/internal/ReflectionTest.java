@@ -25,6 +25,31 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.allAnnotations;
+import static com.pholser.junit.quickcheck.internal.Reflection.allDeclaredFieldsOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.findConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.findDeclaredConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.findField;
+import static com.pholser.junit.quickcheck.internal.Reflection.findMethod;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.invoke;
+import static com.pholser.junit.quickcheck.internal.Reflection.isMarkerInterface;
+import static com.pholser.junit.quickcheck.internal.Reflection.setField;
+import static com.pholser.junit.quickcheck.internal.Reflection.singleAbstractMethodOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.singleAccessibleConstructor;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -34,15 +59,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
-
 import org.junit.Test;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 public class ReflectionTest {
     @Test public void findingConstructor() {

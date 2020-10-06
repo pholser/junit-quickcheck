@@ -25,6 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static com.pholser.junit.quickcheck.Types.typeOf;
+import static com.pholser.junit.quickcheck.internal.generator.Generators.assertGenerators;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.ABox;
 import com.pholser.junit.quickcheck.test.generator.AFoo;
@@ -38,9 +41,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.pholser.junit.quickcheck.Types.*;
-import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 public class RegisteringGeneratorsWithServiceLoaderTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.util.List;
+import static com.pholser.junit.quickcheck.Generating.verifyLongs;
+import static java.lang.Long.MIN_VALUE;
+import static java.util.Collections.singletonList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
-
-import static com.pholser.junit.quickcheck.Generating.*;
-import static java.lang.Long.*;
-import static java.util.Collections.*;
-import static org.mockito.Mockito.*;
+import java.util.List;
 
 public class PrimitiveLongPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {

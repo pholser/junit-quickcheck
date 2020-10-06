@@ -25,15 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.util.function;
 
-import java.util.function.BiPredicate;
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
+import java.util.function.BiPredicate;
 
 /**
  * Produces values of type {@link BiPredicate}.

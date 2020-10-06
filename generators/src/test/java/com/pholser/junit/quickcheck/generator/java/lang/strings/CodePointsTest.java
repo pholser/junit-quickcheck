@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class CodePointsTest {
     @Test public void versusCharsetThatDoesNotSupportEncoding() {

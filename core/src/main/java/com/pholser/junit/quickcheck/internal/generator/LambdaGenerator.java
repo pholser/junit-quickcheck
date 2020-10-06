@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
 public class LambdaGenerator<T, U> extends Generator<T> {
     private final Class<T> lambdaType;

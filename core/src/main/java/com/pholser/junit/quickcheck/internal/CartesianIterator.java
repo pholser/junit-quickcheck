@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static java.util.stream.Collectors.*;
 
 public class CartesianIterator<T> implements Iterator<List<T>> {
     private final List<Buffer<T>> buffers;

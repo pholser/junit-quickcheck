@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.random;
 
-import java.util.Random;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
+import java.util.Random;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.junit.runners.MethodSorters.*;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class GeneratingRandomValuesFromJavaUtilRandomCloneTest {

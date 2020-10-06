@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.Locale;
+import static java.util.Locale.getAvailableLocales;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Locale.*;
+import java.util.Locale;
 
 /**
  * Produces values of type {@link Locale}.

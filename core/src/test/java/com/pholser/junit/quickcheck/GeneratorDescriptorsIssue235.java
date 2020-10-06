@@ -1,7 +1,6 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.test.generator.AString;
-
 import java.util.HashMap;
 
 public class GeneratorDescriptorsIssue235 {

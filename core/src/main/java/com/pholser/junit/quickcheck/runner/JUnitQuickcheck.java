@@ -25,15 +25,14 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import org.junit.Test;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;

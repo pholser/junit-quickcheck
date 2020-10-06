@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static com.pholser.junit.quickcheck.generator.Gen.freq;
+import static com.pholser.junit.quickcheck.generator.Gen.pure;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Rule;
@@ -32,10 +37,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.pholser.junit.quickcheck.generator.Gen.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class GenFrequencyTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

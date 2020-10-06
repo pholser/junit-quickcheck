@@ -25,8 +25,11 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
-import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.*;
-import static java.lang.Math.*;
+import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.CLOCKWISE;
+import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.COLLINEAR;
+import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.COUNTERCLOCKWISE;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 /**
  * @see <a href="https://www.geeksforgeeks.org/program-check-three-points-collinear">Article</a>

@@ -25,16 +25,18 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Collections;
+import static java.util.Collections.emptyList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
-
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
 
 public class BasicCapabilitiesOfGeneratorTest {
     private Generator<Object> generator;

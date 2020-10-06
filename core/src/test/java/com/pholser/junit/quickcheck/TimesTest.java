@@ -25,19 +25,20 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Collections;
+import static java.util.Collections.emptyList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 
 import com.pholser.junit.quickcheck.generator.Gen;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Collections;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
 
 public class TimesTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

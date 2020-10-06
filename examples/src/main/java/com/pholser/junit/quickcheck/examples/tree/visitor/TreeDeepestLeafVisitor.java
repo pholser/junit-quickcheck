@@ -25,12 +25,11 @@
 
 package com.pholser.junit.quickcheck.examples.tree.visitor;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-
 import com.pholser.junit.quickcheck.examples.tree.Empty;
 import com.pholser.junit.quickcheck.examples.tree.Leaf;
 import com.pholser.junit.quickcheck.examples.tree.Node;
 import com.pholser.junit.quickcheck.examples.tree.TreeVisitor;
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class TreeDeepestLeafVisitor implements TreeVisitor {
     @Override public SimpleImmutableEntry<String, Integer> visit(Empty empty) {

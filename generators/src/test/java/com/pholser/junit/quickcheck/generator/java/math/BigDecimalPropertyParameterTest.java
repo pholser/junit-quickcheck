@@ -25,15 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
+import static java.math.BigDecimal.TEN;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
-
-import static java.math.BigDecimal.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
 
 public class BigDecimalPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {

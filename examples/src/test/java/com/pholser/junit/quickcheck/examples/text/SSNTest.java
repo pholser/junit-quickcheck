@@ -25,13 +25,14 @@
 
 package com.pholser.junit.quickcheck.examples.text;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.examples.text.Structured.Matching;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class SSNTest {

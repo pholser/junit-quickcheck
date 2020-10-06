@@ -25,17 +25,20 @@
 
 package com.pholser.junit.quickcheck.internal.conversion;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.findConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.findMethod;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.maybeWrap;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
 import com.pholser.junit.quickcheck.generator.Only;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 public final class StringConversions {
     private StringConversions() {

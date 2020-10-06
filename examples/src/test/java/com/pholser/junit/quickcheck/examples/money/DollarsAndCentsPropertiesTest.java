@@ -25,18 +25,19 @@
 
 package com.pholser.junit.quickcheck.examples.money;
 
-import java.math.BigDecimal;
+import static java.math.BigDecimal.ONE;
+import static java.math.RoundingMode.HALF_DOWN;
+import static java.math.RoundingMode.HALF_UP;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeThat;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.Precision;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import java.math.BigDecimal;
 import org.junit.runner.RunWith;
-
-import static java.math.BigDecimal.*;
-import static java.math.RoundingMode.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class DollarsAndCentsPropertiesTest {

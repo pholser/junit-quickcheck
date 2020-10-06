@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.util.function;
 
-import java.util.function.IntFunction;
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
+import java.util.function.IntFunction;
 
 /**
  * Produces values of type {@link IntFunction}.

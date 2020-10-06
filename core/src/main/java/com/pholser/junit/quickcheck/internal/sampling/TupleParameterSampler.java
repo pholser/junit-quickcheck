@@ -25,26 +25,26 @@
 
 package com.pholser.junit.quickcheck.internal.sampling;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
+import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.Only;
 import com.pholser.junit.quickcheck.internal.ParameterSampler;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.SeededValue;
-import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.internal.conversion.StringConversions;
 import com.pholser.junit.quickcheck.internal.generator.ExhaustiveDomainGenerator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.GuaranteeValuesGenerator;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
 import com.pholser.junit.quickcheck.internal.generator.SamplingDomainGenerator;
-
-import static java.util.stream.Collectors.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class TupleParameterSampler implements ParameterSampler {
     private final int trials;

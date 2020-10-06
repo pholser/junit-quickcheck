@@ -25,11 +25,11 @@
 
 package com.pholser.junit.quickcheck.examples.text;
 
+import static org.junit.Assert.assertEquals;
+
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class StringPropertiesTest {

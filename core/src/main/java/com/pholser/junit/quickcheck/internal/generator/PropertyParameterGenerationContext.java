@@ -25,9 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import static java.lang.Math.min;
+import static java.lang.String.format;
+import static java.math.BigDecimal.ZERO;
+import static java.util.Collections.emptyList;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
@@ -35,11 +36,9 @@ import com.pholser.junit.quickcheck.internal.ParameterSampler;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.Math.min;
-import static java.lang.String.*;
-import static java.math.BigDecimal.*;
-import static java.util.Collections.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropertyParameterGenerationContext extends AbstractGenerationStatus {
     private final PropertyParameterContext parameter;

@@ -25,20 +25,19 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
-
-import com.pholser.junit.quickcheck.test.generator.AnInt;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
+import static org.junit.Assert.fail;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasFailureContaining;
+
+import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 public class PropertyFalsifiedUtilityClassTest
     extends UtilityClassesUninstantiabilityHarness {

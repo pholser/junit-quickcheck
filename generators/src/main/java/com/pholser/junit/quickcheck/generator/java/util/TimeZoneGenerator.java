@@ -25,13 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.util.TimeZone;
+import static java.util.TimeZone.getAvailableIDs;
+import static java.util.TimeZone.getTimeZone;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.TimeZone.*;
+import java.util.TimeZone;
 
 /**
  * Produces values of type {@link TimeZone}.

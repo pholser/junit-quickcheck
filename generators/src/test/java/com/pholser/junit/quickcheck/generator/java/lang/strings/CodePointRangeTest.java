@@ -25,10 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints.CodePointRange;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class CodePointRangeTest {
     @Test(expected = IllegalArgumentException.class)

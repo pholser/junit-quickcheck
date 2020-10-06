@@ -25,18 +25,19 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.pholser.junit.quickcheck.Annotations.defaultPropertyTrialCount;
+import static com.pholser.junit.quickcheck.test.generator.AFoo.Same;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PropertyParameterConfigurationIsolationTest {
     @Test public void acrossParametersOfSameType() throws Exception {

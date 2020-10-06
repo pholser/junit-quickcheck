@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.math.BigInteger;
-import java.util.List;
+import static java.math.BigInteger.TEN;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
-
-import static java.math.BigInteger.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+import java.math.BigInteger;
+import java.util.List;
 
 public class RangedBigIntegerNoMaxPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {

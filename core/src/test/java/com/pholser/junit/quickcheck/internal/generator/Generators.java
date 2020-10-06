@@ -25,15 +25,14 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.HashSet;
-import java.util.Set;
+import static com.google.common.collect.Sets.newHashSet;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeThat;
 
 import com.pholser.junit.quickcheck.generator.Generator;
-
-import static com.google.common.collect.Sets.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class Generators {
     private Generators() {

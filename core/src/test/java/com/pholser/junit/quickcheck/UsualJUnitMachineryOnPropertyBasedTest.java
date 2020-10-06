@@ -25,11 +25,17 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.ArrayList;
-import java.util.List;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,13 +46,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
-
-import static java.util.Arrays.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-import static org.junit.runners.MethodSorters.*;
 
 public class UsualJUnitMachineryOnPropertyBasedTest {
     private final List<String> expectedStatements =

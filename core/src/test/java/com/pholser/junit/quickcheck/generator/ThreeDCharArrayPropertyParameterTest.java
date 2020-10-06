@@ -25,12 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.List;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest;
-
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+import java.util.List;
 
 public class ThreeDCharArrayPropertyParameterTest extends CorePropertyParameterTest {
     public static final char[][][] TYPE_BEARER = null;

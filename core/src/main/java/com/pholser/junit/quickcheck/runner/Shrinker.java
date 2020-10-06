@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
-
 import com.pholser.junit.quickcheck.MinimalCounterexampleHook;
 import com.pholser.junit.quickcheck.internal.ShrinkControl;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
 

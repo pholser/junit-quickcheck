@@ -508,7 +508,7 @@ public class BigNumberPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingNegativeBigDecimal {
-        static List<BigDecimal> values = new ArrayList<>();
+        static final List<BigDecimal> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @InRange(

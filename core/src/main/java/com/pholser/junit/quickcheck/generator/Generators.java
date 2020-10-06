@@ -25,10 +25,9 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
-
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 /**
  * An access point for available generators.

@@ -25,8 +25,9 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Parameter;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import com.pholser.junit.quickcheck.When;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -35,17 +36,15 @@ import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext.DiscardRatioExceededException;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Parameter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static java.util.Arrays.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 public class PropertyParameterGenerationContextTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

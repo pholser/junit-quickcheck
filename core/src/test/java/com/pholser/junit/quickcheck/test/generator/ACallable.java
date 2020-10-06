@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.util.concurrent.Callable;
-
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.concurrent.Callable;
 
 public class ACallable<V> extends ComponentizedGenerator<Callable> {
     public ACallable() {

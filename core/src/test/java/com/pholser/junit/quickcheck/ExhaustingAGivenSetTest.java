@@ -25,6 +25,22 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.google.common.collect.Sets.newHashSet;
+import static com.pholser.junit.quickcheck.Mode.EXHAUSTIVE;
+import static java.math.RoundingMode.HALF_EVEN;
+import static java.math.RoundingMode.HALF_UP;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
+import com.pholser.junit.quickcheck.conversion.StringConversion;
+import com.pholser.junit.quickcheck.generator.Only;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,23 +50,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import com.pholser.junit.quickcheck.conversion.StringConversion;
-import com.pholser.junit.quickcheck.generator.Only;
-import com.pholser.junit.quickcheck.internal.ReflectionException;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static com.google.common.collect.Sets.*;
-import static com.pholser.junit.quickcheck.Mode.*;
-import static java.math.RoundingMode.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ExhaustingAGivenSetTest {
     @Test public void primitiveBooleans() {

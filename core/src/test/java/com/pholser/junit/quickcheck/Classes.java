@@ -25,19 +25,11 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.google.common.io.Resources.getResource;
+
 import com.google.common.io.Resources;
-import java.nio.charset.StandardCharsets;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.stream.StreamSupport;
-
-import static com.google.common.io.Resources.*;
-import static java.util.stream.Collectors.*;
+import java.nio.charset.StandardCharsets;
 
 final class Classes {
     private Classes() {

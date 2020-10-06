@@ -25,21 +25,22 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class ItemsTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

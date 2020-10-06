@@ -25,14 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator.java.nio.charset;
 
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
-
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
 
 public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
     public static final Charset TYPE_BEARER = null;

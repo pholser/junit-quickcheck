@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
-import static com.google.common.collect.Lists.*;
-import static java.util.Arrays.asList;
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
 
 public class CartesianIteratorTest {
     @Test public void noSources() {

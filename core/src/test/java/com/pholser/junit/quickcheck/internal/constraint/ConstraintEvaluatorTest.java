@@ -25,11 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal.constraint;
 
+import static com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator.EvaluationException;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator.*;
-import static org.junit.Assert.*;
 
 public class ConstraintEvaluatorTest {
     private ConstraintEvaluator evaluator;

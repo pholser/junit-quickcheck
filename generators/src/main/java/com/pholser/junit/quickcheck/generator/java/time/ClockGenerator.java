@@ -25,16 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 
 /**
  * Produces values of type {@link Clock}.

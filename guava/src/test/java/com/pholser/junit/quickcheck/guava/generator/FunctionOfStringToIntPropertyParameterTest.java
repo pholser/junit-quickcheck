@@ -25,8 +25,9 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
-import java.util.List;
-import java.util.Random;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.pholser.junit.quickcheck.Types.typeOf;
+import static org.junit.Assert.assertEquals;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -34,10 +35,8 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.google.common.collect.Lists.*;
-import static com.pholser.junit.quickcheck.Types.*;
-import static org.junit.Assert.*;
+import java.util.List;
+import java.util.Random;
 
 public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyParameterTest {
     public static final Function<String, Integer> TYPE_BEARER = null;

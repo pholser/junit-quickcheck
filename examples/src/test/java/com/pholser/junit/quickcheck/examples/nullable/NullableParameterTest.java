@@ -25,6 +25,13 @@
 
 package com.pholser.junit.quickcheck.examples.nullable;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assume.assumeThat;
+
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.examples.number.NonNegative;
@@ -32,14 +39,8 @@ import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.internal.generator.NullAllowed;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import java.math.RoundingMode;
-import org.junit.runner.RunWith;
-
 import javax.annotation.Nullable;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import org.junit.runner.RunWith;
 
 @RunWith(JUnitQuickcheck.class)
 public class NullableParameterTest {

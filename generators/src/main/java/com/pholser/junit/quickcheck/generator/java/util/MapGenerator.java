@@ -25,6 +25,24 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import static com.pholser.junit.quickcheck.internal.Lists.removeFrom;
+import static com.pholser.junit.quickcheck.internal.Lists.shrinksOfOneItem;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static com.pholser.junit.quickcheck.internal.Reflection.findConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Sequences.halving;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
+
+import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
+import com.pholser.junit.quickcheck.generator.Distinct;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.internal.Lists;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.math.BigDecimal;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -33,19 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
-
-import com.pholser.junit.quickcheck.generator.*;
-import com.pholser.junit.quickcheck.internal.Lists;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.stream.Collectors.*;
-import static java.util.stream.StreamSupport.*;
-
-import static com.pholser.junit.quickcheck.internal.Lists.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static com.pholser.junit.quickcheck.internal.Sequences.*;
 
 /**
  * <p>Base class for generators of {@link Map}s.</p>

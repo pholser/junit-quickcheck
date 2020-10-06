@@ -25,9 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import static com.pholser.junit.quickcheck.Types.typeOf;
+import static com.pholser.junit.quickcheck.internal.generator.Generators.assertGenerators;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -35,6 +37,9 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.AString;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.javaruntype.type.TypeParameter;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,12 +47,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.pholser.junit.quickcheck.Types.*;
-import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

@@ -25,19 +25,20 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static com.pholser.junit.quickcheck.internal.Items.choose;
+import static com.pholser.junit.quickcheck.internal.Reflection.allAnnotationsByType;
+import static com.pholser.junit.quickcheck.internal.Reflection.annotatedComponentTypes;
+import static com.pholser.junit.quickcheck.internal.Reflection.findConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.maybeWrap;
+import static com.pholser.junit.quickcheck.internal.Reflection.supertypes;
+import static java.lang.String.format;
+import static java.util.Collections.unmodifiableList;
+import static org.javaruntype.type.Types.arrayComponentOf;
+
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.ExtendsTypeParameter;
-import org.javaruntype.type.StandardTypeParameter;
-import org.javaruntype.type.TypeParameter;
-import org.javaruntype.type.Types;
-import org.javaruntype.type.WildcardTypeParameter;
-import ru.vyarus.java.generics.resolver.GenericsResolver;
-import ru.vyarus.java.generics.resolver.context.ConstructorGenericsContext;
-import ru.vyarus.java.generics.resolver.context.GenericsContext;
-import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
-
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
@@ -53,12 +54,15 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import static com.pholser.junit.quickcheck.internal.Items.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static java.lang.String.*;
-import static java.util.Collections.*;
-import static org.javaruntype.type.Types.*;
+import org.javaruntype.type.ExtendsTypeParameter;
+import org.javaruntype.type.StandardTypeParameter;
+import org.javaruntype.type.TypeParameter;
+import org.javaruntype.type.Types;
+import org.javaruntype.type.WildcardTypeParameter;
+import ru.vyarus.java.generics.resolver.GenericsResolver;
+import ru.vyarus.java.generics.resolver.context.ConstructorGenericsContext;
+import ru.vyarus.java.generics.resolver.context.GenericsContext;
+import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
 
 public class ParameterTypeContext {
     private static final String EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE =

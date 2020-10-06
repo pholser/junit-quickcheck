@@ -25,12 +25,11 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class ABigInt extends Generator<BigInteger> {
     public ABigInt() {

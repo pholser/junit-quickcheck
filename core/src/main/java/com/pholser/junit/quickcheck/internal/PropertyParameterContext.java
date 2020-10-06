@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.lang.reflect.AnnotatedElement;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 import com.pholser.junit.quickcheck.When;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.lang.reflect.AnnotatedElement;
 
 public class PropertyParameterContext {
     private static final long DEFAULT_SEED =

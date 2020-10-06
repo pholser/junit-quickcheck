@@ -25,18 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
+import static java.nio.charset.Charset.availableCharsets;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.assertEquals;
 
 import com.pholser.junit.quickcheck.LongRunning;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import static java.nio.charset.Charset.*;
-import static java.util.stream.Collectors.*;
-import static org.junit.Assert.*;
 
 @Category(LongRunning.class)
 @RunWith(Parameterized.class)

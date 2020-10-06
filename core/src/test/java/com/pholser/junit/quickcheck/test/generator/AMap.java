@@ -25,14 +25,13 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
+import static java.math.BigDecimal.ZERO;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.math.BigDecimal.*;
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 public class AMap extends ComponentizedGenerator<HashMap> {
     public AMap() {

@@ -25,16 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.nio.charset.Charset;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
 import com.pholser.junit.quickcheck.generator.java.lang.strings.CodePoints;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.nio.charset.Charset;
 
 /**
  * <p>Produces {@link String}s whose code points correspond to code points in

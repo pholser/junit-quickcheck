@@ -25,15 +25,13 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import static com.pholser.junit.quickcheck.Mode.SAMPLING;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-
-import static com.pholser.junit.quickcheck.Mode.*;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
  * <p>Mark a method on a class that is {@linkplain org.junit.runner.RunWith

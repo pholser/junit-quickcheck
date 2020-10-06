@@ -25,19 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static java.util.stream.Collectors.toList;
+
+import com.pholser.junit.quickcheck.Pair;
+import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Weighted;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import com.pholser.junit.quickcheck.Pair;
-import com.pholser.junit.quickcheck.internal.Items;
-import com.pholser.junit.quickcheck.internal.Weighted;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.stream.Collectors.*;
 
 /**
  * Represents a strategy for generating random values.

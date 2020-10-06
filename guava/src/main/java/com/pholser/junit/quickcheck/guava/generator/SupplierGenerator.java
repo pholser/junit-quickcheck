@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+
 import com.google.common.base.Supplier;
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
 /**
  * Produces values of type {@code Supplier}.

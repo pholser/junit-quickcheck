@@ -25,10 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.math.BigInteger.TEN;
+import static java.math.BigInteger.ZERO;
+import static java.util.function.Function.identity;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -36,12 +37,10 @@ import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.math.BigInteger.*;
-import static java.util.function.Function.*;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * <p>Produces values of type {@link BigInteger}.</p>

@@ -25,12 +25,19 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import static com.pholser.junit.quickcheck.Classes.currentMethodName;
+import static com.pholser.junit.quickcheck.Classes.resourceAsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,13 +48,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.Classes.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-import static org.junit.runners.MethodSorters.*;
 
 public class UsualJUnitMachineryOnTraitBasedPropertyTest {
     private static final OutputStream bytesOut = new ByteArrayOutputStream();

@@ -25,12 +25,11 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.internal.generator.ZilchGenerator;
 
 public class TestGeneratorSource implements Iterable<Generator<?>> {
     @Override public Iterator<Generator<?>> iterator() {

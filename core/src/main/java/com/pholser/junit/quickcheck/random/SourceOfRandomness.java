@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+import com.pholser.junit.quickcheck.internal.Items;
+import com.pholser.junit.quickcheck.internal.Ranges;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,13 +40,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Random;
-
-import com.pholser.junit.quickcheck.internal.Items;
-import com.pholser.junit.quickcheck.internal.Ranges;
-
-import static java.util.concurrent.TimeUnit.*;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 /**
  * A source of randomness, fed to

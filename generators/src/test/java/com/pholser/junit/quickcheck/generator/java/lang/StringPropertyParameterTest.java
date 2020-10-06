@@ -25,15 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.util.List;
+import static com.pholser.junit.quickcheck.Generating.verifyCharsForString;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Generating;
 import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
-
-import static com.pholser.junit.quickcheck.Generating.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+import java.util.List;
 
 public class StringPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
     @From(StringGenerator.class)

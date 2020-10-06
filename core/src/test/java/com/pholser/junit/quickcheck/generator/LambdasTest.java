@@ -25,19 +25,20 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.Random;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.ABool;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import java.util.Random;
+import java.util.function.Predicate;
 import org.junit.Before;
 import org.junit.Test;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
-import static org.junit.Assert.*;
 
 public class LambdasTest {
     private ABool returnValueGenerator;

@@ -25,17 +25,16 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Stream;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class AFooBadShrinks extends Generator<Foo> {
     private Between range;

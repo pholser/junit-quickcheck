@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 public class AString extends Generator<String> {

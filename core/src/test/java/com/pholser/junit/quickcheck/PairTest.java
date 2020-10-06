@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck;
 
+import static org.junit.Assert.assertEquals;
+
 import com.google.common.testing.EqualsTester;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class PairTest {
     @Test public void equalsHash() {

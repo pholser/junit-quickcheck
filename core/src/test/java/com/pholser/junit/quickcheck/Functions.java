@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Arrays;
-import java.util.Random;
-
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Arrays;
+import java.util.Random;
 
 public final class Functions {
     private Functions() {

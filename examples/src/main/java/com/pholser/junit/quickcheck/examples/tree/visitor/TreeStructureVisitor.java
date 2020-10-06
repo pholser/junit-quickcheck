@@ -25,17 +25,16 @@
 
 package com.pholser.junit.quickcheck.examples.tree.visitor;
 
-import java.util.ArrayList;
-import java.util.List;
+import static java.lang.System.getProperty;
+import static java.util.Collections.nCopies;
+import static java.util.stream.Collectors.joining;
 
 import com.pholser.junit.quickcheck.examples.tree.Empty;
 import com.pholser.junit.quickcheck.examples.tree.Leaf;
 import com.pholser.junit.quickcheck.examples.tree.Node;
 import com.pholser.junit.quickcheck.examples.tree.TreeVisitor;
-
-import static java.lang.System.*;
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TreeStructureVisitor implements TreeVisitor {
     private final List<String> lines = new ArrayList<>();

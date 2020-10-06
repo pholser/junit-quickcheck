@@ -25,6 +25,9 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.counterexampleFound;
+import static java.util.stream.Collectors.toList;
+
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterSampler;
@@ -37,6 +40,12 @@ import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerati
 import com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler;
 import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -45,16 +54,6 @@ import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import ru.vyarus.java.generics.resolver.GenericsResolver;
 import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
-
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
-
-import static com.pholser.junit.quickcheck.runner.PropertyFalsified.*;
-import static java.util.stream.Collectors.*;
 
 class PropertyStatement extends Statement {
     private final FrameworkMethod method;

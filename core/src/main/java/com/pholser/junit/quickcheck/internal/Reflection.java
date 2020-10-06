@@ -25,6 +25,14 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static java.lang.reflect.Modifier.isAbstract;
+import static java.security.AccessController.doPrivileged;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedElement;
@@ -44,14 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.javaruntype.type.Type;
-
-import static java.lang.reflect.Modifier.*;
-import static java.security.AccessController.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
 
 public final class Reflection {
     private static final Map<Class<?>, Class<?>> PRIMITIVES =

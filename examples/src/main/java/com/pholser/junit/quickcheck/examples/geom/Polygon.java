@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
+import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.COLLINEAR;
+import static com.pholser.junit.quickcheck.examples.geom.Point.orientation;
+import static java.util.Comparator.comparingDouble;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.*;
-import static com.pholser.junit.quickcheck.examples.geom.Point.*;
-import static java.util.Comparator.*;
 
 /**
  * @see <a href="https://www.geeksforgeeks.org/how-to-check-if-a-given-point-lies-inside-a-polygon/">Article</a>

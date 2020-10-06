@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 abstract class AbstractGenerationStatus implements GenerationStatus {
     private final GeometricDistribution distro;

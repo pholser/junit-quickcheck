@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.List;
+import static java.math.BigDecimal.TEN;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTest;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
-
-import static java.math.BigDecimal.*;
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.List;
 
 public class RangedBigDecimalNoMinWithGreaterSpecifiedPrecisionPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {

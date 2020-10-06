@@ -25,17 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.allDeclaredFieldsOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.setField;
+import static java.util.stream.Collectors.toList;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.stream.Collectors.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>Produces instances of a class by reflecting the class's fields and
