@@ -78,6 +78,6 @@ public class TreeStructureVisitor implements TreeVisitor {
     }
 
     private static String repeat(String s, int times) {
-        return nCopies(times, s).stream().collect(joining());
+        return String.join("", nCopies(times, s));
     }
 }

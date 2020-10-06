@@ -271,7 +271,7 @@ public final class Reflection {
 
         return Arrays.stream(clazz.getMethods())
             .filter(m -> !m.isDefault())
-            .noneMatch(m -> !overridesJavaLangObjectMethod(m));
+            .allMatch(Reflection::overridesJavaLangObjectMethod);
     }
 
     private static boolean overridesJavaLangObjectMethod(Method method) {

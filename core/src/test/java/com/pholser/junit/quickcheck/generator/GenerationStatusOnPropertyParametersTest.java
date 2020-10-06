@@ -63,12 +63,14 @@ public class GenerationStatusOnPropertyParametersTest {
             }
         }
 
-        @Property(trials = 50) public void holds(@From(AnObject.class) Object o) {
+        @Property(trials = 50) public void holds(
+            @From(AnObject.class) Object o) {
+
             // yay, all good
         }
     }
 
-    @Test public void contextValuesForEachParameter() throws Exception {
+    @Test public void contextValuesForEachParameter() {
         assertThat(testResult(ContextValues.class), isSuccessful());
     }
 
@@ -109,7 +111,9 @@ public class GenerationStatusOnPropertyParametersTest {
             }
         }
 
-        @Property(trials = 10) public void holds(@From(AnObject.class) Object o) {
+        @Property(trials = 10) public void holds(
+            @From(AnObject.class) Object o) {
+
             assertThat(o, instanceOf(Optional.class));
 
             @SuppressWarnings("unchecked")
@@ -140,9 +144,15 @@ public class GenerationStatusOnPropertyParametersTest {
 
     @Test public void equalsAndHashCodeOnStatusKeys() {
         new EqualsTester()
-            .addEqualityGroup(new Key<>("a", String.class), new Key<>("a", String.class))
-            .addEqualityGroup(new Key<>("a", Integer.class), new Key<>("a", Integer.class))
-            .addEqualityGroup(new Key<>("b", String.class), new Key<>("b", String.class))
+            .addEqualityGroup(
+                new Key<>("a", String.class),
+                new Key<>("a", String.class))
+            .addEqualityGroup(
+                new Key<>("a", Integer.class),
+                new Key<>("a", Integer.class))
+            .addEqualityGroup(
+                new Key<>("b", String.class),
+                new Key<>("b", String.class))
             .addEqualityGroup(true, true)
             .testEquals();
     }

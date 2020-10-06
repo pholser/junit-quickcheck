@@ -118,7 +118,7 @@ public class ShrinkingTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class DisablingShrinking {
-        static List<Foo> attempts = new ArrayList<>();
+        static final List<Foo> attempts = new ArrayList<>();
 
         @Property(shrink = false) public void shouldHold(Foo f) {
             attempts.add(f);
@@ -134,7 +134,7 @@ public class ShrinkingTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingArray {
-        static List<Foo[]> attempts = new ArrayList<>();
+        static final List<Foo[]> attempts = new ArrayList<>();
 
         @Property public void shouldHold(Foo[] f) {
             assumeThat(f.length, greaterThan(0));
@@ -156,7 +156,7 @@ public class ShrinkingTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingLengthConstrainedArray {
-        static List<Foo[]> attempts = new ArrayList<>();
+        static final List<Foo[]> attempts = new ArrayList<>();
 
         @Property public void shouldHold(Foo @Size(min = 2, max = 4) [] f) {
             attempts.add(f);

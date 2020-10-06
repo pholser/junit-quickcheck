@@ -38,7 +38,7 @@ import static org.mockito.Mockito.*;
 public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithDiscreteProbabilityTest
     extends CorePropertyParameterTest {
 
-    @From(value = FooGenerator.class, frequency = 1)
+    @From(value = FooGenerator.class)
     @From(value = BarGenerator.class, frequency = 2)
     @From(value = BazGenerator.class, frequency = 3)
     public static final String TYPE_BEARER = null;

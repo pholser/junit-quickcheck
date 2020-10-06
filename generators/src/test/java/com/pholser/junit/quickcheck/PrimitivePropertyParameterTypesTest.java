@@ -252,7 +252,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveByteStraddlingZero {
-        static List<Byte> values = new ArrayList<>();
+        static final List<Byte> values = new ArrayList<>();
 
         @Property public void shouldHold(byte b) {
             values.add(b);

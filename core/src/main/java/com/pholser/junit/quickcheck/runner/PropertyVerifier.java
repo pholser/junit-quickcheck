@@ -72,7 +72,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private Statement methodBlock() {
         Statement statement = super.methodBlock(method);
         return new Statement() {
-            @Override public void evaluate() throws Throwable {
+            @Override public void evaluate() {
                 try {
                     statement.evaluate();
                     onSuccess.accept(null);
