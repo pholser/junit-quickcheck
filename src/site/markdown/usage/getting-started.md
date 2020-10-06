@@ -11,7 +11,8 @@ methods.
 
 ```java
     import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-    import com.pholser.junit.quickcheck.Property;import java.nio.charset.StandardCharsets;
+    import com.pholser.junit.quickcheck.Property;
+    import java.nio.charset.StandardCharsets;
 
     class Crypto {
         byte[] encrypt(byte[] plaintext, Key key) {

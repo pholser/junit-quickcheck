@@ -35,8 +35,11 @@ public class ADecimal extends Generator<BigDecimal> {
         super(BigDecimal.class);
     }
 
-    @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
-        return new BigDecimal(random.nextDouble());
+    @Override public BigDecimal generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return BigDecimal.valueOf(random.nextDouble());
     }
 
     @Override public BigDecimal magnitude(Object value) {

@@ -46,6 +46,7 @@ public class FunctionPropertyParameterTypesTest {
         assertEquals(defaultPropertyTrialCount(), FooToZilch.iterations);
     }
 
+    @SuppressWarnings("Guava")
     @RunWith(JUnitQuickcheck.class)
     public static class FooToZilch {
         static int iterations;
@@ -66,6 +67,7 @@ public class FunctionPropertyParameterTypesTest {
         assertEquals(defaultPropertyTrialCount(), SuperShortToExtendsInteger.iterations);
     }
 
+    @SuppressWarnings("Guava")
     @RunWith(JUnitQuickcheck.class)
     public static class SuperShortToExtendsInteger {
         static int iterations;
@@ -86,6 +88,7 @@ public class FunctionPropertyParameterTypesTest {
         assertEquals(defaultPropertyTrialCount(), ArrayOfFunction.iterations);
     }
 
+    @SuppressWarnings("Guava")
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfFunction {
         static int iterations;

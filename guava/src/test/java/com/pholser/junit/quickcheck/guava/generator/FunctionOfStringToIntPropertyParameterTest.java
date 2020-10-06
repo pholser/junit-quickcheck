@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Random;
 
 public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyParameterTest {
+    @SuppressWarnings("Guava")
     public static final Function<String, Integer> TYPE_BEARER = null;
 
     private static Integer integer;
@@ -62,6 +63,7 @@ public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyPara
         return new ServiceLoaderGeneratorSource();
     }
 
+    @SuppressWarnings("Guava")
     @Override protected void verifyEquivalenceOfPropertyParameter(int index, Object expected, Object actual)
         throws Exception {
         @SuppressWarnings("unchecked")

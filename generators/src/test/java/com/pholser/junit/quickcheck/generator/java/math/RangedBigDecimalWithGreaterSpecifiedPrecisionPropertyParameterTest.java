@@ -28,6 +28,7 @@ package com.pholser.junit.quickcheck.generator.java.math;
 import static java.math.BigInteger.ONE;
 import static java.math.BigInteger.TEN;
 import static java.math.BigInteger.ZERO;
+import static java.math.RoundingMode.HALF_UP;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,6 +39,7 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Precision;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class RangedBigDecimalWithGreaterSpecifiedPrecisionPropertyParameterTest
@@ -69,11 +71,12 @@ public class RangedBigDecimalWithGreaterSpecifiedPrecisionPropertyParameterTest
         return asList(
             new BigDecimal("-12345678123456781234567812345.677999"),
             new BigDecimal("-12345678123456781234567812345.677990"),
-            min.setScale(6),
+            min.setScale(6, HALF_UP),
             new BigDecimal("-12345678123456781234567578111.443766"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(5)).nextBigInteger(numberOfBits);
+        verify(randomForParameterGenerator, times(5))
+            .nextBigInteger(numberOfBits);
     }
 }

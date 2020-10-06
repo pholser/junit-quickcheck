@@ -51,6 +51,7 @@ public class OptionalPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class OptionalString {
+        @SuppressWarnings("Guava")
         @Property public void works(
             Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
 
@@ -59,6 +60,7 @@ public class OptionalPropertyParameterTest {
         }
     }
 
+    @SuppressWarnings("Guava")
     @Test public void shrinking() {
         assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
         assertTrue(
@@ -70,6 +72,7 @@ public class OptionalPropertyParameterTest {
     public static class ShrinkingOptional {
         static final List<Optional<Byte>> failed = new ArrayList<>();
 
+        @SuppressWarnings("Guava")
         @Property public void works(Optional<Byte> optional) {
             failed.add(optional);
 

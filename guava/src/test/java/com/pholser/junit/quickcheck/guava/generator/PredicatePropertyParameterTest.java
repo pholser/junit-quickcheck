@@ -42,7 +42,7 @@ public class PredicatePropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class DefiniteArgType {
-        @Property public void x(Predicate<String> p) {
+        @Property public void x(@SuppressWarnings("Guava") Predicate<String> p) {
             p.apply("abc");
         }
     }

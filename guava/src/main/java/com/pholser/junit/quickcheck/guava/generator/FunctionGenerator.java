@@ -38,6 +38,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
  * @param <F> parameter type of the generated functions
  * @param <T> return type of the generated functions
  */
+@SuppressWarnings("Guava")
 public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
     public FunctionGenerator() {
         super(Function.class);

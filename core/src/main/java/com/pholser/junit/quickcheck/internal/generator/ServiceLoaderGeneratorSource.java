@@ -48,9 +48,7 @@ public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
         for (Generator<?> each : loader)
             generators.add(each);
 
-        Collections.sort(
-            generators,
-            comparing(generator -> generator.getClass().getName()));
+        generators.sort(comparing(g -> g.getClass().getName()));
 
         return unmodifiableList(generators).iterator();
     }

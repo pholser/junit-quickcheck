@@ -63,18 +63,24 @@ public abstract class AbstractStringGenerator extends Generator<String> {
         return super.canShrink(larger) && codePointsInRange((String) larger);
     }
 
-    @Override public List<String> doShrink(SourceOfRandomness random, String larger) {
-        List<String> shrinks = new ArrayList<>();
+    @Override public List<String> doShrink(
+        SourceOfRandomness random,
+        String larger) {
 
-        List<Integer> codePoints = larger.codePoints().boxed().collect(toList());
-        shrinks.addAll(removals(codePoints));
+        List<Integer> codePoints =
+            larger.codePoints().boxed().collect(toList());
+        List<String> shrinks = new ArrayList<>(removals(codePoints));
 
         List<List<Integer>> oneItemShrinks =
-            shrinksOfOneItem(random, codePoints, new CodePointShrink(this::codePointInRange));
-        shrinks.addAll(oneItemShrinks.stream()
-            .map(this::convert)
-            .filter(this::codePointsInRange)
-            .collect(toList()));
+            shrinksOfOneItem(
+                random,
+                codePoints,
+                new CodePointShrink(this::codePointInRange));
+        shrinks.addAll(
+            oneItemShrinks.stream()
+                .map(this::convert)
+                .filter(this::codePointsInRange)
+                .collect(toList()));
 
         return shrinks;
     }
