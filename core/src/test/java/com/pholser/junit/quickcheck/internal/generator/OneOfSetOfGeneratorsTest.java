@@ -25,8 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.math.BigDecimal;
-import java.util.Random;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -38,13 +40,10 @@ import com.pholser.junit.quickcheck.test.generator.AFloat;
 import com.pholser.junit.quickcheck.test.generator.ALong;
 import com.pholser.junit.quickcheck.test.generator.AShort;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import java.math.BigDecimal;
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 public class OneOfSetOfGeneratorsTest {
     private GeneratorRepository repo;

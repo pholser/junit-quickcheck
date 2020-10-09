@@ -25,6 +25,14 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.pholser.junit.quickcheck.test.generator.AFoo.Same;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
@@ -32,11 +40,6 @@ import com.pholser.junit.quickcheck.test.generator.Pair;
 import com.pholser.junit.quickcheck.test.generator.X;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
     @Test public void singleGenericParameterConfigured() {
@@ -56,7 +59,8 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
 
     @Test public void parameterConfiguredButGenericParameterNotConfigured() {
         assertThat(
-            testResult(ParameterConfiguredButGenericParameterNotConfigured.class),
+            testResult(
+                ParameterConfiguredButGenericParameterNotConfigured.class),
             isSuccessful());
     }
 
@@ -85,13 +89,16 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
 
     @Test public void twoGenericParametersOfSameTypeConfiguredDifferently() {
         assertThat(
-            testResult(TwoGenericParametersOfSameTypeConfiguredDifferently.class),
+            testResult(
+                TwoGenericParametersOfSameTypeConfiguredDifferently.class),
             isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class TwoGenericParametersOfSameTypeConfiguredDifferently {
-        @Property public void holds(Pair<@X Box<@Same(1) Foo>, Box<@X @Same(2) Foo>> pair) {
+        @Property public void holds(
+            Pair<@X Box<@Same(1) Foo>, Box<@X @Same(2) Foo>> pair) {
+
             assertFalse(pair.marked());
 
             assertTrue(pair.first().marked());
@@ -112,7 +119,9 @@ public class MarkingTypeUsesOnPropertyParametersWithConfigurationTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class TwoGenericParametersReferringToSameType {
-        @Property public void holds(Pair<@X @Same(1) Foo, Box<@X @Same(2) Foo>> pair) {
+        @Property public void holds(
+            Pair<@X @Same(1) Foo, Box<@X @Same(2) Foo>> pair) {
+
             assertFalse(pair.marked());
 
             assertTrue(pair.first().marked());

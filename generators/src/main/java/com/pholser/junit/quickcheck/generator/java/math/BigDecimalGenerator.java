@@ -25,10 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.math;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.lang.Math.max;
+import static java.math.BigDecimal.TEN;
+import static java.math.BigDecimal.ZERO;
+import static java.util.function.Function.identity;
 
 import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
@@ -37,13 +39,10 @@ import com.pholser.junit.quickcheck.generator.Precision;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.Math.*;
-import static java.math.BigDecimal.*;
-import static java.util.function.Function.*;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * <p>Produces values of type {@link BigDecimal}.</p>

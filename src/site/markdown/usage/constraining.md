@@ -125,7 +125,7 @@ parameter.
     }
 ```
 
-A property parameter is referred to as "_" in the constraint expression.
+"_" refers to a property parameter in a constraint expression.
 Constraint expressions cannot refer to other property parameters.
 
 junit-quickcheck generates values for a property parameter with a constraint

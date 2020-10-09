@@ -46,18 +46,23 @@ public class SetOfExtendsBytePropertyParameterTest
             .thenReturn((byte) 6).thenReturn((byte) 7).thenReturn((byte) 8);
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(0);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
     }
 
     @Override protected int trials() {
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(newHashSet(), newHashSet((byte) 6), newHashSet((byte) 7, (byte) 8));
+        return asList(
+            newHashSet(),
+            newHashSet((byte) 6),
+            newHashSet((byte) 7, (byte) 8));
     }
 
     @Override public void verifyInteractionWithRandomness() {

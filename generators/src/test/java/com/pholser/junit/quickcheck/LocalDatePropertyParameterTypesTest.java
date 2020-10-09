@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -63,20 +63,24 @@ public class LocalDatePropertyParameterTypesTest {
                 format = "MM/dd/yyyy")
             LocalDate d) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
             assertThat(
                 d,
                 allOf(
-                    greaterThanOrEqualTo(LocalDate.parse("01/01/2012", formatter)),
-                    lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter))));
+                    greaterThanOrEqualTo(
+                        LocalDate.parse("01/01/2012", formatter)),
+                    lessThanOrEqualTo(
+                        LocalDate.parse("12/31/2012", formatter))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinLocalDate.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -93,7 +97,8 @@ public class LocalDatePropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxLocalDate.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -110,7 +115,8 @@ public class LocalDatePropertyParameterTypesTest {
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatLocalDate.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -133,8 +139,11 @@ public class LocalDatePropertyParameterTypesTest {
         @Property public void shouldHold(
             @InRange(max = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            assertThat(d, lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            assertThat(
+                d,
+                lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
         }
     }
 
@@ -147,15 +156,19 @@ public class LocalDatePropertyParameterTypesTest {
         @Property public void shouldHold(
             @InRange(min = "12/31/2012", format = "MM/dd/yyyy") LocalDate d) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            assertThat(d, greaterThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            assertThat(
+                d,
+                greaterThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

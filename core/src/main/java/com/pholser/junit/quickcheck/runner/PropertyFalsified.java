@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.runner;
 
-import java.util.Arrays;
+import static java.lang.String.format;
 
-import static java.lang.String.*;
+import java.util.Arrays;
 
 final class PropertyFalsified {
     private PropertyFalsified() {

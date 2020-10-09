@@ -25,20 +25,19 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import static java.lang.String.format;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.fail;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasFailureContaining;
+
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
-
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static java.lang.String.format;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PropertyFalsifiedUtilityClassTest
     extends UtilityClassesUninstantiabilityHarness {
@@ -55,34 +54,41 @@ public class PropertyFalsifiedUtilityClassTest
         String assertionName = "assertion name";
         AssertionError error = new AssertionError(assertionName);
 
-        AssertionError actual = PropertyFalsified.counterexampleFound(
-            propertyName,
-            arguments,
-            seeds,
-            error);
+        AssertionError actual =
+            PropertyFalsified.counterexampleFound(
+                propertyName,
+                arguments,
+                seeds,
+                error);
 
-        String expected = format("Property named 'mySuperProperty' failed (assertion name)%n"
-            + "With arguments: [first, second, third]%n"
-            + "Seeds for reproduction: [12345, 8842]");
+        String expected =
+            format(
+                "Property named 'mySuperProperty' failed (assertion name)%n"
+                    + "With arguments: [first, second, third]%n"
+                    + "Seeds for reproduction: [12345, 8842]");
         assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
-    public void counterexampleFoundWhenAssertionErrorPassedHasNoMessageIsCorrect() {
+    public void
+    counterexampleFoundWhenAssertionErrorPassedHasNoMessageIsCorrect() {
         String propertyName = "mySuperProperty";
         String[] arguments = {"first", "second", "third"};
         long[] seeds = {12345, 8842};
         AssertionError error = new AssertionError();
 
-        AssertionError actual = PropertyFalsified.counterexampleFound(
-            propertyName,
-            arguments,
-            seeds,
-            error);
+        AssertionError actual =
+            PropertyFalsified.counterexampleFound(
+                propertyName,
+                arguments,
+                seeds,
+                error);
 
-        String expected = format("Property named 'mySuperProperty' failed:%n"
-            + "With arguments: [first, second, third]%n"
-            + "Seeds for reproduction: [12345, 8842]");
+        String expected =
+            format(
+                "Property named 'mySuperProperty' failed:%n"
+                    + "With arguments: [first, second, third]%n"
+                    + "Seeds for reproduction: [12345, 8842]");
         assertThat(actual.getMessage(), equalTo(expected));
     }
 
@@ -97,24 +103,29 @@ public class PropertyFalsifiedUtilityClassTest
         String assertionName = "assertion name";
         AssertionError originalFailure = new AssertionError(assertionName);
 
-        AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
-            propertyName,
-            originalArguments,
-            arguments,
-            seeds,
-            smallerFailure,
-            originalFailure);
+        AssertionError actual =
+            PropertyFalsified.smallerCounterexampleFound(
+                propertyName,
+                originalArguments,
+                arguments,
+                seeds,
+                smallerFailure,
+                originalFailure);
 
-        String expected = format("Property named 'mySuperProperty' failed (smaller name):%n"
-            + "With arguments: [first]%n"
-            + "Original failure message: assertion name%n"
-            + "First arguments found to also provoke a failure: [first, second, third]%n"
-            + "Seeds for reproduction: [12345, 8842]");
+        String expected =
+            format(
+                "Property named 'mySuperProperty' failed (smaller name):%n"
+                    + "With arguments: [first]%n"
+                    + "Original failure message: assertion name%n"
+                    + "First arguments found to also provoke a failure: "
+                    + "[first, second, third]%n"
+                    + "Seeds for reproduction: [12345, 8842]");
         assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
-    public void smallerCounterexampleFoundIsCorrectEvenIfSmallerFailureIsNotNamed() {
+    public void
+    smallerCounterexampleFoundIsCorrectEvenIfSmallerFailureIsNotNamed() {
         String propertyName = "mySuperProperty";
         String[] originalArguments = {"first", "second", "third"};
         String[] arguments = {"first"};
@@ -123,24 +134,29 @@ public class PropertyFalsifiedUtilityClassTest
         String assertionName = "assertion name";
         AssertionError originalFailure = new AssertionError(assertionName);
 
-        AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
-            propertyName,
-            originalArguments,
-            arguments,
-            seeds,
-            smallerFailure,
-            originalFailure);
+        AssertionError actual =
+            PropertyFalsified.smallerCounterexampleFound(
+                propertyName,
+                originalArguments,
+                arguments,
+                seeds,
+                smallerFailure,
+                originalFailure);
 
-        String expected = format("Property named 'mySuperProperty' failed:%n"
-            + "With arguments: [first]%n"
-            + "Original failure message: assertion name%n"
-            + "First arguments found to also provoke a failure: [first, second, third]%n"
-            + "Seeds for reproduction: [12345, 8842]");
+        String expected =
+            format(
+                "Property named 'mySuperProperty' failed:%n"
+                    + "With arguments: [first]%n"
+                    + "Original failure message: assertion name%n"
+                    + "First arguments found to also provoke a failure: "
+                    + "[first, second, third]%n"
+                    + "Seeds for reproduction: [12345, 8842]");
         assertThat(actual.getMessage(), equalTo(expected));
     }
 
     @Test
-    public void smallerCounterexampleFoundIsCorrectEvenIfOriginalFailureIsNotNamed() {
+    public void
+    smallerCounterexampleFoundIsCorrectEvenIfOriginalFailureIsNotNamed() {
         String propertyName = "mySuperProperty";
         String[] originalArguments = {"first", "second", "third"};
         String[] arguments = {"first"};
@@ -148,18 +164,22 @@ public class PropertyFalsifiedUtilityClassTest
         AssertionError smallerFailure = new AssertionError();
         AssertionError originalFailure = new AssertionError();
 
-        AssertionError actual = PropertyFalsified.smallerCounterexampleFound(
-            propertyName,
-            originalArguments,
-            arguments,
-            seeds,
-            smallerFailure,
-            originalFailure);
+        AssertionError actual =
+            PropertyFalsified.smallerCounterexampleFound(
+                propertyName,
+                originalArguments,
+                arguments,
+                seeds,
+                smallerFailure,
+                originalFailure);
 
-        String expected = format("Property named 'mySuperProperty' failed:%n"
-            + "With arguments: [first]%n"
-            + "First arguments found to also provoke a failure: [first, second, third]%n"
-            + "Seeds for reproduction: [12345, 8842]");
+        String expected =
+            format(
+                "Property named 'mySuperProperty' failed:%n"
+                    + "With arguments: [first]%n"
+                    + "First arguments found to also provoke a failure: "
+                    + "[first, second, third]%n"
+                    + "Seeds for reproduction: [12345, 8842]");
         assertThat(actual.getMessage(), equalTo(expected));
     }
 

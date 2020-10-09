@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.examples.func;
 
-import java.util.List;
+import static com.pholser.junit.quickcheck.examples.func.Either.makeLeft;
+import static com.pholser.junit.quickcheck.examples.func.Either.makeRight;
+import static java.util.stream.Collectors.toList;
 
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.examples.func.Either.*;
-import static java.util.stream.Collectors.*;
+import java.util.List;
 
 public class EitherGenerator extends ComponentizedGenerator<Either> {
     public EitherGenerator() {

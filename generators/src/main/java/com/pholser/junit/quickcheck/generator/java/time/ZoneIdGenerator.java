@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
-import java.time.ZoneId;
+import static java.time.ZoneId.getAvailableZoneIds;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.time.ZoneId.*;
+import java.time.ZoneId;
 
 /**
  * Produces values of type {@link ZoneId}.

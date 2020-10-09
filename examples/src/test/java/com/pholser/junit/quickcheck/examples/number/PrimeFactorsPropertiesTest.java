@@ -25,16 +25,20 @@
 
 package com.pholser.junit.quickcheck.examples.number;
 
-import java.math.BigInteger;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeThat;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import java.math.BigInteger;
 import org.junit.runner.RunWith;
-
-import static java.math.BigInteger.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class PrimeFactorsPropertiesTest {

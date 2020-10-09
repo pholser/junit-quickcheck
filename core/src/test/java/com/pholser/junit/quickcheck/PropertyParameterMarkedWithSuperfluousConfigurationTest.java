@@ -25,6 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.GeneratorConfigurationException;
@@ -37,15 +43,12 @@ import java.util.Formatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-
 public class PropertyParameterMarkedWithSuperfluousConfigurationTest {
     @Test public void parameterMarkedWithUnexpectedConfiguration() {
         assertThat(
             testResult(WithSuperfluousConfiguration.class),
-            hasSingleFailureContaining(GeneratorConfigurationException.class.getName()));
+            hasSingleFailureContaining(
+                GeneratorConfigurationException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -55,21 +58,29 @@ public class PropertyParameterMarkedWithSuperfluousConfigurationTest {
         }
     }
 
-    @Test public void weedsOutCandidateGeneratorsThatDoNotSupportAConfigurationAnnotation() {
-        assertThat(testResult(MultipleCandidateGenerators.class), isSuccessful());
+    @Test public void
+    weedsOutCandidateGeneratorsThatDoNotSupportAConfigurationAnnotation() {
+        assertThat(
+            testResult(MultipleCandidateGenerators.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MultipleCandidateGenerators {
-        @Property public void shouldHold(@From(Plain.class) @From(Markable.class) @X Foo f) {
+        @Property public void shouldHold(
+            @From(Plain.class) @From(Markable.class) @X Foo f) {
+
             assertTrue(f.marked());
         }
     }
 
-    @Test public void failsIfNoCandidateGeneratorsSupportAConfigurationAnnotation() {
+    @Test public void
+    failsIfNoCandidateGeneratorsSupportAConfigurationAnnotation() {
         assertThat(
-            testResult(MultipleCandidateGeneratorsButNoneUnderstandMarker.class),
-            hasSingleFailureContaining(GeneratorConfigurationException.class.getName()));
+            testResult(
+                MultipleCandidateGeneratorsButNoneUnderstandMarker.class),
+            hasSingleFailureContaining(
+                GeneratorConfigurationException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -86,7 +97,10 @@ public class PropertyParameterMarkedWithSuperfluousConfigurationTest {
             super(Foo.class);
         }
 
-        @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Foo generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return new Foo(random.nextInt(), x != null);
         }
 
@@ -100,7 +114,10 @@ public class PropertyParameterMarkedWithSuperfluousConfigurationTest {
             super(Foo.class);
         }
 
-        @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Foo generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return new Foo(random.nextInt(), false);
         }
     }

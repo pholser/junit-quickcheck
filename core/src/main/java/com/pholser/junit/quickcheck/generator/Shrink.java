@@ -25,9 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.List;
-
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.List;
 
 /**
  * Represents a strategy for producing objects "smaller than" a given object.

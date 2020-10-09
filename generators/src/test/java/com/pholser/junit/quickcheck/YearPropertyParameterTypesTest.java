@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -72,7 +72,8 @@ public class YearPropertyParameterTypesTest {
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinYear.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -85,7 +86,8 @@ public class YearPropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxYear.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -98,7 +100,8 @@ public class YearPropertyParameterTypesTest {
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatYear.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -114,9 +117,13 @@ public class YearPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMin {
-        @Property public void shouldHold(@InRange(max = "2342", format = "yyyy") Year y) {
+        @Property public void shouldHold(
+            @InRange(max = "2342", format = "yyyy") Year y) {
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-            assertThat(y, lessThanOrEqualTo(Year.parse("2342", formatter)));
+            assertThat(
+                y,
+                lessThanOrEqualTo(Year.parse("2342", formatter)));
         }
     }
 
@@ -126,16 +133,21 @@ public class YearPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMax {
-        @Property public void shouldHold(@InRange(min = "1223", format = "yyyy") Year y) {
+        @Property public void shouldHold(
+            @InRange(min = "1223", format = "yyyy") Year y) {
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-            assertThat(y, greaterThanOrEqualTo(Year.parse("1223", formatter)));
+            assertThat(
+                y,
+                greaterThanOrEqualTo(Year.parse("1223", formatter)));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

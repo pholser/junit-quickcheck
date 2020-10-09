@@ -25,6 +25,24 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static com.pholser.junit.quickcheck.internal.Lists.removeFrom;
+import static com.pholser.junit.quickcheck.internal.Lists.shrinksOfOneItem;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+import static com.pholser.junit.quickcheck.internal.Reflection.annotatedComponentTypes;
+import static com.pholser.junit.quickcheck.internal.Sequences.halving;
+import static java.math.BigDecimal.ZERO;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
+
+import com.pholser.junit.quickcheck.generator.Distinct;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Generators;
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.generator.Size;
+import com.pholser.junit.quickcheck.internal.Lists;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -34,20 +52,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import com.pholser.junit.quickcheck.generator.*;
-import com.pholser.junit.quickcheck.internal.Lists;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.math.BigDecimal.*;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.StreamSupport.*;
-
-import static com.pholser.junit.quickcheck.internal.Lists.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
-import static com.pholser.junit.quickcheck.internal.Sequences.*;
 
 public class ArrayGenerator extends Generator<Object> {
     private final Class<?> componentType;

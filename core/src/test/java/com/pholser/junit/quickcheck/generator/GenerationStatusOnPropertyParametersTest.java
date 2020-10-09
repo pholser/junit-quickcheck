@@ -25,7 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.Optional;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.google.common.testing.EqualsTester;
 import com.pholser.junit.quickcheck.From;
@@ -33,21 +39,12 @@ import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.GenerationStatus.Key;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.Rule;
+import java.util.Optional;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-import static org.junit.rules.ExpectedException.*;
-
 public class GenerationStatusOnPropertyParametersTest {
-    @Rule public final ExpectedException thrown = none();
-
-    @Test public void sizeNeverExceedsSampleSize() throws Exception {
+    @Test public void sizeNeverExceedsSampleSize() {
         assertThat(testResult(SizeProperties.class), isSuccessful());
     }
 
@@ -67,12 +64,14 @@ public class GenerationStatusOnPropertyParametersTest {
             }
         }
 
-        @Property(trials = 50) public void holds(@From(AnObject.class) Object o) {
+        @Property(trials = 50) public void holds(
+            @From(AnObject.class) Object o) {
+
             // yay, all good
         }
     }
 
-    @Test public void contextValuesForEachParameter() throws Exception {
+    @Test public void contextValuesForEachParameter() {
         assertThat(testResult(ContextValues.class), isSuccessful());
     }
 
@@ -113,7 +112,9 @@ public class GenerationStatusOnPropertyParametersTest {
             }
         }
 
-        @Property(trials = 10) public void holds(@From(AnObject.class) Object o) {
+        @Property(trials = 10) public void holds(
+            @From(AnObject.class) Object o) {
+
             assertThat(o, instanceOf(Optional.class));
 
             @SuppressWarnings("unchecked")
@@ -125,15 +126,15 @@ public class GenerationStatusOnPropertyParametersTest {
     }
 
     @Test public void rejectsNullStatusKeyName() {
-        thrown.expect(NullPointerException.class);
-
-        new Key<>(null, int.class);
+        assertThrows(
+            NullPointerException.class,
+            () -> new Key<>(null, int.class));
     }
 
     @Test public void rejectsNullStatusKeyType() {
-        thrown.expect(NullPointerException.class);
-
-        new Key<>("name", null);
+        assertThrows(
+            NullPointerException.class,
+            () -> new Key<>("name", null));
     }
 
     @Test public void downcastsValues() {
@@ -144,9 +145,15 @@ public class GenerationStatusOnPropertyParametersTest {
 
     @Test public void equalsAndHashCodeOnStatusKeys() {
         new EqualsTester()
-            .addEqualityGroup(new Key<>("a", String.class), new Key<>("a", String.class))
-            .addEqualityGroup(new Key<>("a", Integer.class), new Key<>("a", Integer.class))
-            .addEqualityGroup(new Key<>("b", String.class), new Key<>("b", String.class))
+            .addEqualityGroup(
+                new Key<>("a", String.class),
+                new Key<>("a", String.class))
+            .addEqualityGroup(
+                new Key<>("a", Integer.class),
+                new Key<>("a", Integer.class))
+            .addEqualityGroup(
+                new Key<>("b", String.class),
+                new Key<>("b", String.class))
             .addEqualityGroup(true, true)
             .testEquals();
     }

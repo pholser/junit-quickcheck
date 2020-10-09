@@ -25,17 +25,14 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
-import java.util.List;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
-import com.pholser.junit.quickcheck.examples.geom.Point;
-import com.pholser.junit.quickcheck.examples.geom.Polygon;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
+import java.util.List;
 
 public class PolygonGenerator extends Generator<Polygon> {
     private static final @Size(min = 3, max = 30) List<Point> POINTS = null;
@@ -48,6 +45,7 @@ public class PolygonGenerator extends Generator<Polygon> {
         SourceOfRandomness r,
         GenerationStatus s) {
 
+        @SuppressWarnings("unchecked")
         Generator<List<Point>> points =
             (Generator<List<Point>>) gen().field(
                 getClass(),

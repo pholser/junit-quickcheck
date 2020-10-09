@@ -24,19 +24,18 @@
 */
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.Generators;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import org.javaruntype.type.TypeParameter;
-
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import org.javaruntype.type.TypeParameter;
 
 class NullableGenerator<T> extends Generator<T> {
     private final Generator<T> delegate;

@@ -25,6 +25,11 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
@@ -32,13 +37,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-
 public class PropertyParameterGenerationStatusTest {
-    @Test public void sizeNeverExceedsSampleSize() throws Exception {
+    @Test public void sizeNeverExceedsSampleSize() {
         assertThat(testResult(SizeProperties.class), isSuccessful());
     }
 
@@ -50,7 +50,10 @@ public class PropertyParameterGenerationStatusTest {
             }
 
             @Override
-            public Object generate(SourceOfRandomness random, GenerationStatus status) {
+            public Object generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 assertThat(status.size(), lessThanOrEqualTo(50));
                 return this;
             }

@@ -25,11 +25,17 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.ArrayList;
-import java.util.List;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.failureCountIs;
 
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.Foo;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,32 +45,28 @@ import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 
-import static java.util.Arrays.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-
 public class UsualJUnitMachineryOnShrinkingPropertyBasedTest {
-    private List<String> expectedStatements = asList(
-        "class init", "class set up",
-        "second rule before", "first rule before",
-        "init", "set up",
-        "property",
-        "tear down", "reset",
-        "first rule after", "second rule after",
-        "second rule before", "first rule before",
-        "init", "set up",
-        "property",
-        "tear down", "reset",
-        "first rule after", "second rule after",
-        "second rule before", "first rule before",
-        "init", "set up",
-        "property",
-        "tear down", "reset",
-        "first rule after", "second rule after",
-        "class reset", "class tear down");
+    private final List<String> expectedStatements =
+        asList(
+            "class init", "class set up",
+            "second rule before", "first rule before",
+            "init", "set up",
+            "property",
+            "tear down", "reset",
+            "first rule after", "second rule after",
+            "second rule before", "first rule before",
+            "init", "set up",
+            "property",
+            "tear down", "reset",
+            "first rule after", "second rule after",
+            "second rule before", "first rule before",
+            "init", "set up",
+            "property",
+            "tear down", "reset",
+            "first rule after", "second rule after",
+            "class tear down", "class reset");
 
-    @Test public void orderingOfStatements() throws Exception {
+    @Test public void orderingOfStatements() {
         assertThat(testResult(PropertyBasedTests.class), failureCountIs(1));
         assertEquals(expectedStatements, PropertyBasedTests.LOGS);
     }
@@ -73,27 +75,29 @@ public class UsualJUnitMachineryOnShrinkingPropertyBasedTest {
     public static class PropertyBasedTests {
         static final List<String> LOGS = new ArrayList<>();
 
-        @Rule public final ExternalResource firstRule = new ExternalResource() {
-            @Override protected void before() {
-                LOGS.add("first rule before");
-            }
+        @Rule public final ExternalResource firstRule =
+            new ExternalResource() {
+                @Override protected void before() {
+                    LOGS.add("first rule before");
+                }
 
-            @Override
-            protected void after() {
-                LOGS.add("first rule after");
-            }
-        };
+                @Override
+                protected void after() {
+                    LOGS.add("first rule after");
+                }
+            };
 
-        @Rule public final ExternalResource secondRule = new ExternalResource() {
-            @Override protected void before() {
-                LOGS.add("second rule before");
-            }
+        @Rule public final ExternalResource secondRule =
+            new ExternalResource() {
+                @Override protected void before() {
+                    LOGS.add("second rule before");
+                }
 
-            @Override
-            protected void after() {
-                LOGS.add("second rule after");
-            }
-        };
+                @Override
+                protected void after() {
+                    LOGS.add("second rule after");
+                }
+            };
 
         @BeforeClass public static void classInitialize() {
             LOGS.add("class init");
@@ -123,7 +127,7 @@ public class UsualJUnitMachineryOnShrinkingPropertyBasedTest {
             LOGS.add("class tear down");
         }
 
-        @AfterClass public static void classUninitialize() {
+        @AfterClass public static void classReset() {
             LOGS.add("class reset");
         }
 

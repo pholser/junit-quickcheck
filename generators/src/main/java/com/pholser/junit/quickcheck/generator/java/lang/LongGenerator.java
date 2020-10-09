@@ -25,20 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Produces values of type {@code long} or {@link Long}.
@@ -47,7 +45,7 @@ public class LongGenerator extends IntegralGenerator<Long> {
     private long min = (Long) defaultValueOf(InRange.class, "minLong");
     private long max = (Long) defaultValueOf(InRange.class, "maxLong");
 
-    @SuppressWarnings("unchecked") public LongGenerator() {
+    public LongGenerator() {
         super(asList(Long.class, long.class));
     }
 
@@ -61,11 +59,18 @@ public class LongGenerator extends IntegralGenerator<Long> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minLong() : Long.parseLong(range.min());
-        max = range.max().isEmpty() ? range.maxLong() : Long.parseLong(range.max());
+        min = range.min().isEmpty()
+            ? range.minLong()
+            : Long.parseLong(range.min());
+        max = range.max().isEmpty()
+            ? range.maxLong()
+            : Long.parseLong(range.max());
     }
 
-    @Override public Long generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Long generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextLong(min, max);
     }
 

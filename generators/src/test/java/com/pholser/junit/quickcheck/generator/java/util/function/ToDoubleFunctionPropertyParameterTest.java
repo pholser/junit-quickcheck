@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
@@ -43,7 +44,9 @@ public class ToDoubleFunctionPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class UnresolvedArgType<A> {
-        @Property public void consistent(ToDoubleFunction<? super A> f, A arg) {
+        @Property public void consistent(
+            ToDoubleFunction<? super A> f, A arg) {
+
             double result = f.applyAsDouble(arg);
 
             for (int i = 0; i < 10000; ++i)

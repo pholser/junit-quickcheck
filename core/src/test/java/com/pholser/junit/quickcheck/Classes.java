@@ -25,18 +25,11 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.google.common.io.Resources.getResource;
+
 import com.google.common.io.Resources;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.stream.StreamSupport;
-
-import static com.google.common.io.Resources.*;
-import static java.util.stream.Collectors.*;
+import java.nio.charset.StandardCharsets;
 
 final class Classes {
     private Classes() {
@@ -49,25 +42,7 @@ final class Classes {
         return element.getClassName() + "::" + element.getMethodName();
     }
 
-    static Matcher<Class<?>> isAssignableFrom(final Class<?> other) {
-        return new TypeSafeMatcher<Class<?>>() {
-            @Override protected boolean matchesSafely(Class<?> item) {
-                return item.isAssignableFrom(other);
-            }
-
-            @Override public void describeTo(Description description) {
-                description.appendText("a class that is assignable from ").appendValue(other);
-            }
-        };
-    }
-
-    static List<Class<?>> classesOf(Iterable<?> items) {
-        return StreamSupport.stream(items.spliterator(), false)
-            .map(Object::getClass)
-            .collect(toList());
-    }
-
     static String resourceAsString(String name) throws IOException {
-        return Resources.toString(getResource(name), Charset.forName("UTF-8"));
+        return Resources.toString(getResource(name), StandardCharsets.UTF_8);
     }
 }

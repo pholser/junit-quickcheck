@@ -25,19 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.util.List;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-import static java.util.stream.Collectors.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Produces values of type {@code char} or {@link Character}.
@@ -46,7 +44,7 @@ public class CharacterGenerator extends Generator<Character> {
     private char min = (Character) defaultValueOf(InRange.class, "minChar");
     private char max = (Character) defaultValueOf(InRange.class, "maxChar");
 
-    @SuppressWarnings("unchecked") public CharacterGenerator() {
+    public CharacterGenerator() {
         super(asList(Character.class, char.class));
     }
 
@@ -64,11 +62,17 @@ public class CharacterGenerator extends Generator<Character> {
         max = range.max().isEmpty() ? range.maxChar() : range.max().charAt(0);
     }
 
-    @Override public Character generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Character generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextChar(min, max);
     }
 
-    @Override public List<Character> doShrink(SourceOfRandomness random, Character larger) {
+    @Override public List<Character> doShrink(
+        SourceOfRandomness random,
+        Character larger) {
+
         return new CodePointShrink(cp -> cp >= min && cp <= max)
             .shrink(random, (int) larger)
             .stream()

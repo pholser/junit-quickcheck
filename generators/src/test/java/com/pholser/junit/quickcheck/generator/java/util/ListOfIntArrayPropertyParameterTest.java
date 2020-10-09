@@ -42,17 +42,20 @@ public class ListOfIntArrayPropertyParameterTest
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.ints(randomForParameterGenerator))
-            .thenReturn(-1).thenReturn(-2).thenReturn(2).thenReturn(0).thenReturn(1);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+            .thenReturn(-1).thenReturn(-2).thenReturn(2).thenReturn(0)
+            .thenReturn(1);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
     }
 
     @Override protected int trials() {
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
         return asList(
             emptyList(),

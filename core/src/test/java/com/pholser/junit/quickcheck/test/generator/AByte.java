@@ -25,20 +25,22 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
+import java.math.BigDecimal;
 
 public class AByte extends Generator<Byte> {
-    @SuppressWarnings("unchecked") public AByte() {
+    public AByte() {
         super(asList(Byte.class, byte.class));
     }
 
-    @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Byte generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return (byte) random.nextInt();
     }
 

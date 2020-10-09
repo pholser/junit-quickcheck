@@ -25,6 +25,13 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.pholser.junit.quickcheck.Annotations.defaultPropertyTrialCount;
+import static com.pholser.junit.quickcheck.Functions.functionValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.AFoo;
 import com.pholser.junit.quickcheck.test.generator.Box;
@@ -32,12 +39,6 @@ import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.FooBoxOpener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.Functions.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class LambdaPropertyParameterTypesTest {
     @Test public void unboxingAFoo() throws Exception {
@@ -52,8 +53,10 @@ public class LambdaPropertyParameterTypesTest {
         @Property public void shouldHold(FooBoxOpener b) {
             ++iterations;
 
-            @SuppressWarnings("unchecked")
-            Foo value = functionValue(new AFoo(), new Object[] { new Box<>(new Foo(2)) });
+            Foo value =
+                functionValue(
+                    new AFoo(),
+                    new Object[] { new Box<>(new Foo(2)) });
             for (int i = 0; i < 10000; ++i)
                 assertEquals(value, b.open(new Box<>(new Foo(2))));
         }

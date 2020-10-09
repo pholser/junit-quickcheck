@@ -25,19 +25,21 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.math.BigDecimal;
 
 public class ADecimal extends Generator<BigDecimal> {
     public ADecimal() {
         super(BigDecimal.class);
     }
 
-    @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
-        return new BigDecimal(random.nextDouble());
+    @Override public BigDecimal generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return BigDecimal.valueOf(random.nextDouble());
     }
 
     @Override public BigDecimal magnitude(Object value) {

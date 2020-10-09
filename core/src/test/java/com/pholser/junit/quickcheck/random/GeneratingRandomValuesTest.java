@@ -25,19 +25,23 @@
 
 package com.pholser.junit.quickcheck.random;
 
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.runners.MethodSorters.NAME_ASCENDING;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
-
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-
-import static java.util.Arrays.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.runners.MethodSorters.*;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class GeneratingRandomValuesTest {

@@ -35,6 +35,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -48,20 +49,26 @@ public class OptionalLongPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MaybeALong {
-        @Property public void works(@InRange(minLong = -4L, maxLong = 5L) OptionalLong ell) {
+        @Property public void works(
+            @InRange(minLong = -4L, maxLong = 5L) OptionalLong ell) {
+
             assumeTrue(ell.isPresent());
-            assertThat(ell.getAsLong(), allOf(greaterThanOrEqualTo(-4L), lessThanOrEqualTo(5L)));
+            assertThat(
+                ell.getAsLong(),
+                allOf(greaterThanOrEqualTo(-4L), lessThanOrEqualTo(5L)));
         }
     }
 
     @Test public void shrinking() {
         assertThat(testResult(ShrinkingOptionalLong.class), failureCountIs(1));
-        assertTrue(ShrinkingOptionalLong.failed.stream().anyMatch(o -> !o.isPresent()));
+        assertTrue(
+            ShrinkingOptionalLong.failed.stream().anyMatch(
+                o -> !o.isPresent()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingOptionalLong {
-        static List<OptionalLong> failed = new ArrayList<>();
+        static final List<OptionalLong> failed = new ArrayList<>();
 
         @Property public void works(OptionalLong optional) {
             failed.add(optional);

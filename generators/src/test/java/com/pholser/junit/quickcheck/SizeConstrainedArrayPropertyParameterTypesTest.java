@@ -30,6 +30,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -42,8 +43,12 @@ public class SizeConstrainedArrayPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class OneD {
-        @Property public void shouldHold(boolean @Size(min = 2, max = 4) [] b) {
-            assertThat(b.length, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
+        @Property public void shouldHold(
+            boolean @Size(min = 2, max = 4) [] b) {
+
+            assertThat(
+                b.length,
+                allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
         }
     }
 
@@ -53,8 +58,12 @@ public class SizeConstrainedArrayPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class TwoD {
-        @Property public void shouldHold(boolean @Size(min = 13, max = 15) [] @Size(max = 2) [] b) {
-            assertThat(b.length, allOf(greaterThanOrEqualTo(13), lessThanOrEqualTo(15)));
+        @Property public void shouldHold(
+            boolean @Size(min = 13, max = 15) [] @Size(max = 2) [] b) {
+
+            assertThat(
+                b.length,
+                allOf(greaterThanOrEqualTo(13), lessThanOrEqualTo(15)));
             for (boolean[] each : b)
                 assertThat(each.length, lessThanOrEqualTo(2));
         }
@@ -73,7 +82,9 @@ public class SizeConstrainedArrayPropertyParameterTypesTest {
     public static class ShrinkingTwoD {
         static int[][] failed;
 
-        @Property public void shouldHold(int @Size(min = 13, max = 15) [] @Size(max = 2) [] i) {
+        @Property public void shouldHold(
+            int @Size(min = 13, max = 15) [] @Size(max = 2) [] i) {
+
             failed = i;
 
             fail();
@@ -86,7 +97,9 @@ public class SizeConstrainedArrayPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ThreeD {
-        @Property public void shouldHold(boolean @Size(max = 6) [] @Size(max = 4) [] @Size(max = 2) [] z) {
+        @Property public void shouldHold(
+            boolean @Size(max = 6) [] @Size(max = 4) [] @Size(max = 2) [] z) {
+
             assertThat(z.length, lessThanOrEqualTo(6));
             for (boolean[][] y : z) {
                 assertThat(y.length, lessThanOrEqualTo(4));
@@ -99,13 +112,18 @@ public class SizeConstrainedArrayPropertyParameterTypesTest {
     @Test public void outOfWhackSizeRange() {
         assertThat(
             testResult(OutOfWhackSizeRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OutOfWhackSizeRange {
-        @Property public void shouldHold(boolean @Size(min = 2, max = 1) [] b) {
-            assertThat(b.length, allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(1)));
+        @Property public void shouldHold(
+            boolean @Size(min = 2, max = 1) [] b) {
+
+            assertThat(
+                b.length,
+                allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(1)));
         }
     }
 }

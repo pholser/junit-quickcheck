@@ -25,14 +25,14 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang.strings;
 
+import static java.lang.String.format;
+
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.String.*;
 
 /**
  * Maps ordinal values to corresponding Unicode code points in a

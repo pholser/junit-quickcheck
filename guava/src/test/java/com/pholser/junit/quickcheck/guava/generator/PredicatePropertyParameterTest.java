@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import com.google.common.base.Predicate;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class PredicatePropertyParameterTest {
     @Test public void definiteArgType() {
@@ -42,7 +42,7 @@ public class PredicatePropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class DefiniteArgType {
-        @Property public void x(Predicate<String> p) {
+        @Property public void x(@SuppressWarnings("Guava") Predicate<String> p) {
             p.apply("abc");
         }
     }

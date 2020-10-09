@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.examples.crypto;
 
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.KeyGenerator;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.KeyGenerator;
 
 public class AES128Keys extends Generator<Key> {
     public AES128Keys() {

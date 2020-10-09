@@ -25,13 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.util.function.Predicate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import com.pholser.junit.quickcheck.internal.Comparables;
+import java.util.function.Predicate;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ComparablesTest {
     private Predicate<Integer> inRangeUnbounded;

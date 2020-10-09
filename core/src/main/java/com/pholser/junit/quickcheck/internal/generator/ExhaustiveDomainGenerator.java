@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class ExhaustiveDomainGenerator extends Generator<Object> {
     private final Iterator<?> items;

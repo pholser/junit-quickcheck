@@ -25,8 +25,13 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.failureCountIs;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.google.common.base.Optional;
 import com.pholser.junit.quickcheck.From;
@@ -34,13 +39,10 @@ import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class OptionalPropertyParameterTest {
     @Test public void maybeAString() {
@@ -49,6 +51,7 @@ public class OptionalPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class OptionalString {
+        @SuppressWarnings("Guava")
         @Property public void works(
             Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
 
@@ -57,6 +60,7 @@ public class OptionalPropertyParameterTest {
         }
     }
 
+    @SuppressWarnings("Guava")
     @Test public void shrinking() {
         assertThat(testResult(ShrinkingOptional.class), failureCountIs(1));
         assertTrue(
@@ -66,8 +70,9 @@ public class OptionalPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingOptional {
-        static List<Optional<Byte>> failed = new ArrayList<>();
+        static final List<Optional<Byte>> failed = new ArrayList<>();
 
+        @SuppressWarnings("Guava")
         @Property public void works(Optional<Byte> optional) {
             failed.add(optional);
 

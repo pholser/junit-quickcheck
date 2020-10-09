@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -63,7 +63,9 @@ public class ZonedDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
             ZonedDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern(
+                    "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
 
             assertThat(
                 t,
@@ -82,7 +84,8 @@ public class ZonedDateTimePropertyParameterTypesTest {
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinZonedDateTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -99,7 +102,8 @@ public class ZonedDateTimePropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxZonedDateTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -116,7 +120,8 @@ public class ZonedDateTimePropertyParameterTypesTest {
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatZonedDateTime.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -142,7 +147,8 @@ public class ZonedDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
             ZonedDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
             assertThat(
                 t,
                 lessThanOrEqualTo(
@@ -164,7 +170,9 @@ public class ZonedDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'")
             ZonedDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern(
+                    "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
             assertThat(
                 t,
                 greaterThanOrEqualTo(
@@ -177,7 +185,8 @@ public class ZonedDateTimePropertyParameterTypesTest {
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

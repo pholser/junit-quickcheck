@@ -25,16 +25,15 @@
 
 package com.pholser.junit.quickcheck.examples.crypto;
 
+import static org.junit.Assert.assertEquals;
+
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.examples.crypto.SymmetricCrypto.EncryptionResult;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded.InCharset;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.runner.RunWith;
-
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.runner.RunWith;
 
 @RunWith(JUnitQuickcheck.class)
 public class SymmetricKeyCryptoPropertiesTest {

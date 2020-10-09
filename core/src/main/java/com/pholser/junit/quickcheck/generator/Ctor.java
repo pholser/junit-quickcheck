@@ -25,15 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.singleAccessibleConstructor;
+
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * <p>Produces instances of a class by generating values for the parameters of

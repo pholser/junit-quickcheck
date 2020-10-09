@@ -25,14 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.conversion.StringConversion;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
  * <p>Mark a parameter of a {@link Property} method with this annotation to

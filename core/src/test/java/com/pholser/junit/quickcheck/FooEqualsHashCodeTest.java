@@ -26,8 +26,7 @@
 package com.pholser.junit.quickcheck;
 
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import org.junit.Ignore;
 
-@Ignore("Example only")
+// @Ignore("Example only")
 public class FooEqualsHashCodeTest extends EqualsHashCodePropertiesTest<Foo> {
 }

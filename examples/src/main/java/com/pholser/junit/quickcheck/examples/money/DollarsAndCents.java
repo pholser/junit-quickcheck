@@ -25,9 +25,9 @@
 
 package com.pholser.junit.quickcheck.examples.money;
 
-import java.math.BigDecimal;
+import static java.math.RoundingMode.HALF_EVEN;
 
-import static java.math.RoundingMode.*;
+import java.math.BigDecimal;
 
 final class DollarsAndCents {
     private final BigDecimal amount;

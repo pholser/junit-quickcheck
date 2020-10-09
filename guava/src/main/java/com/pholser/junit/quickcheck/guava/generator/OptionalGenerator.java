@@ -25,21 +25,21 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import static java.math.BigDecimal.ZERO;
+import static java.util.stream.Collectors.toList;
 
 import com.google.common.base.Optional;
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.math.BigDecimal.*;
-import static java.util.stream.Collectors.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Produces values of type {@link Optional}.
  */
+@SuppressWarnings("ALL")
 public class OptionalGenerator extends ComponentizedGenerator<Optional> {
     public OptionalGenerator() {
         super(Optional.class);

@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.generator.java.util;
 
 import com.pholser.junit.quickcheck.generator.Size;
-
 import java.util.Set;
 
 /**

@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal.conversion;
 
-import java.lang.reflect.Method;
+import static com.pholser.junit.quickcheck.internal.Reflection.reflectionException;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.lang.reflect.Method;
 
 public class MethodInvokingStringConversion implements StringConversion {
     private final Method method;

@@ -25,17 +25,14 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static java.util.Collections.unmodifiableList;
+import static java.util.Comparator.comparing;
+
+import com.pholser.junit.quickcheck.generator.Generator;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
 
 public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
     @SuppressWarnings("rawtypes") private final ServiceLoader<Generator> loader;
@@ -50,9 +47,7 @@ public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
         for (Generator<?> each : loader)
             generators.add(each);
 
-        Collections.sort(
-            generators,
-            comparing(generator -> generator.getClass().getName()));
+        generators.sort(comparing(g -> g.getClass().getName()));
 
         return unmodifiableList(generators).iterator();
     }

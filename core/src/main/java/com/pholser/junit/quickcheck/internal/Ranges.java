@@ -25,13 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.math.BigInteger;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
+import static java.lang.String.format;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.String.*;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.Type.*;
+import java.math.BigInteger;
 
 public final class Ranges {
     public enum Type {

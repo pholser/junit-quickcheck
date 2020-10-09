@@ -27,19 +27,15 @@ package com.pholser.junit.quickcheck.internal;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
-import static org.junit.rules.ExpectedException.none;
+import static org.junit.Assert.assertThrows;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class SequencesTest {
-    @Rule public final ExpectedException thrown = none();
-
     @Test public void halvingBigIntegers() {
         assertEquals(
             newArrayList(
@@ -47,7 +43,8 @@ public class SequencesTest {
                 BigInteger.valueOf(7),
                 BigInteger.valueOf(8),
                 BigInteger.valueOf(9)),
-            newArrayList(Sequences.halvingIntegral(BigInteger.TEN, BigInteger.ZERO)));
+            newArrayList(
+                Sequences.halvingIntegral(BigInteger.TEN, BigInteger.ZERO)));
     }
 
     @Test public void halvingBigDecimals() {
@@ -57,7 +54,8 @@ public class SequencesTest {
                 BigDecimal.valueOf(8),
                 BigDecimal.valueOf(9),
                 BigDecimal.TEN),
-            newArrayList(Sequences.halvingDecimal(BigDecimal.TEN, BigDecimal.ZERO)));
+            newArrayList(
+                Sequences.halvingDecimal(BigDecimal.TEN, BigDecimal.ZERO)));
     }
 
     @Test public void halvingNegativeBigIntegers() {
@@ -67,7 +65,10 @@ public class SequencesTest {
                 BigInteger.valueOf(-7),
                 BigInteger.valueOf(-8),
                 BigInteger.valueOf(-9)),
-            newArrayList(Sequences.halvingIntegral(BigInteger.TEN.negate(), BigInteger.ZERO)));
+            newArrayList(
+                Sequences.halvingIntegral(
+                    BigInteger.TEN.negate(),
+                    BigInteger.ZERO)));
     }
 
     @Test public void halvingNegativeBigDecimals() {
@@ -77,7 +78,10 @@ public class SequencesTest {
                 BigDecimal.valueOf(-8),
                 BigDecimal.valueOf(-9),
                 BigDecimal.TEN.negate()),
-            newArrayList(Sequences.halvingDecimal(BigDecimal.TEN.negate(), BigDecimal.ZERO)));
+            newArrayList(
+                Sequences.halvingDecimal(
+                    BigDecimal.TEN.negate(),
+                    BigDecimal.ZERO)));
     }
 
     @Test public void halvingInts() {
@@ -88,30 +92,26 @@ public class SequencesTest {
 
     @Test public void callingNextOutOfSequenceOnHalvingBigIntegers() {
         Iterator<BigInteger> i =
-            Sequences.halvingIntegral(BigInteger.ZERO, BigInteger.ZERO).iterator();
+            Sequences.halvingIntegral(BigInteger.ZERO, BigInteger.ZERO)
+                .iterator();
         i.next();
 
-        thrown.expect(NoSuchElementException.class);
-
-        i.next();
+        assertThrows(NoSuchElementException.class, i::next);
     }
 
     @Test public void callingNextOutOfSequenceOnHalvingBigDecimals() {
         Iterator<BigDecimal> i =
-            Sequences.halvingDecimal(BigDecimal.ZERO, BigDecimal.ZERO).iterator();
+            Sequences.halvingDecimal(BigDecimal.ZERO, BigDecimal.ZERO)
+                .iterator();
         i.next();
 
-        thrown.expect(NoSuchElementException.class);
-
-        i.next();
+        assertThrows(NoSuchElementException.class, i::next);
     }
 
     @Test public void callingNextOutOfSequenceOnHalvingInts() {
         Iterator<Integer> i = Sequences.halving(0).iterator();
         i.next();
 
-        thrown.expect(NoSuchElementException.class);
-
-        i.next();
+        assertThrows(NoSuchElementException.class, i::next);
     }
 }

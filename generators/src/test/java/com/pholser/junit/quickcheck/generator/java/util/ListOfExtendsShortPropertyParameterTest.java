@@ -52,9 +52,11 @@ public class ListOfExtendsShortPropertyParameterTest
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
-        return asList(emptyList(), singletonList((short) -1), asList((short) -2, (short) -3));
+        return asList(
+            emptyList(),
+            singletonList((short) -1),
+            asList((short) -2, (short) -3));
     }
 
     @Override public void verifyInteractionWithRandomness() {

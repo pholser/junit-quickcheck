@@ -25,15 +25,13 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
+
 import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.examples.geom.Point;
-import com.pholser.junit.quickcheck.examples.geom.Polygon;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class PolygonPropertiesTest {

@@ -25,15 +25,14 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.Optional;
+import static org.junit.Assert.assertEquals;
 
 import com.pholser.junit.quickcheck.generator.Gen;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class FilterTest {
     private GenerationStatus status;

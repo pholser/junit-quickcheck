@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.examples.number;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
 import java.util.Arrays;
 
 public class IntegralGenerator extends Generator<Integer> {

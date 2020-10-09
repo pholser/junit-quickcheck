@@ -25,17 +25,16 @@
 
 package com.pholser.junit.quickcheck.examples.tree;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.examples.tree.visitor.TreeDeepestLeafVisitor;
 import com.pholser.junit.quickcheck.examples.tree.visitor.TreeDepthVisitor;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import org.junit.runner.RunWith;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class TreePropertyTest {

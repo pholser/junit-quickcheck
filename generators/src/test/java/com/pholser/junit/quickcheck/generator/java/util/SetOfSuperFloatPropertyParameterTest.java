@@ -47,8 +47,10 @@ public class SetOfSuperFloatPropertyParameterTest
     @Override protected void primeSourceOfRandomness() {
         when(Generating.floats(randomForParameterGenerator))
             .thenReturn(0.2F).thenReturn(0.3F).thenReturn(0.4F);
-        org.javaruntype.type.Type<?> floatType = Types.forJavaLangReflectType(Float.class);
-        List<org.javaruntype.type.Type<?>> supertypes = new ArrayList<>(Reflection.supertypes(floatType));
+        org.javaruntype.type.Type<?> floatType =
+            Types.forJavaLangReflectType(Float.class);
+        List<org.javaruntype.type.Type<?>> supertypes =
+            new ArrayList<>(Reflection.supertypes(floatType));
         when(Generating.ints(randomForGeneratorRepo, eq(0), anyInt()))
             .thenReturn(supertypes.indexOf(floatType))
             .thenReturn(0)
@@ -56,16 +58,18 @@ public class SetOfSuperFloatPropertyParameterTest
             .thenReturn(0)
             .thenReturn(supertypes.indexOf(floatType))
             .thenReturn(0);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
     }
 
     @Override protected int trials() {
         return 3;
     }
 
-    @SuppressWarnings("unchecked")
     @Override protected List<?> randomValues() {
         return asList(newHashSet(), newHashSet(0.2F), newHashSet(0.3F, 0.4F));
     }

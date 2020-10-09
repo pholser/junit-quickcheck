@@ -25,13 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.util.Random;
+import static com.pholser.junit.quickcheck.internal.Ranges.findNextPowerOfTwoLong;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.Random;
 import org.junit.Test;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
-import static org.junit.Assert.*;
 
 public class RangesTest {
     @Test public void checkFindNextPowerOfTwoLong() {

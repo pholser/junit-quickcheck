@@ -25,19 +25,20 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
+import static java.lang.Character.isUpperCase;
+import static java.util.Collections.addAll;
+import static java.util.Collections.reverse;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.stream.Collectors.toList;
+
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import com.pholser.junit.quickcheck.generator.Shrink;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.Character.*;
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
-import static java.util.stream.Collectors.*;
 
 class CodePointShrink implements Shrink<Integer> {
     private final Predicate<? super Integer> filter;
@@ -66,9 +67,9 @@ class CodePointShrink implements Shrink<Integer> {
                 .thenComparing((Function<Integer, Boolean>) Character::isSpaceChar)
                 .thenComparing(naturalOrder());
         return shrinks.stream()
-                .filter(filter)
-                .filter(cp -> comparator.compare(cp, codePoint) < 0)
-                .distinct()
-                .collect(toList());
+            .filter(filter)
+            .filter(cp -> comparator.compare(cp, codePoint) < 0)
+            .distinct()
+            .collect(toList());
     }
 }

@@ -32,6 +32,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -44,13 +45,17 @@ public class SizeConstrainedMapPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SizeConstrainedMaps {
-        @Property public void shouldHold(@Size(min = 2, max = 5) Map<String, Double> items) {
+        @Property public void shouldHold(
+            @Size(min = 2, max = 5) Map<String, Double> items) {
+
             assertThat(items.size(), lessThanOrEqualTo(5));
         }
     }
 
     @Test public void shrinkingSizeConstrainedMaps() {
-        assertThat(testResult(ShrinkingSizeConstrainedMaps.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingSizeConstrainedMaps.class),
+            failureCountIs(1));
         assertThat(
             ShrinkingSizeConstrainedMaps.failed.size(),
             allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(5)));
@@ -60,7 +65,9 @@ public class SizeConstrainedMapPropertyParameterTypesTest {
     public static class ShrinkingSizeConstrainedMaps {
         static Map<Integer, Double> failed;
 
-        @Property public void shouldHold(@Size(min = 2, max = 5) Map<Integer, Double> items) {
+        @Property public void shouldHold(
+            @Size(min = 2, max = 5) Map<Integer, Double> items) {
+
             failed = items;
 
             fail();
@@ -70,12 +77,15 @@ public class SizeConstrainedMapPropertyParameterTypesTest {
     @Test public void outOfWhackSizeRange() {
         assertThat(
             testResult(OutOfWhackSizeRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OutOfWhackSizeRange {
-        @Property public void shouldHold(@Size(min = 4, max = 3) Map<Integer, ?> items) {
+        @Property public void shouldHold(
+            @Size(min = 4, max = 3) Map<Integer, ?> items) {
+
             assertThat(items.size(), lessThanOrEqualTo(3));
         }
     }

@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.runner;
 
+import static java.util.stream.Collectors.toList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -36,13 +38,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
 import org.junit.internal.MethodSorter;
 import org.junit.runners.model.FrameworkField;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
-
-import static java.util.stream.Collectors.*;
 
 /**
  * Extension of JUnit framework class for junit-quickcheck's discovery

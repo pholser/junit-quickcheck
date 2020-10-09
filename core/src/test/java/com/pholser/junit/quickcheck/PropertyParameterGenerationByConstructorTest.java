@@ -25,8 +25,24 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import static com.pholser.junit.quickcheck.test.generator.AFoo.Same;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.pholser.junit.quickcheck.generator.Ctor;
 import com.pholser.junit.quickcheck.internal.ReflectionException;
@@ -37,26 +53,13 @@ import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.X;
-import org.junit.Rule;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import org.junit.Test;
 import org.junit.experimental.results.PrintableResult;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import static com.pholser.junit.quickcheck.test.generator.AFoo.*;
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-import static org.junit.rules.ExpectedException.*;
-
 public class PropertyParameterGenerationByConstructorTest {
-    @Rule public final ExpectedException thrown = none();
-
     private static Object object;
 
     @Test public void autoGeneration() {
@@ -97,12 +100,16 @@ public class PropertyParameterGenerationByConstructorTest {
     }
 
     @Test public void autoGenerationOnGenericType() {
-        assertThat(testResult(WithAutoGenerationOnGenericType.class), isSuccessful());
+        assertThat(
+            testResult(WithAutoGenerationOnGenericType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class WithAutoGenerationOnGenericType {
-        @Property public void shouldHold(@From(Ctor.class) FakeList<Foo> list) {
+        @Property public void shouldHold(
+            @From(Ctor.class) FakeList<Foo> list) {
+
             assertThat(list.f().i(), equalTo(3));
         }
     }
@@ -120,9 +127,15 @@ public class PropertyParameterGenerationByConstructorTest {
     }
 
     @Test public void autoGenerationOnPrimitiveType() {
-        PrintableResult result = testResult(WithAutoGenerationOnPrimitiveType.class);
-        assertThat(result, hasSingleFailureContaining(ReflectionException.class.getName()));
-        assertThat(result, hasSingleFailureContaining("single accessible constructor"));
+        PrintableResult result =
+            testResult(WithAutoGenerationOnPrimitiveType.class);
+
+        assertThat(
+            result,
+            hasSingleFailureContaining(ReflectionException.class.getName()));
+        assertThat(
+            result,
+            hasSingleFailureContaining("single accessible constructor"));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -132,9 +145,15 @@ public class PropertyParameterGenerationByConstructorTest {
     }
 
     @Test public void autoGenerationOnPrimitiveWrapperType() {
-        PrintableResult result = testResult(WithAutoGenerationOnPrimitiveWrapperType.class);
-        assertThat(result, hasSingleFailureContaining(ReflectionException.class.getName()));
-        assertThat(result, hasSingleFailureContaining("single accessible constructor"));
+        PrintableResult result =
+            testResult(WithAutoGenerationOnPrimitiveWrapperType.class);
+
+        assertThat(
+            result,
+            hasSingleFailureContaining(ReflectionException.class.getName()));
+        assertThat(
+            result,
+            hasSingleFailureContaining("single accessible constructor"));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -144,7 +163,9 @@ public class PropertyParameterGenerationByConstructorTest {
     }
 
     @Test public void autoGenerationWithAnnotations() {
-        assertThat(testResult(WithAutoGenerationWithAnnotations.class), isSuccessful());
+        assertThat(
+            testResult(WithAutoGenerationWithAnnotations.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -162,12 +183,16 @@ public class PropertyParameterGenerationByConstructorTest {
         }
 
         @Property public void shouldHold(@From(Ctor.class) P p) {
-            assertThat(p.i, allOf(greaterThanOrEqualTo(5), lessThanOrEqualTo(7)));
+            assertThat(
+                p.i,
+                allOf(greaterThanOrEqualTo(5), lessThanOrEqualTo(7)));
         }
     }
 
     @Test public void autoGenerationWithAggregateAnnotations() {
-        assertThat(testResult(WithAutoGenerationWithAggregateAnnotations.class), isSuccessful());
+        assertThat(
+            testResult(WithAutoGenerationWithAggregateAnnotations.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -192,18 +217,23 @@ public class PropertyParameterGenerationByConstructorTest {
         }
 
         @Property public void shouldHold(@From(Ctor.class) P p) {
-            assertThat(p.i, allOf(greaterThanOrEqualTo(100), lessThanOrEqualTo(999)));
+            assertThat(
+                p.i,
+                allOf(greaterThanOrEqualTo(100), lessThanOrEqualTo(999)));
         }
     }
 
     @Test public void autoGenerationWithAnnotationsOnTypeUsesInConstructors() {
         assertThat(
-            testResult(WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors.class),
+            testResult(
+                WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors.class),
             isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors {
+    public static class
+    WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors {
+
         public static class P {
             private final Box<Foo> box;
 
@@ -222,14 +252,17 @@ public class PropertyParameterGenerationByConstructorTest {
         }
     }
 
-    @Test public void autoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors() {
+    @Test public void
+    autoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors() {
         assertThat(
-            testResult(WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors.class),
+            testResult(
+                WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors.class),
             isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
-    public static class WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors {
+    public static class
+    WithAutoGenerationWithAggregateAnnotationsOnTypeUsesInConstructors {
         @Target({PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE})
         @Retention(RUNTIME)
         @X

@@ -32,18 +32,24 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
 public class LongBinaryOperatorPropertyParameterTest {
     @Test public void works() {
-        assertThat(testResult(NoCustomGeneratorNecessary.class), isSuccessful());
+        assertThat(
+            testResult(NoCustomGeneratorNecessary.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class NoCustomGeneratorNecessary {
-        @Property public void works(LongBinaryOperator f, long first, long second) {
+        @Property public void works(
+            LongBinaryOperator f,
+            long first,
+            long second) {
+
             long result = f.applyAsLong(first, second);
         }
     }

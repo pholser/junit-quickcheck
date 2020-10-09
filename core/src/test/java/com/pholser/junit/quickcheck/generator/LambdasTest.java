@@ -25,43 +25,40 @@
 
 package com.pholser.junit.quickcheck.generator;
 
-import java.util.Random;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 
 import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.test.generator.ABool;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import java.util.Random;
+import java.util.function.Predicate;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
-import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
 
 public class LambdasTest {
-    @Rule public final ExpectedException thrown = none();
-
     private ABool returnValueGenerator;
-    private SourceOfRandomness random;
     private SimpleGenerationStatus status;
     private Predicate<Integer> predicate;
 
     @SuppressWarnings("unchecked")
     @Before public void setUp() {
         returnValueGenerator = new ABool();
-        random = new SourceOfRandomness(new Random());
+        SourceOfRandomness random = new SourceOfRandomness(new Random());
         random.setSeed(-1L);
-        status = new SimpleGenerationStatus(new GeometricDistribution(), random, 0);
+        status =
+            new SimpleGenerationStatus(new GeometricDistribution(), random, 0);
 
-        predicate = makeLambda(Predicate.class,returnValueGenerator, status);
+        predicate = makeLambda(Predicate.class, returnValueGenerator, status);
     }
 
     @Test public void equalsBasedOnIdentity() {
-        Predicate<?> duplicate = makeLambda(Predicate.class, returnValueGenerator, status);
+        Predicate<?> duplicate =
+            makeLambda(Predicate.class, returnValueGenerator, status);
 
         assertEquals(predicate, predicate);
         assertEquals(duplicate, duplicate);
@@ -74,25 +71,33 @@ public class LambdasTest {
     }
 
     @Test public void toStringGivesAnIndicationOfItsRandomGeneration() {
-        assertEquals("a randomly generated instance of " + Predicate.class, predicate.toString());
+        assertEquals(
+            "a randomly generated instance of " + Predicate.class,
+            predicate.toString());
     }
 
     @Test public void rejectsNonFunctionalInterface() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(Cloneable.class + " is not a functional interface");
-
-        makeLambda(Cloneable.class, new AnInt(), status);
+        IllegalArgumentException ex =
+            assertThrows(
+                IllegalArgumentException.class,
+                () -> makeLambda(Cloneable.class, new AnInt(), status));
+        assertEquals(
+            Cloneable.class + " is not a functional interface type",
+            ex.getMessage());
     }
 
     @Test public void invokingDefaultMethodOnFunctionalInterface() {
         System.out.println(System.getProperty("java.version"));
 
         @SuppressWarnings("unchecked")
-        Predicate<Integer> another = makeLambda(Predicate.class, returnValueGenerator, status);
+        Predicate<Integer> another =
+            makeLambda(Predicate.class, returnValueGenerator, status);
 
         boolean firstResult = predicate.test(4);
         boolean secondResult = another.test(4);
 
-        assertEquals(firstResult || secondResult, predicate.or(another).test(4));
+        assertEquals(
+            firstResult || secondResult,
+            predicate.or(another).test(4));
     }
 }

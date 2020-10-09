@@ -25,20 +25,21 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.List;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
+import java.util.List;
 
 public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithDiscreteProbabilityTest
     extends CorePropertyParameterTest {
 
-    @From(value = FooGenerator.class, frequency = 1)
+    @From(value = FooGenerator.class)
     @From(value = BarGenerator.class, frequency = 2)
     @From(value = BazGenerator.class, frequency = 3)
     public static final String TYPE_BEARER = null;

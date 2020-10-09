@@ -25,19 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.util.function;
 
-import java.util.List;
-import java.util.function.Supplier;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assume.assumeThat;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import java.util.List;
+import java.util.function.Supplier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class SupplierPropertyParameterTest {
     @Test public void supplyingInts() {
@@ -70,7 +69,9 @@ public class SupplierPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SupplyingUpperBounded {
-        @Property public <T extends Integer> void holds(Supplier<? extends T[]> source) {
+        @Property public <T extends Integer> void holds(
+            Supplier<? extends T[]> source) {
+
             T[] items = source.get();
             assumeThat(items.length, greaterThan(0));
 

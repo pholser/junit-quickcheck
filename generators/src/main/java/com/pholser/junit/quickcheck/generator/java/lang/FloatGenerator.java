@@ -25,19 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Produces values of type {@code float} or {@link Float}.
@@ -46,7 +44,7 @@ public class FloatGenerator extends DecimalGenerator<Float> {
     private float min = (Float) defaultValueOf(InRange.class, "minFloat");
     private float max = (Float) defaultValueOf(InRange.class, "maxFloat");
 
-    @SuppressWarnings("unchecked") public FloatGenerator() {
+    public FloatGenerator() {
         super(asList(Float.class, float.class));
     }
 
@@ -60,11 +58,18 @@ public class FloatGenerator extends DecimalGenerator<Float> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minFloat() : Float.parseFloat(range.min());
-        max = range.max().isEmpty() ? range.maxFloat() : Float.parseFloat(range.max());
+        min = range.min().isEmpty()
+            ? range.minFloat()
+            : Float.parseFloat(range.min());
+        max = range.max().isEmpty()
+            ? range.maxFloat()
+            : Float.parseFloat(range.max());
     }
 
-    @Override public Float generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Float generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextFloat(min, max);
     }
 

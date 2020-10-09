@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
+import static org.junit.Assert.assertEquals;
+
 import com.pholser.junit.quickcheck.generator.Gen;
 import com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class MapFlatMapTest {
     private SimpleGenerationStatus status;

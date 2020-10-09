@@ -33,8 +33,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -109,7 +109,9 @@ public class ZoneOffsetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMax {
-        @Property public void shouldHold(@InRange(min = "+12:00") ZoneOffset o) {
+        @Property public void shouldHold(
+            @InRange(min = "+12:00") ZoneOffset o) {
+
             assertThat(o, greaterThanOrEqualTo(ZoneOffset.of("+12:00")));
         }
     }
@@ -117,7 +119,8 @@ public class ZoneOffsetPropertyParameterTypesTest {
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

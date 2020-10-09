@@ -25,16 +25,13 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
-import java.util.List;
+import static com.google.common.collect.Streams.zip;
+import static java.util.stream.Collectors.toList;
 
-import com.pholser.junit.quickcheck.examples.geom.Point;
-import com.pholser.junit.quickcheck.examples.geom.Segment;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.google.common.collect.Streams.*;
-import static java.util.stream.Collectors.*;
+import java.util.List;
 
 public class SegmentGenerator extends Generator<Segment> {
     public SegmentGenerator() {

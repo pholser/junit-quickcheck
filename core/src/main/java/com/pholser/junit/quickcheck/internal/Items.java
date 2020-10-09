@@ -25,11 +25,10 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
-
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public final class Items {
     private Items() {

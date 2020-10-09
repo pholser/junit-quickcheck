@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 public final class Annotations {
     private Annotations() {

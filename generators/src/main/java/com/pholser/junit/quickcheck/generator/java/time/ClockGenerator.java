@@ -25,16 +25,15 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 
 /**
  * Produces values of type {@link Clock}.
@@ -73,11 +72,16 @@ public class ClockGenerator extends Generator<Clock> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = Instant.parse(range.max());
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", range.min(), range.max()));
+        }
     }
 
-    @Override public Clock generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Clock generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return Clock.fixed(random.nextInstant(min, max), UTC_ZONE_ID);
     }
 }

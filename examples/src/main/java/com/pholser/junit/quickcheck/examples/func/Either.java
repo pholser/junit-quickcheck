@@ -50,7 +50,9 @@ final class Either<L, R> {
         Function<? super R, U> ifRight) {
 
         return left.map(ifLeft)
-            .orElseGet(() -> right.map(ifRight).get());
+            .orElseGet(() ->
+                right.map(ifRight)
+                    .orElseThrow(IllegalStateException::new));
     }
 
     @Override public boolean equals(Object o) {

@@ -1,8 +1,6 @@
 package com.pholser.junit.quickcheck.runner;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.internal.AssumptionViolatedException;
 
 class NoValuesSatisfiedPropertyAssumptions

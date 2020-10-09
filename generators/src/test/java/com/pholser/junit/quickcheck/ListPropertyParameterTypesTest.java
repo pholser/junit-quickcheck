@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -85,7 +86,9 @@ public class ListPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ListOfLowerBound {
-        @Property(trials = 10) public void shouldHold(List<? super Number> items) {
+        @Property(trials = 10) public void shouldHold(
+            List<? super Number> items) {
+
         }
     }
 
@@ -133,15 +136,22 @@ public class ListPropertyParameterTypesTest {
     }
 
     @Test public void listOfRangedInteger() {
-        assertThat(testResult(ListOfListOfRangedInteger.class), isSuccessful());
+        assertThat(
+            testResult(ListOfListOfRangedInteger.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ListOfListOfRangedInteger {
-        @Property public void shouldHold(List<List<@InRange(min = "0", max = "9") Integer>> items) {
+        @Property public void shouldHold(
+            List<List<@InRange(min = "0", max = "9") Integer>> items) {
+
             for (List<Integer> each : items) {
-                for (Integer i : each)
-                    assertThat(i, allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));
+                for (Integer i : each) {
+                    assertThat(
+                        i,
+                        allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));
+                }
             }
         }
     }
@@ -152,13 +162,18 @@ public class ListPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingListOfListOfRangedInteger {
-        @Property public void shouldHold(List<List<@InRange(min = "0", max = "9") Integer>> items) {
+        @Property public void shouldHold(
+            List<List<@InRange(min = "0", max = "9") Integer>> items) {
+
             assumeFalse(items.isEmpty());
 
             for (List<Integer> each : items) {
                 assumeFalse(each.isEmpty());
-                for (Integer i : each)
-                    assertThat(i, allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));
+                for (Integer i : each) {
+                    assertThat(
+                        i,
+                        allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));
+                }
             }
 
             fail();
@@ -171,7 +186,8 @@ public class ListPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ListOfListOfUpperBound {
-        @Property(trials = 7) public void shouldHold(List<List<? extends Number>> items) {
+        @Property(trials = 7)
+        public void shouldHold(List<List<? extends Number>> items) {
             for (List<? extends Number> each : items) {
                 for (Number n : each) {
                     // testing type cast
@@ -186,11 +202,12 @@ public class ListPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ListOfListOfLowerBound {
-        @Property(trials = 5) public void shouldHold(List<List<? super Float>> items) {
+        @Property(trials = 5)
+        public void shouldHold(List<List<? super Float>> items) {
         }
     }
 
-    @Test public void listOfVoid() throws Exception {
+    @Test public void listOfVoid() {
         assertThat(testResult(ListOfVoid.class), isSuccessful());
     }
 
@@ -203,7 +220,9 @@ public class ListPropertyParameterTypesTest {
     }
 
     @Test public void doesNotGetStuckWithConstraintExpression() {
-        assertThat(testResult(UsedToGetStuckOnConstraintExpression.class), isSuccessful());
+        assertThat(
+            testResult(UsedToGetStuckOnConstraintExpression.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -221,8 +240,11 @@ public class ListPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class NumberProperties<N extends Number> {
         @Property public void holds(List<@InRange(min = "0", max = "100") N> numbers) {
-            for (Number each : numbers)
-                assertThat(each.intValue(), allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(100)));
+            for (Number each : numbers) {
+                assertThat(
+                    each.intValue(),
+                    allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(100)));
+            }
         }
     }
 

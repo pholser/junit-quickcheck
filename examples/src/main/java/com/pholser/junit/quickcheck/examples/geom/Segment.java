@@ -25,10 +25,10 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
-import com.pholser.junit.quickcheck.examples.geom.Point.Orientation;
+import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.COLLINEAR;
+import static com.pholser.junit.quickcheck.examples.geom.Point.orientation;
 
-import static com.pholser.junit.quickcheck.examples.geom.Point.*;
-import static com.pholser.junit.quickcheck.examples.geom.Point.Orientation.*;
+import com.pholser.junit.quickcheck.examples.geom.Point.Orientation;
 
 final class Segment {
     final Point a;
@@ -59,10 +59,7 @@ final class Segment {
         if (o3 == COLLINEAR && a.between(other.a, other.b))
             return true;
 
-        if (o4 == COLLINEAR && b.between(other.a, other.b))
-            return true;
-
-        return false;
+        return o4 == COLLINEAR && b.between(other.a, other.b);
     }
 
     @Override public String toString() {

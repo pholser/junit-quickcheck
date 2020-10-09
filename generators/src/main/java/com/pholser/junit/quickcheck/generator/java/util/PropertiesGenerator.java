@@ -25,13 +25,8 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import java.math.BigDecimal;
-import java.util.Dictionary;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import static java.math.BigDecimal.ZERO;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -39,9 +34,13 @@ import com.pholser.junit.quickcheck.generator.java.lang.AbstractStringGenerator;
 import com.pholser.junit.quickcheck.generator.java.lang.Encoded;
 import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.math.BigDecimal.*;
-import static java.util.Arrays.*;
+import java.math.BigDecimal;
+import java.util.Dictionary;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Produces values of type {@link Properties}.
@@ -59,7 +58,10 @@ public class PropertiesGenerator extends Generator<Properties> {
         stringGenerator = encoded;
     }
 
-    @Override public Properties generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Properties generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         int size = status.size();
 
         Properties properties = new Properties();
@@ -72,7 +74,6 @@ public class PropertiesGenerator extends Generator<Properties> {
         return properties;
     }
 
-    @SuppressWarnings("unchecked")
     @Override public boolean canRegisterAsType(Class<?> type) {
         Set<Class<?>> exclusions =
             new HashSet<>(

@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.examples.geom;
 
-import java.awt.Dimension;
+import static java.lang.Math.abs;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.Math.*;
+import java.awt.Dimension;
 
 public class Dimensions extends Generator<Dimension> {
     public Dimensions() {

@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -57,9 +57,11 @@ public class YearMonthPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class RangedYearMonth {
         @Property public void shouldHold(
-            @InRange(min = "1776/04", max = "1976/12", format = "yyyy/MM") YearMonth m) {
+            @InRange(min = "1776/04", max = "1976/12", format = "yyyy/MM")
+                YearMonth m) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy/MM");
 
             assertThat(
                 m,
@@ -72,39 +74,45 @@ public class YearMonthPropertyParameterTypesTest {
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinYearMonth.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinYearMonth {
         @Property public void shouldHold(
-            @InRange(min = "@#!@#@", max = "1976/12", format = "yyyy/MM") YearMonth m) {
+            @InRange(min = "@#!@#@", max = "1976/12", format = "yyyy/MM")
+                YearMonth m) {
         }
     }
 
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxYearMonth.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxYearMonth {
         @Property public void shouldHold(
-            @InRange(min = "1006/01", max = "*&@^#%$", format = "yyyy/MM") YearMonth m) {
+            @InRange(min = "1006/01", max = "*&@^#%$", format = "yyyy/MM")
+                YearMonth m) {
         }
     }
 
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatYearMonth.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedFormatYearMonth {
         @Property public void shouldHold(
-            @InRange(min = "1006/01", max = "1006/03", format = "*@&^#$") YearMonth m) {
+            @InRange(min = "1006/01", max = "1006/03", format = "*@&^#$")
+                YearMonth m) {
         }
     }
 
@@ -117,8 +125,11 @@ public class YearMonthPropertyParameterTypesTest {
         @Property public void shouldHold(
             @InRange(max = "1976/12", format = "yyyy/MM") YearMonth m) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM");
-            assertThat(m, lessThanOrEqualTo(YearMonth.parse("1976/12", formatter)));
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy/MM");
+            assertThat(
+                m,
+                lessThanOrEqualTo(YearMonth.parse("1976/12", formatter)));
         }
     }
 
@@ -131,21 +142,26 @@ public class YearMonthPropertyParameterTypesTest {
         @Property public void shouldHold(
             @InRange(min = "1976/12", format = "yyyy/MM") YearMonth m) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM");
-            assertThat(m, greaterThanOrEqualTo(YearMonth.parse("1976/12", formatter)));
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy/MM");
+            assertThat(
+                m,
+                greaterThanOrEqualTo(YearMonth.parse("1976/12", formatter)));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class BackwardsRange {
         @Property public void shouldHold(
-            @InRange(min = "1976/12", max = "1012/01", format = "yyyy/MM") YearMonth m) {
+            @InRange(min = "1976/12", max = "1012/01", format = "yyyy/MM")
+                YearMonth m) {
         }
     }
 }

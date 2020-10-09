@@ -25,6 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
+import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.Namespaces.URL;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
+import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.nio.ByteBuffer;
@@ -32,17 +44,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.GeneratorConfiguration;
-import com.pholser.junit.quickcheck.generator.java.lang.StringGenerator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-
-import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.Namespaces.*;
 
 /**
  * Home for machinery to produce {@link UUID}s according to

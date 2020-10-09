@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.guava.generator;
 
+import static com.pholser.junit.quickcheck.generator.Lambdas.makeLambda;
+
 import com.google.common.base.Function;
 import com.pholser.junit.quickcheck.generator.ComponentizedGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.generator.Lambdas.*;
 
 /**
  * Produces values of type {@code Function}.
@@ -38,6 +38,7 @@ import static com.pholser.junit.quickcheck.generator.Lambdas.*;
  * @param <F> parameter type of the generated functions
  * @param <T> return type of the generated functions
  */
+@SuppressWarnings("Guava")
 public class FunctionGenerator<F, T> extends ComponentizedGenerator<Function> {
     public FunctionGenerator() {
         super(Function.class);

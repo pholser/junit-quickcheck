@@ -25,6 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
+import static com.pholser.junit.quickcheck.Types.typeOf;
+import static com.pholser.junit.quickcheck.internal.generator.Generators.assertGenerators;
+
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import com.pholser.junit.quickcheck.test.generator.AList;
+import com.pholser.junit.quickcheck.test.generator.AnInt;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.AbstractList;
@@ -32,20 +39,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
-
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-import com.pholser.junit.quickcheck.test.generator.AList;
-import com.pholser.junit.quickcheck.test.generator.AnInt;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.pholser.junit.quickcheck.Types.*;
-import static com.pholser.junit.quickcheck.internal.generator.Generators.*;
 
 public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();

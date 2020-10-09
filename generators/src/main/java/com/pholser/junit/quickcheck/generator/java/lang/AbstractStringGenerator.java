@@ -25,21 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import static com.pholser.junit.quickcheck.internal.Lists.shrinksOfOneItem;
+import static com.pholser.junit.quickcheck.internal.Sequences.halving;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Lists;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.stream.Collectors.*;
-import static java.util.stream.StreamSupport.*;
-
-import static com.pholser.junit.quickcheck.internal.Lists.*;
-import static com.pholser.junit.quickcheck.internal.Sequences.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>Base class for generators of values of type {@link String}.</p>
@@ -65,18 +63,24 @@ public abstract class AbstractStringGenerator extends Generator<String> {
         return super.canShrink(larger) && codePointsInRange((String) larger);
     }
 
-    @Override public List<String> doShrink(SourceOfRandomness random, String larger) {
-        List<String> shrinks = new ArrayList<>();
+    @Override public List<String> doShrink(
+        SourceOfRandomness random,
+        String larger) {
 
-        List<Integer> codePoints = larger.codePoints().boxed().collect(toList());
-        shrinks.addAll(removals(codePoints));
+        List<Integer> codePoints =
+            larger.codePoints().boxed().collect(toList());
+        List<String> shrinks = new ArrayList<>(removals(codePoints));
 
         List<List<Integer>> oneItemShrinks =
-            shrinksOfOneItem(random, codePoints, new CodePointShrink(this::codePointInRange));
-        shrinks.addAll(oneItemShrinks.stream()
-            .map(this::convert)
-            .filter(this::codePointsInRange)
-            .collect(toList()));
+            shrinksOfOneItem(
+                random,
+                codePoints,
+                new CodePointShrink(this::codePointInRange));
+        shrinks.addAll(
+            oneItemShrinks.stream()
+                .map(this::convert)
+                .filter(this::codePointsInRange)
+                .collect(toList()));
 
         return shrinks;
     }

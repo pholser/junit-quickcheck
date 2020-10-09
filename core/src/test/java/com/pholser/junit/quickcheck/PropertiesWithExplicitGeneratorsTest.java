@@ -25,10 +25,20 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.List;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -46,25 +56,18 @@ import com.pholser.junit.quickcheck.test.generator.AnInt;
 import com.pholser.junit.quickcheck.test.generator.Between;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
-import org.junit.Rule;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
-import static java.util.Arrays.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-import static org.junit.rules.ExpectedException.*;
-
 public class PropertiesWithExplicitGeneratorsTest {
-    @Rule public final ExpectedException thrown = none();
-
     @Test public void explicitPrimitiveBoolean() {
-        assertThat(testResult(ExplicitPrimitiveBoolean.class), isSuccessful());
+        assertThat(
+            testResult(ExplicitPrimitiveBoolean.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -224,7 +227,9 @@ public class PropertiesWithExplicitGeneratorsTest {
     }
 
     @Test public void explicitWithParameterizedType() {
-        assertThat(testResult(ExplicitWithParameterizedType.class), isSuccessful());
+        assertThat(
+            testResult(ExplicitWithParameterizedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -237,12 +242,16 @@ public class PropertiesWithExplicitGeneratorsTest {
     }
 
     @Test public void explicitPrimitiveIntFixedSeed() {
-        assertThat(testResult(ExplicitPrimitiveIntFixedSeed.class), isSuccessful());
+        assertThat(
+            testResult(ExplicitPrimitiveIntFixedSeed.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ExplicitPrimitiveIntFixedSeed {
-        @Property(trials = 1) public void shouldHold(@When(seed = -1) @From(AnInt.class) int i) {
+        @Property(trials = 1) public void shouldHold(
+            @When(seed = -1) @From(AnInt.class) int i) {
+
             assertEquals(1155099827, i);
         }
     }
@@ -261,11 +270,13 @@ public class PropertiesWithExplicitGeneratorsTest {
         }
 
         @Property public void shouldHold(@Small int i) {
-            assertThat(i, allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(5)));
+            assertThat(
+                i,
+                allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(5)));
         }
     }
 
-    @Test public void explicitGeneratorTakesPrecedence() throws Exception {
+    @Test public void explicitGeneratorTakesPrecedence() {
         assertThat(testResult(WithExplicitGenerator.class), isSuccessful());
         assertEquals(asList(0, 1, 2, 3, 4), WithExplicitGenerator.values);
     }
@@ -274,7 +285,9 @@ public class PropertiesWithExplicitGeneratorsTest {
     public static class WithExplicitGenerator {
         public static final List<Integer> values = new ArrayList<>();
 
-        @Property(trials = 5) public void shouldHold(@From(Sequence.class) int i) {
+        @Property(trials = 5) public void shouldHold(
+            @From(Sequence.class) int i) {
+
             values.add(i);
         }
     }
@@ -286,15 +299,19 @@ public class PropertiesWithExplicitGeneratorsTest {
             super(int.class);
         }
 
-        @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Integer generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return next++;
         }
     }
 
-    @Test public void typeMismatch() throws Exception {
+    @Test public void typeMismatch() {
         assertThat(
             testResult(WithGeneratorTypeThatDoesNotMatchParameterType.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -308,26 +325,36 @@ public class PropertiesWithExplicitGeneratorsTest {
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "foo";
         }
     }
 
-    @Test public void alternateGeneratorOnBasicTypeParameter() throws Exception {
-        assertThat(testResult(AlternateGeneratorOnBasicTypeParameter.class), isSuccessful());
+    @Test public void alternateGeneratorOnBasicTypeParameter() {
+        assertThat(
+            testResult(AlternateGeneratorOnBasicTypeParameter.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class AlternateGeneratorOnBasicTypeParameter {
-        @Property public void holds(Box<@From(AnInt.class) @Between(min = 3, max = 4) Integer> box) {
-            assertThat(box.contents(), allOf(greaterThanOrEqualTo(3), lessThanOrEqualTo(4)));
+        @Property public void holds(
+            Box<@From(AnInt.class) @Between(min = 3, max = 4) Integer> box) {
+
+            assertThat(
+                box.contents(),
+                allOf(greaterThanOrEqualTo(3), lessThanOrEqualTo(4)));
         }
     }
 
-    @Test public void alternateGeneratorOnHuhTypeParameter() throws Exception {
+    @Test public void alternateGeneratorOnHuhTypeParameter() {
         assertThat(
             testResult(AlternateGeneratorOnHuhTypeParameter.class),
-            hasSingleFailureContaining("Wildcards cannot be marked with @From"));
+            hasSingleFailureContaining(
+                "Wildcards cannot be marked with @From"));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -336,34 +363,39 @@ public class PropertiesWithExplicitGeneratorsTest {
         }
     }
 
-    @Test public void alternateGeneratorOnExtendsTypeParameter() throws Exception {
+    @Test public void alternateGeneratorOnExtendsTypeParameter() {
         assertThat(
             testResult(AlternateGeneratorOnExtendsTypeParameter.class),
-            hasSingleFailureContaining("Wildcards cannot be marked with @From"));
+            hasSingleFailureContaining(
+                "Wildcards cannot be marked with @From"));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class AlternateGeneratorOnExtendsTypeParameter {
-        @Property public void holds(Box<@From(AnInt.class) ? extends Integer> box) {
+        @Property public void holds(
+            Box<@From(AnInt.class) ? extends Integer> box) {
         }
     }
 
-    @Test public void alternateGeneratorOnSuperTypeParameter() throws Exception {
+    @Test public void alternateGeneratorOnSuperTypeParameter() {
         assertThat(
             testResult(AlternateGeneratorOnSuperTypeParameter.class),
-            hasSingleFailureContaining("Wildcards cannot be marked with @From"));
+            hasSingleFailureContaining(
+                "Wildcards cannot be marked with @From"));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class AlternateGeneratorOnSuperTypeParameter {
-        @Property public void holds(Box<@From(AnInt.class) ? super Integer> box) {
+        @Property public void holds(
+            Box<@From(AnInt.class) ? super Integer> box) {
         }
     }
 
     @Test public void typeMismatchOnBasicTypeParameter() {
         assertThat(
             testResult(TypeMismatchOnBasicTypeParameter.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

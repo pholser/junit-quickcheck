@@ -25,20 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Produces values of type {@code byte} or {@link Byte}.
@@ -47,7 +45,7 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
     private byte min = (Byte) defaultValueOf(InRange.class, "minByte");
     private byte max = (Byte) defaultValueOf(InRange.class, "maxByte");
 
-    @SuppressWarnings("unchecked") public ByteGenerator() {
+    public ByteGenerator() {
         super(asList(Byte.class, byte.class));
     }
 
@@ -65,7 +63,10 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
         max = range.max().isEmpty() ? range.maxByte() : Byte.parseByte(range.max());
     }
 
-    @Override public Byte generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Byte generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextByte(min, max);
     }
 

@@ -34,8 +34,8 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;
 
@@ -63,20 +63,28 @@ public class OffsetDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
             OffsetDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
 
             assertThat(
                 t,
                 allOf(
-                    greaterThanOrEqualTo(OffsetDateTime.parse("01/01/2012T00:00:00.0+01:00", formatter)),
-                    lessThanOrEqualTo(OffsetDateTime.parse("12/31/2012T23:59:59.999999999+01:00", formatter))));
+                    greaterThanOrEqualTo(
+                        OffsetDateTime.parse(
+                            "01/01/2012T00:00:00.0+01:00",
+                            formatter)),
+                    lessThanOrEqualTo(
+                        OffsetDateTime.parse(
+                            "12/31/2012T23:59:59.999999999+01:00",
+                            formatter))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinOffsetDateTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -93,7 +101,8 @@ public class OffsetDateTimePropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxOffsetDateTime.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -110,7 +119,8 @@ public class OffsetDateTimePropertyParameterTypesTest {
     @Test public void malformedFormat() {
         assertThat(
             testResult(MalformedFormatOffsetDateTime.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -136,7 +146,9 @@ public class OffsetDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
             OffsetDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
+
             assertThat(
                 t,
                 lessThanOrEqualTo(
@@ -158,18 +170,22 @@ public class OffsetDateTimePropertyParameterTypesTest {
                 format = "MM/dd/yyyy'T'HH:mm:ss.nxxx")
             OffsetDateTime t) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx");
             assertThat(
                 t,
                 greaterThanOrEqualTo(
-                    OffsetDateTime.parse("12/31/2012T23:59:59.999999999+01:00", formatter)));
+                    OffsetDateTime.parse(
+                        "12/31/2012T23:59:59.999999999+01:00",
+                        formatter)));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

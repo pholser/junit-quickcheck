@@ -26,7 +26,6 @@
 package com.pholser.junit.quickcheck.internal;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
-import com.pholser.junit.quickcheck.internal.Comparables;
 
 public class ComparablesUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
     public ComparablesUtilityClassTest() {

@@ -25,22 +25,20 @@
 
 package com.pholser.junit.quickcheck.internal;
 
+import static java.lang.Math.ulp;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
+
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static java.lang.Math.*;
-import static org.junit.Assert.*;
-import static org.junit.rules.ExpectedException.*;
-import static org.mockito.Mockito.*;
-
 public class GeometricDistributionTest {
-    @Rule public final ExpectedException thrown = none();
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
     @Mock private SourceOfRandomness random;
 
@@ -51,21 +49,21 @@ public class GeometricDistributionTest {
     }
 
     @Test public void negativeProbability() {
-        thrown.expect(IllegalArgumentException.class);
-
-        distro.sample(-ulp(0), random);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> distro.sample(-ulp(0), random));
     }
 
     @Test public void zeroProbability() {
-        thrown.expect(IllegalArgumentException.class);
-
-        distro.sample(0, random);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> distro.sample(0, random));
     }
 
     @Test public void greaterThanOneProbability() {
-        thrown.expect(IllegalArgumentException.class);
-
-        distro.sample(1 + ulp(1), random);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> distro.sample(1 + ulp(1), random));
     }
 
     @Test public void sampleWithCertainProbability() {
@@ -79,15 +77,15 @@ public class GeometricDistributionTest {
     }
 
     @Test public void negativeMeanProbability() {
-        thrown.expect(IllegalArgumentException.class);
-
-        distro.probabilityOfMean(-ulp(0));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> distro.probabilityOfMean(-ulp(0)));
     }
 
     @Test public void zeroMeanProbability() {
-        thrown.expect(IllegalArgumentException.class);
-
-        distro.probabilityOfMean(0);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> distro.probabilityOfMean(0));
     }
 
     @Test public void nonZeroMeanProbability() {

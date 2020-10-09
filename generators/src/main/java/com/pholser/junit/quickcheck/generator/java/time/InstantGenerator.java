@@ -25,14 +25,13 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
-import java.time.Instant;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.time.Instant;
 
 /**
  * Produces values of type {@link Instant}.
@@ -66,8 +65,10 @@ public class InstantGenerator extends Generator<Instant> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = Instant.parse(range.max());
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", range.min(), range.max()));
+        }
     }
 
     @Override public Instant generate(SourceOfRandomness random, GenerationStatus status) {

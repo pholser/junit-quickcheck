@@ -71,12 +71,14 @@ public class PrimitivePropertyParameterTypesTest {
         assertThat(
             testResult(PrimitiveBooleanWithAllValues.class),
             isSuccessful());
-        assertEquals(asList(false, true), PrimitiveBooleanWithAllValues.values);
+        assertEquals(
+            asList(false, true),
+            PrimitiveBooleanWithAllValues.values);
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class PrimitiveBooleanWithAllValues {
-        static List<Boolean> values = new ArrayList<>();
+        static final List<Boolean> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE) public void shouldHold(boolean b) {
             values.add(b);
@@ -92,7 +94,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class WrapperBooleanWithAllValues {
-        static List<Boolean> values = new ArrayList<>();
+        static final List<Boolean> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE) public void shouldHold(Boolean b) {
             values.add(b);
@@ -100,7 +102,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void shrinkingBooleanFromTrue() {
-        assertThat(testResult(ShrinkingBooleanFromTrue.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingBooleanFromTrue.class),
+            failureCountIs(1));
 
         int trueIndex = ShrinkingBooleanFromTrue.values.lastIndexOf(true);
         assumeThat(trueIndex, not(equalTo(-1)));
@@ -109,7 +113,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingBooleanFromTrue {
-        static List<Boolean> values = new ArrayList<>();
+        static final List<Boolean> values = new ArrayList<>();
 
         @Property public void shouldHold(boolean b) {
             values.add(b);
@@ -120,15 +124,19 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void shrinkingBooleanFromFalse() {
-        assertThat(testResult(ShrinkingBooleanFromFalse.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingBooleanFromFalse.class),
+            failureCountIs(1));
 
         int falseIndex = ShrinkingBooleanFromFalse.values.lastIndexOf(false);
-        assertThat(falseIndex, equalTo(ShrinkingBooleanFromFalse.values.size() - 1));
+        assertThat(
+            falseIndex,
+            equalTo(ShrinkingBooleanFromFalse.values.size() - 1));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingBooleanFromFalse {
-        static List<Boolean> values = new ArrayList<>();
+        static final List<Boolean> values = new ArrayList<>();
 
         @Property public void shouldHold(boolean b) {
             values.add(b);
@@ -154,13 +162,21 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedPrimitiveByte {
-        @Property public void shouldHold(@InRange(min = "-23", max = "34") byte b) {
-            assertThat(b, allOf(greaterThanOrEqualTo((byte) -23), lessThanOrEqualTo((byte) 34)));
+        @Property public void shouldHold(
+            @InRange(min = "-23", max = "34") byte b) {
+
+            assertThat(
+                b,
+                allOf(
+                    greaterThanOrEqualTo((byte) -23),
+                    lessThanOrEqualTo((byte) 34)));
         }
     }
 
     @Test public void leftOpenEndedRangedPrimitiveByte() {
-        assertThat(testResult(LeftOpenEndedRangedPrimitiveByte.class), isSuccessful());
+        assertThat(
+            testResult(LeftOpenEndedRangedPrimitiveByte.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -182,7 +198,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPrimitivePositiveByte() {
-        assertThat(testResult(ShrinkingPrimitivePositiveByte.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingPrimitivePositiveByte.class),
+            failureCountIs(1));
         assertEquals(
             Byte.valueOf("3"),
             Iterables.getLast(ShrinkingPrimitivePositiveByte.values));
@@ -190,9 +208,11 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitivePositiveByte {
-        static List<Byte> values = new ArrayList<>();
+        static final List<Byte> values = new ArrayList<>();
 
-        @Property public void shouldHold(@InRange(min = "3", max = "110") byte b) {
+        @Property public void shouldHold(
+            @InRange(min = "3", max = "110") byte b) {
+
             values.add(b);
 
             fail();
@@ -200,8 +220,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPrimitiveNegativeByte() {
-        assertThat(testResult(ShrinkingPrimitiveNegativeByte.class), failureCountIs(1));
-
+        assertThat(
+            testResult(ShrinkingPrimitiveNegativeByte.class),
+            failureCountIs(1));
         assertEquals(
             Byte.valueOf("-13"),
             Iterables.getLast(ShrinkingPrimitiveNegativeByte.values));
@@ -209,9 +230,11 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveNegativeByte {
-        static List<Byte> values = new ArrayList<>();
+        static final List<Byte> values = new ArrayList<>();
 
-        @Property public void shouldHold(@InRange(min = "-101", max = "-13") byte b) {
+        @Property public void shouldHold(
+            @InRange(min = "-101", max = "-13") byte b) {
+
             values.add(b);
 
             fail();
@@ -219,8 +242,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPrimitiveByteStraddlingZero() {
-        assertThat(testResult(ShrinkingPrimitiveByteStraddlingZero.class), failureCountIs(1));
-
+        assertThat(
+            testResult(ShrinkingPrimitiveByteStraddlingZero.class),
+            failureCountIs(1));
         assertEquals(
             Byte.valueOf("0"),
             Iterables.getLast(ShrinkingPrimitiveByteStraddlingZero.values));
@@ -228,7 +252,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveByteStraddlingZero {
-        static List<Byte> values = new ArrayList<>();
+        static final List<Byte> values = new ArrayList<>();
 
         @Property public void shouldHold(byte b) {
             values.add(b);
@@ -253,13 +277,21 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedWrapperByte {
-        @Property public void shouldHold(@InRange(min = "-3", max = "2") Byte b) {
-            assertThat(b, allOf(greaterThanOrEqualTo((byte) -3), lessThanOrEqualTo((byte) 2)));
+        @Property public void shouldHold(
+            @InRange(min = "-3", max = "2") Byte b) {
+
+            assertThat(
+                b,
+                allOf(
+                    greaterThanOrEqualTo((byte) -3),
+                    lessThanOrEqualTo((byte) 2)));
         }
     }
 
     @Test public void leftOpenEndedRangedWrapperByte() {
-        assertThat(testResult(LeftOpenEndedRangedWrapperByte.class), isSuccessful());
+        assertThat(
+            testResult(LeftOpenEndedRangedWrapperByte.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -270,7 +302,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void rightOpenEndedRangedWrapperByte() {
-        assertThat(testResult(RightOpenEndedRangedWrapperByte.class), isSuccessful());
+        assertThat(
+            testResult(RightOpenEndedRangedWrapperByte.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -296,35 +330,49 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedPrimitiveCharacter {
-        @Property public void shouldHold(@InRange(minChar = 'a', maxChar = 'z') char ch) {
-            assertThat(ch, allOf(greaterThanOrEqualTo('a'), lessThanOrEqualTo('z')));
+        @Property public void shouldHold(
+            @InRange(minChar = 'a', maxChar = 'z') char ch) {
+
+            assertThat(
+                ch,
+                allOf(greaterThanOrEqualTo('a'), lessThanOrEqualTo('z')));
         }
     }
 
     @Test public void leftOpenEndedRangedPrimitiveCharacter() {
-        assertThat(testResult(LeftOpenEndedRangedPrimitiveCharacter.class), isSuccessful());
+        assertThat(
+            testResult(LeftOpenEndedRangedPrimitiveCharacter.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class LeftOpenEndedRangedPrimitiveCharacter {
-        @Property public void shouldHold(@InRange(maxChar = '\u00FF') char ch) {
+        @Property public void shouldHold(
+            @InRange(maxChar = '\u00FF') char ch) {
+
             assertThat(ch, lessThanOrEqualTo('\u00FF'));
         }
     }
 
     @Test public void rightOpenEndedRangedPrimitiveCharacter() {
-        assertThat(testResult(RightOpenEndedRangedPrimitiveCharacter.class), isSuccessful());
+        assertThat(
+            testResult(RightOpenEndedRangedPrimitiveCharacter.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RightOpenEndedRangedPrimitiveCharacter {
-        @Property public void shouldHold(@InRange(minChar = '\uFF00') char ch) {
+        @Property public void shouldHold(
+            @InRange(minChar = '\uFF00') char ch) {
+
             assertThat(ch, greaterThanOrEqualTo('\uFF00'));
         }
     }
 
     @Test public void shrinkingPrimitiveCharacter() {
-        assertThat(testResult(ShrinkingPrimitiveCharacter.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingPrimitiveCharacter.class),
+            failureCountIs(1));
 
         assumeThat(ShrinkingPrimitiveCharacter.values.size(), greaterThan(1));
         assertEquals(
@@ -334,9 +382,11 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveCharacter {
-        static List<Character> values = new ArrayList<>();
+        static final List<Character> values = new ArrayList<>();
 
-        @Property public void shouldHold(@InRange(minChar = ' ', maxChar = '\u00FF') char ch) {
+        @Property public void shouldHold(
+            @InRange(minChar = ' ', maxChar = '\u00FF') char ch) {
+
             values.add(ch);
 
             fail();
@@ -359,29 +409,41 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedWrapperCharacter {
-        @Property public void shouldHold(@InRange(min = "0", max = "9") Character ch) {
-            assertThat(ch, allOf(greaterThanOrEqualTo('0'), lessThanOrEqualTo('9')));
+        @Property public void shouldHold(
+            @InRange(min = "0", max = "9") Character ch) {
+
+            assertThat(
+                ch,
+                allOf(greaterThanOrEqualTo('0'), lessThanOrEqualTo('9')));
         }
     }
 
     @Test public void leftOpenEndedRangedWrapperCharacter() {
-        assertThat(testResult(LeftOpenEndedRangedWrapperCharacter.class), isSuccessful());
+        assertThat(
+            testResult(LeftOpenEndedRangedWrapperCharacter.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class LeftOpenEndedRangedWrapperCharacter {
-        @Property public void shouldHold(@InRange(max = "\u00FF") Character ch) {
+        @Property public void shouldHold(
+            @InRange(max = "\u00FF") Character ch) {
+
             assertThat(ch, lessThanOrEqualTo('\u00FF'));
         }
     }
 
     @Test public void rightOpenEndedRangedWrapperCharacter() {
-        assertThat(testResult(RightOpenEndedRangedWrapperCharacter.class), isSuccessful());
+        assertThat(
+            testResult(RightOpenEndedRangedWrapperCharacter.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RightOpenEndedRangedWrapperCharacter {
-        @Property public void shouldHold(@InRange(min = "\uFF00") Character ch) {
+        @Property public void shouldHold(
+            @InRange(min = "\uFF00") Character ch) {
+
             assertThat(ch, greaterThanOrEqualTo('\uFF00'));
         }
     }
@@ -404,13 +466,17 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedPrimitiveDouble {
-        @Property public void shouldHold(@InRange(minDouble = -2.71, maxDouble = 3.14) double d) {
+        @Property public void shouldHold(
+            @InRange(minDouble = -2.71, maxDouble = 3.14) double d) {
+
             assertThat(d, allOf(greaterThanOrEqualTo(-2.71), lessThan(3.14)));
         }
     }
 
     @Test public void leftOpenEndedRangedPrimitiveDouble() {
-        assertThat(testResult(LeftOpenEndedRangedPrimitiveDouble.class), isSuccessful());
+        assertThat(
+            testResult(LeftOpenEndedRangedPrimitiveDouble.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -422,12 +488,16 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void rightOpenEndedRangedPrimitiveDouble() {
-        assertThat(testResult(RightOpenEndedRangedPrimitiveDouble.class), isSuccessful());
+        assertThat(
+            testResult(RightOpenEndedRangedPrimitiveDouble.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class RightOpenEndedRangedPrimitiveDouble {
-        @Property public void shouldHold(@InRange(minDouble = -2.71) double d) {
+        @Property public void shouldHold(
+            @InRange(minDouble = -2.71) double d) {
+
             assertThat(d, greaterThanOrEqualTo(-2.71));
             assertThat(d, lessThan(RangeAttributes.maxDouble()));
         }
@@ -451,13 +521,17 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class RangedWrapperDouble {
-        @Property public void shouldHold(@InRange(min = "2.71", max = "3.14") Double d) {
+        @Property public void shouldHold(
+            @InRange(min = "2.71", max = "3.14") Double d) {
+
             assertThat(d, allOf(greaterThanOrEqualTo(2.71), lessThan(3.14)));
         }
     }
 
     @Test public void leftOpenEndedRangedWrapperDouble() {
-        assertThat(testResult(LeftOpenEndedRangedWrapperDouble.class), isSuccessful());
+        assertThat(
+            testResult(LeftOpenEndedRangedWrapperDouble.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -469,7 +543,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void rightOpenEndedRangedWrapperDouble() {
-        assertThat(testResult(RightOpenEndedRangedWrapperDouble.class), isSuccessful());
+        assertThat(
+            testResult(RightOpenEndedRangedWrapperDouble.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -481,7 +557,9 @@ public class PrimitivePropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPrimitivePositiveDouble() {
-        assertThat(testResult(ShrinkingPrimitivePositiveDouble.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingPrimitivePositiveDouble.class),
+            failureCountIs(1));
         assertEquals(
             Double.valueOf(555.123123123123),
             Iterables.getLast(ShrinkingPrimitivePositiveDouble.values));
@@ -489,10 +567,13 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitivePositiveDouble {
-        static List<Double> values = new ArrayList<>();
+        static final List<Double> values = new ArrayList<>();
 
         @Property public void shouldHold(
-            @InRange(minDouble = 555.123123123123, maxDouble = 11111.222222222) double d) {
+            @InRange(
+                minDouble = 555.123123123123,
+                maxDouble = 11111.222222222)
+                double d) {
 
             values.add(d);
 
@@ -510,7 +591,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveNegativeDouble {
-        static List<Double> values = new ArrayList<>();
+        static final List<Double> values = new ArrayList<>();
 
         @Property public void shouldHold(
             @InRange(minDouble = -4400.998877665544, maxDouble = -777.012301230123) double d) {
@@ -531,7 +612,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveDoubleStraddlingZero {
-        static List<Double> values = new ArrayList<>();
+        static final List<Double> values = new ArrayList<>();
 
         @Property public void shouldHold(double d) {
             values.add(d);
@@ -643,7 +724,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitivePositiveFloat {
-        static List<Float> values = new ArrayList<>();
+        static final List<Float> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(minFloat = 5.123123F, maxFloat = 111.2222F) float f) {
             values.add(f);
@@ -662,7 +743,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveNegativeFloat {
-        static List<Float> values = new ArrayList<>();
+        static final List<Float> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(minFloat = -400.998877F, maxFloat = -7.0123F) float f) {
             values.add(f);
@@ -680,7 +761,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveFloatStraddlingZero {
-        static List<Float> values = new ArrayList<>();
+        static final List<Float> values = new ArrayList<>();
 
         @Property public void shouldHold(float f) {
             values.add(f);
@@ -741,7 +822,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitivePositiveInteger {
-        static List<Integer> values = new ArrayList<>();
+        static final List<Integer> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(minInt = 5, maxInt = 111) int i) {
             values.add(i);
@@ -760,7 +841,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveNegativeInteger {
-        static List<Integer> values = new ArrayList<>();
+        static final List<Integer> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(minInt = -400, maxInt = -7) int i) {
             values.add(i);
@@ -779,7 +860,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveIntegerStraddlingZero {
-        static List<Integer> values = new ArrayList<>();
+        static final List<Integer> values = new ArrayList<>();
 
         @Property public void shouldHold(int i) {
             values.add(i);
@@ -883,7 +964,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitivePositiveLong {
-        static List<Long> values = new ArrayList<>();
+        static final List<Long> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(minLong = 2, maxLong = 100) long ell) {
             values.add(ell);
@@ -902,7 +983,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveNegativeLong {
-        static List<Long> values = new ArrayList<>();
+        static final List<Long> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(minLong = -300, maxLong = -5) long ell) {
             values.add(ell);
@@ -921,7 +1002,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveLongStraddlingZero {
-        static List<Long> values = new ArrayList<>();
+        static final List<Long> values = new ArrayList<>();
 
         @Property public void shouldHold(long ell) {
             values.add(ell);
@@ -1025,7 +1106,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitivePositiveShort {
-        static List<Short> values = new ArrayList<>();
+        static final List<Short> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(min = "4", max = "1111") short sh) {
             values.add(sh);
@@ -1044,7 +1125,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveNegativeShort {
-        static List<Short> values = new ArrayList<>();
+        static final List<Short> values = new ArrayList<>();
 
         @Property public void shouldHold(@InRange(min = "-4000", max = "-9") short sh) {
             values.add(sh);
@@ -1063,7 +1144,7 @@ public class PrimitivePropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingPrimitiveShortStraddlingZero {
-        static List<Short> values = new ArrayList<>();
+        static final List<Short> values = new ArrayList<>();
 
         @Property public void shouldHold(short sh) {
             values.add(sh);

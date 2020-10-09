@@ -25,12 +25,11 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import java.util.List;
+import java.util.stream.Stream;
 
 public interface ParameterSampler {
     int sizeFactor(ParameterTypeContext p);

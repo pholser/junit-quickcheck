@@ -25,12 +25,12 @@
 
 package com.pholser.junit.quickcheck.examples.tree;
 
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
+
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.internal.Ranges.*;
 
 public class TreeMaker extends Generator<Tree> {
     private Depth range;

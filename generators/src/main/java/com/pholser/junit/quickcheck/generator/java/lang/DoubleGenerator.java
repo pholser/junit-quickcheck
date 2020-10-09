@@ -25,19 +25,17 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.DecimalGenerator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Produces values for property parameters of type {@code double} or
@@ -47,7 +45,7 @@ public class DoubleGenerator extends DecimalGenerator<Double> {
     private double min = (Double) defaultValueOf(InRange.class, "minDouble");
     private double max = (Double) defaultValueOf(InRange.class, "maxDouble");
 
-    @SuppressWarnings("unchecked") public DoubleGenerator() {
+    public DoubleGenerator() {
         super(asList(Double.class, double.class));
     }
 
@@ -62,11 +60,18 @@ public class DoubleGenerator extends DecimalGenerator<Double> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minDouble() : Double.parseDouble(range.min());
-        max = range.max().isEmpty() ? range.maxDouble() : Double.parseDouble(range.max());
+        min = range.min().isEmpty()
+            ? range.minDouble()
+            : Double.parseDouble(range.min());
+        max = range.max().isEmpty()
+            ? range.maxDouble()
+            : Double.parseDouble(range.max());
     }
 
-    @Override public Double generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Double generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextDouble(min, max);
     }
 

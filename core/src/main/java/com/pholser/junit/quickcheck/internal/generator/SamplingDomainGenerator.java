@@ -25,13 +25,12 @@
 
 package com.pholser.junit.quickcheck.internal.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class SamplingDomainGenerator extends Generator<Object> {
     private final List<?> items;

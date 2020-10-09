@@ -34,6 +34,7 @@ import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
 import static com.pholser.junit.quickcheck.Functions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
 import static org.junit.experimental.results.ResultMatchers.*;

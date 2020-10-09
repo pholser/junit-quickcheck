@@ -29,6 +29,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -147,8 +148,12 @@ public class PrimitiveArrayPropertyParameterTypesTest {
     }
 
     @Test public void shrinkingPrimitiveIntegerArray() {
-        assertThat(testResult(ShrinkingPrimitiveIntegerArray.class), failureCountIs(1));
-        assertThat(ShrinkingPrimitiveIntegerArray.failed.length, greaterThan(5));
+        assertThat(
+            testResult(ShrinkingPrimitiveIntegerArray.class),
+            failureCountIs(1));
+        assertThat(
+            ShrinkingPrimitiveIntegerArray.failed.length,
+            greaterThan(5));
     }
 
     @RunWith(JUnitQuickcheck.class)

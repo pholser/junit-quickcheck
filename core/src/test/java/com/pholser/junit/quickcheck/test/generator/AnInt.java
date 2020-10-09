@@ -25,23 +25,22 @@
 
 package com.pholser.junit.quickcheck.test.generator;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Stream;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class AnInt extends Generator<Integer> {
     private Between range;
 
-    @SuppressWarnings("unchecked") public AnInt() {
+    public AnInt() {
         super(asList(Integer.class, int.class));
     }
 
@@ -49,11 +48,19 @@ public class AnInt extends Generator<Integer> {
         this.range = range;
     }
 
-    @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
-        return range == null ? random.nextInt() : random.nextInt(range.min(), range.max());
+    @Override public Integer generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return range == null
+            ? random.nextInt()
+            : random.nextInt(range.min(), range.max());
     }
 
-    @Override public List<Integer> doShrink(SourceOfRandomness random, Integer larger) {
+    @Override public List<Integer> doShrink(
+        SourceOfRandomness random,
+        Integer larger) {
+
         return larger == 0
             ? emptyList()
             : Stream.of(larger / 2)

@@ -25,25 +25,27 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.util.List;
+import static java.util.Collections.emptyList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.fail;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.failureCountIs;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static java.util.Collections.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
-
 public class ReproIssue175Test {
     @Test public void givesAllArgsAChanceToShrink() {
-        assertThat(testResult(GivesAllArgsAChanceToShrink.class), failureCountIs(2));
+        assertThat(
+            testResult(GivesAllArgsAChanceToShrink.class),
+            failureCountIs(2));
         assertThat(Others.shrinkAttempts, greaterThan(1));
     }
 
@@ -57,12 +59,18 @@ public class ReproIssue175Test {
             super(Other.class);
         }
 
-        @Override public List<Other> doShrink(SourceOfRandomness r, Other larger) {
+        @Override public List<Other> doShrink(
+            SourceOfRandomness r,
+            Other larger) {
+
             ++shrinkAttempts;
             return emptyList();
         }
 
-        @Override public Other generate(SourceOfRandomness r, GenerationStatus s) {
+        @Override public Other generate(
+            SourceOfRandomness r,
+            GenerationStatus s) {
+
             return new Other();
         }
     }

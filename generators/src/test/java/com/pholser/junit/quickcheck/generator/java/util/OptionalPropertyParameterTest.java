@@ -37,6 +37,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -66,7 +67,7 @@ public class OptionalPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ShrinkingOptional {
-        static List<Optional<Byte>> failed = new ArrayList<>();
+        static final List<Optional<Byte>> failed = new ArrayList<>();
 
         @Property public void works(Optional<Byte> optional) {
             failed.add(optional);

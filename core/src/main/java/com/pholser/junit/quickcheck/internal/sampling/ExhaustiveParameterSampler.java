@@ -25,14 +25,13 @@
 
 package com.pholser.junit.quickcheck.internal.sampling;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import static com.pholser.junit.quickcheck.internal.Reflection.findMethod;
+import static com.pholser.junit.quickcheck.internal.Reflection.invoke;
+import static com.pholser.junit.quickcheck.internal.Reflection.maybeWrap;
+import static java.lang.Math.max;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
@@ -47,12 +46,14 @@ import com.pholser.junit.quickcheck.internal.generator.ExhaustiveDomainGenerator
 import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
 import com.pholser.junit.quickcheck.internal.generator.GuaranteeValuesGenerator;
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
-
-import static java.lang.Math.*;
-import static java.util.Arrays.*;
-import static java.util.stream.Collectors.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class ExhaustiveParameterSampler implements ParameterSampler {
     private final int sizeFactor;

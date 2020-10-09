@@ -75,7 +75,7 @@ given type.
             return new Counter(
                 abs(gen().type(int.class).generate(random, status)));
         }
-        
+
         // Ever-so-slightly favors +(MIN_VALUE + 1).
         // Math.abs(MIN_VALUE) is negative.
         private static int abs(int i) {
@@ -171,19 +171,19 @@ like annotating a property parameter with `@From(Fields.class)`. Any
 - `gen().parameter(...)`
 
 This method gives a generator that can produce instances of the type of the
-given reflected method parameter, and that honors all of the configuration
+given reflected method parameter, and that honors all the configuration
 annotations on the parameter.
 
 - `gen().field(Class<?>, String)`
 
 This method gives a generator that can produce instances of the type of the
-field of a given name on the given type, and that honors all of the
+field of a given name on the given type, and that honors all the
 configuration annotations on the field.
 
 - `gen().field(Field)`
 
 This method gives a generator that can produce instances of the type of the
-given reflected field, and that honors all of the configuration annotations
+given reflected field, and that honors all the configuration annotations
 on the field.
 
 - `gen().make(...)`
@@ -204,7 +204,7 @@ configuration annotations live on the generator class.
 
             return abs(random.nextInt());
         }
-        
+
         // Ever-so-slightly favors +(MIN_VALUE + 1).
         // Math.abs(MIN_VALUE) is negative.
         private static int abs(int i) {

@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -72,7 +71,7 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
     private Statement methodBlock() {
         Statement statement = super.methodBlock(method);
         return new Statement() {
-            @Override public void evaluate() throws Throwable {
+            @Override public void evaluate() {
                 try {
                     statement.evaluate();
                     onSuccess.accept(null);

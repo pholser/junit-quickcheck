@@ -25,26 +25,25 @@
 
 package com.pholser.junit.quickcheck.internal;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 public class ItemsTest {
     @Rule public final MockitoRule mockito = MockitoJUnit.rule();
-    @Rule public final ExpectedException thrown = ExpectedException.none();
 
     @Mock private SourceOfRandomness random;
     private Weighted<String> first;
@@ -58,7 +57,8 @@ public class ItemsTest {
     }
 
     @Test public void choosingFromSet() {
-        Set<String> names = new LinkedHashSet<>(asList("alpha", "bravo", "charlie", "delta"));
+        Set<String> names =
+            new LinkedHashSet<>(asList("alpha", "bravo", "charlie", "delta"));
         when(random.nextInt(names.size())).thenReturn(2);
 
         assertEquals("charlie", Items.choose(names, random));
@@ -73,37 +73,57 @@ public class ItemsTest {
     @Test public void choosingFirstOfManyWeightedItems() {
         when(random.nextInt(9)).thenReturn(0).thenReturn(1);
 
-        assertEquals("a", Items.chooseWeighted(asList(first, second, third), random));
-        assertEquals("a", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "a",
+            Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "a",
+            Items.chooseWeighted(asList(first, second, third), random));
     }
 
     @Test public void choosingMiddleOfManyWeightedItems() {
         when(random.nextInt(9)).thenReturn(2).thenReturn(3).thenReturn(4);
 
-        assertEquals("b", Items.chooseWeighted(asList(first, second, third), random));
-        assertEquals("b", Items.chooseWeighted(asList(first, second, third), random));
-        assertEquals("b", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "b",
+            Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "b",
+            Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "b",
+            Items.chooseWeighted(asList(first, second, third), random));
     }
 
     @Test public void choosingLastOfManyWeightedItems() {
-        when(random.nextInt(9)).thenReturn(5).thenReturn(6).thenReturn(7).thenReturn(8);
+        when(random.nextInt(9))
+            .thenReturn(5).thenReturn(6).thenReturn(7).thenReturn(8);
 
-        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
-        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
-        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
-        assertEquals("c", Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "c",
+            Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "c",
+            Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "c",
+            Items.chooseWeighted(asList(first, second, third), random));
+        assertEquals(
+            "c",
+            Items.chooseWeighted(asList(first, second, third), random));
     }
 
     @Test public void choosingFromEmptyCollection() {
-        thrown.expect(IllegalArgumentException.class);
-
-        Items.choose(emptyList(), random);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> Items.choose(emptyList(), random));
     }
 
     @Test public void choosingWeightedFromEmptyCollection() {
-        thrown.expect(AssertionError.class);
-        thrown.expectMessage("sample = 0, range = 0");
-
-        Items.chooseWeighted(emptyList(), random);
+        AssertionError ex =
+            assertThrows(
+                AssertionError.class,
+                () -> Items.chooseWeighted(emptyList(), random));
+        assertEquals("sample = 0, range = 0", ex.getMessage());
     }
 }

@@ -25,6 +25,19 @@
 
 package com.pholser.junit.quickcheck.generator;
 
+import static com.pholser.junit.quickcheck.internal.Reflection.allAnnotations;
+import static com.pholser.junit.quickcheck.internal.Reflection.findMethod;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.invoke;
+import static java.math.BigDecimal.ONE;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toList;
+
+import com.pholser.junit.quickcheck.internal.ReflectionException;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
@@ -35,18 +48,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import com.pholser.junit.quickcheck.internal.ReflectionException;
-import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.javaruntype.type.TypeParameter;
 import org.javaruntype.type.Types;
 import org.javaruntype.type.WildcardTypeParameter;
-
-import static java.math.BigDecimal.*;
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
 
 /**
  * Produces values for property parameters.

@@ -25,17 +25,16 @@
 
 package com.pholser.junit.quickcheck.generator.java.time;
 
-import java.math.BigInteger;
-import java.time.Period;
-import java.time.Year;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.internal.Ranges;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigInteger;
+import java.time.Period;
+import java.time.Year;
 
 /**
  * Produces values of type {@link Period}.

@@ -25,6 +25,9 @@
 
 package com.pholser.junit.quickcheck.examples.crypto;
 
+import static javax.crypto.Cipher.DECRYPT_MODE;
+import static javax.crypto.Cipher.ENCRYPT_MODE;
+
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -33,8 +36,6 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
-
-import static javax.crypto.Cipher.*;
 
 final class SymmetricCrypto {
     private static final int KEY_LENGTH = 128;

@@ -25,20 +25,18 @@
 
 package com.pholser.junit.quickcheck.generator.java.lang;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.IntegralGenerator;
 import com.pholser.junit.quickcheck.internal.Comparables;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-
-import static java.util.Arrays.*;
-
-import static com.pholser.junit.quickcheck.internal.Reflection.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Produces values of type {@code short} or {@link Short}.
@@ -47,7 +45,7 @@ public class ShortGenerator extends IntegralGenerator<Short> {
     private short min = (Short) defaultValueOf(InRange.class, "minShort");
     private short max = (Short) defaultValueOf(InRange.class, "maxShort");
 
-    @SuppressWarnings("unchecked") public ShortGenerator() {
+    public ShortGenerator() {
         super(asList(Short.class, short.class));
     }
 
@@ -61,11 +59,18 @@ public class ShortGenerator extends IntegralGenerator<Short> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minShort() : Short.parseShort(range.min());
-        max = range.max().isEmpty() ? range.maxShort() : Short.parseShort(range.max());
+        min = range.min().isEmpty()
+            ? range.minShort()
+            : Short.parseShort(range.min());
+        max = range.max().isEmpty()
+            ? range.maxShort()
+            : Short.parseShort(range.max());
     }
 
-    @Override public Short generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Short generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextShort(min, max);
     }
 

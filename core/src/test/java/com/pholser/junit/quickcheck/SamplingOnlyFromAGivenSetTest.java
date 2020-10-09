@@ -25,13 +25,17 @@
 
 package com.pholser.junit.quickcheck;
 
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import static com.pholser.junit.quickcheck.Annotations.defaultPropertyTrialCount;
+import static java.math.RoundingMode.HALF_EVEN;
+import static java.math.RoundingMode.HALF_UP;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.experimental.results.PrintableResult.testResult;
+import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.pholser.junit.quickcheck.conversion.StringConversion;
 import com.pholser.junit.quickcheck.generator.Also;
@@ -40,21 +44,22 @@ import com.pholser.junit.quickcheck.internal.ReflectionException;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import com.pholser.junit.quickcheck.test.generator.AnInt;
 import com.pholser.junit.quickcheck.test.generator.Between;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static com.pholser.junit.quickcheck.Annotations.*;
-import static java.math.RoundingMode.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
-import static org.junit.experimental.results.PrintableResult.*;
-import static org.junit.experimental.results.ResultMatchers.*;
 
 public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveBooleans() throws Exception {
         assertThat(testResult(PrimitiveBooleans.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), PrimitiveBooleans.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            PrimitiveBooleans.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -167,7 +172,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class PrimitiveDoubles {
         static int iterations;
 
-        private static final Set<Double> candidates = new HashSet<>(asList(3.2, -4D));
+        private static final Set<Double> candidates =
+            new HashSet<>(asList(3.2, -4D));
 
         @Property public void shouldHold(@Only({"3.2", "-4"}) double d) {
             assertTrue(candidates.contains(d));
@@ -184,7 +190,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class WrapperDoubles {
         static int iterations;
 
-        private static final Set<Double> candidates = new HashSet<>(asList(2.7, -3.14));
+        private static final Set<Double> candidates =
+            new HashSet<>(asList(2.7, -3.14));
 
         @Property public void shouldHold(@Only({"2.7", "-3.14"}) Double d) {
             assertTrue(candidates.contains(d));
@@ -201,7 +208,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class PrimitiveFloats {
         static int iterations;
 
-        private static final Set<Float> candidates = new HashSet<>(asList(3.3F, -5F));
+        private static final Set<Float> candidates =
+            new HashSet<>(asList(3.3F, -5F));
 
         @Property public void shouldHold(@Only({"3.3", "-5"}) float f) {
             assertTrue(candidates.contains(f));
@@ -218,7 +226,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class WrapperFloats {
         static int iterations;
 
-        private static final Set<Float> candidates = new HashSet<>(asList(1.7F, -4.14F));
+        private static final Set<Float> candidates =
+            new HashSet<>(asList(1.7F, -4.14F));
 
         @Property public void shouldHold(@Only({"1.7", "-4.14"}) Float f) {
             assertTrue(candidates.contains(f));
@@ -228,14 +237,17 @@ public class SamplingOnlyFromAGivenSetTest {
 
     @Test public void primitiveIntegers() throws Exception {
         assertThat(testResult(PrimitiveIntegers.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), PrimitiveIntegers.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            PrimitiveIntegers.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class PrimitiveIntegers {
         static int iterations;
 
-        private static final Set<Integer> candidates = new HashSet<>(asList(1, 2, 3));
+        private static final Set<Integer> candidates =
+            new HashSet<>(asList(1, 2, 3));
 
         @Property public void shouldHold(@Only({"1", "2", "3"}) int i) {
             assertTrue(candidates.contains(i));
@@ -252,7 +264,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class WrapperIntegers {
         static int iterations;
 
-        private static final Set<Integer> candidates = new HashSet<>(asList(4, 5));
+        private static final Set<Integer> candidates =
+            new HashSet<>(asList(4, 5));
 
         @Property public void shouldHold(@Only({"4", "5"}) Integer i) {
             assertTrue(candidates.contains(i));
@@ -269,7 +282,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class PrimitiveLongs {
         static int iterations;
 
-        private static final Set<Long> candidates = new HashSet<>(asList(-6L, -7L, -8L));
+        private static final Set<Long> candidates =
+            new HashSet<>(asList(-6L, -7L, -8L));
 
         @Property public void shouldHold(@Only({"-6", "-7", "-8"}) long ell) {
             assertTrue(candidates.contains(ell));
@@ -286,7 +300,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class WrapperLongs {
         static int iterations;
 
-        private static final Set<Long> candidates = new HashSet<>(asList(10L, 11L, 12L));
+        private static final Set<Long> candidates =
+            new HashSet<>(asList(10L, 11L, 12L));
 
         @Property public void shouldHold(@Only({"10", "11", "12"}) Long ell) {
             assertTrue(candidates.contains(ell));
@@ -360,7 +375,9 @@ public class SamplingOnlyFromAGivenSetTest {
         private static final EnumSet<RoundingMode> candidates =
             EnumSet.of(HALF_UP, HALF_EVEN);
 
-        @Property public void shouldHold(@Only({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+        @Property public void shouldHold(
+            @Only({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+
             assertTrue(candidates.contains(mode));
             ++iterations;
         }
@@ -385,7 +402,8 @@ public class SamplingOnlyFromAGivenSetTest {
             }
 
             @Override public boolean equals(Object o) {
-                return o instanceof Target && Objects.equals(s, ((Target) o).s);
+                return o instanceof Target
+                    && Objects.equals(s, ((Target) o).s);
             }
         }
 
@@ -423,7 +441,8 @@ public class SamplingOnlyFromAGivenSetTest {
             }
 
             @Override public boolean equals(Object o) {
-                return o instanceof Target && Objects.equals(s, ((Target) o).s);
+                return o instanceof Target
+                    && Objects.equals(s, ((Target) o).s);
             }
 
             public static Target valueOf(String s) {
@@ -444,7 +463,7 @@ public class SamplingOnlyFromAGivenSetTest {
         }
     }
 
-    @Test public void noImplicitConversion() throws Exception {
+    @Test public void noImplicitConversion() {
         assertThat(
             testResult(NoImplicitConversion.class),
             hasSingleFailureContaining(ReflectionException.class.getName()));
@@ -465,7 +484,9 @@ public class SamplingOnlyFromAGivenSetTest {
 
     @Test public void explicitConversion() throws Exception {
         assertThat(testResult(ExplicitConversion.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ExplicitConversion.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ExplicitConversion.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -487,7 +508,8 @@ public class SamplingOnlyFromAGivenSetTest {
                 LocalDate.of(2001, 12, 25)));
 
         @Property public void shouldHold(
-            @Only(value = {"2017/01/01", "2001/12/25"}, by = YYYYMMDD.class) LocalDate d) {
+            @Only(value = {"2017/01/01", "2001/12/25"}, by = YYYYMMDD.class)
+                LocalDate d) {
 
             assertTrue(candidates.contains(d));
             ++iterations;
@@ -503,8 +525,10 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class ManyParameters {
         static int iterations;
 
-        private static final Set<Integer> firstCandidates = new HashSet<>(asList(-1, -2, -4));
-        private static final Set<Character> secondCandidates = new HashSet<>(asList('r', 'y'));
+        private static final Set<Integer> firstCandidates =
+            new HashSet<>(asList(-1, -2, -4));
+        private static final Set<Character> secondCandidates =
+            new HashSet<>(asList('r', 'y'));
 
         @Property public void shouldHold(
             @Only({"-1", "-2", "-4"}) int i,
@@ -525,7 +549,8 @@ public class SamplingOnlyFromAGivenSetTest {
     public static class OnlyTrumpsAlso {
         private static int iterations;
 
-        private static final Set<Integer> candidates = new HashSet<>(asList(1, 2, 3));
+        private static final Set<Integer> candidates =
+            new HashSet<>(asList(1, 2, 3));
 
         @Property public void shouldHold(
             @Only({"1", "2", "3"}) @Also({"4", "5"}) int i) {
@@ -537,17 +562,23 @@ public class SamplingOnlyFromAGivenSetTest {
 
     @Test public void onlyTrumpsGenerators() throws Exception {
         assertThat(testResult(OnlyTrumpsGenerators.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), OnlyTrumpsGenerators.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            OnlyTrumpsGenerators.iterations);
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class OnlyTrumpsGenerators {
         private static int iterations;
 
-        private static final Set<Integer> candidates = new HashSet<>(asList(1, 2, 3));
+        private static final Set<Integer> candidates =
+            new HashSet<>(asList(1, 2, 3));
 
         @Property public void shouldHold(
-            @Only({"1", "2", "3"}) @From(AnInt.class) @Between(min = 4, max = 5) int i) {
+            @Only({"1", "2", "3"})
+            @From(AnInt.class)
+            @Between(min = 4, max = 5)
+                int i) {
 
             assertTrue(candidates.contains(i));
             ++iterations;
