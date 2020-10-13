@@ -37,6 +37,7 @@ import static java.util.Collections.unmodifiableList;
 import static org.javaruntype.type.Types.arrayComponentOf;
 
 import com.pholser.junit.quickcheck.From;
+import com.pholser.junit.quickcheck.Produced;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.reflect.AnnotatedArrayType;
@@ -52,6 +53,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.javaruntype.type.ExtendsTypeParameter;
@@ -205,10 +207,15 @@ public class ParameterTypeContext {
     public ParameterTypeContext annotate(AnnotatedElement element) {
         this.annotatedElement = element;
 
-        List<From> generators = allAnnotationsByType(element, From.class);
-        if (!generators.isEmpty() && element instanceof AnnotatedWildcardType)
-            throw new IllegalArgumentException("Wildcards cannot be marked with @From");
-
+        List<Produced> producedGenerators = allAnnotationsByType(element, Produced.class);
+        List<From> generators;
+        if (producedGenerators.size() == 1) {
+            generators = Arrays.asList(producedGenerators.get(0).value());
+        } else {
+            generators = allAnnotationsByType(element, From.class);
+            if (!generators.isEmpty() && element instanceof AnnotatedWildcardType)
+                throw new IllegalArgumentException("Wildcards cannot be marked with @From");
+        }
         addGenerators(generators);
         return this;
     }
