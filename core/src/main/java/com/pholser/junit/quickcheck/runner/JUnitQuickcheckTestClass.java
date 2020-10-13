@@ -28,7 +28,6 @@ package com.pholser.junit.quickcheck.runner;
 import static java.util.stream.Collectors.toList;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -61,28 +60,17 @@ public class JUnitQuickcheckTestClass extends TestClass {
     }
 
     @Override protected void scanAnnotatedMembers(
-        Map<Class<? extends Annotation>, List<FrameworkMethod>> annotatedMethods,
-        Map<Class<? extends Annotation>, List<FrameworkField>> annotatedFields) {
+        Map<Class<? extends Annotation>, List<FrameworkMethod>> methods,
+        Map<Class<? extends Annotation>, List<FrameworkField>> fields) {
 
         ancestry().forEachOrdered(c -> {
             for (Method each : applicableMethodsOf(c)) {
-                addToAnnotationLists(new FrameworkMethod(each), annotatedMethods);
+                addToAnnotationLists(new FrameworkMethod(each), methods);
             }
             for (Field each : applicableFieldsOf(c)) {
-                addToAnnotationLists(makeFrameworkField(each), annotatedFields);
+                addToAnnotationLists(new FrameworkField(each), fields);
             }
         });
-    }
-
-    private FrameworkField makeFrameworkField(Field field) {
-        try {
-            Constructor<FrameworkField> ctor =
-                FrameworkField.class.getDeclaredConstructor(Field.class);
-            ctor.setAccessible(true);
-            return ctor.newInstance(field);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static List<Method> applicableMethodsOf(Class<?> clazz) {
