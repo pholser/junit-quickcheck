@@ -44,12 +44,9 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Objects;
-import java.util.Set;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -613,14 +610,21 @@ public class ExhaustingAGivenSetTest {
     @Test public void manyParameters() {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(6, ManyParameters.iterations);
-        assertEquals(
-            asList(-1, -2, -4, -1, -2, -4),
-            ManyParameters.firstTestCases
-        );
-        assertEquals(
-            asList('r', 'r', 'r', 'y', 'y', 'y'),
-            ManyParameters.secondTestCases
-        );
+
+        // Create expected values
+        List<Integer> numberList = new LinkedList<>(asList(-1, -2, -4, -1, -2, -4));
+        numberList.stream().sorted();
+
+        List<Integer> characterList = new LinkedList(asList('r', 'r', 'r', 'y', 'y', 'y'));
+        characterList.stream().sorted();
+
+        // Sort the lists
+        ManyParameters.firstTestCases.stream().sorted();
+        ManyParameters.secondTestCases.stream().sorted();
+
+        // Verify
+        assertEquals(numberList, ManyParameters.firstTestCases);
+        assertEquals(characterList, ManyParameters.secondTestCases);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -643,13 +647,46 @@ public class ExhaustingAGivenSetTest {
     @Test public void manyParametersWithBooleanAndEnum() {
         assertThat(testResult(ManyParametersWithBooleanAndEnum.class), isSuccessful());
 
+//        System.out.println(ManyParametersWithBooleanAndEnum.firstTestCases.toString());
         assertEquals(
-            2 * 5 * 2 * RoundingMode.values().length,
-            ManyParametersWithBooleanAndEnum.iterations);
-        assertEquals(
-            newHashSet(3, 7),
-            new HashSet<>(ManyParametersWithBooleanAndEnum.firstTestCases));
-        assertEquals(
+                2 * 5 * 2 * RoundingMode.values().length,
+                ManyParametersWithBooleanAndEnum.iterations);
+
+        // Creating the expected sets
+        Set numberSet = new LinkedHashSet(newHashSet(3,7));
+        numberSet.stream().sorted();
+
+        Set characterSet = new LinkedHashSet(newHashSet('a', 'b', 'c', 'd', 'e'));
+        characterSet.stream().sorted();
+        System.out.println(characterSet);
+
+        Set booleanSet = new LinkedHashSet(newHashSet(true, false));
+        booleanSet.stream().sorted();
+
+        Set roundingModeSet = new LinkedHashSet(EnumSet.allOf(RoundingMode.class));
+        roundingModeSet.stream().sorted();
+//        System.out.println(EnumSet.allOf(RoundingMode.class));
+
+        // Create the actual sets
+        Set firstTestCaseSet = new LinkedHashSet(ManyParametersWithBooleanAndEnum.firstTestCases);
+        Set secondTestCaseSet = new LinkedHashSet(ManyParametersWithBooleanAndEnum.secondTestCases);
+        Set thirdTestCaseSet = new LinkedHashSet(ManyParametersWithBooleanAndEnum.thirdTestCases);
+        Set fourthTestCaseSet = new LinkedHashSet(ManyParametersWithBooleanAndEnum.fourthTestCases);
+
+        // Sort the sets
+        firstTestCaseSet.stream().sorted();
+        secondTestCaseSet.stream().sorted();
+        System.out.println("actual: character set" + secondTestCaseSet);
+        thirdTestCaseSet.stream().sorted();
+        fourthTestCaseSet.stream().sorted();
+
+        // Verify
+        assertEquals(numberSet, firstTestCaseSet);
+        assertEquals(characterSet, secondTestCaseSet);
+        assertEquals(booleanSet, thirdTestCaseSet);
+        assertEquals(roundingModeSet, fourthTestCaseSet);
+
+/*        assertEquals(
             newHashSet('a', 'b', 'c', 'd', 'e'),
             new HashSet<>(ManyParametersWithBooleanAndEnum.secondTestCases));
         assertEquals(
@@ -657,7 +694,7 @@ public class ExhaustingAGivenSetTest {
             new HashSet<>(ManyParametersWithBooleanAndEnum.thirdTestCases));
         assertEquals(
             EnumSet.allOf(RoundingMode.class),
-            new HashSet<>(ManyParametersWithBooleanAndEnum.fourthTestCases));
+            new HashSet<>(ManyParametersWithBooleanAndEnum.fourthTestCases));*/
     }
 
     @RunWith(JUnitQuickcheck.class)
