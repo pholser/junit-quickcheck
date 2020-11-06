@@ -427,7 +427,7 @@ public class GeneratorRepository implements Generators {
     }
 
     private static boolean isPrimitiveType(Type type) {
-        return type instanceof Class<?> && ((Class<?>)type).isPrimitive();
+        return type instanceof Class<?> && ((Class<?>) type).isPrimitive();
     }
 
     private static boolean hasNullableAnnotation(AnnotatedElement element) {
