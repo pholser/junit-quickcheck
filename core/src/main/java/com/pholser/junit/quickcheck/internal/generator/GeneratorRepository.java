@@ -64,10 +64,12 @@ import java.util.stream.Stream;
 import org.javaruntype.type.TypeParameter;
 
 public class GeneratorRepository implements Generators {
-    private static final Set<String> NULLABLE_ANNOTATIONS = unmodifiableSet(Stream.of(
-            "javax.annotation.Nullable", // JSR-305
-            NullAllowed.class.getCanonicalName()
-    ).collect(toSet()));
+    private static final Set<String> NULLABLE_ANNOTATIONS =
+        unmodifiableSet(
+            Stream.of(
+                "javax.annotation.Nullable", // JSR-305
+                NullAllowed.class.getCanonicalName())
+                .collect(toSet()));
 
     private final SourceOfRandomness random;
     private final Map<Class<?>, Set<Generator<?>>> generators;
@@ -157,7 +159,10 @@ public class GeneratorRepository implements Generators {
     }
 
     @SuppressWarnings("unchecked")
-    @Override public <T> Generator<T> type(Class<T> type, Class<?>... componentTypes) {
+    @Override public <T> Generator<T> type(
+        Class<T> type,
+        Class<?>... componentTypes) {
+
         Generator<T> generator =
             (Generator<T>) produceGenerator(
                 ParameterTypeContext.forClass(type));
@@ -228,8 +233,11 @@ public class GeneratorRepository implements Generators {
     public Generator<?> produceGenerator(ParameterTypeContext parameter) {
         Generator<?> generator = generatorFor(parameter);
 
-        if (!isPrimitiveType(parameter.annotatedType().getType()) && hasNullableAnnotation(parameter.annotatedElement()))
+        if (!isPrimitiveType(parameter.annotatedType().getType())
+            && hasNullableAnnotation(parameter.annotatedElement())) {
+
             generator = new NullableGenerator<>(generator);
+        }
 
         generator.provide(this);
         generator.configure(parameter.annotatedType());
@@ -250,12 +258,18 @@ public class GeneratorRepository implements Generators {
         return compose(parameter, matchingGenerators(parameter));
     }
 
-    private Generator<?> generatorForArrayType(ParameterTypeContext parameter) {
+    private Generator<?> generatorForArrayType(
+        ParameterTypeContext parameter) {
+
         ParameterTypeContext component = parameter.arrayComponentContext();
-        return new ArrayGenerator(component.getRawClass(), generatorFor(component));
+        return new ArrayGenerator(
+            component.getRawClass(),
+            generatorFor(component));
     }
 
-    private List<Generator<?>> matchingGenerators(ParameterTypeContext parameter) {
+    private List<Generator<?>> matchingGenerators(
+        ParameterTypeContext parameter) {
+
         List<Generator<?>> matches = new ArrayList<>();
 
         if (!hasGeneratorsFor(parameter)) {
@@ -293,7 +307,9 @@ public class GeneratorRepository implements Generators {
                     matches.add(generator);
                 }
             } catch (IllegalAccessException | InstantiationException e) {
-                throw new IllegalStateException("Cannot instantiate " + genClass.getName() + " using default constructor.");
+                throw new IllegalStateException(
+                    "Cannot instantiate " + genClass.getName()
+                        + " using default constructor");
             }
         }
     }
@@ -343,10 +359,14 @@ public class GeneratorRepository implements Generators {
         }
     }
 
-    private Generator<?> compose(ParameterTypeContext parameter, List<Generator<?>> matches) {
-        List<Weighted<Generator<?>>> weightings = matches.stream()
-            .map(g -> new Weighted<Generator<?>>(g, 1))
-            .collect(toList());
+    private Generator<?> compose(
+        ParameterTypeContext parameter,
+        List<Generator<?>> matches) {
+
+        List<Weighted<Generator<?>>> weightings =
+            matches.stream()
+                .map(g -> new Weighted<Generator<?>>(g, 1))
+                .collect(toList());
 
         return composeWeighted(parameter, weightings);
     }
@@ -410,11 +430,11 @@ public class GeneratorRepository implements Generators {
         return type instanceof Class<?> && ((Class<?>)type).isPrimitive();
     }
 
-    private static boolean hasNullableAnnotation(AnnotatedElement annotatedElement) {
-        return annotatedElement != null &&
-                Arrays.stream(annotatedElement.getAnnotations())
-                        .map(Annotation::annotationType)
-                        .map(Class::getCanonicalName)
-                        .anyMatch(NULLABLE_ANNOTATIONS::contains);
+    private static boolean hasNullableAnnotation(AnnotatedElement element) {
+        return element != null
+            && Arrays.stream(element.getAnnotations())
+                .map(Annotation::annotationType)
+                .map(Class::getCanonicalName)
+                .anyMatch(NULLABLE_ANNOTATIONS::contains);
     }
 }
