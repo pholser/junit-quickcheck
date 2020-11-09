@@ -58,7 +58,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import org.junit.Test;
 
@@ -547,11 +546,8 @@ public class ReflectionTest {
         Method method =
             findMethod(this.getClass(), "withMarker", String.class);
 
-        List<Annotation> annotations = new LinkedList<>(allAnnotations(method.getParameters()[0]));
-
-        System.out.println(annotations.get(0).annotationType());
-        annotations.stream().sorted();
-        System.out.println(annotations.get(0).annotationType());
+        List<Annotation> annotations =
+            allAnnotations(method.getParameters()[0]);
 
         assertEquals(4, annotations.size());
         assertEquals(X.class, annotations.get(0).annotationType());

@@ -29,10 +29,8 @@ import static com.pholser.junit.quickcheck.Objects.deepEquals;
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
-import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.When;
 import com.pholser.junit.quickcheck.generator.Generator;
@@ -47,8 +45,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,7 +63,7 @@ public abstract class CorePropertyParameterTest {
 
     @Mock private Property propertyMetadata;
     @Mock private When quantifier;
-    private List<Object> propertyParameters = new ArrayList<>();
+    private final List<Object> propertyParameters = new ArrayList<>();
 
     @Before public final void beforeEach() throws Exception {
         source = generatorSource();
@@ -94,11 +90,8 @@ public abstract class CorePropertyParameterTest {
                 distro,
                 randomForParameterGenerator,
                 new TupleParameterSampler(trials));
-        for (int i = 0; i < trials; ++i) {
+        for (int i = 0; i < trials; ++i)
             propertyParameters.add(generator.generate());
-        }
-
-        propertyParameters = propertyParameters.stream().sorted().collect(Collectors.toList());
     }
 
     protected Iterable<Generator<?>> generatorSource() {
@@ -160,16 +153,11 @@ public abstract class CorePropertyParameterTest {
     protected abstract List<?> randomValues();
 
     @Test public final void producesExpectedRandomValues() throws Exception {
-        java.lang.reflect.Field f = this.getClass().getField("TYPE_BEARER");
-        f.setAccessible(true);
-        Object[] a = f.getAnnotationsByType(From.class);
-
-        List<?> values = randomValues().stream().sorted().collect(Collectors.toList());
+        List<?> values = randomValues();
         assertEquals(trials(), values.size());
 
-        for (int i = 0; i < propertyParameters.size(); ++i) {
+        for (int i = 0; i < propertyParameters.size(); ++i)
             verifyEquivalenceOfPropertyParameter(i, values.get(i), propertyParameters.get(i));
-        }
     }
 
     protected void verifyEquivalenceOfPropertyParameter(
