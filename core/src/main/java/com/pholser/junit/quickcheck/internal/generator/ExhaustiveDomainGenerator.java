@@ -43,11 +43,31 @@ public class ExhaustiveDomainGenerator extends Generator<Object> {
         super(Object.class);
 
         HashSet set = new HashSet<>(items);
-        List<String> list = new ArrayList<String>(set);
-        Collections.sort(list);
+        List sortedList = sorting(set);
 
-        this.items = list.iterator();
+        if (sortedList != null) {
+            this.items = sortedList.iterator();
+        } else {
+            // non comparable types
+            this.items = set.iterator();
+        }
+    }
 
+    /**
+     * Sort incoming items
+     *
+     * @param set - HashSet values
+     * @return    - return the sorted list
+     */
+    private List sorting(HashSet set) {
+        try {
+            List list = new ArrayList(set);
+            Collections.sort(list);
+            return list;
+        } catch (ClassCastException e) {
+            // non comparable types
+            return null;
+        }
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
