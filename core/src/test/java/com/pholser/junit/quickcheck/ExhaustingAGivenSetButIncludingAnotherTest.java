@@ -64,8 +64,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -674,28 +672,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             expectedCount,
             ManyParametersWithBooleanAndEnum.iterations);
-        /*for (int i = 0; i < expectedCount / 4; ++i) {
-            List<Integer> numberList = asList(3, 7);
-            List<Integer> sortedNumberList = numberList.stream().sorted().collect(Collectors.toList());
-
-            List<Integer> sortedFirstTestCases = ManyParametersWithBooleanAndEnum.firstTestCases.stream().sorted().collect(Collectors.toList());
-
-            assertEquals(
-                    String.valueOf(i),
-                    sortedNumberList,
-                    sortedFirstTestCases.subList(
-                            i * 4,
-                            i * 4 + 2));
-        }*/
-        System.out.println("ManyParametersWithBooleanAndEnum.firstTestCases: " + ManyParametersWithBooleanAndEnum.firstTestCases);
         for (int i = 0; i < expectedCount / 4; ++i) {
-            System.out.println("iteration i: " + String.valueOf(i));
-            System.out.println("iteration i: " + asList(3, 7));
-            System.out.println("iteration i: " + ManyParametersWithBooleanAndEnum.firstTestCases.subList(
-                    i * 4,
-                    i * 4 + 2));
-            System.out.println("---------------------------");
-
             assertEquals(
                 String.valueOf(i),
                 asList(3, 7),
