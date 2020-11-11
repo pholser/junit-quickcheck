@@ -28,9 +28,13 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+
+import java.util.Collections;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExhaustiveDomainGenerator extends Generator<Object> {
     private final Iterator<?> items;
@@ -38,7 +42,18 @@ public class ExhaustiveDomainGenerator extends Generator<Object> {
     public ExhaustiveDomainGenerator(Collection<?> items) {
         super(Object.class);
 
-        this.items = new HashSet<>(items).iterator();
+        List list = new ArrayList(new HashSet<>(items));
+
+        try {
+            // sort list
+            Collections.sort(list);
+
+        } catch (ClassCastException e) {
+            // non comparable types such as Target type will go through
+            // this exception which cannot be sorted.
+        }
+
+        this.items = list.iterator();
     }
 
     @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {

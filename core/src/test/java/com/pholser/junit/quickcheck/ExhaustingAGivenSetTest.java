@@ -614,7 +614,7 @@ public class ExhaustingAGivenSetTest {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(6, ManyParameters.iterations);
         assertEquals(
-            asList(-1, -2, -4, -1, -2, -4),
+            asList(-4, -2, -1, -4, -2, -1),
             ManyParameters.firstTestCases
         );
         assertEquals(

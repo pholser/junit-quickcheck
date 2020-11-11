@@ -632,16 +632,16 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(16, ManyParameters.iterations);
         assertEquals(
-            asList(-1, -2, -4),
+            asList(-4, -2, -1),
             ManyParameters.firstTestCases.subList(0, 3));
         assertEquals(
-            asList(-1, -2, -4),
+            asList(-4, -2, -1),
             ManyParameters.firstTestCases.subList(4, 7));
         assertEquals(
-            asList(-1, -2, -4),
+            asList(-4, -2, -1),
             ManyParameters.firstTestCases.subList(8, 11));
         assertEquals(
-            asList(-1, -2, -4),
+            asList(-4, -2, -1),
             ManyParameters.firstTestCases.subList(12, 15));
         assertEquals(
             asList('r', 'r', 'r', 'r', 'y', 'y', 'y', 'y'),
@@ -721,6 +721,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Character> secondTestCases = new LinkedList<>();
         private static final List<Boolean> thirdTestCases = new LinkedList<>();
         private static final List<RoundingMode> fourthTestCases = new LinkedList<>();
+
 
         @Property(trials = 4, mode = EXHAUSTIVE)
         public void shouldHold(
