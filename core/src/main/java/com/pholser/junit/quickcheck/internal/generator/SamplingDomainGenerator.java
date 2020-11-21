@@ -41,7 +41,10 @@ public class SamplingDomainGenerator extends Generator<Object> {
         this.items = new ArrayList<>(items);
     }
 
-    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Object generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.choose(items);
     }
 }

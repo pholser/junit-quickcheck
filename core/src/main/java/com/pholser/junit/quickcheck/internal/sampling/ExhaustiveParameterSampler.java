@@ -125,8 +125,9 @@ public class ExhaustiveParameterSampler implements ParameterSampler {
                 repository.produceGenerator(p));
         }
 
-        if (Boolean.class.equals(maybeWrap(p.getRawClass())))
+        if (Boolean.class.equals(maybeWrap(p.getRawClass()))) {
             return new ExhaustiveDomainGenerator(asList(true, false));
+        }
 
         if (p.isEnum()) {
             return new ExhaustiveDomainGenerator(

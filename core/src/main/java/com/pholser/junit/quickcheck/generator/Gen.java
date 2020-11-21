@@ -82,7 +82,9 @@ public interface Gen<T> {
      * another kind of generation strategy
      * @return a new generation strategy
      */
-    default <U> Gen<U> flatMap(Function<? super T, ? extends Gen<? extends U>> mapper) {
+    default <U> Gen<U> flatMap(
+        Function<? super T, ? extends Gen<? extends U>> mapper) {
+
         return (random, status) ->
             mapper.apply(_gen(random, status))._gen(random, status);
     }
@@ -133,8 +135,9 @@ public interface Gen<T> {
 
         return (random, status) -> {
             List<T> values = new ArrayList<>();
-            for (int i = 0; i < times; ++i)
+            for (int i = 0; i < times; ++i) {
                 values.add(_gen(random, status));
+            }
             return values;
         };
     }
@@ -234,8 +237,8 @@ public interface Gen<T> {
     }
 
     /**
-     * @deprecated For use by junit-quickcheck only -- when we migrate to Java 9,
-     * this method will likely become {@code private}.
+     * @deprecated For use by junit-quickcheck only -- when we migrate to Java
+     * >= 9, this method will likely become {@code private}.
      *
      * @param random source of randomness to be used when generating the value
      * @param status an object that can be used to influence the generated

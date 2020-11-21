@@ -81,7 +81,9 @@ public class SourceOfRandomness {
             throw new IllegalStateException(ex);
         }
 
-        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
+        ByteArrayInputStream bytesIn =
+            new ByteArrayInputStream(bytesOut.toByteArray());
+
         try (ObjectInputStream objectIn = new ObjectInputStream(bytesIn)) {
             return (Random) objectIn.readObject();
         } catch (IOException ex) {
@@ -382,15 +384,18 @@ public class SourceOfRandomness {
         long maxSeconds,
         long maxNanos) {
 
-        BigInteger nanoMin = BigInteger.valueOf(minSeconds)
-            .multiply(NANOS_PER_SECOND)
-            .add(BigInteger.valueOf(minNanos));
-        BigInteger nanoMax = BigInteger.valueOf(maxSeconds)
-            .multiply(NANOS_PER_SECOND)
-            .add(BigInteger.valueOf(maxNanos));
+        BigInteger nanoMin =
+            BigInteger.valueOf(minSeconds)
+                .multiply(NANOS_PER_SECOND)
+                .add(BigInteger.valueOf(minNanos));
+        BigInteger nanoMax =
+            BigInteger.valueOf(maxSeconds)
+                .multiply(NANOS_PER_SECOND)
+                .add(BigInteger.valueOf(maxNanos));
 
-        BigInteger[] generated = Ranges.choose(this, nanoMin, nanoMax)
-            .divideAndRemainder(NANOS_PER_SECOND);
+        BigInteger[] generated =
+            Ranges.choose(this, nanoMin, nanoMax)
+                .divideAndRemainder(NANOS_PER_SECOND);
 
         return new long[] { generated[0].longValue(), generated[1].longValue() };
     }

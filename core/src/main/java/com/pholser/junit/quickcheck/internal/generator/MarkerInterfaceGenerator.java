@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
 public class MarkerInterfaceGenerator<T> extends Generator<T> {
     private final Class<T> markerType;
 
-    public MarkerInterfaceGenerator(Class<T> markerType) {
+    MarkerInterfaceGenerator(Class<T> markerType) {
         super(markerType);
 
         this.markerType = markerType;
@@ -63,7 +63,7 @@ public class MarkerInterfaceGenerator<T> extends Generator<T> {
         private final DefaultMethodHandleMaker methodHandleMaker =
             new DefaultMethodHandleMaker();
 
-        public MarkerInvocationHandler(Class<T> markerType) {
+        MarkerInvocationHandler(Class<T> markerType) {
             this.markerType = markerType;
         }
 

@@ -44,13 +44,16 @@ import java.util.List;
 public class CompositeGenerator extends Generator<Object> {
     private final List<Weighted<Generator<?>>> composed;
 
-    public CompositeGenerator(List<Weighted<Generator<?>>> composed) {
+    CompositeGenerator(List<Weighted<Generator<?>>> composed) {
         super(Object.class);
 
         this.composed = new ArrayList<>(composed);
     }
 
-    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Object generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         Generator<?> choice = Items.chooseWeighted(composed, random);
         return choice.generate(random, status);
     }
@@ -61,7 +64,10 @@ public class CompositeGenerator extends Generator<Object> {
             .anyMatch(g -> g.canShrink(larger));
     }
 
-    @Override public List<Object> doShrink(SourceOfRandomness random, Object larger) {
+    @Override public List<Object> doShrink(
+        SourceOfRandomness random,
+        Object larger) {
+
         List<Weighted<Generator<?>>> shrinkers =
             composed.stream()
                 .filter(w -> w.item.canShrink(larger))
@@ -71,11 +77,11 @@ public class CompositeGenerator extends Generator<Object> {
         return new ArrayList<>(choice.shrink(random, larger));
     }
 
-    public Generator<?> composed(int index) {
+    Generator<?> composed(int index) {
         return composed.get(index).item;
     }
 
-    public int numberOfComposedGenerators() {
+    int numberOfComposedGenerators() {
         return composed.size();
     }
 
@@ -128,8 +134,9 @@ public class CompositeGenerator extends Generator<Object> {
     }
 
     @Override public void addComponentGenerators(List<Generator<?>> newComponents) {
-        for (Weighted<Generator<?>> each : composed)
+        for (Weighted<Generator<?>> each : composed) {
             each.item.addComponentGenerators(newComponents);
+        }
     }
 
     private void installCandidates(
@@ -156,7 +163,9 @@ public class CompositeGenerator extends Generator<Object> {
             .toString();
     }
 
-    private static List<String> configurationAnnotationNames(AnnotatedElement element) {
+    private static List<String> configurationAnnotationNames(
+        AnnotatedElement element) {
+
         return configurationAnnotationsOn(element).stream()
             .map(a -> a.annotationType().getName())
             .collect(toList());

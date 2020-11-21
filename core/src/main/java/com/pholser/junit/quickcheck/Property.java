@@ -86,8 +86,8 @@ public @interface Property {
     int maxShrinkTime() default 60_000;
 
     /**
-     * @return callback that it is executed if a minimal counterexample is found
-     * (after shrinking)
+     * @return callback that it is executed if a minimal counterexample
+     * is found (after shrinking)
      */
     Class<? extends MinimalCounterexampleHook> onMinimalCounterexample()
         default NilMinimalCounterexampleHook.class;

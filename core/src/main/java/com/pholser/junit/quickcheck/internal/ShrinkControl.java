@@ -35,12 +35,15 @@ public class ShrinkControl {
     private final int maxShrinkTime;
     private final MinimalCounterexampleHook onMinimalCounterexample;
 
-    public ShrinkControl(Property marker) throws IllegalAccessException, InstantiationException {
+    public ShrinkControl(Property marker)
+        throws IllegalAccessException, InstantiationException {
+
         this.shouldShrink = marker.shrink();
         this.maxShrinks = marker.maxShrinks();
         this.maxShrinkDepth = marker.maxShrinkDepth();
         this.maxShrinkTime = marker.maxShrinkTime();
-        this.onMinimalCounterexample = marker.onMinimalCounterexample().newInstance();
+        this.onMinimalCounterexample =
+            marker.onMinimalCounterexample().newInstance();
     }
 
     public boolean shouldShrink() {

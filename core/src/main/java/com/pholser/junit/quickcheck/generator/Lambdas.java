@@ -111,7 +111,10 @@ public final class Lambdas {
             this.attempts = attempts;
         }
 
-        @Override public Object invoke(Object proxy, Method method, Object[] args)
+        @Override public Object invoke(
+            Object proxy,
+            Method method,
+            Object[] args)
             throws Throwable {
 
             if (Object.class.equals(method.getDeclaringClass()))
@@ -122,11 +125,18 @@ public final class Lambdas {
             SourceOfRandomness source = new SourceOfRandomness(new Random());
             source.setSeed(Arrays.hashCode(args));
             GenerationStatus status =
-                new SimpleGenerationStatus(new GeometricDistribution(), source, attempts);
+                new SimpleGenerationStatus(
+                    new GeometricDistribution(),
+                    source,
+                    attempts);
             return returnValueGenerator.generate(source, status);
         }
 
-        private Object handleObjectMethod(Object proxy, Method method, Object[] args) {
+        private Object handleObjectMethod(
+            Object proxy,
+            Method method,
+            Object[] args) {
+
             if ("equals".equals(method.getName()))
                 return proxy == args[0];
 

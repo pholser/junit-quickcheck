@@ -35,14 +35,17 @@ public class LambdaGenerator<T, U> extends Generator<T> {
     private final Class<T> lambdaType;
     private final Generator<U> returnValueGenerator;
 
-    public LambdaGenerator(Class<T> lambdaType, Generator<U> returnValueGenerator) {
+    LambdaGenerator(Class<T> lambdaType, Generator<U> returnValueGenerator) {
         super(lambdaType);
 
         this.lambdaType = lambdaType;
         this.returnValueGenerator = returnValueGenerator;
     }
 
-    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public T generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return makeLambda(lambdaType, returnValueGenerator, status);
     }
 }

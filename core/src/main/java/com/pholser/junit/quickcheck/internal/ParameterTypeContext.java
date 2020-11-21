@@ -163,9 +163,8 @@ public class ParameterTypeContext {
     private static int parameterIndex(Executable exec, Parameter parameter) {
         Parameter[] parameters = exec.getParameters();
         for (int i = 0; i < parameters.length; ++i) {
-            if (parameters[i].equals(parameter)) {
+            if (parameters[i].equals(parameter))
                 return i;
-            }
         }
 
         throw new IllegalStateException(
@@ -207,15 +206,22 @@ public class ParameterTypeContext {
     public ParameterTypeContext annotate(AnnotatedElement element) {
         this.annotatedElement = element;
 
-        List<Produced> producedGenerators = allAnnotationsByType(element, Produced.class);
+        List<Produced> producedGenerators =
+            allAnnotationsByType(element, Produced.class);
+
         List<From> generators;
         if (producedGenerators.size() == 1) {
             generators = Arrays.asList(producedGenerators.get(0).value());
         } else {
             generators = allAnnotationsByType(element, From.class);
-            if (!generators.isEmpty() && element instanceof AnnotatedWildcardType)
-                throw new IllegalArgumentException("Wildcards cannot be marked with @From");
+            if (!generators.isEmpty()
+                && element instanceof AnnotatedWildcardType) {
+
+                throw new IllegalArgumentException(
+                    "Wildcards cannot be marked with @From");
+            }
         }
+
         addGenerators(generators);
         return this;
     }
@@ -262,7 +268,9 @@ public class ParameterTypeContext {
         }
     }
 
-    private Generator<?> makeGenerator(Class<? extends Generator> generatorType) {
+    private Generator<?> makeGenerator(
+        Class<? extends Generator> generatorType) {
+
         Constructor<? extends Generator> ctor;
 
         try {
@@ -286,7 +294,9 @@ public class ParameterTypeContext {
 
     private void ensureCorrectType(Generator<?> generator) {
         for (Class<?> each : generator.types()) {
-            if (!maybeWrap(resolved.getRawClass()).isAssignableFrom(maybeWrap(each))) {
+            if (!maybeWrap(resolved.getRawClass())
+                .isAssignableFrom(maybeWrap(each))) {
+
                 throw new IllegalArgumentException(
                     format(
                         EXPLICIT_GENERATOR_TYPE_MISMATCH_MESSAGE,
@@ -355,7 +365,9 @@ public class ParameterTypeContext {
             .allowMixedTypes(true);
     }
 
-    private AnnotatedType annotatedArrayComponent(org.javaruntype.type.Type<?> component) {
+    private AnnotatedType annotatedArrayComponent(
+        org.javaruntype.type.Type<?> component) {
+
         return parameterType instanceof AnnotatedArrayType
             ? ((AnnotatedArrayType) parameterType).getAnnotatedGenericComponentType()
             : FakeAnnotatedTypeFactory.makeFrom(component.getComponentClass());
@@ -377,10 +389,13 @@ public class ParameterTypeContext {
         return resolved.getTypeParameters();
     }
 
-    public List<ParameterTypeContext> typeParameterContexts(SourceOfRandomness random) {
-        List<ParameterTypeContext> typeParameterContexts = new ArrayList<>();
+    public List<ParameterTypeContext> typeParameterContexts(
+        SourceOfRandomness random) {
+
+        List<ParameterTypeContext> typeParamContexts = new ArrayList<>();
         List<TypeParameter<?>> typeParameters = getTypeParameters();
-        List<AnnotatedType> annotatedTypeParameters = annotatedComponentTypes(annotatedType());
+        List<AnnotatedType> annotatedTypeParameters =
+            annotatedComponentTypes(annotatedType());
 
         for (int i = 0; i < typeParameters.size(); ++i) {
             TypeParameter<?> p = typeParameters.get(i);
@@ -390,18 +405,18 @@ public class ParameterTypeContext {
                     : zilch();
 
             if (p instanceof StandardTypeParameter<?>)
-                addStandardTypeParameterContext(typeParameterContexts, p, a);
+                addStandardTypeParameterContext(typeParamContexts, p, a);
             else if (p instanceof WildcardTypeParameter)
-                addWildcardTypeParameterContext(typeParameterContexts, a);
+                addWildcardTypeParameterContext(typeParamContexts, a);
             else if (p instanceof ExtendsTypeParameter<?>)
-                addExtendsTypeParameterContext(typeParameterContexts, p, a);
+                addExtendsTypeParameterContext(typeParamContexts, p, a);
             else {
                 // must be "? super X"
-                addSuperTypeParameterContext(random, typeParameterContexts, p, a);
+                addSuperTypeParameterContext(random, typeParamContexts, p, a);
             }
         }
 
-        return typeParameterContexts;
+        return typeParamContexts;
     }
 
     private void addStandardTypeParameterContext(

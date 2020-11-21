@@ -96,8 +96,9 @@ public class Fields<T> extends Generator<T> {
         super.provide(provided);
 
         fieldGenerators.clear();
-        for (Field each : fields)
+        for (Field each : fields) {
             fieldGenerators.add(gen().field(each));
+        }
     }
 
     @Override public void configure(AnnotatedType annotatedType) {

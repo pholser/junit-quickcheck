@@ -87,9 +87,9 @@ class PropertyStatement extends Statement {
 
         MethodGenericsContext generics =
             GenericsResolver.resolve(testClass.getJavaClass())
-                .method(this.method.getMethod());
+                .method(method.getMethod());
         List<PropertyParameterGenerationContext> paramContexts =
-            Arrays.stream(this.method.getMethod().getParameters())
+            Arrays.stream(method.getMethod().getParameters())
                 .map(p -> parameterContextFor(p, generics))
                 .map(p -> new PropertyParameterGenerationContext(
                     p,
@@ -101,8 +101,11 @@ class PropertyStatement extends Statement {
                 .collect(toList());
 
         Stream<List<SeededValue>> sample = sampler.sample(paramContexts);
-        for (List<SeededValue> args : (Iterable<List<SeededValue>>) sample::iterator)
+        for (List<SeededValue> args :
+                (Iterable<List<SeededValue>>) sample::iterator) {
+
             property(args, shrinkControl).verify();
+        }
 
         if (successes == 0 && !assumptionViolations.isEmpty()) {
             throw new NoValuesSatisfiedPropertyAssumptions(
@@ -126,7 +129,8 @@ class PropertyStatement extends Statement {
         List<PropertyParameterGenerationContext> params =
             arguments.stream().map(SeededValue::parameter).collect(toList());
         Object[] args = arguments.stream().map(SeededValue::value).toArray();
-        long[] seeds = arguments.stream().mapToLong(SeededValue::seed).toArray();
+        long[] seeds =
+            arguments.stream().mapToLong(SeededValue::seed).toArray();
 
         return new PropertyVerifier(
             testClass,
@@ -137,8 +141,13 @@ class PropertyStatement extends Statement {
             assumptionViolations::add,
             (e, action) -> {
                 if (!shrinkControl.shouldShrink()) {
-                    shrinkControl.onMinimalCounterexample().handle(args, action);
-                    throw counterexampleFound(method.getName(), args, seeds, e);
+                    shrinkControl.onMinimalCounterexample()
+                        .handle(args, action);
+                    throw counterexampleFound(
+                        method.getName(),
+                        args,
+                        seeds,
+                        e);
                 }
 
                 try {
@@ -185,7 +194,8 @@ class PropertyStatement extends Statement {
             case EXHAUSTIVE:
                 return new ExhaustiveParameterSampler(marker.trials());
             default:
-                throw new AssertionError("Don't recognize mode " + marker.mode());
+                throw new AssertionError(
+                    "Don't recognize mode " + marker.mode());
         }
     }
 }

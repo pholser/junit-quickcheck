@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
-    @SuppressWarnings("rawtypes") private final ServiceLoader<Generator> loader;
+    @SuppressWarnings("rawtypes")
+    private final ServiceLoader<Generator> loader;
 
     public ServiceLoaderGeneratorSource() {
         loader = ServiceLoader.load(Generator.class);
@@ -44,8 +45,9 @@ public class ServiceLoaderGeneratorSource implements Iterable<Generator<?>> {
     @Override public Iterator<Generator<?>> iterator() {
         List<Generator<?>> generators = new ArrayList<>();
 
-        for (Generator<?> each : loader)
+        for (Generator<?> each : loader) {
             generators.add(each);
+        }
 
         generators.sort(comparing(g -> g.getClass().getName()));
 

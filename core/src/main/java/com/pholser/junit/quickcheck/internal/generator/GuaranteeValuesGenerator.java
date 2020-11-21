@@ -43,7 +43,10 @@ public class GuaranteeValuesGenerator extends Generator<Object> {
         this.rest = rest;
     }
 
-    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Object generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return guaranteed.hasNext()
             ? guaranteed.generate(random, status)
             : rest.generate(random, status);

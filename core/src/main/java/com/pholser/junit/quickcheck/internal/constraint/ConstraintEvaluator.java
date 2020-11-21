@@ -35,7 +35,8 @@ public class ConstraintEvaluator {
 
     public ConstraintEvaluator(String expression) {
         try {
-            constraint = expression == null ? null : Ognl.parseExpression(expression);
+            constraint =
+                expression == null ? null : Ognl.parseExpression(expression);
             bindings = new ConstraintOgnlContext();
         } catch (OgnlException ex) {
             throw new EvaluationException(ex);
@@ -44,7 +45,8 @@ public class ConstraintEvaluator {
 
     public boolean evaluate() {
         try {
-            return constraint == null || (Boolean) Ognl.getValue(constraint, bindings, (Object) null);
+            return constraint == null
+                || (Boolean) Ognl.getValue(constraint, bindings, (Object) null);
         } catch (OgnlException ex) {
             throw new EvaluationException(ex);
         }
@@ -68,8 +70,10 @@ public class ConstraintEvaluator {
 
     private static class ConstraintOgnlContext extends OgnlContext {
         @Override public Object get(Object key) {
-            if (!containsKey(key))
-                throw new EvaluationException("Referring to undefined variable '" + key + "']");
+            if (!containsKey(key)) {
+                throw new EvaluationException(
+                    "Referring to undefined variable '" + key + "']");
+            }
             return super.get(key);
         }
     }

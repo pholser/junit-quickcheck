@@ -89,7 +89,7 @@ public final class Reflection {
         }
     }
 
-    public static <T> Constructor<T> findDeclaredConstructor(
+    static <T> Constructor<T> findDeclaredConstructor(
         Class<T> type,
         Class<?>... parameterTypes) {
 
@@ -161,7 +161,7 @@ public final class Reflection {
         return annotations;
     }
 
-    public static <T extends Annotation> List<T> allAnnotationsByType(
+    static <T extends Annotation> List<T> allAnnotationsByType(
         AnnotatedElement e,
         Class<T> type) {
 
@@ -209,8 +209,9 @@ public final class Reflection {
     public static List<Field> allDeclaredFieldsOf(Class<?> type) {
         List<Field> allFields = new ArrayList<>();
 
-        for (Class<?> c = type; c != null; c = c.getSuperclass())
+        for (Class<?> c = type; c != null; c = c.getSuperclass()) {
             Collections.addAll(allFields, c.getDeclaredFields());
+        }
 
         List<Field> results =
             allFields.stream()
@@ -239,7 +240,7 @@ public final class Reflection {
         }
     }
 
-    public static boolean jdk9OrBetter() {
+    static boolean jdk9OrBetter() {
         try {
             Runtime.class.getMethod("version");
             return true;

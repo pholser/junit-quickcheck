@@ -55,7 +55,7 @@ public class JUnitQuickcheckTestClass extends TestClass {
      *
      * @param testClass class with junit-quickcheck tests
      */
-    public JUnitQuickcheckTestClass(Class<?> testClass) {
+    JUnitQuickcheckTestClass(Class<?> testClass) {
         super(testClass);
     }
 
@@ -95,8 +95,9 @@ public class JUnitQuickcheckTestClass extends TestClass {
 
     private static Stream<Class<?>> superclassHierarchy(Class<?> clazz) {
         List<Class<?>> hierarchy = new ArrayList<>();
-        for (Class<?> c = clazz; c != null; c = c.getSuperclass())
+        for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
             hierarchy.add(c);
+        }
         return hierarchy.stream();
     }
 

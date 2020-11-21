@@ -36,9 +36,9 @@ package com.pholser.junit.quickcheck;
 public interface MinimalCounterexampleHook {
     /**
      * @param counterexample the minimal counterexample (after shrinking)
-     * @param action work to perform with the minimal counterexample; for example,
-     * this could repeat the test using the same inputs. This action should
-     * be safely callable multiple times.
+     * @param action work to perform with the minimal counterexample;
+     * for example, this could repeat the test using the same inputs.
+     * This action should be safely callable multiple times.
      */
     void handle(Object[] counterexample, Runnable action);
 }

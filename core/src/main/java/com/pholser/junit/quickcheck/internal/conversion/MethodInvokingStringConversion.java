@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
 public class MethodInvokingStringConversion implements StringConversion {
     private final Method method;
 
-    public MethodInvokingStringConversion(Method method) {
+    MethodInvokingStringConversion(Method method) {
         this.method = method;
     }
 

@@ -40,7 +40,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropertyParameterGenerationContext extends AbstractGenerationStatus {
+public class PropertyParameterGenerationContext
+    extends AbstractGenerationStatus {
+
     private final PropertyParameterContext parameter;
     private final ConstraintEvaluator evaluator;
     private final Generator<?> generator;
@@ -61,7 +63,8 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
 
         this.parameter = parameter;
         this.evaluator = new ConstraintEvaluator(parameter.constraint());
-        this.generator = sampler.decideGenerator(repository, parameter.typeContext());
+        this.generator =
+            sampler.decideGenerator(repository, parameter.typeContext());
         this.sampleSize = sampler.sizeFactor(parameter.typeContext());
     }
 
@@ -79,8 +82,10 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         Object nextValue;
 
         for (nextValue = generator.generate(random(), this);
-            !evaluate(nextValue);
-            nextValue = generator.generate(random(), this));
+            !evaluate(nextValue);) {
+
+            nextValue = generator.generate(random(), this);
+        }
 
         return nextValue;
     }
@@ -95,10 +100,11 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
         evaluator.bind(value);
         boolean result = evaluator.evaluate();
 
-        if (result)
+        if (result) {
             ++successfulEvaluations;
-        else
+        } else {
             ++discards;
+        }
 
         if (tooManyDiscards()) {
             throw new DiscardRatioExceededException(
@@ -149,7 +155,9 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
             : ZERO;
     }
 
-    public static class DiscardRatioExceededException extends RuntimeException {
+    public static class DiscardRatioExceededException
+        extends RuntimeException {
+
         static final String MESSAGE_TEMPLATE =
             "For parameter [%s] with discard ratio [%d],"
                 + " %d unsuccessful values and %d successes. Stopping.";
@@ -166,8 +174,7 @@ public class PropertyParameterGenerationContext extends AbstractGenerationStatus
                 parameter.typeContext().name(),
                 parameter.discardRatio(),
                 discards,
-                successfulEvaluations)
-            );
+                successfulEvaluations));
         }
     }
 }

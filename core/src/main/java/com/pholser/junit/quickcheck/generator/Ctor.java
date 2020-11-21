@@ -77,7 +77,10 @@ public class Ctor<T> extends Generator<T> {
         this.parameters = ctor.getParameters();
     }
 
-    @Override public T generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public T generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return instantiate(ctor, arguments(random, status));
     }
 
@@ -85,26 +88,33 @@ public class Ctor<T> extends Generator<T> {
         super.provide(provided);
 
         parameterGenerators.clear();
-        for (Parameter each : parameters)
+        for (Parameter each : parameters) {
             parameterGenerators.add(gen().parameter(each));
+        }
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        for (int i = 0; i < parameters.length; ++i)
-            parameterGenerators.get(i).configure(parameters[i].getAnnotatedType());
+        for (int i = 0; i < parameters.length; ++i) {
+            parameterGenerators.get(i)
+                .configure(parameters[i].getAnnotatedType());
+        }
     }
 
     @Override public Ctor<T> copy() {
         return new Ctor<>(ctor);
     }
 
-    private Object[] arguments(SourceOfRandomness random, GenerationStatus status) {
+    private Object[] arguments(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         Object[] args = new Object[parameters.length];
 
-        for (int i = 0; i < args.length; ++i)
+        for (int i = 0; i < args.length; ++i) {
             args[i] = parameterGenerators.get(i).generate(random, status);
+        }
 
         return args;
     }

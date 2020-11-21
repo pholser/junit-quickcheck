@@ -46,14 +46,18 @@ public class GeometricDistribution {
     }
 
     double probabilityOfMean(double mean) {
-        if (mean <= 0)
-            throw new IllegalArgumentException("Need a positive mean, got " + mean);
+        if (mean <= 0) {
+            throw new IllegalArgumentException(
+                "Need a positive mean, got " + mean);
+        }
 
         return 1 / mean;
     }
 
     private void ensureProbability(double p) {
-        if (p <= 0 || p > 1)
-            throw new IllegalArgumentException("Need a probability in (0, 1], got " + p);
+        if (p <= 0 || p > 1) {
+            throw new IllegalArgumentException(
+                "Need a probability in (0, 1], got " + p);
+        }
     }
 }

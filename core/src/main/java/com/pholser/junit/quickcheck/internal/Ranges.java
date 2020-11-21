@@ -49,11 +49,8 @@ public final class Ranges {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends Comparable<? super T>> int checkRange(
-        Type type,
-        T min,
-        T max) {
-
+    public static <T extends Comparable<? super T>>
+    int checkRange(Type type, T min, T max) {
         int comparison = min.compareTo(max);
         if (comparison > 0) {
             throw new IllegalArgumentException(

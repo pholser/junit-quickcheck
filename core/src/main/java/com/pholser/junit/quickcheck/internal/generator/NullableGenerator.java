@@ -39,85 +39,80 @@ import org.javaruntype.type.TypeParameter;
 
 class NullableGenerator<T> extends Generator<T> {
     private final Generator<T> delegate;
-    private float probabilityOfNull = (Float) defaultValueOf(NullAllowed.class, "probability");
+    private float probabilityOfNull =
+        (Float) defaultValueOf(NullAllowed.class, "probability");
 
     NullableGenerator(Generator<T> delegate) {
         super(delegate.types());
         this.delegate = delegate;
     }
 
-    @Override
-    public T generate(SourceOfRandomness random, GenerationStatus status) {
-        if (random.nextFloat(0.0f, 1.0f) < probabilityOfNull) {
-            return null;
-        }
-        else {
-            return delegate.generate(random, status);
-        }
+    @Override public T generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return random.nextFloat(0, 1) < probabilityOfNull
+            ? null
+            : delegate.generate(random, status);
     }
 
     private void configure(NullAllowed nullAllowed) {
-        if (nullAllowed.probability() >= 0.0f && nullAllowed.probability() <= 1.0f) {
+        if (nullAllowed.probability() >= 0 && nullAllowed.probability() <= 1) {
             this.probabilityOfNull = nullAllowed.probability();
-        }
-        else {
-            throw new IllegalArgumentException("NullAllowed probability must be in the [0,1] range");
+        } else {
+            throw new IllegalArgumentException(
+                "NullAllowed probability must be in the range [0, 1]");
         }
     }
 
-    @Override
-    public boolean canRegisterAsType(Class<?> type) {
+    @Override public boolean canRegisterAsType(Class<?> type) {
         return delegate.canRegisterAsType(type);
     }
 
-    @Override
-    public boolean hasComponents() {
+    @Override public boolean hasComponents() {
         return delegate.hasComponents();
     }
 
-    @Override
-    public int numberOfNeededComponents() {
+    @Override public int numberOfNeededComponents() {
         return delegate.numberOfNeededComponents();
     }
 
-    @Override
-    public void addComponentGenerators(List<Generator<?>> newComponents) {
+    @Override public void addComponentGenerators(
+        List<Generator<?>> newComponents) {
+
         delegate.addComponentGenerators(newComponents);
     }
 
-    @Override
-    public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+    @Override public boolean canGenerateForParametersOfTypes(
+        List<TypeParameter<?>> typeParameters) {
+
         return delegate.canGenerateForParametersOfTypes(typeParameters);
     }
 
-    @Override
-    public void configure(AnnotatedType annotatedType) {
-        Optional.ofNullable(annotatedType.getAnnotation(NullAllowed.class)).ifPresent(this::configure);
+    @Override public void configure(AnnotatedType annotatedType) {
+        Optional.ofNullable(annotatedType.getAnnotation(NullAllowed.class))
+            .ifPresent(this::configure);
+
         delegate.configure(annotatedType);
     }
 
-    @Override
-    public void configure(AnnotatedElement element) {
+    @Override public void configure(AnnotatedElement element) {
         delegate.configure(element);
     }
 
-    @Override
-    public void provide(Generators provided) {
+    @Override public void provide(Generators provided) {
         delegate.provide(provided);
     }
 
-    @Override
-    public boolean canShrink(Object larger) {
+    @Override public boolean canShrink(Object larger) {
         return delegate.canShrink(larger);
     }
 
-    @Override
-    public List<T> doShrink(SourceOfRandomness random, T larger) {
+    @Override public List<T> doShrink(SourceOfRandomness random, T larger) {
         return delegate.doShrink(random, larger);
     }
 
-    @Override
-    public BigDecimal magnitude(Object value) {
+    @Override public BigDecimal magnitude(Object value) {
         return delegate.magnitude(value);
     }
 }

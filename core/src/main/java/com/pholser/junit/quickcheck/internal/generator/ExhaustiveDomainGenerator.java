@@ -42,21 +42,22 @@ public class ExhaustiveDomainGenerator extends Generator<Object> {
     public ExhaustiveDomainGenerator(Collection<?> items) {
         super(Object.class);
 
-        List list = new ArrayList(new HashSet<>(items));
+        List list = new ArrayList<>(new HashSet<>(items));
 
         try {
-            // sort list
             Collections.sort(list);
-
-        } catch (ClassCastException e) {
-            // non comparable types such as Target type will go through
+        } catch (ClassCastException forgiven) {
+            // non-Comparable types such as Target type will go through
             // this exception which cannot be sorted.
         }
 
         this.items = list.iterator();
     }
 
-    @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Object generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return items.next();
     }
 

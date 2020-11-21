@@ -294,9 +294,9 @@ public class GeneratorRepository implements Generators {
 
         Class<?> genClass;
         try {
-            genClass = Class.forName(parameter.getRawClass().getName() + "Gen");
-        } catch (ClassNotFoundException e) {
-            // class with naming convention doesn't exist
+            genClass =
+                Class.forName(parameter.getRawClass().getName() + "Gen");
+        } catch (ClassNotFoundException noGenObeyingConvention) {
             return;
         }
 
@@ -324,9 +324,10 @@ public class GeneratorRepository implements Generators {
                 parameter.methodReturnTypeContext(method);
             Generator<?> returnTypeGenerator = generatorFor(returnType);
 
-            Generator<?> lambda =
-                new LambdaGenerator<>(parameter.getRawClass(), returnTypeGenerator);
-            matches.add(lambda);
+            matches.add(
+                new LambdaGenerator<>(
+                    parameter.getRawClass(),
+                    returnTypeGenerator));
         }
     }
 
@@ -336,9 +337,8 @@ public class GeneratorRepository implements Generators {
 
         Class<?> rawClass = parameter.getRawClass();
         if (isMarkerInterface(rawClass)) {
-            Generator<?> marker =
-                new MarkerInterfaceGenerator<>(parameter.getRawClass());
-            matches.add(marker);
+            matches.add(
+                new MarkerInterfaceGenerator<>(parameter.getRawClass()));
         }
     }
 
@@ -349,9 +349,9 @@ public class GeneratorRepository implements Generators {
         List<Generator<?>> candidates = generatorsFor(parameter);
         List<TypeParameter<?>> typeParameters = parameter.getTypeParameters();
 
-        if (typeParameters.isEmpty())
+        if (typeParameters.isEmpty()) {
             matches.addAll(candidates);
-        else {
+        } else {
             for (Generator<?> each : candidates) {
                 if (each.canGenerateForParametersOfTypes(typeParameters))
                     matches.add(each);
@@ -376,8 +376,8 @@ public class GeneratorRepository implements Generators {
         List<Weighted<Generator<?>>> matches) {
 
         List<Generator<?>> forComponents = new ArrayList<>();
-        for (ParameterTypeContext each : parameter.typeParameterContexts(random))
-            forComponents.add(generatorFor(each));
+        for (ParameterTypeContext c : parameter.typeParameterContexts(random))
+            forComponents.add(generatorFor(c));
 
         for (Weighted<Generator<?>> each : matches)
             applyComponentGenerators(each.item, forComponents);
@@ -391,19 +391,22 @@ public class GeneratorRepository implements Generators {
         Generator<?> generator,
         List<Generator<?>> componentGenerators) {
 
-        if (generator.hasComponents()) {
-            if (componentGenerators.isEmpty()) {
-                List<Generator<?>> substitutes = new ArrayList<>();
-                Generator<?> zilch =
-                    generatorFor(
-                        ParameterTypeContext.forClass(Zilch.class)
-                            .allowMixedTypes(true));
-                for (int i = 0; i < generator.numberOfNeededComponents(); ++i)
-                    substitutes.add(zilch);
+        if (!generator.hasComponents())
+            return;
 
-                generator.addComponentGenerators(substitutes);
-            } else
-                generator.addComponentGenerators(componentGenerators);
+        if (componentGenerators.isEmpty()) {
+            List<Generator<?>> substitutes = new ArrayList<>();
+            Generator<?> zilch =
+                generatorFor(
+                    ParameterTypeContext.forClass(Zilch.class)
+                        .allowMixedTypes(true));
+            for (int i = 0; i < generator.numberOfNeededComponents(); ++i) {
+                substitutes.add(zilch);
+            }
+
+            generator.addComponentGenerators(substitutes);
+        } else {
+            generator.addComponentGenerators(componentGenerators);
         }
     }
 
@@ -417,8 +420,9 @@ public class GeneratorRepository implements Generators {
         }
 
         List<Generator<?>> copies = new ArrayList<>();
-        for (Generator<?> each : matches)
+        for (Generator<?> each : matches) {
             copies.add(each.copy());
+        }
         return copies;
     }
 

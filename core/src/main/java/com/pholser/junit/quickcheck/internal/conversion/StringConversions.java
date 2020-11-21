@@ -49,7 +49,8 @@ public final class StringConversions {
         Class<?> wrapped = maybeWrap(clazz);
 
         try {
-            Method method = findMethod(clazz, "valueOf", String.class);
+            Method method =
+                findMethod(clazz, "valueOf", String.class);
             if (Modifier.isStatic(method.getModifiers())
                 && wrapped.equals(method.getReturnType())) {
 

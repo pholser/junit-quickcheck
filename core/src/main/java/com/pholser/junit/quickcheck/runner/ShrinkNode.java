@@ -109,7 +109,10 @@ final class ShrinkNode implements Comparable<ShrinkNode> {
         return result[0];
     }
 
-    AssertionError fail(AssertionError originalFailure, Object[] originalArgs) {
+    AssertionError fail(
+        AssertionError originalFailure,
+        Object[] originalArgs) {
+
         return originalFailure == failure
             ? counterexampleFound(
                 method.getName(),
@@ -137,7 +140,9 @@ final class ShrinkNode implements Comparable<ShrinkNode> {
         return totalMagnitude;
     }
 
-    private PropertyVerifier property(boolean[] result) throws InitializationError {
+    private PropertyVerifier property(boolean[] result)
+        throws InitializationError {
+
         return new PropertyVerifier(
             testClass,
             method,
@@ -207,7 +212,8 @@ final class ShrinkNode implements Comparable<ShrinkNode> {
         Comparator<ShrinkNode> comparison = comparing(ShrinkNode::depth);
         for (int i = 0; i < params.size(); ++i) {
             int index = i;
-            Comparator<ShrinkNode> byMagnitude = comparing(s -> s.magnitudeAt(index));
+            Comparator<ShrinkNode> byMagnitude =
+                comparing(s -> s.magnitudeAt(index));
             comparison = comparison.thenComparing(byMagnitude.reversed());
         }
 

@@ -92,7 +92,9 @@ class PropertyVerifier extends BlockJUnit4ClassRunner {
         };
     }
 
-    @Override protected void collectInitializationErrors(List<Throwable> errors) {
+    @Override protected void collectInitializationErrors(
+        List<Throwable> errors) {
+
         // do nothing
     }
 

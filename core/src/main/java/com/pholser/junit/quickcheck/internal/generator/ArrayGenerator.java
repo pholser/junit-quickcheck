@@ -99,12 +99,14 @@ public class ArrayGenerator extends Generator<Object> {
         Stream<?> items =
             Stream.generate(() -> component.generate(random, status))
                 .sequential();
-        if (distinct)
+        if (distinct) {
             items = items.distinct();
+        }
 
         Iterator<?> iterator = items.iterator();
-        for (int i = 0; i < length; ++i)
+        for (int i = 0; i < length; ++i) {
             Array.set(array, i, iterator.next());
+        }
 
         return array;
     }
@@ -113,11 +115,15 @@ public class ArrayGenerator extends Generator<Object> {
         return larger.getClass().getComponentType() == componentType;
     }
 
-    @Override public List<Object> doShrink(SourceOfRandomness random, Object larger) {
+    @Override public List<Object> doShrink(
+        SourceOfRandomness random,
+        Object larger) {
+
         int length = Array.getLength(larger);
         List<Object> asList = new ArrayList<>();
-        for (int i = 0; i < length; ++i)
+        for (int i = 0; i < length; ++i) {
             asList.add(Array.get(larger, i));
+        }
 
         List<Object> shrinks = new ArrayList<>(removals(asList));
 
@@ -125,8 +131,9 @@ public class ArrayGenerator extends Generator<Object> {
         Stream<List<Object>> oneItemShrinks =
             shrinksOfOneItem(random, asList, (Shrink<Object>) component)
                 .stream();
-        if (distinct)
+        if (distinct) {
             oneItemShrinks = oneItemShrinks.filter(Lists::isDistinct);
+        }
 
         shrinks.addAll(
             oneItemShrinks
@@ -159,8 +166,9 @@ public class ArrayGenerator extends Generator<Object> {
         super.configure(annotatedType);
 
         List<AnnotatedType> annotated = annotatedComponentTypes(annotatedType);
-        if (!annotated.isEmpty())
+        if (!annotated.isEmpty()) {
             component.configure(annotated.get(0));
+        }
     }
 
     private int length(SourceOfRandomness random, GenerationStatus status) {
@@ -186,8 +194,9 @@ public class ArrayGenerator extends Generator<Object> {
 
     private Object convert(List<?> items) {
         Object array = Array.newInstance(componentType, items.size());
-        for (int i = 0; i < items.size(); ++i)
+        for (int i = 0; i < items.size(); ++i) {
             Array.set(array, i, items.get(i));
+        }
         return array;
     }
 }

@@ -33,7 +33,7 @@ import java.lang.reflect.Constructor;
 public class ConstructorInvokingStringConversion implements StringConversion {
     private final Constructor<?> ctor;
 
-    public ConstructorInvokingStringConversion(Constructor<?> ctor) {
+    ConstructorInvokingStringConversion(Constructor<?> ctor) {
         this.ctor = ctor;
     }
 

@@ -12,6 +12,5 @@ class NoValuesSatisfiedPropertyAssumptions
         super(
             "No values satisfied property assumptions. Violated assumptions: "
                 + violations);
-
     }
 }

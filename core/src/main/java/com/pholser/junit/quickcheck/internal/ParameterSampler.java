@@ -37,7 +37,10 @@ public interface ParameterSampler {
     Stream<List<SeededValue>> sample(
         List<PropertyParameterGenerationContext> parameters);
 
-    default Generator<?> decideGenerator(GeneratorRepository repository, ParameterTypeContext p) {
+    default Generator<?> decideGenerator(
+        GeneratorRepository repository,
+        ParameterTypeContext p) {
+
         return repository.produceGenerator(p);
     }
 }

@@ -56,7 +56,8 @@ class Shrinker {
         this.testClass = testClass;
         this.failure = failure;
         this.maxShrinks = shrinkControl.maxShrinks();
-        this.maxShrinkDepth = shrinkControl.maxShrinkDepth() * method.getMethod().getParameterCount();
+        this.maxShrinkDepth =
+            shrinkControl.maxShrinkDepth() * method.getMethod().getParameterCount();
         this.maxShrinkTime = shrinkControl.maxShrinkTime();
         this.onMinimalCounterexample = shrinkControl.onMinimalCounterexample();
     }

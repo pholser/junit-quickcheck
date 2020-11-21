@@ -77,23 +77,24 @@ final class PropertyFalsified {
                 ? ":"
                 : format(" (%s):", smallerFailure.getMessage());
 
-        String template = "Property named '%s' failed%s%n"
-            + "With arguments: %s%n"
-            + "%s"
-            + "First arguments found to also provoke a failure: %s%n"
-            + "Seeds for reproduction: %s";
+        String template =
+            "Property named '%s' failed%s%n"
+                + "With arguments: %s%n"
+                + "%s"
+                + "First arguments found to also provoke a failure: %s%n"
+                + "Seeds for reproduction: %s";
 
-        AssertionError e = new AssertionError(
-            format(
-                template,
-                propertyName,
-                smallerFailureMessageSegment,
-                Arrays.deepToString(args),
-                originalFailureMessageSegment,
-                Arrays.deepToString(originalArgs),
-                Arrays.toString(seeds)),
-            originalFailure);
-
+        AssertionError e =
+            new AssertionError(
+                format(
+                    template,
+                    propertyName,
+                    smallerFailureMessageSegment,
+                    Arrays.deepToString(args),
+                    originalFailureMessageSegment,
+                    Arrays.deepToString(originalArgs),
+                    Arrays.toString(seeds)),
+                originalFailure);
         e.setStackTrace(smallerFailure.getStackTrace());
         return e;
     }

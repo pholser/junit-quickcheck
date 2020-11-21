@@ -38,9 +38,10 @@ public class CartesianIterator<T> implements Iterator<List<T>> {
     private int count;
 
     public CartesianIterator(List<Iterator<T>> sources) {
-        this.buffers = sources.stream()
-            .map(s -> new Buffer<>(s, new ArrayList<>()))
-            .collect(toList());
+        this.buffers =
+            sources.stream()
+                .map(s -> new Buffer<>(s, new ArrayList<>()))
+                .collect(toList());
         allStartedAvailable = sources.stream().allMatch(Iterator::hasNext);
     }
 
@@ -85,8 +86,9 @@ public class CartesianIterator<T> implements Iterator<List<T>> {
 
         T get(int n) {
             index = n % divisor();
-            if (index == consumed.size())
+            if (index == consumed.size()) {
                 consumed.add(source.next());
+            }
 
             return consumed.get(index);
         }

@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface NullAllowed {
     /**
-     * @return probability of generating null {@code float} value, in the range [0,1]
+     * @return probability of generating {@code null}, in the range [0,1]
      */
     float probability() default 0.2f;
 }

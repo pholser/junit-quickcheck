@@ -43,12 +43,12 @@ import java.lang.annotation.Target;
  *
  * <p>In {@linkplain com.pholser.junit.quickcheck.Mode#SAMPLING sampling}
  * mode, on each trial junit-quickcheck ensures that the first <em>n</em>
- * values are the given set, and generates the remaining <em>trials - n</em>
+ * values are the given set, and generates the remaining (<em>trials - n</em>)
  * values in the usual way.
  *
  * <p>In {@linkplain com.pholser.junit.quickcheck.Mode#EXHAUSTIVE exhaustive}
  * mode, junit-quickcheck uses the values in the limited set for the property
- * parameter, and generates the remaining <em>trials - n</em> values in the
+ * parameter, and generates the remaining (<em>trials - n</em>) values in the
  * usual way.</p>
  *
  * <p><strong>Note</strong>: You will still need a generator defined for the

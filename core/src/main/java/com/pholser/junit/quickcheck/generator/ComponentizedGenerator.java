@@ -64,7 +64,9 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         return true;
     }
 
-    @Override public void addComponentGenerators(List<Generator<?>> newComponents) {
+    @Override public void addComponentGenerators(
+        List<Generator<?>> newComponents) {
+
         if (newComponents.size() != numberOfNeededComponents()) {
             throw new IllegalArgumentException(
                 String.format(
@@ -78,25 +80,30 @@ public abstract class ComponentizedGenerator<T> extends Generator<T> {
         components.addAll(newComponents);
     }
 
-    @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+    @Override public boolean canGenerateForParametersOfTypes(
+        List<TypeParameter<?>> typeParameters) {
+
         return numberOfNeededComponents() == typeParameters.size();
     }
 
     @Override public void provide(Generators provided) {
         super.provide(provided);
 
-        for (Generator<?> each : components)
+        for (Generator<?> each : components) {
             each.provide(provided);
+        }
     }
 
     @Override public void configure(AnnotatedType annotatedType) {
         super.configure(annotatedType);
 
-        List<AnnotatedType> annotatedComponentTypes = annotatedComponentTypes(annotatedType);
+        List<AnnotatedType> annotatedComponentTypes =
+            annotatedComponentTypes(annotatedType);
 
         if (annotatedComponentTypes.size() == components.size()) {
-            for (int i = 0; i < components.size(); ++i)
+            for (int i = 0; i < components.size(); ++i) {
                 components.get(i).configure(annotatedComponentTypes.get(i));
+            }
         }
     }
 
