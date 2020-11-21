@@ -48,5 +48,6 @@ final class PrimeFactors {
     }
 
     private PrimeFactors() {
+        throw new UnsupportedOperationException();
     }
 }

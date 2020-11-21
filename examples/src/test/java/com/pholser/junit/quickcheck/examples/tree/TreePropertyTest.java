@@ -33,7 +33,8 @@ import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.examples.tree.visitor.TreeDeepestLeafVisitor;
 import com.pholser.junit.quickcheck.examples.tree.visitor.TreeDepthVisitor;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map;
+
 import org.junit.runner.RunWith;
 
 @RunWith(JUnitQuickcheck.class)
@@ -46,8 +47,8 @@ public class TreePropertyTest {
         TreeDeepestLeafVisitor visitor = new TreeDeepestLeafVisitor();
 
         @SuppressWarnings("unchecked")
-        SimpleImmutableEntry<String, Integer> result =
-            (SimpleImmutableEntry<String, Integer>) t.accept(visitor);
+        Map.Entry<String, Integer> result =
+            (Map.Entry<String, Integer>) t.accept(visitor);
 
         assertThat(result.getValue(), lessThanOrEqualTo(10));
     }

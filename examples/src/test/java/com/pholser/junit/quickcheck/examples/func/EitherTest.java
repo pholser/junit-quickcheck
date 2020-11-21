@@ -12,8 +12,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(JUnitQuickcheck.class)
 public class EitherTest {
-    @Property
-    public void withRanges(
+    @Property public void withRanges(
         Either<
             @InRange(minInt = 0) Integer,
             @InRange(minDouble = -7.0, maxDouble = -4.0) Double> e) {

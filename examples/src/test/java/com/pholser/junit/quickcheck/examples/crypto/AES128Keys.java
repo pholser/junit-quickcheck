@@ -38,7 +38,8 @@ public class AES128Keys extends Generator<Key> {
     }
 
     @Override public Key generate(
-        SourceOfRandomness random, GenerationStatus status) {
+        SourceOfRandomness random,
+        GenerationStatus status) {
 
         KeyGenerator keygen;
         try {

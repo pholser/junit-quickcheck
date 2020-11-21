@@ -50,8 +50,7 @@ public class NodeGenerator extends Generator<Node> {
         s.setValue(TreeKeys.DEPTH, depth - 1);
         return new Node(
             subtree.generate(r, s),
-            subtree.generate(r, s)
-        );
+            subtree.generate(r, s));
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 @RunWith(JUnitQuickcheck.class)
 public class AGeneratorTest {
     @Property public void listAreCorrectlyGenerated(A a) {
-        a.getListOfB().forEach(b -> assertThat(b, instanceOf(B.class)));
+        a.getListOfB().forEach(b ->
+            assertThat(b, instanceOf(B.class)));
     }
 }

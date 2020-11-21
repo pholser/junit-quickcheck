@@ -30,24 +30,25 @@ import com.pholser.junit.quickcheck.examples.tree.Leaf;
 import com.pholser.junit.quickcheck.examples.tree.Node;
 import com.pholser.junit.quickcheck.examples.tree.TreeVisitor;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map;
 
 public class TreeDeepestLeafVisitor implements TreeVisitor {
-    @Override public SimpleImmutableEntry<String, Integer> visit(Empty empty) {
+    @Override public Map.Entry<String, Integer> visit(Empty empty) {
         return new SimpleImmutableEntry<>("", 0);
     }
 
-    @Override public SimpleImmutableEntry<String, Integer> visit(Leaf leaf) {
+    @Override public Map.Entry<String, Integer> visit(Leaf leaf) {
         return new SimpleImmutableEntry<>(leaf.value(), 0);
     }
 
-    @Override public SimpleImmutableEntry<String, Integer> visit(Node node) {
+    @Override public Map.Entry<String, Integer> visit(Node node) {
         @SuppressWarnings("unchecked")
-        SimpleImmutableEntry<String, Integer> leftResult =
-            (SimpleImmutableEntry<String, Integer>) node.left().accept(this);
+        Map.Entry<String, Integer> leftResult =
+            (Map.Entry<String, Integer>) node.left().accept(this);
 
         @SuppressWarnings("unchecked")
-        SimpleImmutableEntry<String, Integer> rightResult =
-            (SimpleImmutableEntry<String, Integer>) node.right().accept(this);
+        Map.Entry<String, Integer> rightResult =
+            (Map.Entry<String, Integer>) node.right().accept(this);
 
         int leftDepth = leftResult.getValue();
         int rightDepth = rightResult.getValue();

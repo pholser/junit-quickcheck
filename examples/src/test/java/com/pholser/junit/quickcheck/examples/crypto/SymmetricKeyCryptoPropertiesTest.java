@@ -49,6 +49,8 @@ public class SymmetricKeyCryptoPropertiesTest {
 
         assertEquals(
             plaintext,
-            new String(crypto.decrypt(enciphered, key), StandardCharsets.UTF_8 ));
+            new String(
+                crypto.decrypt(enciphered, key),
+                StandardCharsets.UTF_8));
     }
 }
