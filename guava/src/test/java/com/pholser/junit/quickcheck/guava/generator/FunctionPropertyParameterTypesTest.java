@@ -63,8 +63,12 @@ public class FunctionPropertyParameterTypesTest {
     }
 
     @Test public void superShortToInteger() throws Exception {
-        assertThat(testResult(SuperShortToExtendsInteger.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), SuperShortToExtendsInteger.iterations);
+        assertThat(
+            testResult(SuperShortToExtendsInteger.class),
+            isSuccessful());
+        assertEquals(
+            defaultPropertyTrialCount(),
+            SuperShortToExtendsInteger.iterations);
     }
 
     @SuppressWarnings("Guava")
@@ -72,7 +76,9 @@ public class FunctionPropertyParameterTypesTest {
     public static class SuperShortToExtendsInteger {
         static int iterations;
 
-        @Property public void shouldHold(Function<? super Foo, ? extends Zilch> f) {
+        @Property public void shouldHold(
+            Function<? super Foo, ? extends Zilch> f) {
+
             ++iterations;
 
             Foo foo = new Foo(2);

@@ -38,7 +38,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.util.List;
 import java.util.Random;
 
-public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyParameterTest {
+public class FunctionOfStringToIntPropertyParameterTest
+    extends CorePropertyParameterTest {
+
     @SuppressWarnings("Guava")
     public static final Function<String, Integer> TYPE_BEARER = null;
 
@@ -64,8 +66,12 @@ public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyPara
     }
 
     @SuppressWarnings("Guava")
-    @Override protected void verifyEquivalenceOfPropertyParameter(int index, Object expected, Object actual)
+    @Override protected void verifyEquivalenceOfPropertyParameter(
+        int index,
+        Object expected,
+        Object actual)
         throws Exception {
+
         @SuppressWarnings("unchecked")
         Function<String, Integer> f = (Function<String, Integer>) actual;
 
@@ -73,7 +79,10 @@ public class FunctionOfStringToIntPropertyParameterTest extends CorePropertyPara
 
         SourceOfRandomness source = new SourceOfRandomness(new Random());
         source.setSeed(Objects.hashCode(argument));
-        Integer value = (Integer) repository.generatorFor(typeOf(getClass(), "integer")).generate(source, null);
+        Integer value =
+            (Integer)
+                repository.generatorFor(typeOf(getClass(), "integer"))
+                    .generate(source, null);
 
         for (int i = 0; i < 10000; ++i)
             assertEquals(value, f.apply(argument));

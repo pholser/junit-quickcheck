@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Produces values of type {@link Optional}.
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("Guava")
 public class OptionalGenerator extends ComponentizedGenerator<Optional> {
     public OptionalGenerator() {
         super(Optional.class);

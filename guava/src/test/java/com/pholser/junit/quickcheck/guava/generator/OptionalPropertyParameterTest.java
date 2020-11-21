@@ -53,7 +53,10 @@ public class OptionalPropertyParameterTest {
     public static class OptionalString {
         @SuppressWarnings("Guava")
         @Property public void works(
-            Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
+            Optional<
+                @From(Encoded.class)
+                @InCharset("US-ASCII")
+                    String> optional) {
 
             assumeTrue(optional.isPresent());
             assertTrue(optional.get().codePoints().allMatch(i -> i < 128));

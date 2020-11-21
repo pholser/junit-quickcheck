@@ -56,7 +56,9 @@ public class SupplierPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class SupplyingUnresolvedLists<T> {
-        @Property public void holds(Supplier<List<T>> source) {
+        @Property public void holds(
+            @SuppressWarnings("Guava") Supplier<List<T>> source) {
+
             for (T each : source.get()) {
                 // ensure types are ok
             }
@@ -70,7 +72,7 @@ public class SupplierPropertyParameterTest {
     @RunWith(JUnitQuickcheck.class)
     public static class SupplyingUpperBounded {
         @Property public <T extends Integer> void holds(
-            Supplier<? extends T[]> source) {
+            @SuppressWarnings("Guava") Supplier<? extends T[]> source) {
 
             T[] items = source.get();
             assumeThat(items.length, greaterThan(0));
