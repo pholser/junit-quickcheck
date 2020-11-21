@@ -36,10 +36,7 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
-import com.pholser.junit.quickcheck.generator.Ctor;
-import com.pholser.junit.quickcheck.generator.Fields;
-import com.pholser.junit.quickcheck.generator.Generator;
-import com.pholser.junit.quickcheck.generator.Generators;
+import com.pholser.junit.quickcheck.generator.*;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.Weighted;
 import com.pholser.junit.quickcheck.internal.Zilch;

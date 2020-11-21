@@ -1,4 +1,4 @@
-package com.pholser.junit.quickcheck.internal.generator;
+package com.pholser.junit.quickcheck.generator;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -20,5 +20,5 @@ public @interface NullAllowed {
     /**
      * @return probability of generating {@code null}, in the range [0,1]
      */
-    float probability() default 0.2f;
+    double probability() default 0.2;
 }

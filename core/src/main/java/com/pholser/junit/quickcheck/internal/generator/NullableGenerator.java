@@ -29,6 +29,7 @@ import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.generator.Generators;
+import com.pholser.junit.quickcheck.generator.NullAllowed;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
@@ -39,11 +40,12 @@ import org.javaruntype.type.TypeParameter;
 
 class NullableGenerator<T> extends Generator<T> {
     private final Generator<T> delegate;
-    private float probabilityOfNull =
-        (Float) defaultValueOf(NullAllowed.class, "probability");
+    private double probabilityOfNull =
+        (Double) defaultValueOf(NullAllowed.class, "probability");
 
     NullableGenerator(Generator<T> delegate) {
         super(delegate.types());
+
         this.delegate = delegate;
     }
 
@@ -54,15 +56,6 @@ class NullableGenerator<T> extends Generator<T> {
         return random.nextFloat(0, 1) < probabilityOfNull
             ? null
             : delegate.generate(random, status);
-    }
-
-    private void configure(NullAllowed nullAllowed) {
-        if (nullAllowed.probability() >= 0 && nullAllowed.probability() <= 1) {
-            this.probabilityOfNull = nullAllowed.probability();
-        } else {
-            throw new IllegalArgumentException(
-                "NullAllowed probability must be in the range [0, 1]");
-        }
     }
 
     @Override public boolean canRegisterAsType(Class<?> type) {
@@ -114,5 +107,14 @@ class NullableGenerator<T> extends Generator<T> {
 
     @Override public BigDecimal magnitude(Object value) {
         return delegate.magnitude(value);
+    }
+
+    private void configure(NullAllowed allowed) {
+        if (allowed.probability() >= 0 && allowed.probability() <= 1) {
+            this.probabilityOfNull = allowed.probability();
+        } else {
+            throw new IllegalArgumentException(
+                "NullAllowed probability must be in the range [0, 1]");
+        }
     }
 }
