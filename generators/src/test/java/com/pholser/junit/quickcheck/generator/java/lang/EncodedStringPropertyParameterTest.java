@@ -48,10 +48,14 @@ public class EncodedStringPropertyParameterTest
         when(Generating.ints(randomForParameterGenerator, 0, 127))
             .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63)
             .thenReturn(0x64).thenReturn(0x65).thenReturn(0x66);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
-        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator))
+            .thenReturn(3);
     }
 
     @Override protected int trials() {

@@ -41,7 +41,8 @@ public class PrimitiveLongPropertyParameterTest
     public static final long TYPE_BEARER = 3;
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.longs(randomForParameterGenerator)).thenReturn(MIN_VALUE);
+        when(Generating.longs(randomForParameterGenerator))
+            .thenReturn(MIN_VALUE);
     }
 
     @Override protected int trials() {

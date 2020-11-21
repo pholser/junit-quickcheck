@@ -67,15 +67,18 @@ public class ClockPropertyParameterTypesTest {
             assertThat(
                 c.instant(),
                 allOf(
-                    greaterThanOrEqualTo(Instant.parse("2012-01-01T00:00:00.0Z")),
-                    lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z"))));
+                    greaterThanOrEqualTo(
+                        Instant.parse("2012-01-01T00:00:00.0Z")),
+                    lessThanOrEqualTo(
+                        Instant.parse("2012-12-31T23:59:59.999999999Z"))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinClock.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -91,7 +94,8 @@ public class ClockPropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxClock.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -115,7 +119,8 @@ public class ClockPropertyParameterTypesTest {
 
             assertThat(
                 c.instant(),
-                lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+                lessThanOrEqualTo(
+                    Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
@@ -130,14 +135,16 @@ public class ClockPropertyParameterTypesTest {
 
             assertThat(
                 c.instant(),
-                greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+                greaterThanOrEqualTo(
+                    Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

@@ -47,13 +47,19 @@ public class RangedBigDecimalNoMaxPropertyParameterTest
 
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(
-            minBigInt.add(TEN.movePointRight(7).toBigInteger()).subtract(minBigInt).bitLength()))
+            minBigInt.add(TEN.movePointRight(7).toBigInteger())
+                .subtract(minBigInt)
+                .bitLength()))
             .thenReturn(new BigInteger("6"));
         when(randomForParameterGenerator.nextBigInteger(
-            minBigInt.add(TEN.pow(2).movePointRight(7).toBigInteger()).subtract(minBigInt).bitLength()))
+            minBigInt.add(TEN.pow(2).movePointRight(7).toBigInteger())
+                .subtract(minBigInt)
+                .bitLength()))
             .thenReturn(new BigInteger("35"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
     }
 
     @Override protected int trials() {
@@ -61,13 +67,19 @@ public class RangedBigDecimalNoMaxPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigDecimal("-98765432198.7654315"), new BigDecimal("-98765432198.7654286"));
+        return asList(
+            new BigDecimal("-98765432198.7654315"),
+            new BigDecimal("-98765432198.7654286"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextBigInteger(
-            minBigInt.add(TEN.movePointRight(7).toBigInteger()).subtract(minBigInt).bitLength());
+            minBigInt.add(TEN.movePointRight(7).toBigInteger())
+                .subtract(minBigInt)
+                .bitLength());
         verify(randomForParameterGenerator).nextBigInteger(
-            minBigInt.add(TEN.pow(2).movePointRight(7).toBigInteger()).subtract(minBigInt).bitLength());
+            minBigInt.add(TEN.pow(2).movePointRight(7).toBigInteger())
+                .subtract(minBigInt)
+                .bitLength());
     }
 }

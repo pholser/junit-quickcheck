@@ -40,7 +40,8 @@ public class PrimitiveBooleanPropertyParameterTest
     public static final boolean TYPE_BEARER = false;
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.booleans(randomForParameterGenerator)).thenReturn(false).thenReturn(true);
+        when(Generating.booleans(randomForParameterGenerator))
+            .thenReturn(false).thenReturn(true);
     }
 
     @Override protected int trials() {

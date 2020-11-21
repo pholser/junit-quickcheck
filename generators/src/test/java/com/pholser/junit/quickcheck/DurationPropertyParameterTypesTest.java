@@ -66,15 +66,18 @@ public class DurationPropertyParameterTypesTest {
             assertThat(
                 d,
                 allOf(
-                    greaterThanOrEqualTo(Duration.parse("PT-2562047788015215H-30M-8S")),
-                    lessThanOrEqualTo(Duration.parse("PT2562047788015215H30M7.999999999S"))));
+                    greaterThanOrEqualTo(
+                        Duration.parse("PT-2562047788015215H-30M-8S")),
+                    lessThanOrEqualTo(
+                        Duration.parse("PT2562047788015215H30M7.999999999S"))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinDuration.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -90,7 +93,8 @@ public class DurationPropertyParameterTypesTest {
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxDuration.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -138,7 +142,8 @@ public class DurationPropertyParameterTypesTest {
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(IllegalArgumentException.class.getName()));
+            hasSingleFailureContaining(
+                IllegalArgumentException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)

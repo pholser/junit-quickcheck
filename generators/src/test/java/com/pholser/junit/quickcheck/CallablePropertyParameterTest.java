@@ -49,7 +49,9 @@ public class CallablePropertyParameterTest {
     public static class CallableOfInt {
         static int iterations;
 
-        @Property public void shouldHold(Callable<Integer> c) throws Exception {
+        @Property public void shouldHold(Callable<Integer> c)
+            throws Exception {
+
             ++iterations;
 
             Integer value = functionValue(new IntegerGenerator(), null);

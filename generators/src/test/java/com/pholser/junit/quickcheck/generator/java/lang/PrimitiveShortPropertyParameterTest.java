@@ -41,8 +41,10 @@ public class PrimitiveShortPropertyParameterTest
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.shorts(randomForParameterGenerator))
-            .thenReturn((short) 4).thenReturn((short) 5)
-            .thenReturn((short) 6).thenReturn((short) 7);
+            .thenReturn((short) 4)
+            .thenReturn((short) 5)
+            .thenReturn((short) 6)
+            .thenReturn((short) 7);
     }
 
     @Override protected int trials() {

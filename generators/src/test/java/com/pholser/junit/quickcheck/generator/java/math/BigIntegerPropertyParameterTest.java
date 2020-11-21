@@ -40,14 +40,22 @@ public class BigIntegerPropertyParameterTest
     public static final BigInteger TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBigInteger(1)).thenReturn(ONE);
-        when(randomForParameterGenerator.nextBigInteger(2)).thenReturn(new BigInteger("3"));
-        when(randomForParameterGenerator.nextBigInteger(3)).thenReturn(new BigInteger("-7"));
-        when(randomForParameterGenerator.nextBigInteger(4)).thenReturn(new BigInteger("12"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
-        when(distro.sampleWithMean(4, randomForParameterGenerator)).thenReturn(3);
+        when(randomForParameterGenerator.nextBigInteger(1))
+            .thenReturn(ONE);
+        when(randomForParameterGenerator.nextBigInteger(2))
+            .thenReturn(new BigInteger("3"));
+        when(randomForParameterGenerator.nextBigInteger(3))
+            .thenReturn(new BigInteger("-7"));
+        when(randomForParameterGenerator.nextBigInteger(4))
+            .thenReturn(new BigInteger("12"));
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
+        when(distro.sampleWithMean(4, randomForParameterGenerator))
+            .thenReturn(3);
     }
 
     @Override protected int trials() {
@@ -55,7 +63,11 @@ public class BigIntegerPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(ONE, new BigInteger("3"), new BigInteger("-7"), new BigInteger("12"));
+        return asList(
+            ONE,
+            new BigInteger("3"),
+            new BigInteger("-7"),
+            new BigInteger("12"));
     }
 
     @Override public void verifyInteractionWithRandomness() {

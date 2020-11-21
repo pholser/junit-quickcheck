@@ -98,7 +98,9 @@ public class ZoneOffsetPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMin {
-        @Property public void shouldHold(@InRange(max = "-12:00") ZoneOffset o) {
+        @Property public void shouldHold(
+            @InRange(max = "-12:00") ZoneOffset o) {
+
             assertThat(o, lessThanOrEqualTo(ZoneOffset.of("-12:00")));
         }
     }

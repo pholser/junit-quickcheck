@@ -41,8 +41,10 @@ public class WrapperBytePropertyParameterTest
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))
-            .thenReturn((byte) -95).thenReturn((byte) -94)
-            .thenReturn((byte) -93).thenReturn((byte) -92);
+            .thenReturn((byte) -95)
+            .thenReturn((byte) -94)
+            .thenReturn((byte) -93)
+            .thenReturn((byte) -92);
     }
 
     @Override protected int trials() {

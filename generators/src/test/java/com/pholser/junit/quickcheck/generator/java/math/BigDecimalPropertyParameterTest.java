@@ -49,16 +49,22 @@ public class BigDecimalPropertyParameterTest
         first = TEN.subtract(TEN.negate());
         second = TEN.pow(2).subtract(TEN.pow(2).negate());
         third = TEN.pow(3).subtract(TEN.pow(3).negate());
-        when(randomForParameterGenerator.nextBigInteger(first.toBigInteger().bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            first.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("999999999999"))
             .thenReturn(BigInteger.ONE);
-        when(randomForParameterGenerator.nextBigInteger(second.toBigInteger().bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            second.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("136"));
-        when(randomForParameterGenerator.nextBigInteger(third.toBigInteger().bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            third.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("768"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
     }
 
     @Override protected int trials() {
@@ -66,12 +72,18 @@ public class BigDecimalPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigDecimal("-9"), new BigDecimal("36"), new BigDecimal("-232"));
+        return asList(
+            new BigDecimal("-9"),
+            new BigDecimal("36"),
+            new BigDecimal("-232"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextBigInteger(first.toBigInteger().bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(second.toBigInteger().bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(third.toBigInteger().bitLength());
+        verify(randomForParameterGenerator, times(2))
+            .nextBigInteger(first.toBigInteger().bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(second.toBigInteger().bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(third.toBigInteger().bitLength());
     }
 }

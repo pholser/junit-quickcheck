@@ -51,16 +51,22 @@ public class BigDecimalWithSpecifiedPrecisionPropertyParameterTest
         first = TEN.subtract(TEN.negate()).movePointRight(5);
         second = TEN.pow(2).subtract(TEN.pow(2).negate()).movePointRight(5);
         third = TEN.pow(3).subtract(TEN.pow(3).negate()).movePointRight(5);
-        when(randomForParameterGenerator.nextBigInteger(first.toBigInteger().bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            first.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("999999999999"))
             .thenReturn(BigInteger.ONE);
-        when(randomForParameterGenerator.nextBigInteger(second.toBigInteger().bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            second.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("136"));
-        when(randomForParameterGenerator.nextBigInteger(third.toBigInteger().bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            third.toBigInteger().bitLength()))
             .thenReturn(new BigInteger("768"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
     }
 
     @Override protected int trials() {
@@ -68,12 +74,18 @@ public class BigDecimalWithSpecifiedPrecisionPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigDecimal("-9.99999"), new BigDecimal("-99.99864"), new BigDecimal("-999.99232"));
+        return asList(
+            new BigDecimal("-9.99999"),
+            new BigDecimal("-99.99864"),
+            new BigDecimal("-999.99232"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(2)).nextBigInteger(first.toBigInteger().bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(second.toBigInteger().bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(third.toBigInteger().bitLength());
+        verify(randomForParameterGenerator, times(2))
+            .nextBigInteger(first.toBigInteger().bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(second.toBigInteger().bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(third.toBigInteger().bitLength());
     }
 }

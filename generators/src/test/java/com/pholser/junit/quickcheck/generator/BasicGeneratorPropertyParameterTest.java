@@ -28,7 +28,9 @@ package com.pholser.junit.quickcheck.generator;
 import com.pholser.junit.quickcheck.internal.generator.CorePropertyParameterTest;
 import com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource;
 
-public abstract class BasicGeneratorPropertyParameterTest extends CorePropertyParameterTest {
+public abstract class BasicGeneratorPropertyParameterTest
+    extends CorePropertyParameterTest {
+
     @Override protected Iterable<Generator<?>> generatorSource() {
         return new ServiceLoaderGeneratorSource();
     }

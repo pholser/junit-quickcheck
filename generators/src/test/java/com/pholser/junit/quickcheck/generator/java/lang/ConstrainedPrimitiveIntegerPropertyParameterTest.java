@@ -42,7 +42,8 @@ public class ConstrainedPrimitiveIntegerPropertyParameterTest
     }
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.ints(randomForParameterGenerator)).thenReturn(0).thenReturn(1).thenReturn(-1);
+        when(Generating.ints(randomForParameterGenerator))
+            .thenReturn(0).thenReturn(1).thenReturn(-1);
     }
 
     @Override protected int trials() {

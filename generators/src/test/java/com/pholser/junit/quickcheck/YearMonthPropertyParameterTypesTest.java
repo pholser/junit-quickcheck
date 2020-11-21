@@ -66,8 +66,10 @@ public class YearMonthPropertyParameterTypesTest {
             assertThat(
                 m,
                 allOf(
-                    greaterThanOrEqualTo(YearMonth.parse("1776/04", formatter)),
-                    lessThanOrEqualTo(YearMonth.parse("1976/12", formatter))));
+                    greaterThanOrEqualTo(
+                        YearMonth.parse("1776/04", formatter)),
+                    lessThanOrEqualTo(
+                        YearMonth.parse("1976/12", formatter))));
         }
     }
 

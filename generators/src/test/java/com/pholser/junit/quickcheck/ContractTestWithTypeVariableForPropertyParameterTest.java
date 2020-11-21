@@ -40,14 +40,14 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class ContractTestWithTypeVariableForPropertyParameterTest {
     public static class TestObject {
-        private final String str;
+        private final String s;
 
-        public TestObject( String str ) {
-            this.str = str;
+        public TestObject(String s) {
+            this.s = s;
         }
 
         @Override public String toString() {
-            return str;
+            return s;
         }
     }
 
@@ -56,7 +56,10 @@ public class ContractTestWithTypeVariableForPropertyParameterTest {
             super(TestObject.class);
         }
 
-        @Override public TestObject generate(SourceOfRandomness r, GenerationStatus s) {
+        @Override public TestObject generate(
+            SourceOfRandomness r,
+            GenerationStatus s) {
+
             return new TestObject("yermom");
         }
     }

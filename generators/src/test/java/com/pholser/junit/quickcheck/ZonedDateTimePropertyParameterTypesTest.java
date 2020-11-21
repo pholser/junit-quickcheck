@@ -148,7 +148,8 @@ public class ZonedDateTimePropertyParameterTypesTest {
             ZonedDateTime t) {
 
             DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
+                DateTimeFormatter.ofPattern(
+                    "MM/dd/yyyy'T'HH:mm:ss.nxxx'['VV']'");
             assertThat(
                 t,
                 lessThanOrEqualTo(

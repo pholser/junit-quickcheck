@@ -143,7 +143,8 @@ public class LocalDatePropertyParameterTypesTest {
                 DateTimeFormatter.ofPattern("MM/dd/yyyy");
             assertThat(
                 d,
-                lessThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
+                lessThanOrEqualTo(
+                    LocalDate.parse("12/31/2012", formatter)));
         }
     }
 
@@ -160,7 +161,8 @@ public class LocalDatePropertyParameterTypesTest {
                 DateTimeFormatter.ofPattern("MM/dd/yyyy");
             assertThat(
                 d,
-                greaterThanOrEqualTo(LocalDate.parse("12/31/2012", formatter)));
+                greaterThanOrEqualTo(
+                    LocalDate.parse("12/31/2012", formatter)));
         }
     }
 

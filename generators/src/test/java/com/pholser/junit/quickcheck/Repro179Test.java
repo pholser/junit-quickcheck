@@ -38,7 +38,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 @RunWith(JUnitQuickcheck.class)
-public class Repro179 {
+public class Repro179Test {
     public static class Other {
         private final Number test;
 
@@ -64,7 +64,10 @@ public class Repro179 {
             super(Other.class);
         }
 
-        @Override public Other generate(SourceOfRandomness r, GenerationStatus s) {
+        @Override public Other generate(
+            SourceOfRandomness r,
+            GenerationStatus s) {
+
             return new Other(gen(r).type(Number.class).generate(r, s));
         }
     }

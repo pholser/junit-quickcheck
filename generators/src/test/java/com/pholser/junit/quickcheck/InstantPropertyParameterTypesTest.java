@@ -64,34 +64,44 @@ public class InstantPropertyParameterTypesTest {
             assertThat(
                 i,
                 allOf(
-                    greaterThanOrEqualTo(Instant.parse("2012-01-01T00:00:00.0Z")),
-                    lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z"))));
+                    greaterThanOrEqualTo(
+                        Instant.parse("2012-01-01T00:00:00.0Z")),
+                    lessThanOrEqualTo(
+                        Instant.parse("2012-12-31T23:59:59.999999999Z"))));
         }
     }
 
     @Test public void malformedMin() {
         assertThat(
             testResult(MalformedMinInstant.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMinInstant {
         @Property public void shouldHold(
-            @InRange(min = "@#!@#@", max = "2012-12-31T23:59:59.999999999Z") Instant i) {
+            @InRange(
+                min = "@#!@#@",
+                max = "2012-12-31T23:59:59.999999999Z")
+                Instant i) {
         }
     }
 
     @Test public void malformedMax() {
         assertThat(
             testResult(MalformedMaxInstant.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class MalformedMaxInstant {
         @Property public void shouldHold(
-            @InRange(min = "06/01/2011T23:59:59.999999999Z", max = "*&@^#%$") Instant i) {
+            @InRange(
+                min = "06/01/2011T23:59:59.999999999Z",
+                max = "*&@^#%$")
+                Instant i) {
         }
     }
 
@@ -101,13 +111,13 @@ public class InstantPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MissingMin {
-        @Property
-        public void shouldHold(
+        @Property public void shouldHold(
             @InRange(max = "2012-12-31T23:59:59.999999999Z") Instant i) {
 
             assertThat(
                 i,
-                lessThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+                lessThanOrEqualTo(
+                    Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
@@ -122,14 +132,16 @@ public class InstantPropertyParameterTypesTest {
 
             assertThat(
                 i,
-                greaterThanOrEqualTo(Instant.parse("2012-12-31T23:59:59.999999999Z")));
+                greaterThanOrEqualTo(
+                    Instant.parse("2012-12-31T23:59:59.999999999Z")));
         }
     }
 
     @Test public void backwardsRange() {
         assertThat(
             testResult(BackwardsRange.class),
-            hasSingleFailureContaining(DateTimeParseException.class.getName()));
+            hasSingleFailureContaining(
+                DateTimeParseException.class.getName()));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -138,7 +150,7 @@ public class InstantPropertyParameterTypesTest {
             @InRange(
                 min = "2012-12-31T23:59:59.999999999Z",
                 max = "12/01/2012T00:00:00.0Z")
-            Instant i) {
+                Instant i) {
         }
     }
 }

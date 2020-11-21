@@ -150,14 +150,18 @@ public class ListPropertyParameterTypesTest {
                 for (Integer i : each) {
                     assertThat(
                         i,
-                        allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));
+                        allOf(
+                            greaterThanOrEqualTo(0),
+                            lessThanOrEqualTo(9)));
                 }
             }
         }
     }
 
     @Test public void shrinkingListOfListRangedInteger() {
-        assertThat(testResult(ShrinkingListOfListOfRangedInteger.class), failureCountIs(1));
+        assertThat(
+            testResult(ShrinkingListOfListOfRangedInteger.class),
+            failureCountIs(1));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -172,7 +176,9 @@ public class ListPropertyParameterTypesTest {
                 for (Integer i : each) {
                     assertThat(
                         i,
-                        allOf(greaterThanOrEqualTo(0), lessThanOrEqualTo(9)));
+                        allOf(
+                            greaterThanOrEqualTo(0),
+                            lessThanOrEqualTo(9)));
                 }
             }
 
@@ -228,7 +234,9 @@ public class ListPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class UsedToGetStuckOnConstraintExpression {
         @Property(trials = 8)
-        public void myTest(@When(satisfies = "not #_.empty") List<Integer> ints) {
+        public void holds(
+            @When(satisfies = "not #_.empty") List<Integer> ints) {
+
             assertThat(ints.size(), greaterThan(0));
         }
     }
@@ -239,7 +247,9 @@ public class ListPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class NumberProperties<N extends Number> {
-        @Property public void holds(List<@InRange(min = "0", max = "100") N> numbers) {
+        @Property public void holds(
+            List<@InRange(min = "0", max = "100") N> numbers) {
+
             for (Number each : numbers) {
                 assertThat(
                     each.intValue(),

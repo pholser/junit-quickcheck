@@ -48,7 +48,8 @@ public class DistinctArrayPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class DistinctArrays {
         @Property public void shouldHold(
-            @InRange(minInt = 1, maxInt = 5) int @Size(min = 2, max = 5) @Distinct [] i) {
+            @InRange(minInt = 1, maxInt = 5)
+                int @Size(min = 2, max = 5) @Distinct [] i) {
 
             assertThat(
                 i.length,
@@ -68,7 +69,8 @@ public class DistinctArrayPropertyParameterTypesTest {
             allOf(
                 greaterThanOrEqualTo(4),
                 lessThanOrEqualTo(5)));
-        assertTrue(Lists.isDistinct(Ints.asList(ShrinkingDistinctArrays.failed)));
+        assertTrue(
+            Lists.isDistinct(Ints.asList(ShrinkingDistinctArrays.failed)));
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -76,7 +78,9 @@ public class DistinctArrayPropertyParameterTypesTest {
         static int[] failed;
 
         @Property public void shouldHold(
-            @InRange(minInt = 1, maxInt = 5) int @Size(min = 4, max = 5) @Distinct [] i) {
+            @InRange(minInt = 1, maxInt = 5)
+                int @Size(min = 4, max = 5) @Distinct [] i) {
+
             failed = i;
 
             fail();

@@ -23,8 +23,13 @@ public class DistinctSetPropertyParameterTypesTest {
     @RunWith(JUnitQuickcheck.class)
     public static class DistinctSets {
         @Property public void shouldHold(
-            @Size(min = 4, max = 5) @Distinct Set<@InRange(minInt = 1, maxInt = 5) Integer> items) {
-            assertThat(items.size(), allOf(greaterThanOrEqualTo(4), lessThanOrEqualTo(5)));
+            @Size(min = 4, max = 5)
+            @Distinct
+                Set<@InRange(minInt = 1, maxInt = 5) Integer> items) {
+
+            assertThat(
+                items.size(),
+                allOf(greaterThanOrEqualTo(4), lessThanOrEqualTo(5)));
         }
     }
 
@@ -40,7 +45,10 @@ public class DistinctSetPropertyParameterTypesTest {
         static Set<Integer> failed;
 
         @Property public void shouldHold(
-            @Size(min = 4, max = 5) @Distinct Set<@InRange(minInt = 1, maxInt = 5) Integer> items) {
+            @Size(min = 4, max = 5)
+            @Distinct
+                Set<@InRange(minInt = 1, maxInt = 5) Integer> items) {
+
             failed = items;
 
             fail();

@@ -40,7 +40,10 @@ public final class Generating {
         return random.nextBoolean();
     }
 
-    public static void verifyBooleans(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyBooleans(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextBoolean();
     }
 
@@ -48,7 +51,10 @@ public final class Generating {
         return random.nextByte(minByte(), maxByte());
     }
 
-    public static void verifyBytes(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyBytes(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextByte(minByte(), maxByte());
     }
 
@@ -56,7 +62,10 @@ public final class Generating {
         return random.nextChar(minChar(), maxChar());
     }
 
-    public static void verifyChars(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyChars(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextChar(minChar(), maxChar());
     }
 
@@ -64,7 +73,10 @@ public final class Generating {
         return random.nextInt(0, 0xD7FF);
     }
 
-    public static void verifyCharsForString(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyCharsForString(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextInt(0, 0xD7FF);
     }
 
@@ -72,7 +84,10 @@ public final class Generating {
         return random.nextDouble(minDouble(), maxDouble());
     }
 
-    public static void verifyDoubles(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyDoubles(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextDouble(minDouble(), maxDouble());
     }
 
@@ -80,7 +95,10 @@ public final class Generating {
         return random.nextFloat(minFloat(), maxFloat());
     }
 
-    public static void verifyFloats(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyFloats(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextFloat(minFloat(), maxFloat());
     }
 
@@ -88,7 +106,10 @@ public final class Generating {
         return ints(random, minInt(), maxInt());
     }
 
-    public static void verifyInts(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyInts(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verifyInts(random, mode, minInt(), maxInt());
     }
 
@@ -96,7 +117,12 @@ public final class Generating {
         return random.nextInt(min, max);
     }
 
-    public static void verifyInts(SourceOfRandomness random, VerificationMode mode, int min, int max) {
+    public static void verifyInts(
+        SourceOfRandomness random,
+        VerificationMode mode,
+        int min,
+        int max) {
+
         verify(random, mode).nextInt(min, max);
     }
 
@@ -104,7 +130,11 @@ public final class Generating {
         return random.nextInt(n);
     }
 
-    public static void verifyInts(SourceOfRandomness random, VerificationMode mode, int n) {
+    public static void verifyInts(
+        SourceOfRandomness random,
+        VerificationMode mode,
+        int n) {
+
         verify(random, mode).nextInt(n);
     }
 
@@ -112,7 +142,10 @@ public final class Generating {
         return longs(random, minLong(), maxLong());
     }
 
-    public static void verifyLongs(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyLongs(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verifyLongs(random, mode, minLong(), maxLong());
     }
 
@@ -120,7 +153,12 @@ public final class Generating {
         return random.nextLong(min, max);
     }
 
-    public static void verifyLongs(SourceOfRandomness random, VerificationMode mode, long min, long max) {
+    public static void verifyLongs(
+        SourceOfRandomness random,
+        VerificationMode mode,
+        long min,
+        long max) {
+
         verify(random, mode).nextLong(min, max);
     }
 
@@ -128,7 +166,10 @@ public final class Generating {
         return random.nextShort(minShort(), maxShort());
     }
 
-    public static void verifyShorts(SourceOfRandomness random, VerificationMode mode) {
+    public static void verifyShorts(
+        SourceOfRandomness random,
+        VerificationMode mode) {
+
         verify(random, mode).nextShort(minShort(), maxShort());
     }
 }

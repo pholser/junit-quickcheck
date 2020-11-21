@@ -41,7 +41,9 @@ public class PrimitiveBytePropertyParameterTest
 
     @Override protected void primeSourceOfRandomness() {
         when(Generating.bytes(randomForParameterGenerator))
-            .thenReturn((byte) -12).thenReturn((byte) -11).thenReturn((byte) -10);
+            .thenReturn((byte) -12)
+            .thenReturn((byte) -11)
+            .thenReturn((byte) -10);
     }
 
     @Override protected int trials() {
