@@ -25,9 +25,7 @@
 
 package com.pholser.junit.quickcheck.generator.java.util;
 
-import com.pholser.junit.quickcheck.generator.Generator;
 import java.util.Hashtable;
-import java.util.List;
 
 /**
  * Produces values of type {@link Hashtable}.
@@ -39,10 +37,5 @@ public class HashtableGenerator extends MapGenerator<Hashtable> {
 
     @Override protected boolean okToAdd(Object key, Object value) {
         return key != null && value != null;
-    }
-
-    @Override
-    public void addComponentGenerators(List<Generator<?>> newComponents) {
-        super.addComponentGenerators(newComponents);
     }
 }

@@ -40,11 +40,14 @@ import java.util.function.Predicate;
 
 /**
  * Base class for generators of integral types, such as {@code int} and
- * {@link BigInteger}. All numbers are converted to/from BigInteger for processing.
+ * {@link BigInteger}. All numbers are converted to/from BigInteger for
+ * processing.
  *
  * @param <T> type of values this generator produces
  */
-public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
+public abstract class IntegralGenerator<T extends Number>
+    extends Generator<T> {
+
     protected IntegralGenerator(Class<T> type) {
         super(singletonList(type));
     }
@@ -66,8 +69,10 @@ public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
         // Try your luck by testing the smallest possible value
         results.add(leastMagnitude());
 
-        // Try values between smallest and largest, with smaller and smaller increments as we approach the largest
-        results.addAll(stream(
+        // Try values between smallest and largest, with smaller and smaller
+        // increments as we approach the largest
+        results.addAll(
+            stream(
                 halvingIntegral(
                     // We work with BigInteger, so convert all inputs
                     widen().apply(larger),
@@ -84,34 +89,40 @@ public abstract class IntegralGenerator<T extends Number> extends Generator<T> {
     }
 
     /**
-     * @return a function converting a value of the base type into a {@link BigInteger}.
+     * @return a function converting a value of the base type into a
+     * {@link BigInteger}
      */
     protected Function<T, BigInteger> widen() {
         return n -> BigInteger.valueOf(n.longValue());
     }
 
     /**
-     * @return a function converting a {@link BigInteger} into the equivalent value in the base type.
+     * @return a function converting a {@link BigInteger} into the equivalent
+     * value in the base type
      */
     protected abstract Function<BigInteger, T> narrow();
 
     /**
-     * @return a predicate checking whether its input is in the configured range.
+     * @return a predicate checking whether its input is in the configured
+     * range
      */
     protected abstract Predicate<T> inRange();
 
     /**
-     * @return the lowest magnitude number, respecting the configured range. The ideal shrink value is always this value (i.e. this value cannot be shrunk any further).
+     * @return the lowest magnitude number, respecting the configured range.
+     * The ideal shrink value is always this value (i.e. this value cannot
+     * be shrunk any further).
      */
     protected abstract T leastMagnitude();
 
     /**
-     * @return whether the given number is negative or not.
+     * @return whether the given number is negative or not
      */
     protected abstract boolean negative(T target);
 
     /**
-     * Used when shrinking negative numbers to add the positive equivalent value at the top of shrinks list.
+     * Used when shrinking negative numbers to add the positive equivalent
+     * value at the top of shrinks list.
      *
      * @param target always a negative number
      * @return the positive equivalent to target

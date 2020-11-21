@@ -68,11 +68,16 @@ public class ZoneOffsetGenerator extends Generator<ZoneOffset> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = ZoneOffset.of(range.max());
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", min, max));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public ZoneOffset generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public ZoneOffset generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         int minSeconds = min.getTotalSeconds();
         int maxSeconds = max.getTotalSeconds();
 

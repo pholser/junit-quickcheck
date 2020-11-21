@@ -61,18 +61,24 @@ public class YearGenerator extends Generator<Year> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = Year.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = Year.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public Year generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Year generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return Year.of(random.nextInt(min.getValue(), max.getValue()));
     }
 }

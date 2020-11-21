@@ -59,8 +59,14 @@ public class ByteGenerator extends IntegralGenerator<Byte> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty() ? range.minByte() : Byte.parseByte(range.min());
-        max = range.max().isEmpty() ? range.maxByte() : Byte.parseByte(range.max());
+        min =
+            range.min().isEmpty()
+                ? range.minByte()
+                : Byte.parseByte(range.min());
+        max =
+            range.max().isEmpty()
+                ? range.maxByte()
+                : Byte.parseByte(range.max());
     }
 
     @Override public Byte generate(

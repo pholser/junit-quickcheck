@@ -32,7 +32,9 @@ import java.util.List;
  *
  * @param <T> the type of list generated
  */
-public abstract class ListGenerator<T extends List> extends CollectionGenerator<T> {
+public abstract class ListGenerator<T extends List>
+    extends CollectionGenerator<T> {
+
     protected ListGenerator(Class<T> type) {
         super(type);
     }

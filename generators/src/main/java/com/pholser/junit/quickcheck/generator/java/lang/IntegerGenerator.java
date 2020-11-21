@@ -59,12 +59,14 @@ public class IntegerGenerator extends IntegralGenerator<Integer> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty()
-            ? range.minInt()
-            : Integer.parseInt(range.min());
-        max = range.max().isEmpty()
-            ? range.maxInt()
-            : Integer.parseInt(range.max());
+        min =
+            range.min().isEmpty()
+                ? range.minInt()
+                : Integer.parseInt(range.min());
+        max =
+            range.max().isEmpty()
+                ? range.maxInt()
+                : Integer.parseInt(range.max());
     }
 
     @Override public Integer generate(

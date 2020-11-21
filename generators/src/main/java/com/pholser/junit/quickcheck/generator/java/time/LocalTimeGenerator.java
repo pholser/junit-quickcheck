@@ -62,21 +62,25 @@ public class LocalTimeGenerator extends Generator<LocalTime> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = LocalTime.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = LocalTime.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public LocalTime generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public LocalTime generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return LocalTime.ofNanoOfDay(
-            random.nextLong(
-                min.toNanoOfDay(),
-                max.toNanoOfDay()));
+            random.nextLong(min.toNanoOfDay(), max.toNanoOfDay()));
     }
 }

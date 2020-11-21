@@ -60,12 +60,14 @@ public class DoubleGenerator extends DecimalGenerator<Double> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty()
-            ? range.minDouble()
-            : Double.parseDouble(range.min());
-        max = range.max().isEmpty()
-            ? range.maxDouble()
-            : Double.parseDouble(range.max());
+        min =
+            range.min().isEmpty()
+                ? range.minDouble()
+                : Double.parseDouble(range.min());
+        max =
+            range.max().isEmpty()
+                ? range.maxDouble()
+                : Double.parseDouble(range.max());
     }
 
     @Override public Double generate(

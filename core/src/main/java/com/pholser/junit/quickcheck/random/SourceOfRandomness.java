@@ -315,11 +315,12 @@ public class SourceOfRandomness {
         if (comparison == 0)
             return min;
 
-        long[] next = nextSecondsAndNanos(
-            min.getEpochSecond(),
-            min.getNano(),
-            max.getEpochSecond(),
-            max.getNano());
+        long[] next =
+            nextSecondsAndNanos(
+                min.getEpochSecond(),
+                min.getNano(),
+                max.getEpochSecond(),
+                max.getNano());
 
         return Instant.ofEpochSecond(next[0], next[1]);
     }
@@ -337,11 +338,12 @@ public class SourceOfRandomness {
         if (comparison == 0)
             return min;
 
-        long[] next = nextSecondsAndNanos(
-            min.getSeconds(),
-            min.getNano(),
-            max.getSeconds(),
-            max.getNano());
+        long[] next =
+            nextSecondsAndNanos(
+                min.getSeconds(),
+                min.getNano(),
+                max.getSeconds(),
+                max.getNano());
 
         return Duration.ofSeconds(next[0], next[1]);
     }

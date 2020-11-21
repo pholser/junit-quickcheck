@@ -59,12 +59,14 @@ public class LongGenerator extends IntegralGenerator<Long> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty()
-            ? range.minLong()
-            : Long.parseLong(range.min());
-        max = range.max().isEmpty()
-            ? range.maxLong()
-            : Long.parseLong(range.max());
+        min =
+            range.min().isEmpty()
+                ? range.minLong()
+                : Long.parseLong(range.min());
+        max =
+            range.max().isEmpty()
+                ? range.maxLong()
+                : Long.parseLong(range.max());
     }
 
     @Override public Long generate(

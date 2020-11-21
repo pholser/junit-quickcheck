@@ -45,7 +45,8 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
     private ZonedDateTime min =
         ZonedDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0, 0, 0, UTC_ZONE_ID);
     private ZonedDateTime max =
-        ZonedDateTime.of(Year.MAX_VALUE, 12, 31, 23, 59, 59, 999_999_999, UTC_ZONE_ID);
+        ZonedDateTime.of(
+            Year.MAX_VALUE, 12, 31, 23, 59, 59, 999_999_999, UTC_ZONE_ID);
 
     public ZonedDateTimeGenerator() {
         super(ZonedDateTime.class);
@@ -68,23 +69,32 @@ public class ZonedDateTimeGenerator extends Generator<ZonedDateTime> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min())) {
-            min = ZonedDateTime.parse(range.min(), formatter)
-                .withZoneSameInstant(UTC_ZONE_ID);
+            min =
+                ZonedDateTime.parse(range.min(), formatter)
+                    .withZoneSameInstant(UTC_ZONE_ID);
         }
         if (!defaultValueOf(InRange.class, "max").equals(range.max())) {
-            max = ZonedDateTime.parse(range.max(), formatter)
-                .withZoneSameInstant(UTC_ZONE_ID);
+            max =
+                ZonedDateTime.parse(range.max(), formatter)
+                    .withZoneSameInstant(UTC_ZONE_ID);
         }
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public ZonedDateTime generate(SourceOfRandomness random, GenerationStatus status) {
-        // Project the ZonedDateTime to an Instant for easy long-based generation.
+    @Override public ZonedDateTime generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        // Project the ZonedDateTime to an Instant for easy long-based
+        // generation.
         return ZonedDateTime.ofInstant(
             random.nextInstant(min.toInstant(), max.toInstant()),
             UTC_ZONE_ID);

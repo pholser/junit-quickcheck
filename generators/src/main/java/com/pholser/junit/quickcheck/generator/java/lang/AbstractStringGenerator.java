@@ -50,7 +50,10 @@ public abstract class AbstractStringGenerator extends Generator<String> {
         super(String.class);
     }
 
-    @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public String generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         int[] codePoints = new int[status.size()];
 
         for (int i = 0; i < codePoints.length; ++i)

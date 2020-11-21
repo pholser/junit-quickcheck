@@ -65,23 +65,27 @@ public class OffsetDateTimeGenerator extends Generator<OffsetDateTime> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = OffsetDateTime.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = OffsetDateTime.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public OffsetDateTime generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public OffsetDateTime generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         // Project the OffsetDateTime to an Instant for easy long-based generation.
         return OffsetDateTime.ofInstant(
-            random.nextInstant(
-                min.toInstant(),
-                max.toInstant()),
+            random.nextInstant(min.toInstant(), max.toInstant()),
             UTC_ZONE_ID);
     }
 }

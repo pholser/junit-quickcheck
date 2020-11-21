@@ -87,7 +87,8 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
      * {@linkplain Precision#scale() scale}.</p>
      *
      * <p>With no precision constraint and no {@linkplain #configure(InRange)
-     * min/max constraint}, the scale of the generated values is unspecified.</p>
+     * min/max constraint}, the scale of the generated values is
+     * unspecified.</p>
      *
      * <p>Otherwise, the scale of the generated values is set as
      * {@code max(0, precision.scale, range.min.scale, range.max.scale)}.</p>
@@ -99,7 +100,10 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
         precision = configuration;
     }
 
-    @Override public BigDecimal generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BigDecimal generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         BigDecimal minToUse = min;
         BigDecimal maxToUse = max;
         int power = status.size() + 1;
@@ -118,14 +122,16 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
 
         BigDecimal minShifted = minToUse.movePointRight(scale);
         BigDecimal maxShifted = maxToUse.movePointRight(scale);
-        BigInteger range = maxShifted.toBigInteger().subtract(minShifted.toBigInteger());
+        BigInteger range =
+            maxShifted.toBigInteger().subtract(minShifted.toBigInteger());
 
         BigInteger generated;
         do {
             generated = random.nextBigInteger(range.bitLength());
         } while (generated.compareTo(range) >= 0);
 
-        return minShifted.add(new BigDecimal(generated)).movePointLeft(scale);
+        return minShifted.add(new BigDecimal(generated))
+            .movePointLeft(scale);
     }
 
     private int decideScale() {
@@ -154,10 +160,7 @@ public class BigDecimalGenerator extends DecimalGenerator<BigDecimal> {
     }
 
     @Override protected BigDecimal leastMagnitude() {
-        return Comparables.leastMagnitude(
-            min,
-            max,
-            ZERO);
+        return Comparables.leastMagnitude(min, max, ZERO);
     }
 
     @Override protected boolean negative(BigDecimal target) {

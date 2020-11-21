@@ -111,8 +111,9 @@ public abstract class CollectionGenerator<T extends Collection>
         Stream<?> itemStream =
             Stream.generate(() -> generator.generate(random, status))
                 .sequential();
-        if (distinct)
+        if (distinct) {
             itemStream = itemStream.distinct();
+        }
 
         T items = empty();
         itemStream.limit(size).forEach(items::add);
@@ -167,7 +168,8 @@ public abstract class CollectionGenerator<T extends Collection>
 
     private boolean inSizeRange(T items) {
         return sizeRange == null
-            || (items.size() >= sizeRange.min() && items.size() <= sizeRange.max());
+            || (items.size() >= sizeRange.min()
+                && items.size() <= sizeRange.max());
     }
 
     private int size(SourceOfRandomness random, GenerationStatus status) {

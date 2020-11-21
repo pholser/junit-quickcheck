@@ -100,11 +100,16 @@ public class DateGenerator extends Generator<Date> {
             throw new IllegalArgumentException(e);
         }
 
-        if (min.getTime() > max.getTime())
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.getTime() > max.getTime()) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public Date generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Date generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new Date(random.nextLong(min.getTime(), max.getTime()));
     }
 }

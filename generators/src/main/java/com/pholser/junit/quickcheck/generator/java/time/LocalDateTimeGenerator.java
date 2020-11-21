@@ -65,18 +65,24 @@ public class LocalDateTimeGenerator extends Generator<LocalDateTime> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = LocalDateTime.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = LocalDateTime.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public LocalDateTime generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public LocalDateTime generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         /* Project the LocalDateTime to an Instant for easy long-based generation.
            Any zone id will do as long as we use the same one throughout. */
         return LocalDateTime.ofInstant(

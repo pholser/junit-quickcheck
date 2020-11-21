@@ -59,12 +59,14 @@ public class ShortGenerator extends IntegralGenerator<Short> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty()
-            ? range.minShort()
-            : Short.parseShort(range.min());
-        max = range.max().isEmpty()
-            ? range.maxShort()
-            : Short.parseShort(range.max());
+        min =
+            range.min().isEmpty()
+                ? range.minShort()
+                : Short.parseShort(range.min());
+        max =
+            range.max().isEmpty()
+                ? range.maxShort()
+                : Short.parseShort(range.max());
     }
 
     @Override public Short generate(

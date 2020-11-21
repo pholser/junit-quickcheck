@@ -62,21 +62,28 @@ public class YearMonthGenerator extends Generator<YearMonth> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = YearMonth.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = YearMonth.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public YearMonth generate(SourceOfRandomness random, GenerationStatus status) {
-        long generated = random.nextLong(
-            min.getYear() * 12L + min.getMonthValue() - 1,
-            max.getYear() * 12L + max.getMonthValue() - 1);
+    @Override public YearMonth generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        long generated =
+            random.nextLong(
+                min.getYear() * 12L + min.getMonthValue() - 1,
+                max.getYear() * 12L + max.getMonthValue() - 1);
 
         return YearMonth.of(
             (int) (generated / 12),

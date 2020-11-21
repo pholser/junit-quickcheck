@@ -58,12 +58,14 @@ public class FloatGenerator extends DecimalGenerator<Float> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        min = range.min().isEmpty()
-            ? range.minFloat()
-            : Float.parseFloat(range.min());
-        max = range.max().isEmpty()
-            ? range.maxFloat()
-            : Float.parseFloat(range.max());
+        min =
+            range.min().isEmpty()
+                ? range.minFloat()
+                : Float.parseFloat(range.min());
+        max =
+            range.max().isEmpty()
+                ? range.maxFloat()
+                : Float.parseFloat(range.max());
     }
 
     @Override public Float generate(

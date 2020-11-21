@@ -62,23 +62,30 @@ public class MonthDayGenerator extends Generator<MonthDay> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = MonthDay.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = MonthDay.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public MonthDay generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public MonthDay generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         /* Project the MonthDay to a LocalDate for easy long-based generation.
            Any leap year will do here. */
         long minEpochDay = min.atYear(2000).toEpochDay();
         long maxEpochDay = max.atYear(2000).toEpochDay();
-        LocalDate date = LocalDate.ofEpochDay(random.nextLong(minEpochDay, maxEpochDay));
+        LocalDate date =
+            LocalDate.ofEpochDay(random.nextLong(minEpochDay, maxEpochDay));
 
         return MonthDay.of(date.getMonthValue(), date.getDayOfMonth());
     }

@@ -67,11 +67,14 @@ public class InstantGenerator extends Generator<Instant> {
 
         if (min.compareTo(max) > 0) {
             throw new IllegalArgumentException(
-                String.format("bad range, %s > %s", range.min(), range.max()));
+                String.format("bad range, %s > %s", min, max));
         }
     }
 
-    @Override public Instant generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Instant generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return random.nextInstant(min, max);
     }
 }

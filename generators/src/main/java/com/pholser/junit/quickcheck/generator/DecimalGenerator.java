@@ -42,7 +42,8 @@ import java.util.stream.Stream;
 
 /**
  * Base class for generators of decimal types, such as {@code double} and
- * {@link BigDecimal}. All numbers are converted to/from BigDecimal for processing.
+ * {@link BigDecimal}. All numbers are converted to/from BigDecimal for
+ * processing.
  *
  * @param <T> type of values this generator produces
  */
@@ -55,7 +56,10 @@ public abstract class DecimalGenerator<T extends Number> extends Generator<T> {
         super(types);
     }
 
-    @Override public List<T> doShrink(SourceOfRandomness random, T largestGeneric) {
+    @Override public List<T> doShrink(
+        SourceOfRandomness random,
+        T largestGeneric) {
+
         if (largestGeneric.equals(leastMagnitude()))
             return emptyList();
 
@@ -72,7 +76,8 @@ public abstract class DecimalGenerator<T extends Number> extends Generator<T> {
         // Try your luck by testing the smallest possible value
         results.add(leastMagnitude());
 
-        // Try values between smallest and largest, with smaller and smaller increments as we approach the largest
+        // Try values between smallest and largest, with smaller and smaller
+        // increments as we approach the largest
 
         // Integrals are considered easier than decimals
         results.addAll(shrunkenIntegrals(largest, least));
@@ -108,32 +113,38 @@ public abstract class DecimalGenerator<T extends Number> extends Generator<T> {
     }
 
     /**
-     * @return a function converting a value of the base type into a {@link BigDecimal}.
+     * @return a function converting a value of the base type into a
+     * {@link BigDecimal}
      */
     protected abstract Function<T, BigDecimal> widen();
 
     /**
-     * @return a function converting a {@link BigDecimal} into the equivalent value in the base type.
+     * @return a function converting a {@link BigDecimal} into the equivalent
+     * value in the base type
      */
     protected abstract Function<BigDecimal, T> narrow();
 
     /**
-     * @return a predicate checking whether its input is in the configured range.
+     * @return a predicate checking whether its input is in the configured
+     * range
      */
     protected abstract Predicate<T> inRange();
 
     /**
-     * @return the lowest magnitude number, respecting the configured range. The ideal shrink value is always this value (i.e. this value cannot be shrunk any further).
+     * @return the lowest magnitude number, respecting the configured range.
+     * The ideal shrink value is always this value (i.e. this value cannot
+     * be shrunk any further).
      */
     protected abstract T leastMagnitude();
 
     /**
-     * @return whether the given number is negative or not.
+     * @return whether the given number is negative or not
      */
     protected abstract boolean negative(T target);
 
     /**
-     * Used when shrinking negative numbers to add the positive equivalent value at the top of shrinks list.
+     * Used when shrinking negative numbers to add the positive equivalent
+     * value at the top of shrinks list.
      *
      * @param target always a negative number
      * @return the positive equivalent to target

@@ -47,24 +47,31 @@ class CodePointShrink implements Shrink<Integer> {
         this.filter = filter;
     }
 
-    @Override public List<Integer> shrink(SourceOfRandomness random, Object larger) {
+    @Override public List<Integer> shrink(
+        SourceOfRandomness random,
+        Object larger) {
+
         int codePoint = (Integer) larger;
 
         List<Integer> shrinks = new ArrayList<>();
         addAll(shrinks, (int) 'a', (int) 'b', (int) 'c');
         if (isUpperCase(codePoint))
             shrinks.add(Character.toLowerCase(codePoint));
-        addAll(shrinks, (int) 'A', (int) 'B', (int) 'C',
-            (int) '1', (int) '2', (int) '3',
+        addAll(
+            shrinks,
+            (int) 'A', (int) 'B', (int) 'C', (int) '1', (int) '2', (int) '3',
             (int) ' ', (int) '\n');
         reverse(shrinks);
 
         Comparator<Integer> comparator =
             comparing((Function<Integer, Boolean>) Character::isLowerCase)
-                .thenComparing((Function<Integer, Boolean>) Character::isUpperCase)
-                .thenComparing((Function<Integer, Boolean>) Character::isDigit)
+                .thenComparing(
+                    (Function<Integer, Boolean>) Character::isUpperCase)
+                .thenComparing(
+                    (Function<Integer, Boolean>) Character::isDigit)
                 .thenComparing(cp -> Integer.valueOf(' ').equals(cp))
-                .thenComparing((Function<Integer, Boolean>) Character::isSpaceChar)
+                .thenComparing(
+                    (Function<Integer, Boolean>) Character::isSpaceChar)
                 .thenComparing(naturalOrder());
         return shrinks.stream()
             .filter(filter)

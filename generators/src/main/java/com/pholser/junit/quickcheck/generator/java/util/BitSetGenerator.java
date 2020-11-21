@@ -44,31 +44,40 @@ public class BitSetGenerator extends Generator<BitSet> {
         super(BitSet.class);
     }
 
-    @Override public BitSet generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BitSet generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         int size = status.size();
 
         BitSet bits = new BitSet(size);
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < size; ++i) {
             bits.set(i, random.nextBoolean());
+        }
 
         return bits;
     }
 
-    @Override public List<BitSet> doShrink(SourceOfRandomness random, BitSet larger) {
+    @Override public List<BitSet> doShrink(
+        SourceOfRandomness random,
+        BitSet larger) {
+
         if (larger.length() == 0)
             return emptyList();
 
         List<BitSet> shrinks = new ArrayList<>();
-        shrinks.addAll(larger.stream()
-            .mapToObj(i -> larger.get(0, i))
-            .collect(toList()));
-        shrinks.addAll(larger.stream()
-            .mapToObj(i -> {
-                BitSet smaller = (BitSet) larger.clone();
-                smaller.clear(i);
-                return smaller;
-            })
-            .collect(toList()));
+        shrinks.addAll(
+            larger.stream()
+                .mapToObj(i -> larger.get(0, i))
+                .collect(toList()));
+        shrinks.addAll(
+            larger.stream()
+                .mapToObj(i -> {
+                    BitSet smaller = (BitSet) larger.clone();
+                    smaller.clear(i);
+                    return smaller;
+                })
+                .collect(toList()));
 
         return shrinks;
     }

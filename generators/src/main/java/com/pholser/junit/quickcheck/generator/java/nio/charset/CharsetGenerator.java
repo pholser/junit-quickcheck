@@ -40,7 +40,11 @@ public class CharsetGenerator extends Generator<Charset> {
         super(Charset.class);
     }
 
-    @Override public Charset generate(SourceOfRandomness random, GenerationStatus status) {
-        return Charset.forName(random.choose(availableCharsets().keySet()));
+    @Override public Charset generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return Charset.forName(
+            random.choose(availableCharsets().keySet()));
     }
 }

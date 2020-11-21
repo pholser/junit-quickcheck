@@ -72,11 +72,16 @@ public class PeriodGenerator extends Generator<Period> {
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = Period.parse(range.max());
 
-        if (toBigInteger(min).compareTo(toBigInteger(max)) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (toBigInteger(min).compareTo(toBigInteger(max)) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public Period generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Period generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return fromBigInteger(
             Ranges.choose(random, toBigInteger(min), toBigInteger(max)));
     }
@@ -90,8 +95,10 @@ public class PeriodGenerator extends Generator<Period> {
     }
 
     private Period fromBigInteger(BigInteger period) {
-        BigInteger[] monthsAndDays = period.divideAndRemainder(THIRTY_ONE);
-        BigInteger[] yearsAndMonths = monthsAndDays[0].divideAndRemainder(TWELVE);
+        BigInteger[] monthsAndDays =
+            period.divideAndRemainder(THIRTY_ONE);
+        BigInteger[] yearsAndMonths =
+            monthsAndDays[0].divideAndRemainder(TWELVE);
 
         return Period.of(
             yearsAndMonths[0].intValueExact(),

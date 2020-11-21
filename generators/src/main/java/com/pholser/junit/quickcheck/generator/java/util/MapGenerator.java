@@ -62,17 +62,14 @@ import java.util.stream.Stream;
  *
  * @param <T> the type of map generated
  */
-public abstract class MapGenerator<T extends Map> extends ComponentizedGenerator<T> {
+public abstract class MapGenerator<T extends Map>
+    extends ComponentizedGenerator<T> {
+
     private Size sizeRange;
     private boolean distinct;
 
     protected MapGenerator(Class<T> type) {
         super(type);
-    }
-
-    @Override
-    public void addComponentGenerators(List<Generator<?>> newComponents) {
-        super.addComponentGenerators(newComponents);
     }
 
     /**

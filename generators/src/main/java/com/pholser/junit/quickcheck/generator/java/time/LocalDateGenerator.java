@@ -61,21 +61,25 @@ public class LocalDateGenerator extends Generator<LocalDate> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = LocalDate.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = LocalDate.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public LocalDate generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public LocalDate generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return LocalDate.ofEpochDay(
-            random.nextLong(
-                min.toEpochDay(),
-                max.toEpochDay()));
+            random.nextLong(min.toEpochDay(), max.toEpochDay()));
     }
 }

@@ -39,7 +39,8 @@ import java.util.Map;
  * {@link java.nio.charset.Charset}.
  */
 public class CodePoints {
-    private static final Map<Charset, CodePoints> ENCODABLES = new HashMap<>();
+    private static final Map<Charset, CodePoints> ENCODABLES =
+        new HashMap<>();
 
     private final List<CodePointRange> ranges;
 
@@ -53,8 +54,10 @@ public class CodePoints {
      * @throws IndexOutOfBoundsException if there is no such code point
      */
     public int at(int index) {
-        if (index < 0)
-            throw new IndexOutOfBoundsException("illegal negative index: " + index);
+        if (index < 0) {
+            throw new IndexOutOfBoundsException(
+                "illegal negative index: " + index);
+        }
 
         int min = 0;
         int max = ranges.size() - 1;
@@ -63,12 +66,15 @@ public class CodePoints {
             int midpoint = min + ((max - min) / 2);
             CodePointRange current = ranges.get(midpoint);
 
-            if (index >= current.previousCount && index < current.previousCount + current.size())
+            if (index >= current.previousCount
+                && index < current.previousCount + current.size()) {
+
                 return current.low + index - current.previousCount;
-            else if (index < current.previousCount)
+            } else if (index < current.previousCount) {
                 max = midpoint - 1;
-            else
+            } else {
                 min = midpoint + 1;
+            }
         }
 
         throw new IndexOutOfBoundsException(String.valueOf(index));
@@ -109,8 +115,10 @@ public class CodePoints {
     }
 
     private static CodePoints load(Charset c) {
-        if (!c.canEncode())
-            throw new IllegalArgumentException("Charset " + c.name() + " does not support encoding");
+        if (!c.canEncode()) {
+            throw new IllegalArgumentException(
+                "Charset " + c.name() + " does not support encoding");
+        }
 
         return encodableCodePoints(c.newEncoder());
     }
@@ -140,14 +148,17 @@ public class CodePoints {
                 }
             } else if (inRange) {
                 inRange = false;
-                CodePointRange range = new CodePointRange(start, current - 1, previousCount);
+                CodePointRange range =
+                    new CodePointRange(start, current - 1, previousCount);
                 points.add(range);
                 previousCount += range.size();
             }
         }
 
-        if (inRange)
-            points.add(new CodePointRange(start, current - 1, previousCount));
+        if (inRange) {
+            points.add(
+                new CodePointRange(start, current - 1, previousCount));
+        }
 
         return points;
     }
@@ -158,8 +169,10 @@ public class CodePoints {
         final int previousCount;
 
         CodePointRange(int low, int high, int previousCount) {
-            if (low > high)
-                throw new IllegalArgumentException(format("%d > %d", low, high));
+            if (low > high) {
+                throw new IllegalArgumentException(
+                    format("%d > %d", low, high));
+            }
 
             this.low = low;
             this.high = high;

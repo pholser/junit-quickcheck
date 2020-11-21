@@ -78,7 +78,10 @@ public class BigIntegerGenerator extends IntegralGenerator<BigInteger> {
             checkRange(Ranges.Type.INTEGRAL, min, max);
     }
 
-    @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BigInteger generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         int numberOfBits = status.size() + 1;
 
         if (min == null && max == null)

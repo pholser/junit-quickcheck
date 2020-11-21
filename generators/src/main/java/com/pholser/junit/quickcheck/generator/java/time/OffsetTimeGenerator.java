@@ -64,22 +64,33 @@ public class OffsetTimeGenerator extends Generator<OffsetTime> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(range.format());
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern(range.format());
 
         if (!defaultValueOf(InRange.class, "min").equals(range.min()))
             min = OffsetTime.parse(range.min(), formatter);
         if (!defaultValueOf(InRange.class, "max").equals(range.max()))
             max = OffsetTime.parse(range.max(), formatter);
 
-        if (min.compareTo(max) > 0)
-            throw new IllegalArgumentException(String.format("bad range, %s > %s", range.min(), range.max()));
+        if (min.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                String.format("bad range, %s > %s", min, max));
+        }
     }
 
-    @Override public OffsetTime generate(SourceOfRandomness random, GenerationStatus status) {
-        LocalTime time = LocalTime.ofNanoOfDay(
-            random.nextLong(
-                min.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime().toNanoOfDay(),
-                max.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime().toNanoOfDay()));
+    @Override public OffsetTime generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        LocalTime time =
+            LocalTime.ofNanoOfDay(
+                random.nextLong(
+                    min.withOffsetSameInstant(ZoneOffset.UTC)
+                        .toLocalTime()
+                        .toNanoOfDay(),
+                    max.withOffsetSameInstant(ZoneOffset.UTC)
+                        .toLocalTime()
+                        .toNanoOfDay()));
 
         return OffsetTime.of(time, ZoneOffset.UTC);
     }

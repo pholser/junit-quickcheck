@@ -74,7 +74,7 @@ public class ClockGenerator extends Generator<Clock> {
 
         if (min.compareTo(max) > 0) {
             throw new IllegalArgumentException(
-                String.format("bad range, %s > %s", range.min(), range.max()));
+                String.format("bad range, %s > %s", min, max));
         }
     }
 
