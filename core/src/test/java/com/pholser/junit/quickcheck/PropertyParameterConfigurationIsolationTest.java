@@ -134,7 +134,8 @@ public class PropertyParameterConfigurationIsolationTest {
     acrossParametersOfParameterizedAndNotTypesWithOneConstant()
     throws Exception {
         assertThat(
-            testResult(ParametersOfParameterizedAndNotTypesWithOneConstant.class),
+            testResult(
+                ParametersOfParameterizedAndNotTypesWithOneConstant.class),
             isSuccessful());
         assertEquals(
             defaultPropertyTrialCount(),
@@ -183,6 +184,7 @@ public class PropertyParameterConfigurationIsolationTest {
 
     @Test public void acrossParametersOfSameArrayTypeWithOneConstant()
         throws Exception {
+
         assertThat(
             testResult(ParametersOfSameArrayTypeWithOneConstant.class),
             isSuccessful());

@@ -347,7 +347,8 @@ public class UsualJUnitMachineryOnTraitBasedPropertyTest {
                 }
 
                 @Override protected void after() {
-                    System.out.println("TraitC::firstTraitCClassRuleMethod::after");
+                    System.out.println(
+                        "TraitC::firstTraitCClassRuleMethod::after");
                 }
             };
         }

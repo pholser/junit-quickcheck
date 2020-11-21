@@ -123,7 +123,9 @@ public class ComposedObjectsTest {
     public static class AllFieldsAtOnce {
         public static class B {
             Foo foo;
-            @From(ABox.class) Box<@X @From(AnotherBox.class) Box<@X Foo>> boxOfBoxOfFoo;
+
+            @From(ABox.class)
+            Box<@X @From(AnotherBox.class) Box<@X Foo>> boxOfBoxOfFoo;
         }
 
         public static class A {
@@ -296,7 +298,9 @@ public class ComposedObjectsTest {
                 GenerationStatus status) {
 
                 A a = new A();
-                a.b = gen().type(Box.class, Object.class).generate(random, status);
+                a.b =
+                    gen().type(Box.class, Object.class)
+                        .generate(random, status);
                 return a;
             }
         }
@@ -339,7 +343,9 @@ public class ComposedObjectsTest {
 
     @Test
     public void askingForParameterizedComponentizedType() {
-        assertThat(testResult(ParameterizedComponentizedType.class), isSuccessful());
+        assertThat(
+            testResult(ParameterizedComponentizedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -359,7 +365,8 @@ public class ComposedObjectsTest {
                 GenerationStatus status) {
 
                 A a = new A();
-                a.b = gen().type(Box.class, Foo.class).generate(random, status);
+                a.b =
+                    gen().type(Box.class, Foo.class).generate(random, status);
                 return a;
             }
         }

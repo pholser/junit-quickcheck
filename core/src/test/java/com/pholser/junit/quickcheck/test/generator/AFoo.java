@@ -60,7 +60,10 @@ public class AFoo extends Generator<Foo> {
         super(Foo.class);
     }
 
-    @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Foo generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new Foo(
             value == null
                 ? (range == null

@@ -69,19 +69,21 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     }
 
     @Test public void bigDecimal() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "bigDecimal"));
+        Generator<?> result =repo.generatorFor(typeOf(getClass(), "bigDecimal"));
 
         assertGenerators(result, generator.getClass());
     }
 
     @Test public void comparable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "comparable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "comparable"));
 
         assertGenerators(result, generator.getClass(), AnInt.class);
     }
 
     @Test public void serializable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "serializable"));
 
         assertGenerators(result, generator.getClass(), AnInt.class);
     }
@@ -95,6 +97,10 @@ public class RegisteringGeneratorsForHierarchyOfBigDecimalTest {
     @Test public void object() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "object"));
 
-        assertGenerators(result, generator.getClass(), AnInt.class, ZilchGenerator.class);
+        assertGenerators(
+            result,
+            generator.getClass(),
+            AnInt.class,
+            ZilchGenerator.class);
     }
 }

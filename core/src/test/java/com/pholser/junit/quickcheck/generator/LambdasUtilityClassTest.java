@@ -27,7 +27,9 @@ package com.pholser.junit.quickcheck.generator;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
 
-public class LambdasUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
+public class LambdasUtilityClassTest
+    extends UtilityClassesUninstantiabilityHarness {
+
     public LambdasUtilityClassTest() {
         super(Lambdas.class);
     }

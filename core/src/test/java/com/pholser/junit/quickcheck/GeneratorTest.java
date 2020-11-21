@@ -40,7 +40,10 @@ public class GeneratorTest {
 
     @Before public void beforeEach() {
         generator = new Generator<Object>(Object.class) {
-            @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public Object generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 return this;
             }
         };

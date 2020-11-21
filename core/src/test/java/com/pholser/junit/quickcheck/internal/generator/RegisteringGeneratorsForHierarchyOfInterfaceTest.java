@@ -65,7 +65,8 @@ public class RegisteringGeneratorsForHierarchyOfInterfaceTest {
     }
 
     @Test public void callable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "callable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "callable"));
 
         assertGenerators(result, generator.getClass());
     }

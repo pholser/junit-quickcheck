@@ -55,6 +55,8 @@ public class GenFrequencyTest {
 
         assertEquals(
             Integer.valueOf(-2),
-            chooser.generate(random, new SimpleGenerationStatus(null, null, 0)));
+            chooser.generate(
+                random,
+                new SimpleGenerationStatus(null, null, 0)));
     }
 }

@@ -95,7 +95,9 @@ public class ExhaustingAGivenSetTest {
     @Test public void booleansUnmarked() {
         assertThat(testResult(UnmarkedBooleans.class), isSuccessful());
         assertEquals(2, UnmarkedBooleans.iterations);
-        assertEquals(new HashSet<>(asList(true, false)), UnmarkedBooleans.testCases);
+        assertEquals(
+            new HashSet<>(asList(true, false)),
+            UnmarkedBooleans.testCases);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -230,7 +232,8 @@ public class ExhaustingAGivenSetTest {
 
         private static final Set<Double> testCases = new HashSet<>();
 
-        @Property(mode = EXHAUSTIVE) public void shouldHold(@Only({"2.7", "-3.14"}) Double d) {
+        @Property(mode = EXHAUSTIVE)
+        public void shouldHold(@Only({"2.7", "-3.14"}) Double d) {
             testCases.add(d);
             ++iterations;
         }
@@ -438,7 +441,9 @@ public class ExhaustingAGivenSetTest {
         private static final Set<RoundingMode> testCases = new HashSet<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Only({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+        public void shouldHold(
+            @Only({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+
             testCases.add(mode);
             ++iterations;
         }
@@ -446,8 +451,12 @@ public class ExhaustingAGivenSetTest {
 
     @Test public void enumsUnmarked() {
         assertThat(testResult(EnumsUnmarked.class), isSuccessful());
-        assertEquals(EnumSet.allOf(RoundingMode.class).size(), EnumsUnmarked.iterations);
-        assertEquals(EnumSet.allOf(RoundingMode.class), EnumsUnmarked.testCases);
+        assertEquals(
+            EnumSet.allOf(RoundingMode.class).size(),
+            EnumsUnmarked.iterations);
+        assertEquals(
+            EnumSet.allOf(RoundingMode.class),
+            EnumsUnmarked.testCases);
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -468,8 +477,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(2, CtorOnly.iterations);
         assertEquals(
             new HashSet<>(
-                asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))
-            ),
+                asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))),
             CtorOnly.testCases);
     }
 
@@ -627,8 +635,10 @@ public class ExhaustingAGivenSetTest {
     public static class ManyParameters {
         static int iterations;
 
-        private static final List<Integer> firstTestCases = new LinkedList<>();
-        private static final List<Character> secondTestCases = new LinkedList<>();
+        private static final List<Integer> firstTestCases =
+            new LinkedList<>();
+        private static final List<Character> secondTestCases =
+            new LinkedList<>();
 
         @Property(mode = EXHAUSTIVE) public void shouldHold(
             @Only({"-1", "-2", "-4"}) int i,
@@ -641,7 +651,9 @@ public class ExhaustingAGivenSetTest {
     }
 
     @Test public void manyParametersWithBooleanAndEnum() {
-        assertThat(testResult(ManyParametersWithBooleanAndEnum.class), isSuccessful());
+        assertThat(
+            testResult(ManyParametersWithBooleanAndEnum.class),
+            isSuccessful());
 
         assertEquals(
             2 * 5 * 2 * RoundingMode.values().length,
@@ -664,10 +676,14 @@ public class ExhaustingAGivenSetTest {
     public static class ManyParametersWithBooleanAndEnum {
         static int iterations;
 
-        private static final List<Integer> firstTestCases = new LinkedList<>();
-        private static final List<Character> secondTestCases = new LinkedList<>();
-        private static final List<Boolean> thirdTestCases = new LinkedList<>();
-        private static final List<RoundingMode> fourthTestCases = new LinkedList<>();
+        private static final List<Integer> firstTestCases =
+            new LinkedList<>();
+        private static final List<Character> secondTestCases =
+            new LinkedList<>();
+        private static final List<Boolean> thirdTestCases =
+            new LinkedList<>();
+        private static final List<RoundingMode> fourthTestCases =
+            new LinkedList<>();
 
         @Property(mode = EXHAUSTIVE)
         public void shouldHold(

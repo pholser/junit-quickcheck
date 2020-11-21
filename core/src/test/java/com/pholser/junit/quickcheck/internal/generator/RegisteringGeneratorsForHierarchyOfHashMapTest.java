@@ -70,7 +70,8 @@ public class RegisteringGeneratorsForHierarchyOfHashMapTest {
     }
 
     @Test public void abstractMap() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "abstractMap"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "abstractMap"));
 
         assertGenerators(result, generator.getClass());
     }
@@ -82,13 +83,15 @@ public class RegisteringGeneratorsForHierarchyOfHashMapTest {
     }
 
     @Test public void cloneable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "cloneable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "cloneable"));
 
         assertGenerators(result, generator.getClass());
     }
 
     @Test public void serializable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "serializable"));
 
         assertGenerators(result, generator.getClass(), AnInt.class);
     }

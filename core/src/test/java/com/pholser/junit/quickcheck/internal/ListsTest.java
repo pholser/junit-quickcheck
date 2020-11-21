@@ -110,8 +110,7 @@ public class ListsTest {
                 newArrayList(1, 4, 3),
                 newArrayList(1, 5, 3),
                 newArrayList(1, 2, 4),
-                newArrayList(1, 2, 5)
-            ),
+                newArrayList(1, 2, 5)),
             shrinks);
     }
 }

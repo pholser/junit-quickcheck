@@ -38,7 +38,10 @@ public class AMap extends ComponentizedGenerator<HashMap> {
         super(HashMap.class);
     }
 
-    @Override public HashMap<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public HashMap<?, ?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new HashMap<>(status.size());
     }
 

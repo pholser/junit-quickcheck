@@ -92,34 +92,50 @@ public class ComparablesTest {
     }
 
     @Test public void leastMagnitudeUnbounded() {
-        assertEquals(Integer.valueOf(0), Comparables.leastMagnitude(null, null, 0));
+        assertEquals(
+            Integer.valueOf(0),
+            Comparables.leastMagnitude(null, null, 0));
     }
 
     @Test public void leastMagnitudeNegativeMinOnly() {
-        assertEquals(Integer.valueOf(0), Comparables.leastMagnitude(-3, null, 0));
+        assertEquals(
+            Integer.valueOf(0),
+            Comparables.leastMagnitude(-3, null, 0));
     }
 
     @Test public void leastMagnitudePositiveMinOnly() {
-        assertEquals(Integer.valueOf(4), Comparables.leastMagnitude(4, null, 0));
+        assertEquals(
+            Integer.valueOf(4),
+            Comparables.leastMagnitude(4, null, 0));
     }
 
     @Test public void leastMagnitudeNegativeMaxOnly() {
-        assertEquals(Integer.valueOf(-2), Comparables.leastMagnitude(null, -2, 0));
+        assertEquals(
+            Integer.valueOf(-2),
+            Comparables.leastMagnitude(null, -2, 0));
     }
 
     @Test public void leastMagnitudePositiveMaxOnly() {
-        assertEquals(Integer.valueOf(0), Comparables.leastMagnitude(null, 5, 0));
+        assertEquals(
+            Integer.valueOf(0),
+            Comparables.leastMagnitude(null, 5, 0));
     }
 
     @Test public void leastMagnitudeBothLessThanZero() {
-        assertEquals(Integer.valueOf(-1), Comparables.leastMagnitude(-4, -1, 0));
+        assertEquals(
+            Integer.valueOf(-1),
+            Comparables.leastMagnitude(-4, -1, 0));
     }
 
     @Test public void leastMagnitudeBothGreaterThanZero() {
-        assertEquals(Integer.valueOf(5), Comparables.leastMagnitude(5, 7, 0));
+        assertEquals(
+            Integer.valueOf(5),
+            Comparables.leastMagnitude(5, 7, 0));
     }
 
     @Test public void leastMagnitudeStraddlingZero() {
-        assertEquals(Integer.valueOf(0), Comparables.leastMagnitude(-2, 4, 0));
+        assertEquals(
+            Integer.valueOf(0),
+            Comparables.leastMagnitude(-2, 4, 0));
     }
 }

@@ -37,7 +37,7 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.util.List;
 
-public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithEqualProbabilityTest
+public class ExplicitGroupOfGeneratorsChosenWithEqualProbabilityTest
     extends CorePropertyParameterTest {
 
     @Produced({
@@ -48,7 +48,8 @@ public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithEqualProbabilit
     public static final String TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(3)).thenReturn(0).thenReturn(1).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(3))
+            .thenReturn(0).thenReturn(1).thenReturn(2);
     }
 
     @Override protected int trials() {
@@ -68,7 +69,10 @@ public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithEqualProbabilit
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "foo";
         }
     }
@@ -78,7 +82,10 @@ public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithEqualProbabilit
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "bar";
         }
     }
@@ -88,7 +95,10 @@ public class ExplicitGroupOfPropertyParameterGeneratorsChosenWithEqualProbabilit
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "baz";
         }
     }

@@ -72,7 +72,8 @@ public abstract class CorePropertyParameterTest {
         primeQuantifier();
         primeTrials();
 
-        repository = new GeneratorRepository(randomForGeneratorRepo).register(source);
+        repository =
+            new GeneratorRepository(randomForGeneratorRepo).register(source);
         Iterable<Generator<?>> auxiliarySource = auxiliaryGeneratorSource();
         if (auxiliarySource != null)
             repository.register(auxiliarySource);
@@ -156,8 +157,12 @@ public abstract class CorePropertyParameterTest {
         List<?> values = randomValues();
         assertEquals(trials(), values.size());
 
-        for (int i = 0; i < propertyParameters.size(); ++i)
-            verifyEquivalenceOfPropertyParameter(i, values.get(i), propertyParameters.get(i));
+        for (int i = 0; i < propertyParameters.size(); ++i) {
+            verifyEquivalenceOfPropertyParameter(
+                i,
+                values.get(i),
+                propertyParameters.get(i));
+        }
     }
 
     protected void verifyEquivalenceOfPropertyParameter(

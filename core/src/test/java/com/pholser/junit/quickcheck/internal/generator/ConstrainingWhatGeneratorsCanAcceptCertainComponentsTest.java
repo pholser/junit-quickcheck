@@ -79,52 +79,76 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
     @Test public void rawHashMapType() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "raw"));
 
-        assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
+        assertGenerators(
+            result,
+            HashMapGenerator.class,
+            StringKeyHashMapGenerator.class);
     }
 
     @Test public void stringKeyHashMapType() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "stringKey"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "stringKey"));
 
-        assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
+        assertGenerators(
+            result,
+            HashMapGenerator.class,
+            StringKeyHashMapGenerator.class);
     }
 
     @Test public void integerKeyHashMapType() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "integerKey"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "integerKey"));
 
         assertGenerators(result, HashMapGenerator.class);
     }
 
     @Test public void extendsStringKeyMapType() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "extendsStringKey"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "extendsStringKey"));
 
-        assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
+        assertGenerators(
+            result,
+            HashMapGenerator.class,
+            StringKeyHashMapGenerator.class);
     }
 
     @Test public void superStringKeyMapType() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "superStringKey"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "superStringKey"));
 
-        assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
+        assertGenerators(
+            result,
+            HashMapGenerator.class,
+            StringKeyHashMapGenerator.class);
     }
 
     @Test public void huhKeyMapType() throws Exception {
         Generator<?> result = repo.generatorFor(typeOf(getClass(), "huhKey"));
 
-        assertGenerators(result, HashMapGenerator.class, StringKeyHashMapGenerator.class);
+        assertGenerators(
+            result,
+            HashMapGenerator.class,
+            StringKeyHashMapGenerator.class);
     }
 
-    @Test public void doNotComposeGeneratorsIfOnlyOneChoice() throws Exception {
+    @Test public void doNotComposeIfOnlyOneChoice() throws Exception {
         Generator<?> result =
             repo.generatorFor(typeOf(getClass(), "intField"));
 
         assertThat(result, not(instanceOf(CompositeGenerator.class)));
     }
 
-    public static class HashMapGenerator<K, V> extends ComponentizedGenerator<HashMap> {
+    public static class HashMapGenerator<K, V>
+        extends ComponentizedGenerator<HashMap> {
+
         public HashMapGenerator() {
             super(HashMap.class);
         }
 
-        @Override public HashMap<K, V> generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public HashMap<K, V> generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return new HashMap<>();
         }
 
@@ -133,25 +157,43 @@ public class ConstrainingWhatGeneratorsCanAcceptCertainComponentsTest {
         }
     }
 
-    public static class StringKeyHashMapGenerator<V> extends HashMapGenerator<String, V> {
-        @Override public HashMap<String, V> generate(SourceOfRandomness random, GenerationStatus status) {
+    public static class StringKeyHashMapGenerator<V>
+        extends HashMapGenerator<String, V> {
+
+        @Override public HashMap<String, V> generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return new HashMap<>();
         }
 
-        @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+        @Override public boolean canGenerateForParametersOfTypes(
+            List<TypeParameter<?>> typeParameters) {
+
             return super.canGenerateForParametersOfTypes(typeParameters)
-                && compatibleWithTypeParameter(typeParameters.get(0), String.class);
+                && compatibleWithTypeParameter(
+                    typeParameters.get(0),
+                    String.class);
         }
     }
 
-    public static class FailedStringKeyHashMapGenerator<V> extends HashMapGenerator<String, V> {
-        @Override public HashMap<String, V> generate(SourceOfRandomness random, GenerationStatus status) {
+    public static class FailedStringKeyHashMapGenerator<V>
+        extends HashMapGenerator<String, V> {
+
+        @Override public HashMap<String, V> generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return new HashMap<>();
         }
 
-        @Override public boolean canGenerateForParametersOfTypes(List<TypeParameter<?>> typeParameters) {
+        @Override public boolean canGenerateForParametersOfTypes(
+            List<TypeParameter<?>> typeParameters) {
+
             return super.canGenerateForParametersOfTypes(typeParameters)
-                && compatibleWithTypeParameter(typeParameters.get(0), String.class);
+                && compatibleWithTypeParameter(
+                    typeParameters.get(0),
+                    String.class);
         }
 
         @Override public int numberOfNeededComponents() {

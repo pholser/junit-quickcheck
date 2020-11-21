@@ -37,7 +37,10 @@ public class ABox extends ComponentizedGenerator<Box> {
         super(Box.class);
     }
 
-    @Override public Box<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Box<?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new Box<>(
             componentGenerators().get(0).generate(random, status),
             x != null);
@@ -48,7 +51,8 @@ public class ABox extends ComponentizedGenerator<Box> {
     }
 
     @Override public BigDecimal magnitude(Object value) {
-        return componentGenerators().get(0).magnitude(((Box<?>) value).contents());
+        return componentGenerators().get(0)
+            .magnitude(((Box<?>) value).contents());
     }
 
     public void configure(X x) {

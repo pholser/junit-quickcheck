@@ -43,13 +43,19 @@ public class BasicCapabilitiesOfGeneratorTest {
 
     @Before public void beforeEach() {
         generator = new Generator<Object>(Object.class) {
-            @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public Object generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 return this;
             }
         };
 
         nonShrinkingGenerator = new Generator<Object>(Object.class) {
-            @Override public Object generate(SourceOfRandomness random, GenerationStatus status) {
+            @Override public Object generate(
+                SourceOfRandomness random,
+                GenerationStatus status) {
+
                 return this;
             }
 
@@ -76,7 +82,9 @@ public class BasicCapabilitiesOfGeneratorTest {
     }
 
     @Test public void actOfShrinking() {
-        assertEquals(emptyList(), generator.shrink(null, new Object()));
+        assertEquals(
+            emptyList(),
+            generator.shrink(null, new Object()));
     }
 
     @Test public void nonShrinkingGeneratorAttemptingToShrink() {

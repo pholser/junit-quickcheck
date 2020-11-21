@@ -115,7 +115,8 @@ public class MinimalCounterexampleHookTest {
         }
     }
 
-    @Test public void onFailingSetHookShouldBeCalledForFailingTestsWithoutShrinking() {
+    @Test
+    public void onFailingSetHookShouldBeCalledForFailingTestsWithoutShrinking() {
         assumeThat(
             testResult(FailingTestWithShrinkingDisabled.class),
             not(isSuccessful()));
@@ -190,7 +191,8 @@ public class MinimalCounterexampleHookTest {
         }
     }
 
-    @Before public void resetFailingTestWhichIsRepeatedThreeTimesAfterFailure() {
+    @Before
+    public void resetFailingTestWhichIsRepeatedThreeTimesAfterFailure() {
         FailingTestWhichIsRepeatedThreeTimesAfterFailure.reset();
     }
 

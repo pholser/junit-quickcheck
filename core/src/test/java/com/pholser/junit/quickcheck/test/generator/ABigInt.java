@@ -36,7 +36,10 @@ public class ABigInt extends Generator<BigInteger> {
         super(BigInteger.class);
     }
 
-    @Override public BigInteger generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public BigInteger generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new BigInteger(random.nextBytes(status.size() + 1));
     }
 

@@ -61,9 +61,7 @@ public class MapFlatMapTest {
         Gen<Integer> five = (random, status) -> 5;
         Gen<Integer> six = (random, status) -> 6;
         Gen<Coordinate> flatMapped =
-            five.flatMap(i ->
-                six.map(j ->
-                    new Coordinate(i, j)));
+            five.flatMap(i -> six.map(j -> new Coordinate(i, j)));
 
         Coordinate generated = flatMapped.generate(null, status);
 

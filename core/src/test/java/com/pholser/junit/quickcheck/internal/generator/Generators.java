@@ -47,8 +47,9 @@ public final class Generators {
 
         CompositeGenerator composite = (CompositeGenerator) result;
         Set<Class<?>> compositeTypes = new HashSet<>();
-        for (int i = 0; i < composite.numberOfComposedGenerators(); ++i)
+        for (int i = 0; i < composite.numberOfComposedGenerators(); ++i) {
             compositeTypes.add(composite.composed(i).getClass());
+        }
 
         assertEquals(newHashSet(expectedTypes), compositeTypes);
     }

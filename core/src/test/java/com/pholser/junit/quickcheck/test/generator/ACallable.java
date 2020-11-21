@@ -36,8 +36,12 @@ public class ACallable<V> extends ComponentizedGenerator<Callable> {
     }
 
     @SuppressWarnings("unchecked")
-    @Override public Callable<V> generate(final SourceOfRandomness random, final GenerationStatus status) {
-        return () -> (V) componentGenerators().get(0).generate(random, status);
+    @Override public Callable<V> generate(
+        final SourceOfRandomness random,
+        final GenerationStatus status) {
+
+        return () ->
+            (V) componentGenerators().get(0).generate(random, status);
     }
 
     @Override public int numberOfNeededComponents() {

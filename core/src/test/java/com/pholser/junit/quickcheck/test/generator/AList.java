@@ -38,7 +38,10 @@ public class AList extends ComponentizedGenerator<ArrayList> {
         super(ArrayList.class);
     }
 
-    @Override public ArrayList<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public ArrayList<?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new ArrayList<>(status.size());
     }
 

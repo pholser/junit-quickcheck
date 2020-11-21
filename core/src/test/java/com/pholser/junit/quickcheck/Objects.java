@@ -43,15 +43,15 @@ public final class Objects {
         throw new UnsupportedOperationException();
     }
 
-    public static Matcher<Object> deepEquals(final Object comparand) {
+    public static Matcher<Object> deepEquals(final Object other) {
         return new BaseMatcher<Object>() {
             @Override public boolean matches(Object target) {
-                return deepEquals(comparand, target);
+                return deepEquals(other, target);
             }
 
             @Override public void describeTo(Description description) {
                 description.appendText("an object that is deep-equals to ");
-                description.appendValue(comparand);
+                description.appendValue(other);
             }
         };
     }
@@ -74,10 +74,14 @@ public final class Objects {
             return linearDeepEquals((Set<?>) first, (Set<?>) second);
 
         if (first instanceof Collection<?> && second instanceof Collection<?>)
-            return linearDeepEquals((Collection<?>) first, (Collection<?>) second);
+            return linearDeepEquals(
+                (Collection<?>) first,
+                (Collection<?>) second);
 
         if (first instanceof Object[] && second instanceof Object[])
-            return linearDeepEquals((Object[]) first, (Object[]) second);
+            return linearDeepEquals(
+                (Object[]) first,
+                (Object[]) second);
 
         if (first.getClass().isArray() && second.getClass().isArray())
             return toList(first).equals(toList(second));
@@ -97,7 +101,10 @@ public final class Objects {
         return true;
     }
 
-    private static boolean linearDeepEquals(Collection<?> first, Collection<?> second) {
+    private static boolean linearDeepEquals(
+        Collection<?> first,
+        Collection<?> second) {
+
         if (first.size() != second.size())
             return false;
 
@@ -133,7 +140,7 @@ public final class Objects {
         return true;
     }
 
-    static List<?> toList(Object array) {
+    private static List<?> toList(Object array) {
         int length = Array.getLength(array);
 
         List<Object> items = new ArrayList<>();

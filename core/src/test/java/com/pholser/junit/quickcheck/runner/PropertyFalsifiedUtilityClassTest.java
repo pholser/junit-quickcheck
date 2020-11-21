@@ -46,8 +46,7 @@ public class PropertyFalsifiedUtilityClassTest
         super(PropertyFalsified.class);
     }
 
-    @Test
-    public void counterexampleFoundWithAllParametersIsCorrect() {
+    @Test public void counterexampleFoundWithAllParameters() {
         String propertyName = "mySuperProperty";
         String[] arguments = {"first", "second", "third"};
         long[] seeds = {12345, 8842};
@@ -70,8 +69,7 @@ public class PropertyFalsifiedUtilityClassTest
     }
 
     @Test
-    public void
-    counterexampleFoundWhenAssertionErrorPassedHasNoMessageIsCorrect() {
+    public void counterexampleFoundWhenAssertionErrorPassedHasNoMessage() {
         String propertyName = "mySuperProperty";
         String[] arguments = {"first", "second", "third"};
         long[] seeds = {12345, 8842};
@@ -92,8 +90,7 @@ public class PropertyFalsifiedUtilityClassTest
         assertThat(actual.getMessage(), equalTo(expected));
     }
 
-    @Test
-    public void smallerCounterexampleFoundWithAllParametersIsCorrect() {
+    @Test public void smallerCounterexampleFoundWithAllParameters() {
         String propertyName = "mySuperProperty";
         String[] originalArguments = {"first", "second", "third"};
         String[] arguments = {"first"};
@@ -124,8 +121,7 @@ public class PropertyFalsifiedUtilityClassTest
     }
 
     @Test
-    public void
-    smallerCounterexampleFoundIsCorrectEvenIfSmallerFailureIsNotNamed() {
+    public void smallerCounterexampleFoundEvenIfSmallerFailureIsNotNamed() {
         String propertyName = "mySuperProperty";
         String[] originalArguments = {"first", "second", "third"};
         String[] arguments = {"first"};
@@ -155,8 +151,7 @@ public class PropertyFalsifiedUtilityClassTest
     }
 
     @Test
-    public void
-    smallerCounterexampleFoundIsCorrectEvenIfOriginalFailureIsNotNamed() {
+    public void smallerCounterexampleFoundEvenIfOriginalFailureIsNotNamed() {
         String propertyName = "mySuperProperty";
         String[] originalArguments = {"first", "second", "third"};
         String[] arguments = {"first"};
@@ -183,8 +178,7 @@ public class PropertyFalsifiedUtilityClassTest
         assertThat(actual.getMessage(), equalTo(expected));
     }
 
-    @Test
-    public void github_212_failWithIllegalFormatSpecifierInMessage() {
+    @Test public void github_212_failWithIllegalFormatSpecifierInMessage() {
         assertThat(
             testResult(Failing.class),
             hasFailureContaining("Failure with a %D in the text"));

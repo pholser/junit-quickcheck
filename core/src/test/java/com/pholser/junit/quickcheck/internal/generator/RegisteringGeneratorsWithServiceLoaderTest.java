@@ -53,16 +53,21 @@ public class RegisteringGeneratorsWithServiceLoaderTest {
 
     @Before public void beforeEach() {
         repo = new GeneratorRepository(random);
-        repo.register(new TestGeneratorSource()).register(new ServiceLoaderGeneratorSource());
+        repo.register(new TestGeneratorSource())
+            .register(new ServiceLoaderGeneratorSource());
     }
 
-    @Test public void bringsInTypesForWhichASingleGeneratorExists() throws Exception {
+    @Test public void bringsInTypesForWhichASingleGeneratorExists()
+        throws Exception {
+
         assertGenerators(
             repo.generatorFor(typeOf(getClass(), "foo")),
             AFoo.class);
     }
 
-    @Test public void bringsInTypesForWhichMultipleGeneratorsMayExist() throws Exception {
+    @Test public void bringsInTypesForWhichMultipleGeneratorsMayExist()
+        throws Exception {
+
         assertGenerators(
             repo.generatorFor(typeOf(getClass(), "box")),
             ABox.class,

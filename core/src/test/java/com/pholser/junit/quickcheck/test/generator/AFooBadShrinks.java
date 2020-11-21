@@ -43,14 +43,20 @@ public class AFooBadShrinks extends Generator<Foo> {
         super(Foo.class);
     }
 
-    @Override public Foo generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Foo generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new Foo(
             range == null
                 ? random.nextInt()
                 : random.nextInt(range.min(), range.max()));
     }
 
-    @Override public List<Foo> doShrink(SourceOfRandomness random, Foo larger) {
+    @Override public List<Foo> doShrink(
+        SourceOfRandomness random,
+        Foo larger) {
+
         return unshrinkable(larger)
             ? emptyList()
             : Stream.of(new Foo(larger.i(), larger.marked()))

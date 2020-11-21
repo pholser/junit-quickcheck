@@ -76,7 +76,8 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     }
 
     @Test public void abstractList() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "abstractList"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "abstractList"));
 
         assertGenerators(result, generator.getClass());
     }
@@ -88,37 +89,43 @@ public class RegisteringGeneratorsForHierarchyOfArrayListTest {
     }
 
     @Test public void randomAccess() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "randomAccess"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "randomAccess"));
 
         assertGenerators(result, generator.getClass());
     }
 
     @Test public void cloneable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "cloneable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "cloneable"));
 
         assertGenerators(result, generator.getClass());
     }
 
     @Test public void serializable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "serializable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "serializable"));
 
         assertGenerators(result, generator.getClass(), AnInt.class);
     }
 
     @Test public void abstractCollection() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "abstractCollection"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "abstractCollection"));
 
         assertGenerators(result, generator.getClass());
     }
 
     @Test public void collection() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "collection"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "collection"));
 
         assertGenerators(result, generator.getClass());
     }
 
     @Test public void iterable() throws Exception {
-        Generator<?> result = repo.generatorFor(typeOf(getClass(), "iterable"));
+        Generator<?> result =
+            repo.generatorFor(typeOf(getClass(), "iterable"));
 
         assertGenerators(result, generator.getClass());
     }

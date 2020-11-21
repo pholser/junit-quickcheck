@@ -46,7 +46,8 @@ public class ArrayGeneratorTest {
         assertTrue(intArrayGenerator.canShrink(new int[0]));
     }
 
-    @Test public void capabilityOfShrinkingArrayOfEquivalentWrapperComponentType() {
+    @Test public void
+    capabilityOfShrinkingArrayOfEquivalentWrapperComponentType() {
         assertFalse(intArrayGenerator.canShrink(new Integer[0]));
     }
 }

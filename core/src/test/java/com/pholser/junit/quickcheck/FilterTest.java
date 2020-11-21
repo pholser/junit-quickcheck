@@ -57,12 +57,12 @@ public class FilterTest {
         Gen<Integer> ints = (random, status) -> i[0]++;
         Gen<Optional<Integer>> smaller = ints.filterOptional(n -> n < 2);
 
-        int first = smaller.generate(null, status)
-            .orElseThrow(AssertionError::new);
+        int first =
+            smaller.generate(null, status).orElseThrow(AssertionError::new);
         assertEquals(0, first);
 
-        int second = smaller.generate(null, status)
-            .orElseThrow(AssertionError::new);
+        int second =
+            smaller.generate(null, status).orElseThrow(AssertionError::new);
         assertEquals(1, second);
 
         assertEquals(Optional.empty(), smaller.generate(null, status));

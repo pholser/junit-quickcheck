@@ -65,7 +65,8 @@ public class GenericArrayPropertyParameterTypesTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfBoxOfSuperZilch {
-        @Property(trials = 5) public void shouldHold(Box<? super Zilch>[] items) {
+        @Property(trials = 5)
+        public void shouldHold(Box<? super Zilch>[] items) {
         }
     }
 
@@ -81,23 +82,29 @@ public class GenericArrayPropertyParameterTypesTest {
     }
 
     @Test public void arrayOfBoundedUnresolvedType() {
-        assertThat(testResult(ArrayOfBoundedUnresolvedType.class), isSuccessful());
+        assertThat(
+            testResult(ArrayOfBoundedUnresolvedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfBoundedUnresolvedType {
-        @Property(trials = 5) public <T extends Foo> void shouldHold(T[] items) {
+        @Property(trials = 5)
+        public <T extends Foo> void shouldHold(T[] items) {
             assertEquals(Foo.class, items.getClass().getComponentType());
         }
     }
 
     @Test public void arrayOfUnresolvedParameterizedType() {
-        assertThat(testResult(ArrayOfUnresolvedParameterizedType.class), isSuccessful());
+        assertThat(
+            testResult(ArrayOfUnresolvedParameterizedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfUnresolvedParameterizedType {
-        @Property(trials = 5) public <T extends Foo> void shouldHold(Box<T>[] items) {
+        @Property(trials = 5)
+        public <T extends Foo> void shouldHold(Box<T>[] items) {
             assertEquals(Box.class, items.getClass().getComponentType());
 
             for (Box<T> each : items) {
@@ -107,12 +114,15 @@ public class GenericArrayPropertyParameterTypesTest {
     }
 
     @Test public void arrayOfUnresolvedParameterizedUpperBoundedType() {
-        assertThat(testResult(ArrayOfUnresolvedParameterizedUpperBoundedType.class), isSuccessful());
+        assertThat(
+            testResult(ArrayOfUnresolvedParameterizedUpperBoundedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfUnresolvedParameterizedUpperBoundedType {
-        @Property(trials = 5) public <T extends Foo> void shouldHold(Box<? extends T>[] items) {
+        @Property(trials = 5)
+        public <T extends Foo> void shouldHold(Box<? extends T>[] items) {
             assertEquals(Box.class, items.getClass().getComponentType());
 
             for (Box<? extends T> each : items) {
@@ -122,12 +132,15 @@ public class GenericArrayPropertyParameterTypesTest {
     }
 
     @Test public void arrayOfUnresolvedParameterizedLowerBoundedType() {
-        assertThat(testResult(ArrayOfUnresolvedParameterizedLowerBoundedType.class), isSuccessful());
+        assertThat(
+            testResult(ArrayOfUnresolvedParameterizedLowerBoundedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfUnresolvedParameterizedLowerBoundedType {
-        @Property(trials = 5) public <T extends Foo> void shouldHold(Box<? super T>[] items) {
+        @Property(trials = 5)
+        public <T extends Foo> void shouldHold(Box<? super T>[] items) {
             assertEquals(Box.class, items.getClass().getComponentType());
 
             for (Box<? super T> each : items) {
@@ -137,12 +150,15 @@ public class GenericArrayPropertyParameterTypesTest {
     }
 
     @Test public void arrayOfUnresolvedParameterizedNestedBoundedType() {
-        assertThat(testResult(ArrayOfUnresolvedParameterizedNestedBoundedType.class), isSuccessful());
+        assertThat(
+            testResult(ArrayOfUnresolvedParameterizedNestedBoundedType.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class ArrayOfUnresolvedParameterizedNestedBoundedType {
-        @Property(trials = 5) public <T extends Foo, E extends T> void shouldHold(
+        @Property(trials = 5)
+        public <T extends Foo, E extends T> void shouldHold(
             Box<? extends E>[] items) {
 
             assertEquals(Box.class, items.getClass().getComponentType());

@@ -70,7 +70,9 @@ import org.junit.runner.RunWith;
 public class ExhaustingAGivenSetButIncludingAnotherTest {
     @Test public void primitiveBooleans() throws Exception {
         assertThat(testResult(PrimitiveBooleans.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), PrimitiveBooleans.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            PrimitiveBooleans.iterations);
         assertEquals(
             singletonList(true),
             PrimitiveBooleans.values.subList(0, 1));
@@ -125,7 +127,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Byte> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"12", "-13"}) @From(AByte.class) byte b) {
+        public void shouldHold(
+            @Also({"12", "-13"}) @From(AByte.class) byte b) {
+
             values.add(b);
             ++iterations;
         }
@@ -146,7 +150,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Byte> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"14", "-15"}) @From(AByte.class) Byte b) {
+        public void shouldHold(
+            @Also({"14", "-15"}) @From(AByte.class) Byte b) {
+
             values.add(b);
             ++iterations;
         }
@@ -188,7 +194,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Character> values = new ArrayList<>();
 
         @Property(trials = 23, mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"@", "#"}) @From(AChar.class) Character ch) {
+        public void shouldHold(
+            @Also({"@", "#"}) @From(AChar.class) Character ch) {
+
             values.add(ch);
             ++iterations;
         }
@@ -209,7 +217,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Double> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"3.2", "-4"}) @From(ADouble.class) double d) {
+        public void shouldHold(
+            @Also({"3.2", "-4"}) @From(ADouble.class) double d) {
+
             values.add(d);
             ++iterations;
         }
@@ -230,7 +240,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Double> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"2.7", "-3.14"}) @From(ADouble.class) Double d) {
+        public void shouldHold(
+            @Also({"2.7", "-3.14"}) @From(ADouble.class) Double d) {
+
             values.add(d);
             ++iterations;
         }
@@ -251,7 +263,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Float> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"3.3", "-5"}) @From(AFloat.class) float f) {
+        public void shouldHold(
+            @Also({"3.3", "-5"}) @From(AFloat.class) float f) {
+
             values.add(f);
             ++iterations;
         }
@@ -272,7 +286,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Float> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"1.7", "-4.14"}) @From(AFloat.class) Float f) {
+        public void shouldHold(
+            @Also({"1.7", "-4.14"}) @From(AFloat.class) Float f) {
+
             values.add(f);
             ++iterations;
         }
@@ -293,7 +309,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Integer> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"1", "2", "3"}) @From(AnInt.class) int i) {
+        public void shouldHold(
+            @Also({"1", "2", "3"}) @From(AnInt.class) int i) {
+
             values.add(i);
             ++iterations;
         }
@@ -314,7 +332,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Integer> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"4", "5"}) @From(AnInt.class) Integer i) {
+        public void shouldHold(
+            @Also({"4", "5"}) @From(AnInt.class) Integer i) {
+
             values.add(i);
             ++iterations;
         }
@@ -335,7 +355,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Long> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"-6", "-7", "-8"}) @From(ALong.class) long ell) {
+        public void shouldHold(
+            @Also({"-6", "-7", "-8"}) @From(ALong.class) long ell) {
+
             values.add(ell);
             ++iterations;
         }
@@ -356,7 +378,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Long> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"10", "11", "12"}) @From(ALong.class) Long ell) {
+        public void shouldHold(
+            @Also({"10", "11", "12"}) @From(ALong.class) Long ell) {
+
             values.add(ell);
             ++iterations;
         }
@@ -377,7 +401,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Short> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"9", "8"}) @From(AShort.class) short sh) {
+        public void shouldHold(
+            @Also({"9", "8"}) @From(AShort.class) short sh) {
+
             values.add(sh);
             ++iterations;
         }
@@ -398,7 +424,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Short> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"-13", "-14"}) @From(AShort.class) Short sh) {
+        public void shouldHold(
+            @Also({"-13", "-14"}) @From(AShort.class) Short sh) {
+
             values.add(sh);
             ++iterations;
         }
@@ -419,7 +447,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<String> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"some", "values"}) @From(AString.class) String s) {
+        public void shouldHold(
+            @Also({"some", "values"}) @From(AString.class) String s) {
+
             values.add(s);
             ++iterations;
         }
@@ -440,7 +470,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<RoundingMode> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+        public void shouldHold(
+            @Also({"HALF_EVEN", "HALF_UP"}) RoundingMode mode) {
+
             values.add(mode);
             ++iterations;
         }
@@ -451,8 +483,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(defaultPropertyTrialCount(), CtorOnly.iterations);
         assertEquals(
             new HashSet<>(
-                asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))
-            ),
+                asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))),
             new HashSet<>(CtorOnly.values.subList(0, 2)));
     }
 
@@ -479,7 +510,10 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
                 super(Target.class);
             }
 
-            @Override public Target generate(SourceOfRandomness r, GenerationStatus s) {
+            @Override public Target generate(
+                SourceOfRandomness r,
+                GenerationStatus s) {
+
                 String value = "abcdefghij";
                 int index = r.nextInt(value.length());
                 return new Target("abcdefghij".substring(index));
@@ -491,7 +525,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Target> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"a", "b"}) @From(Targets.class) Target t) {
+        public void shouldHold(
+            @Also({"a", "b"}) @From(Targets.class) Target t) {
+
             values.add(t);
             ++iterations;
         }
@@ -504,8 +540,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
             new HashSet<>(
                 asList(
                     FavorValueOf.Target.valueOf("a"),
-                    FavorValueOf.Target.valueOf("b"))
-            ),
+                    FavorValueOf.Target.valueOf("b"))),
             new HashSet<>(FavorValueOf.values.subList(0, 2)));
     }
 
@@ -542,7 +577,10 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
                 super(Target.class);
             }
 
-            @Override public Target generate(SourceOfRandomness r, GenerationStatus s) {
+            @Override public Target generate(
+                SourceOfRandomness r,
+                GenerationStatus s) {
+
                 String value = "abcdefghij";
                 int index = r.nextInt(value.length());
                 return Target.valueOf("abcdefghij".substring(index));
@@ -554,7 +592,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         private static final List<Target> values = new ArrayList<>();
 
         @Property(mode = EXHAUSTIVE)
-        public void shouldHold(@Also({"a", "b"}) @From(Targets.class) Target t) {
+        public void shouldHold(
+            @Also({"a", "b"}) @From(Targets.class) Target t) {
+
             values.add(t);
             ++iterations;
         }
@@ -582,7 +622,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
 
     @Test public void explicitConversion() throws Exception {
         assertThat(testResult(ExplicitConversion.class), isSuccessful());
-        assertEquals(defaultPropertyTrialCount(), ExplicitConversion.iterations);
+        assertEquals(
+            defaultPropertyTrialCount(),
+            ExplicitConversion.iterations);
         assertEquals(
             new HashSet<>(asList(
                 LocalDate.of(2017, 1, 1),
@@ -606,7 +648,10 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
                 super(LocalDate.class);
             }
 
-            @Override public LocalDate generate(SourceOfRandomness r, GenerationStatus s) {
+            @Override public LocalDate generate(
+                SourceOfRandomness r,
+                GenerationStatus s) {
+
                 return Instant.ofEpochMilli(r.nextLong())
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
@@ -652,10 +697,13 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
     public static class ManyParameters {
         static int iterations;
 
-        private static final List<Integer> firstTestCases = new LinkedList<>();
-        private static final List<Character> secondTestCases = new LinkedList<>();
+        private static final List<Integer> firstTestCases =
+            new LinkedList<>();
+        private static final List<Character> secondTestCases =
+            new LinkedList<>();
 
-        @Property(trials = 4, mode = EXHAUSTIVE) public void shouldHold(
+        @Property(trials = 4, mode = EXHAUSTIVE)
+        public void shouldHold(
             @Also({"-1", "-2", "-4"}) @From(AnInt.class) int i,
             @Also({"r", "y"}) @From(AChar.class) char ch) {
 
@@ -666,7 +714,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
     }
 
     @Test public void manyParametersWithBooleanAndEnum() {
-        assertThat(testResult(ManyParametersWithBooleanAndEnum.class), isSuccessful());
+        assertThat(
+            testResult(ManyParametersWithBooleanAndEnum.class),
+            isSuccessful());
 
         int expectedCount = 4 * 4 * 2 * RoundingMode.values().length;
         assertEquals(
@@ -683,7 +733,9 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         for (int i = 0; i < expectedCount / 16; ++i) {
             assertEquals(
                 String.valueOf(i),
-                asList('a', 'a', 'a', 'a', 'b', 'b', 'b', 'b', 'c', 'c', 'c', 'c'),
+                asList(
+                    'a', 'a', 'a', 'a', 'b', 'b', 'b', 'b',
+                    'c', 'c', 'c', 'c'),
                 ManyParametersWithBooleanAndEnum.secondTestCases.subList(
                     i * 16,
                     i * 16 + 12));
@@ -717,11 +769,14 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
     public static class ManyParametersWithBooleanAndEnum {
         static int iterations;
 
-        private static final List<Integer> firstTestCases = new LinkedList<>();
-        private static final List<Character> secondTestCases = new LinkedList<>();
-        private static final List<Boolean> thirdTestCases = new LinkedList<>();
-        private static final List<RoundingMode> fourthTestCases = new LinkedList<>();
-
+        private static final List<Integer> firstTestCases =
+            new LinkedList<>();
+        private static final List<Character> secondTestCases =
+            new LinkedList<>();
+        private static final List<Boolean> thirdTestCases =
+            new LinkedList<>();
+        private static final List<RoundingMode> fourthTestCases =
+            new LinkedList<>();
 
         @Property(trials = 4, mode = EXHAUSTIVE)
         public void shouldHold(

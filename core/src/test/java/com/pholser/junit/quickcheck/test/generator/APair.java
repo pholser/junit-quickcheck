@@ -37,7 +37,10 @@ public class APair extends ComponentizedGenerator<Pair> {
         super(Pair.class);
     }
 
-    @Override public Pair<?, ?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public Pair<?, ?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new Pair<>(
             componentGenerators().get(0).generate(random, status),
             componentGenerators().get(1).generate(random, status),

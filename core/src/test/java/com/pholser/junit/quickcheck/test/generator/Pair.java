@@ -61,7 +61,8 @@ public final class Pair<F, S> {
             return false;
 
         Pair<?, ?> other = (Pair<?, ?>) o;
-        return Objects.equals(first, other.first) && Objects.equals(second, other.second);
+        return Objects.equals(first, other.first)
+            && Objects.equals(second, other.second);
     }
 
     @Override public String toString() {

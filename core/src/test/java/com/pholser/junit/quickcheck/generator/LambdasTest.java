@@ -51,7 +51,10 @@ public class LambdasTest {
         SourceOfRandomness random = new SourceOfRandomness(new Random());
         random.setSeed(-1L);
         status =
-            new SimpleGenerationStatus(new GeometricDistribution(), random, 0);
+            new SimpleGenerationStatus(
+                new GeometricDistribution(),
+                random,
+                0);
 
         predicate = makeLambda(Predicate.class, returnValueGenerator, status);
     }
@@ -87,8 +90,6 @@ public class LambdasTest {
     }
 
     @Test public void invokingDefaultMethodOnFunctionalInterface() {
-        System.out.println(System.getProperty("java.version"));
-
         @SuppressWarnings("unchecked")
         Predicate<Integer> another =
             makeLambda(Predicate.class, returnValueGenerator, status);

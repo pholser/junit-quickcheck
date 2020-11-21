@@ -36,16 +36,17 @@ import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.util.List;
 
-public class ExplicitPropertyParameterGeneratorsChosenWithEqualProbabilityTest
+public class ExplicitGroupOfGeneratorsChosenWithDiscreteProbabilityTest
     extends CorePropertyParameterTest {
 
-    @From(FooGenerator.class)
-    @From(BarGenerator.class)
-    @From(BazGenerator.class)
+    @From(value = FooGenerator.class)
+    @From(value = BarGenerator.class, frequency = 2)
+    @From(value = BazGenerator.class, frequency = 3)
     public static final String TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextInt(3)).thenReturn(0).thenReturn(1).thenReturn(2);
+        when(randomForParameterGenerator.nextInt(6))
+            .thenReturn(0).thenReturn(1).thenReturn(5);
     }
 
     @Override protected int trials() {
@@ -57,7 +58,7 @@ public class ExplicitPropertyParameterGeneratorsChosenWithEqualProbabilityTest
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).nextInt(3);
+        verify(randomForParameterGenerator, times(3)).nextInt(6);
     }
 
     public static class FooGenerator extends Generator<String> {
@@ -65,7 +66,10 @@ public class ExplicitPropertyParameterGeneratorsChosenWithEqualProbabilityTest
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "foo";
         }
     }
@@ -75,7 +79,10 @@ public class ExplicitPropertyParameterGeneratorsChosenWithEqualProbabilityTest
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "bar";
         }
     }
@@ -85,7 +92,10 @@ public class ExplicitPropertyParameterGeneratorsChosenWithEqualProbabilityTest
             super(String.class);
         }
 
-        @Override public String generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public String generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return "baz";
         }
     }

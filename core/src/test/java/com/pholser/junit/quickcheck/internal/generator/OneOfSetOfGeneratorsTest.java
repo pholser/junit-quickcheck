@@ -51,13 +51,14 @@ public class OneOfSetOfGeneratorsTest {
 
     @Before public void setUp() {
         random = new SourceOfRandomness(new Random());
-        repo = new GeneratorRepository(random)
-            .register(new AFloat())
-            .register(new ADouble())
-            .register(new ADecimal())
-            .register(new AnInt())
-            .register(new ALong())
-            .register(new ABigInt());
+        repo =
+            new GeneratorRepository(random)
+                .register(new AFloat())
+                .register(new ADouble())
+                .register(new ADecimal())
+                .register(new AnInt())
+                .register(new ALong())
+                .register(new ABigInt());
     }
 
     @Test public void choosingFromSubtypes() {

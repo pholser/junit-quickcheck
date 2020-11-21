@@ -233,7 +233,6 @@ public class PropertyParameterGenerationByConstructorTest {
     @RunWith(JUnitQuickcheck.class)
     public static class
     WithAutoGenerationWithAnnotationsOnTypeUsesInConstructors {
-
         public static class P {
             private final Box<Foo> box;
 

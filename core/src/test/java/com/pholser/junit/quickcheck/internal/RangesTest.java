@@ -41,7 +41,9 @@ public class RangesTest {
         assertEquals(4, findNextPowerOfTwoLong(4));
         assertEquals(8, findNextPowerOfTwoLong(5));
         assertEquals((long) 1 << 61, findNextPowerOfTwoLong((long) 1 << 61));
-        assertEquals((long) 1 << 62, findNextPowerOfTwoLong(1 + (long) 1 << 61));
+        assertEquals(
+            (long) 1 << 62,
+            findNextPowerOfTwoLong(1 + (long) 1 << 61));
     }
 
     @Test public void chooseLongsMustReturnValuesInTheExpectedRange() {
@@ -57,7 +59,9 @@ public class RangesTest {
         SourceOfRandomness random = new SourceOfRandomness(new Random(0));
 
         for (int i = 0; i < 100; i++) {
-            hits[(int) Ranges.choose(random, 0, (long) hits.length - 1)] = true;
+            int index =
+                (int) Ranges.choose(random, 0, (long) hits.length - 1);
+            hits[index] = true;
         }
         for (boolean hit : hits) {
             assertTrue(hit);

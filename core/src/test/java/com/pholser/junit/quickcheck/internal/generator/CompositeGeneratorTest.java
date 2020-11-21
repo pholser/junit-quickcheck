@@ -55,11 +55,12 @@ public class CompositeGeneratorTest {
     @Mock private SourceOfRandomness random;
 
     @Before public void setUp() {
-        composite = new CompositeGenerator(asList(
-            new Weighted<>(first, 2),
-            new Weighted<>(second, 5),
-            new Weighted<>(third, 7)
-        ));
+        composite =
+            new CompositeGenerator(
+                asList(
+                    new Weighted<>(first, 2),
+                    new Weighted<>(second, 5),
+                    new Weighted<>(third, 7)));
     }
 
     @Test public void capabilityOfShrinkingDependsOnComponents() {
@@ -70,7 +71,8 @@ public class CompositeGeneratorTest {
         assertTrue(composite.canShrink(9));
     }
 
-    @Test public void capabilityOfShrinkingFalseIfNoComponentsCanShrinkAValue() {
+    @Test public void
+    capabilityOfShrinkingFalseIfNoComponentsCanShrinkAValue() {
         when(first.canShrink(8)).thenReturn(false);
         when(second.canShrink(8)).thenReturn(false);
         when(third.canShrink(8)).thenReturn(false);

@@ -68,9 +68,7 @@ public class CartesianIteratorTest {
                 asList(
                     asList(1, 2, 3).iterator(),
                     emptyIterator(),
-                    asList(4, 5, 6, 7).iterator()
-                )
-            );
+                    asList(4, 5, 6, 7).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -81,9 +79,7 @@ public class CartesianIteratorTest {
         CartesianIterator<Integer> iter =
             new CartesianIterator<>(
                 singletonList(
-                    singletonList(1).iterator()
-                )
-            );
+                    singletonList(1).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -97,9 +93,7 @@ public class CartesianIteratorTest {
                     singletonList(1).iterator(),
                     singletonList(2).iterator(),
                     singletonList(3).iterator(),
-                    singletonList(4).iterator()
-                )
-            );
+                    singletonList(4).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -113,9 +107,7 @@ public class CartesianIteratorTest {
                     asList(1, 2, 3).iterator(),
                     singletonList(4).iterator(),
                     singletonList(5).iterator(),
-                    singletonList(6).iterator()
-                )
-            );
+                    singletonList(6).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -135,9 +127,7 @@ public class CartesianIteratorTest {
                     singletonList(1).iterator(),
                     singletonList(2).iterator(),
                     asList(3, 4, 5).iterator(),
-                    singletonList(6).iterator()
-                )
-            );
+                    singletonList(6).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -145,8 +135,7 @@ public class CartesianIteratorTest {
             asList(
                 asList(1, 2, 3, 6),
                 asList(1, 2, 4, 6),
-                asList(1, 2, 5, 6)
-            ),
+                asList(1, 2, 5, 6)),
             result);
     }
 
@@ -157,9 +146,7 @@ public class CartesianIteratorTest {
                     singletonList(1).iterator(),
                     singletonList(2).iterator(),
                     singletonList(3).iterator(),
-                    asList(4, 5, 6).iterator()
-                )
-            );
+                    asList(4, 5, 6).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -167,8 +154,7 @@ public class CartesianIteratorTest {
             asList(
                 asList(1, 2, 3, 4),
                 asList(1, 2, 3, 5),
-                asList(1, 2, 3, 6)
-            ),
+                asList(1, 2, 3, 6)),
             result);
     }
 
@@ -179,9 +165,7 @@ public class CartesianIteratorTest {
                     asList(0, 1, 2, 3, 4).iterator(),
                     asList(5, 6).iterator(),
                     asList(7, 8, 9).iterator(),
-                    asList(10, 11, 12).iterator()
-                )
-            );
+                    asList(10, 11, 12).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -215,9 +199,7 @@ public class CartesianIteratorTest {
                 asList(
                     asList(0, 1, 2).iterator(),
                     asList(0, 1, 2).iterator(),
-                    asList(0, 1, 2).iterator()
-                )
-            );
+                    asList(0, 1, 2).iterator()));
 
         List<List<Integer>> result = newArrayList(iter);
 
@@ -231,8 +213,7 @@ public class CartesianIteratorTest {
                 asList(0, 2, 1), asList(1, 2, 1), asList(2, 2, 1),
                 asList(0, 0, 2), asList(1, 0, 2), asList(2, 0, 2),
                 asList(0, 1, 2), asList(1, 1, 2), asList(2, 1, 2),
-                asList(0, 2, 2), asList(1, 2, 2), asList(2, 2, 2)
-            ),
+                asList(0, 2, 2), asList(1, 2, 2), asList(2, 2, 2)),
             result);
     }
 }

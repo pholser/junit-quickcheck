@@ -79,7 +79,8 @@ public class PropertyParameterGenerationContextWithNonShrinkingGeneratorTest {
     }
 
     private Parameter parameter() throws Exception {
-        return getClass().getMethod("parameterHaver", int.class).getParameters()[0];
+        return getClass().getMethod("parameterHaver", int.class)
+            .getParameters()[0];
     }
 
     public static class NonShrinker extends Generator<Integer> {
@@ -87,7 +88,10 @@ public class PropertyParameterGenerationContextWithNonShrinkingGeneratorTest {
             super(asList(Integer.class, int.class));
         }
 
-        @Override public Integer generate(SourceOfRandomness random, GenerationStatus status) {
+        @Override public Integer generate(
+            SourceOfRandomness random,
+            GenerationStatus status) {
+
             return random.nextInt();
         }
 

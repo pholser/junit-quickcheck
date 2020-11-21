@@ -257,10 +257,14 @@ public class GeneratingRandomValuesTest {
     }
 
     @Test public void samplingArray() {
-        assertEquals("c", source.choose(new String[] { "a", "b", "c", "d" }));
+        assertEquals(
+            "c",
+            source.choose(new String[] { "a", "b", "c", "d" }));
     }
 
     @Test public void samplingCollection() {
-        assertEquals(Integer.valueOf(-1), source.choose(asList(-1, -2, -3, -4, -5)));
+        assertEquals(
+            Integer.valueOf(-1),
+            source.choose(asList(-1, -2, -3, -4, -5)));
     }
 }
