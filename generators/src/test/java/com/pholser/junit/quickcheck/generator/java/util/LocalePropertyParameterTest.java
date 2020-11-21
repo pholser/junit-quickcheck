@@ -33,14 +33,18 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTes
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class LocalePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class LocalePropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Locale TYPE_BEARER = null;
 
     private static final Locale[] LOCALES = Locale.getAvailableLocales();
 
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.choose(LOCALES))
-            .thenReturn(LOCALES[1]).thenReturn(LOCALES[0]).thenReturn(LOCALES[2]);
+            .thenReturn(LOCALES[1])
+            .thenReturn(LOCALES[0])
+            .thenReturn(LOCALES[2]);
     }
 
     @Override protected int trials() {
@@ -52,6 +56,7 @@ public class LocalePropertyParameterTest extends BasicGeneratorPropertyParameter
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(3)).choose(LOCALES);
+        verify(randomForParameterGenerator, times(3))
+            .choose(LOCALES);
     }
 }

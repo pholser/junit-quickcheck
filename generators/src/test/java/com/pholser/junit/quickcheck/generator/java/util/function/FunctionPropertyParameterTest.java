@@ -45,7 +45,10 @@ public class FunctionPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class Unresolved<A, R> {
-        @Property public void typesAreOk(Function<? super A, ? extends R> f, A arg) {
+        @Property public void typesAreOk(
+            Function<? super A, ? extends R> f,
+            A arg) {
+
             R result = f.apply(arg);
         }
     }
@@ -55,7 +58,10 @@ public class FunctionPropertyParameterTest {
     }
 
     public static class UnresolvedArgType<A> extends Unresolved<A, Integer> {
-        @Property public void consistent(Function<? super A, Integer> f, A arg) {
+        @Property public void consistent(
+            Function<? super A, Integer> f,
+            A arg) {
+
             Integer result = f.apply(arg);
 
             for (int i = 0; i < 10000; ++i)
@@ -71,7 +77,9 @@ public class FunctionPropertyParameterTest {
     }
 
     @Test public void callingDefaultFunctionMethod() {
-        assertThat(testResult(CallingDefaultFunctionMethod.class), isSuccessful());
+        assertThat(
+            testResult(CallingDefaultFunctionMethod.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)

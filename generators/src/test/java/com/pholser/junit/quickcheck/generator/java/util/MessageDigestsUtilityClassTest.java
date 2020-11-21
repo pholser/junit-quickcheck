@@ -29,7 +29,9 @@ import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
 
 import static com.pholser.junit.quickcheck.generator.java.util.RFC4122.*;
 
-public class MessageDigestsUtilityClassTest extends UtilityClassesUninstantiabilityHarness {
+public class MessageDigestsUtilityClassTest
+    extends UtilityClassesUninstantiabilityHarness {
+
     public MessageDigestsUtilityClassTest() {
         super(MessageDigests.class);
     }

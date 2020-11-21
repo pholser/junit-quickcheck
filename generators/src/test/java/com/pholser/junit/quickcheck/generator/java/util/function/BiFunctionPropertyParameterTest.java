@@ -59,7 +59,9 @@ public class BiFunctionPropertyParameterTest {
         assertThat(testResult(UnresolvedFirstArgType.class), isSuccessful());
     }
 
-    public static class UnresolvedFirstArgType<T> extends Unresolved<T, Boolean, Integer> {
+    public static class UnresolvedFirstArgType<T>
+        extends Unresolved<T, Boolean, Integer> {
+
         @Property public void consistent(
             BiFunction<? super T, ? super Boolean, Integer> f,
             T first,
@@ -76,7 +78,9 @@ public class BiFunctionPropertyParameterTest {
         assertThat(testResult(UnresolvedSecondArgType.class), isSuccessful());
     }
 
-    public static class UnresolvedSecondArgType<U> extends Unresolved<Boolean, U, Short> {
+    public static class UnresolvedSecondArgType<U>
+        extends Unresolved<Boolean, U, Short> {
+
         @Property public void consistent(
             BiFunction<? super Boolean, ? super U, Short> f,
             boolean first,
@@ -93,11 +97,14 @@ public class BiFunctionPropertyParameterTest {
         assertThat(testResult(ResolvedTypes.class), isSuccessful());
     }
 
-    public static class ResolvedTypes extends Unresolved<Boolean, Integer, Date> {
+    public static class ResolvedTypes
+        extends Unresolved<Boolean, Integer, Date> {
     }
 
     @Test public void callingDefaultFunctionMethod() {
-        assertThat(testResult(CallingDefaultFunctionMethod.class), isSuccessful());
+        assertThat(
+            testResult(CallingDefaultFunctionMethod.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -111,12 +118,16 @@ public class BiFunctionPropertyParameterTest {
             Date intermediate = first.apply(firstArg, secondArg);
             Double ultimate = second.apply(intermediate);
 
-            assertEquals(ultimate, first.andThen(second).apply(firstArg, secondArg));
+            assertEquals(
+                ultimate,
+                first.andThen(second).apply(firstArg, secondArg));
         }
     }
 
     @Test public void lambdasArePureFunctions() {
-        assertThat(testResult(FunctionPropertyParameterTest.PureFunctions.class), isSuccessful());
+        assertThat(
+            testResult(FunctionPropertyParameterTest.PureFunctions.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)

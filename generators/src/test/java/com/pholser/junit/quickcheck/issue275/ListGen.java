@@ -9,13 +9,14 @@ public class ListGen extends ComponentizedGenerator<List> {
         super(List.class);
     }
 
-    @Override
-    public int numberOfNeededComponents() {
+    @Override public int numberOfNeededComponents() {
         return 1;
     }
 
-    @Override
-    public List<?> generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public List<?> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         return new List<Object>() {};
     }
 }

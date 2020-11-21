@@ -39,12 +39,17 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class DoubleToIntFunctionPropertyParameterTest {
     @Test public void works() {
-        assertThat(testResult(NoCustomGeneratorNecessary.class), isSuccessful());
+        assertThat(
+            testResult(NoCustomGeneratorNecessary.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class NoCustomGeneratorNecessary {
-        @Property public void works(DoubleToIntFunction f, @InRange(min = "0") double d) {
+        @Property public void works(
+            DoubleToIntFunction f,
+            @InRange(min = "0") double d) {
+
             int result = f.applyAsInt(d);
         }
     }

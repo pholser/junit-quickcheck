@@ -47,7 +47,9 @@ public class DoubleFunctionPropertyParameterTest {
     @RunWith(JUnitQuickcheck.class)
     public static class DoubleToDate {
         @Property public void rangedResult(
-            DoubleFunction<@InRange(min = "2016-01-01", format = "yyyy-MM-dd") Date> f) {
+            DoubleFunction<
+                @InRange(min = "2016-01-01", format = "yyyy-MM-dd")
+                    Date> f) {
 
             Date d = f.apply(0);
 

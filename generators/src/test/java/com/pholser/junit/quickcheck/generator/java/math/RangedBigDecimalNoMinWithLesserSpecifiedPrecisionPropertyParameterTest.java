@@ -37,25 +37,33 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-public class RangedBigDecimalNoMinWithLesserSpecifiedPrecisionPropertyParameterTest
+public class
+RangedBigDecimalNoMinWithLesserSpecifiedPrecisionPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {
 
     @InRange(max = "987654321987654321.09876")
     @Precision(scale = 3)
     public static final BigDecimal TYPE_BEARER = null;
 
-    private final BigDecimal max = new BigDecimal("987654321987654321.09876");
+    private final BigDecimal max =
+        new BigDecimal("987654321987654321.09876");
     private final BigInteger maxBigInt = max.movePointRight(5).toBigInteger();
 
     @Override protected void primeSourceOfRandomness() {
         when(randomForParameterGenerator.nextBigInteger(
-            maxBigInt.subtract(maxBigInt.subtract(TEN.movePointRight(5).toBigInteger())).bitLength()))
+            maxBigInt.subtract(
+                maxBigInt.subtract(TEN.movePointRight(5).toBigInteger()))
+                .bitLength()))
             .thenReturn(new BigInteger("6"));
         when(randomForParameterGenerator.nextBigInteger(
-            maxBigInt.subtract(maxBigInt.subtract(TEN.pow(2).movePointRight(5).toBigInteger())).bitLength()))
+            maxBigInt.subtract(
+                maxBigInt.subtract(TEN.pow(2).movePointRight(5).toBigInteger()))
+                .bitLength()))
             .thenReturn(new BigInteger("35"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
     }
 
     @Override protected int trials() {
@@ -63,13 +71,19 @@ public class RangedBigDecimalNoMinWithLesserSpecifiedPrecisionPropertyParameterT
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigDecimal("987654321987654311.09882"), new BigDecimal("987654321987654221.09911"));
+        return asList(
+            new BigDecimal("987654321987654311.09882"),
+            new BigDecimal("987654321987654221.09911"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
         verify(randomForParameterGenerator).nextBigInteger(
-            maxBigInt.subtract(maxBigInt.subtract(TEN.movePointRight(5).toBigInteger())).bitLength());
+            maxBigInt.subtract(
+                maxBigInt.subtract(TEN.movePointRight(5).toBigInteger()))
+                .bitLength());
         verify(randomForParameterGenerator).nextBigInteger(
-            maxBigInt.subtract(maxBigInt.subtract(TEN.pow(2).movePointRight(5).toBigInteger())).bitLength());
+            maxBigInt.subtract(
+                maxBigInt.subtract(TEN.pow(2).movePointRight(5).toBigInteger()))
+                .bitLength());
     }
 }

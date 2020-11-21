@@ -45,7 +45,8 @@ public class ToDoubleFunctionPropertyParameterTest {
     @RunWith(JUnitQuickcheck.class)
     public static class UnresolvedArgType<A> {
         @Property public void consistent(
-            ToDoubleFunction<? super A> f, A arg) {
+            ToDoubleFunction<? super A> f,
+            A arg) {
 
             double result = f.applyAsDouble(arg);
 

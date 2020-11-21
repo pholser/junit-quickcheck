@@ -51,7 +51,10 @@ public class OptionalPropertyParameterTest {
     @RunWith(JUnitQuickcheck.class)
     public static class OptionalString {
         @Property public void works(
-            Optional<@From(Encoded.class) @InCharset("US-ASCII") String> optional) {
+            Optional<
+                @From(Encoded.class)
+                @InCharset("US-ASCII")
+                    String> optional) {
 
             assumeTrue(optional.isPresent());
             assertTrue(optional.get().codePoints().allMatch(i -> i < 128));

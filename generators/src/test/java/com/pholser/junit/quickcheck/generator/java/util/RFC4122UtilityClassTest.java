@@ -27,7 +27,9 @@ package com.pholser.junit.quickcheck.generator.java.util;
 
 import com.pholser.junit.quickcheck.UtilityClassesUninstantiabilityHarness;
 
-public class RFC4122UtilityClassTest extends UtilityClassesUninstantiabilityHarness {
+public class RFC4122UtilityClassTest
+    extends UtilityClassesUninstantiabilityHarness {
+
     public RFC4122UtilityClassTest() {
         super(RFC4122.class);
     }

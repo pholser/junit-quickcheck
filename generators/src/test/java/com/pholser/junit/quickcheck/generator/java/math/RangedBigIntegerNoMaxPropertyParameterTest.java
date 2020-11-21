@@ -44,12 +44,16 @@ public class RangedBigIntegerNoMaxPropertyParameterTest
     private final BigInteger min = new BigInteger("-987654321987654321");
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBigInteger(min.add(TEN).subtract(min).bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            min.add(TEN).subtract(min).bitLength()))
             .thenReturn(new BigInteger("6"));
-        when(randomForParameterGenerator.nextBigInteger(min.add(TEN.pow(2)).subtract(min).bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            min.add(TEN.pow(2)).subtract(min).bitLength()))
             .thenReturn(new BigInteger("35"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
     }
 
     @Override protected int trials() {
@@ -57,11 +61,15 @@ public class RangedBigIntegerNoMaxPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigInteger("-987654321987654315"), new BigInteger("-987654321987654286"));
+        return asList(
+            new BigInteger("-987654321987654315"),
+            new BigInteger("-987654321987654286"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextBigInteger(min.add(TEN).subtract(min).bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(min.add(TEN.pow(2)).subtract(min).bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(min.add(TEN).subtract(min).bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(min.add(TEN.pow(2)).subtract(min).bitLength());
     }
 }

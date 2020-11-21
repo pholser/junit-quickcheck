@@ -47,7 +47,11 @@ public class DoubleConsumerPropertyParameterTest {
             consumer.accept(arg);
         }
 
-        @Property public void chained(DoubleConsumer first, DoubleConsumer second, double arg) {
+        @Property public void chained(
+            DoubleConsumer first,
+            DoubleConsumer second,
+            double arg) {
+
             first.andThen(second).accept(arg);
         }
     }

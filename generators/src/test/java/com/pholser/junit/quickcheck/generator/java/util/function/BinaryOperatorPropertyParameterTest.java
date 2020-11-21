@@ -46,7 +46,11 @@ public class BinaryOperatorPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class Unresolved<T> {
-        @Property public void typesAreOk(BinaryOperator<T> f, T first, T second) {
+        @Property public void typesAreOk(
+            BinaryOperator<T> f,
+            T first,
+            T second) {
+
             T result = f.apply(first, second);
         }
     }
@@ -59,7 +63,9 @@ public class BinaryOperatorPropertyParameterTest {
     }
 
     @Test public void callingDefaultFunctionMethod() {
-        assertThat(testResult(CallingDefaultFunctionMethod.class), isSuccessful());
+        assertThat(
+            testResult(CallingDefaultFunctionMethod.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -73,7 +79,9 @@ public class BinaryOperatorPropertyParameterTest {
             Integer intermediate = first.apply(firstArg, secondArg);
             Date ultimate = second.apply(intermediate);
 
-            assertEquals(ultimate, first.andThen(second).apply(firstArg, secondArg));
+            assertEquals(
+                ultimate,
+                first.andThen(second).apply(firstArg, secondArg));
         }
     }
 }

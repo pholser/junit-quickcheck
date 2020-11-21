@@ -38,7 +38,9 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class IntUnaryOperatorPropertyParameterTest {
     @Test public void works() {
-        assertThat(testResult(NoCustomGeneratorNecessary.class), isSuccessful());
+        assertThat(
+            testResult(NoCustomGeneratorNecessary.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)

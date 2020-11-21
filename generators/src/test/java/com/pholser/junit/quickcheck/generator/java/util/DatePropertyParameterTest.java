@@ -35,12 +35,20 @@ import static com.pholser.junit.quickcheck.Generating.*;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class DatePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class DatePropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Date TYPE_BEARER = null;
 
     @Override protected void primeSourceOfRandomness() {
-        when(Generating.longs(randomForParameterGenerator, Integer.MIN_VALUE, Long.MAX_VALUE))
-            .thenReturn(0L).thenReturn(60000L).thenReturn(100000000L).thenReturn(300000000000L);
+        when(Generating.longs(
+            randomForParameterGenerator,
+            Integer.MIN_VALUE,
+            Long.MAX_VALUE))
+            .thenReturn(0L)
+            .thenReturn(60000L)
+            .thenReturn(100000000L)
+            .thenReturn(300000000000L);
     }
 
     @Override protected int trials() {
@@ -48,10 +56,18 @@ public class DatePropertyParameterTest extends BasicGeneratorPropertyParameterTe
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new Date(0), new Date(60000), new Date(100000000), new Date(300000000000L));
+        return asList(
+            new Date(0),
+            new Date(60000),
+            new Date(100000000),
+            new Date(300000000000L));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyLongs(randomForParameterGenerator, times(4), Integer.MIN_VALUE, Long.MAX_VALUE);
+        verifyLongs(
+            randomForParameterGenerator,
+            times(4),
+            Integer.MIN_VALUE,
+            Long.MAX_VALUE);
     }
 }

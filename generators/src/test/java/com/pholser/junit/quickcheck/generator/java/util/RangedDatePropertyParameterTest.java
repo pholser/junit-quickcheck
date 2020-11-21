@@ -43,7 +43,9 @@ public class RangedDatePropertyParameterTest
     @InRange(min = "1/1/500", max = "12/31/2020", format = "MM/dd/yyyy")
     public static final Date TYPE_BEARER = null;
 
-    private final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+    private final SimpleDateFormat formatter =
+        new SimpleDateFormat("MM/dd/yyyy");
+
     private Date first;
     private Date second;
     private Date third;
@@ -56,7 +58,10 @@ public class RangedDatePropertyParameterTest
         third = formatter.parse("8/26/2008");
         min = formatter.parse("1/1/500");
         max = formatter.parse("12/31/2020");
-        when(Generating.longs(randomForParameterGenerator, min.getTime(), max.getTime()))
+        when(Generating.longs(
+            randomForParameterGenerator,
+            min.getTime(),
+            max.getTime()))
             .thenReturn(first.getTime())
             .thenReturn(second.getTime())
             .thenReturn(third.getTime());
@@ -67,10 +72,17 @@ public class RangedDatePropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new Date(first.getTime()), new Date(second.getTime()), new Date(third.getTime()));
+        return asList(
+            new Date(first.getTime()),
+            new Date(second.getTime()),
+            new Date(third.getTime()));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verifyLongs(randomForParameterGenerator, times(3), min.getTime(), max.getTime());
+        verifyLongs(
+            randomForParameterGenerator,
+            times(3),
+            min.getTime(),
+            max.getTime());
     }
 }

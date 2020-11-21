@@ -43,16 +43,23 @@ import java.util.List;
 public class RangedBigDecimalWithLesserSpecifiedPrecisionPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {
 
-    @InRange(min = "-12345678123456781234567812345.678", max = "9876543219876543.21")
+    @InRange(
+        min = "-12345678123456781234567812345.678",
+        max = "9876543219876543.21")
     @Precision(scale = 2)
     public static final BigDecimal TYPE_BEARER = null;
 
-    private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
+    private final BigDecimal min =
+        new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;
 
     @Override protected void primeSourceOfRandomness() {
-        numberOfBits = max.movePointRight(3).subtract(min.movePointRight(3)).toBigInteger().bitLength();
+        numberOfBits =
+            max.movePointRight(3)
+                .subtract(min.movePointRight(3))
+                .toBigInteger()
+                .bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
             .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE))
             .thenReturn(ONE)
@@ -74,6 +81,7 @@ public class RangedBigDecimalWithLesserSpecifiedPrecisionPropertyParameterTest
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(5)).nextBigInteger(numberOfBits);
+        verify(randomForParameterGenerator, times(5))
+            .nextBigInteger(numberOfBits);
     }
 }

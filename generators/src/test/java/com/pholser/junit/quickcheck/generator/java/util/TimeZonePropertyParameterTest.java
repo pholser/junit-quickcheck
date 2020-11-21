@@ -33,7 +33,9 @@ import com.pholser.junit.quickcheck.generator.BasicGeneratorPropertyParameterTes
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
-public class TimeZonePropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class TimeZonePropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final TimeZone TYPE_BEARER = null;
 
     private static final String[] ZONES = TimeZone.getAvailableIDs();

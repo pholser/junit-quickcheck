@@ -5,8 +5,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(JUnitQuickcheck.class)
 public class ListFunctorProperties implements FunctorContract<List.mu> {
-    @Override
-    public ListFunctor subject() {
+    @Override public ListFunctor subject() {
         return new ListFunctor();
     }
 }

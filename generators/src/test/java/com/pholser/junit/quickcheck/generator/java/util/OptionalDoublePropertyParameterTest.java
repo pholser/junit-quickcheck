@@ -49,15 +49,21 @@ public class OptionalDoublePropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class MaybeADouble {
-        @Property public void works(@InRange(maxDouble = 0.5) OptionalDouble d) {
+        @Property public void works(
+            @InRange(maxDouble = 0.5) OptionalDouble d) {
+
             assumeTrue(d.isPresent());
             assertThat(d.getAsDouble(), lessThanOrEqualTo(0.5));
         }
     }
 
     @Test public void shrinking() {
-        assertThat(testResult(ShrinkingOptionalDouble.class), failureCountIs(1));
-        assertTrue(ShrinkingOptionalDouble.failed.stream().anyMatch(o -> !o.isPresent()));
+        assertThat(
+            testResult(ShrinkingOptionalDouble.class),
+            failureCountIs(1));
+        assertTrue(
+            ShrinkingOptionalDouble.failed.stream()
+                .anyMatch(o -> !o.isPresent()));
     }
 
     @RunWith(JUnitQuickcheck.class)

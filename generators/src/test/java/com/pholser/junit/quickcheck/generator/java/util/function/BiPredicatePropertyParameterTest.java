@@ -49,7 +49,9 @@ public class BiPredicatePropertyParameterTest {
     }
 
     @Test public void callingDefaultPredicateMethod() {
-        assertThat(testResult(CallingDefaultPredicateMethod.class), isSuccessful());
+        assertThat(
+            testResult(CallingDefaultPredicateMethod.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -63,10 +65,16 @@ public class BiPredicatePropertyParameterTest {
             boolean firstResult = first.test(firstArg, secondArg);
             boolean secondResult = second.test(firstArg, secondArg);
 
-            assertEquals(firstResult || secondResult, first.or(second).test(firstArg, secondArg));
+            assertEquals(
+                firstResult || secondResult,
+                first.or(second).test(firstArg, secondArg));
         }
 
-        @Property public <T, U> void negate(BiPredicate<T, U> p, T first, U second) {
+        @Property public <T, U> void negate(
+            BiPredicate<T, U> p,
+            T first,
+            U second) {
+
             boolean result = p.test(first, second);
 
             assertEquals(!result, p.negate().test(first, second));

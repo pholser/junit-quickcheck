@@ -39,12 +39,17 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class DoubleToLongFunctionPropertyParameterTest {
     @Test public void works() {
-        assertThat(testResult(NoCustomGeneratorNecessary.class), isSuccessful());
+        assertThat(
+            testResult(NoCustomGeneratorNecessary.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class NoCustomGeneratorNecessary {
-        @Property public void works(DoubleToLongFunction f, @InRange(max = "0.5") double d) {
+        @Property public void works(
+            DoubleToLongFunction f,
+            @InRange(max = "0.5") double d) {
+
             long result = f.applyAsLong(d);
         }
     }

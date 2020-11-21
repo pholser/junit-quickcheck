@@ -35,14 +35,17 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharsetPropertyParameterTest extends BasicGeneratorPropertyParameterTest {
+public class CharsetPropertyParameterTest
+    extends BasicGeneratorPropertyParameterTest {
+
     public static final Charset TYPE_BEARER = null;
 
     private static final List<String> CHARSET_NAMES =
         new ArrayList<>(Charset.availableCharsets().keySet());
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.choose(Charset.availableCharsets().keySet()))
+        when(randomForParameterGenerator.choose(
+            Charset.availableCharsets().keySet()))
             .thenReturn(CHARSET_NAMES.get(2))
             .thenReturn(CHARSET_NAMES.get(0))
             .thenReturn(CHARSET_NAMES.get(1));

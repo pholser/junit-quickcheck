@@ -44,12 +44,16 @@ public class RangedBigIntegerNoMinPropertyParameterTest
     private final BigInteger max = new BigInteger("987654321987654321");
 
     @Override protected void primeSourceOfRandomness() {
-        when(randomForParameterGenerator.nextBigInteger(max.subtract(max.subtract(TEN)).bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            max.subtract(max.subtract(TEN)).bitLength()))
             .thenReturn(new BigInteger("6"));
-        when(randomForParameterGenerator.nextBigInteger(max.subtract(max.subtract(TEN.pow(2))).bitLength()))
+        when(randomForParameterGenerator.nextBigInteger(
+            max.subtract(max.subtract(TEN.pow(2))).bitLength()))
             .thenReturn(new BigInteger("35"));
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
     }
 
     @Override protected int trials() {
@@ -57,11 +61,15 @@ public class RangedBigIntegerNoMinPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(new BigInteger("987654321987654317"), new BigInteger("987654321987654256"));
+        return asList(
+            new BigInteger("987654321987654317"),
+            new BigInteger("987654321987654256"));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator).nextBigInteger(max.subtract(max.subtract(TEN)).bitLength());
-        verify(randomForParameterGenerator).nextBigInteger(max.subtract(max.subtract(TEN.pow(2))).bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(max.subtract(max.subtract(TEN)).bitLength());
+        verify(randomForParameterGenerator)
+            .nextBigInteger(max.subtract(max.subtract(TEN.pow(2))).bitLength());
     }
 }

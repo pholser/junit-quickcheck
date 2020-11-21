@@ -38,12 +38,18 @@ import static org.junit.experimental.results.ResultMatchers.*;
 
 public class DoubleBinaryOperatorPropertyParameterTest {
     @Test public void works() {
-        assertThat(testResult(NoCustomGeneratorNecessary.class), isSuccessful());
+        assertThat(
+            testResult(NoCustomGeneratorNecessary.class),
+            isSuccessful());
     }
 
     @RunWith(JUnitQuickcheck.class)
     public static class NoCustomGeneratorNecessary {
-        @Property public void works(DoubleBinaryOperator f, double first, double second) {
+        @Property public void works(
+            DoubleBinaryOperator f,
+            double first,
+            double second) {
+
             double result = f.applyAsDouble(first, second);
         }
     }

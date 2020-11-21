@@ -44,7 +44,9 @@ public class IntFunctionPropertyParameterTest {
 
     @RunWith(JUnitQuickcheck.class)
     public static class IntToByte {
-        @Property public void rangedResult(IntFunction<@InRange(maxByte = -1) Byte> f) {
+        @Property public void rangedResult(
+            IntFunction<@InRange(maxByte = -1) Byte> f) {
+
             Byte b = f.apply(0);
 
             assertThat(b, lessThanOrEqualTo((byte) -1));

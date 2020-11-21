@@ -41,11 +41,15 @@ import java.util.List;
 public class RangedBigIntegerPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {
 
-    @InRange(min = "-12345678123456781234567812345678", max = "987654321987654321")
+    @InRange(
+        min = "-12345678123456781234567812345678",
+        max = "987654321987654321")
     public static final BigInteger TYPE_BEARER = null;
 
-    private final BigInteger min = new BigInteger("-12345678123456781234567812345678");
-    private final BigInteger max = new BigInteger("987654321987654321");
+    private final BigInteger min =
+        new BigInteger("-12345678123456781234567812345678");
+    private final BigInteger max =
+        new BigInteger("987654321987654321");
 
     @Override protected void primeSourceOfRandomness() {
         int numberOfBits = max.subtract(min).bitLength();
@@ -62,10 +66,15 @@ public class RangedBigIntegerPropertyParameterTest
     }
 
     @Override protected List<?> randomValues() {
-        return asList(min.add(ONE), min.add(TEN), min.add(ZERO), min.add(new BigInteger("234234234234")));
+        return asList(
+            min.add(ONE),
+            min.add(TEN),
+            min.add(ZERO),
+            min.add(new BigInteger("234234234234")));
     }
 
     @Override public void verifyInteractionWithRandomness() {
-        verify(randomForParameterGenerator, times(5)).nextBigInteger(max.subtract(min).bitLength());
+        verify(randomForParameterGenerator, times(5))
+            .nextBigInteger(max.subtract(min).bitLength());
     }
 }

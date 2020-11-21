@@ -44,16 +44,23 @@ import java.util.List;
 public class RangedBigDecimalWithGreaterSpecifiedPrecisionPropertyParameterTest
     extends BasicGeneratorPropertyParameterTest {
 
-    @InRange(min = "-12345678123456781234567812345.678", max = "9876543219876543.21")
+    @InRange(
+        min = "-12345678123456781234567812345.678",
+        max = "9876543219876543.21")
     @Precision(scale = 6)
     public static final BigDecimal TYPE_BEARER = null;
 
-    private final BigDecimal min = new BigDecimal("-12345678123456781234567812345.678");
+    private final BigDecimal min =
+        new BigDecimal("-12345678123456781234567812345.678");
     private final BigDecimal max = new BigDecimal("9876543219876543.21");
     private int numberOfBits;
 
     @Override protected void primeSourceOfRandomness() {
-        numberOfBits = max.movePointRight(6).subtract(min.movePointRight(6)).toBigInteger().bitLength();
+        numberOfBits =
+            max.movePointRight(6)
+                .subtract(min.movePointRight(6))
+                .toBigInteger()
+                .bitLength();
         when(randomForParameterGenerator.nextBigInteger(numberOfBits))
             .thenReturn(new BigInteger("2").pow(numberOfBits).subtract(ONE))
             .thenReturn(ONE)

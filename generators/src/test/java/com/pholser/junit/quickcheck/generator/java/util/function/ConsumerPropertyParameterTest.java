@@ -46,7 +46,11 @@ public class ConsumerPropertyParameterTest {
             consumer.accept(arg);
         }
 
-        @Property public void chained(Consumer<T> first, Consumer<? super T> second, T arg) {
+        @Property public void chained(
+            Consumer<T> first,
+            Consumer<? super T> second,
+            T arg) {
+
             first.andThen(second).accept(arg);
         }
     }

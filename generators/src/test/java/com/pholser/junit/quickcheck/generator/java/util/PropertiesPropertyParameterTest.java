@@ -45,9 +45,12 @@ public class PropertiesPropertyParameterTest
             .thenReturn(0x61).thenReturn(0x62).thenReturn(0x63).thenReturn(0x64)
             .thenReturn(0x65).thenReturn(0x66).thenReturn(0x67).thenReturn(0x68)
             .thenReturn(0x69).thenReturn(0x6a);
-        when(distro.sampleWithMean(1, randomForParameterGenerator)).thenReturn(0);
-        when(distro.sampleWithMean(2, randomForParameterGenerator)).thenReturn(1);
-        when(distro.sampleWithMean(3, randomForParameterGenerator)).thenReturn(2);
+        when(distro.sampleWithMean(1, randomForParameterGenerator))
+            .thenReturn(0);
+        when(distro.sampleWithMean(2, randomForParameterGenerator))
+            .thenReturn(1);
+        when(distro.sampleWithMean(3, randomForParameterGenerator))
+            .thenReturn(2);
     }
 
     @Override protected int trials() {
