@@ -37,14 +37,22 @@ import java.util.function.IntFunction;
  *
  * @param <R> return type of produced function
  */
-public class IntFunctionGenerator<R> extends ComponentizedGenerator<IntFunction> {
+public class IntFunctionGenerator<R>
+    extends ComponentizedGenerator<IntFunction> {
+
     public IntFunctionGenerator() {
         super(IntFunction.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public IntFunction<R> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(IntFunction.class, componentGenerators().get(0), status);
+    @Override public IntFunction<R> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            IntFunction.class,
+            componentGenerators().get(0),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {

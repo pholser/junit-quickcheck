@@ -49,8 +49,7 @@ public class ToDoubleBiFunctionGenerator<T, U>
         super(ToDoubleBiFunction.class);
     }
 
-    @Override
-    public void provide(Generators provided) {
+    @Override public void provide(Generators provided) {
         super.provide(provided);
 
         generator = gen().type(double.class);

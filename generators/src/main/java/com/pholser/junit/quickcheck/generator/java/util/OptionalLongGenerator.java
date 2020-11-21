@@ -42,7 +42,7 @@ import java.util.OptionalLong;
  * Produces values of type {@link OptionalLong}.
  */
 public class OptionalLongGenerator extends Generator<OptionalLong> {
-    private final LongGenerator longGenerator = new LongGenerator();
+    private final LongGenerator longs = new LongGenerator();
 
     public OptionalLongGenerator() {
         super(OptionalLong.class);
@@ -59,7 +59,7 @@ public class OptionalLongGenerator extends Generator<OptionalLong> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        longGenerator.configure(range);
+        longs.configure(range);
     }
 
     @Override public OptionalLong generate(
@@ -69,7 +69,7 @@ public class OptionalLongGenerator extends Generator<OptionalLong> {
         double trial = random.nextDouble();
         return trial < 0.25
             ? OptionalLong.empty()
-            : OptionalLong.of(longGenerator.generate(random, status));
+            : OptionalLong.of(longs.generate(random, status));
     }
 
     @Override public List<OptionalLong> doShrink(
@@ -82,7 +82,7 @@ public class OptionalLongGenerator extends Generator<OptionalLong> {
         List<OptionalLong> shrinks = new ArrayList<>();
         shrinks.add(OptionalLong.empty());
         shrinks.addAll(
-            longGenerator.shrink(random, larger.getAsLong())
+            longs.shrink(random, larger.getAsLong())
                 .stream()
                 .map(OptionalLong::of)
                 .collect(toList()));

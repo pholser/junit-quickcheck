@@ -80,7 +80,7 @@ public final class RFC4122 {
     private abstract static class NameBasedUUIDGenerator
         extends AbstractUUIDGenerator {
 
-        private final StringGenerator stringGenerator = new StringGenerator();
+        private final StringGenerator strings = new StringGenerator();
         private final int versionMask;
         private final MessageDigest digest;
         private Namespace namespace;
@@ -99,10 +99,11 @@ public final class RFC4122 {
 
             digest.reset();
 
-            Namespaces namespaces = namespace == null ? URL : namespace.value();
+            Namespaces namespaces =
+                namespace == null ? URL : namespace.value();
             digest.update(namespaces.bytes);
             digest.update(
-                stringGenerator.generate(random, status)
+                strings.generate(random, status)
                     .getBytes(StandardCharsets.UTF_8));
 
             byte[] hash = digest.digest();

@@ -46,8 +46,7 @@ public class PredicateGenerator<T> extends ComponentizedGenerator<Predicate> {
         super(Predicate.class);
     }
 
-    @Override
-    public void provide(Generators provided) {
+    @Override public void provide(Generators provided) {
         super.provide(provided);
 
         generator = gen().type(boolean.class);

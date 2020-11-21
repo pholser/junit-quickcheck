@@ -42,7 +42,7 @@ import java.util.OptionalDouble;
  * Produces values of type {@link OptionalDouble}.
  */
 public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
-    private final DoubleGenerator doubleGenerator = new DoubleGenerator();
+    private final DoubleGenerator doubles = new DoubleGenerator();
 
     public OptionalDoubleGenerator() {
         super(OptionalDouble.class);
@@ -60,14 +60,17 @@ public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        doubleGenerator.configure(range);
+        doubles.configure(range);
     }
 
-    @Override public OptionalDouble generate(SourceOfRandomness random, GenerationStatus status) {
+    @Override public OptionalDouble generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
         double trial = random.nextDouble();
         return trial < 0.25
             ? OptionalDouble.empty()
-            : OptionalDouble.of(doubleGenerator.generate(random, status));
+            : OptionalDouble.of(doubles.generate(random, status));
     }
 
     @Override public List<OptionalDouble> doShrink(
@@ -80,7 +83,7 @@ public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
         List<OptionalDouble> shrinks = new ArrayList<>();
         shrinks.add(OptionalDouble.empty());
         shrinks.addAll(
-            doubleGenerator.shrink(random, larger.getAsDouble())
+            doubles.shrink(random, larger.getAsDouble())
                 .stream()
                 .map(OptionalDouble::of)
                 .collect(toList()));
@@ -91,7 +94,7 @@ public class OptionalDoubleGenerator extends Generator<OptionalDouble> {
         OptionalDouble narrowed = narrow(value);
 
         return narrowed.isPresent()
-            ? doubleGenerator.magnitude(narrowed.getAsDouble())
+            ? doubles.magnitude(narrowed.getAsDouble())
             : ZERO;
     }
 }

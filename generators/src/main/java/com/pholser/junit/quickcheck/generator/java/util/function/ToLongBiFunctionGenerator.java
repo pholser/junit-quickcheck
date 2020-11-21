@@ -49,8 +49,7 @@ public class ToLongBiFunctionGenerator<T, U>
         super(ToLongBiFunction.class);
     }
 
-    @Override
-    public void provide(Generators provided) {
+    @Override public void provide(Generators provided) {
         super.provide(provided);
 
         generator = gen().type(long.class);

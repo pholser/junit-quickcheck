@@ -37,14 +37,22 @@ import java.util.function.DoubleFunction;
  *
  * @param <R> return type of produced function
  */
-public class DoubleFunctionGenerator<R> extends ComponentizedGenerator<DoubleFunction> {
+public class DoubleFunctionGenerator<R>
+    extends ComponentizedGenerator<DoubleFunction> {
+
     public DoubleFunctionGenerator() {
         super(DoubleFunction.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public DoubleFunction<R> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(DoubleFunction.class, componentGenerators().get(0), status);
+    @Override public DoubleFunction<R> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            DoubleFunction.class,
+            componentGenerators().get(0),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {

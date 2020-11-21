@@ -33,7 +33,9 @@ import java.util.Set;
  *
  * @param <T> the type of set generated
  */
-public abstract class SetGenerator<T extends Set> extends CollectionGenerator<T> {
+public abstract class SetGenerator<T extends Set>
+    extends CollectionGenerator<T> {
+
     protected SetGenerator(Class<T> type) {
         super(type);
     }

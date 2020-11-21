@@ -37,14 +37,22 @@ import java.util.function.UnaryOperator;
  *
  * @param <T> type of parameter and return type of produced operator
  */
-public class UnaryOperatorGenerator<T> extends ComponentizedGenerator<UnaryOperator> {
+public class UnaryOperatorGenerator<T>
+    extends ComponentizedGenerator<UnaryOperator> {
+
     public UnaryOperatorGenerator() {
         super(UnaryOperator.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public UnaryOperator<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(UnaryOperator.class, componentGenerators().get(0), status);
+    @Override public UnaryOperator<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            UnaryOperator.class,
+            componentGenerators().get(0),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {

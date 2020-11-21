@@ -42,7 +42,7 @@ import java.util.OptionalInt;
  * Produces values of type {@link OptionalInt}.
  */
 public class OptionalIntGenerator extends Generator<OptionalInt> {
-    private final IntegerGenerator integerGenerator = new IntegerGenerator();
+    private final IntegerGenerator integers = new IntegerGenerator();
 
     public OptionalIntGenerator() {
         super(OptionalInt.class);
@@ -59,7 +59,7 @@ public class OptionalIntGenerator extends Generator<OptionalInt> {
      * @param range annotation that gives the range's constraints
      */
     public void configure(InRange range) {
-        integerGenerator.configure(range);
+        integers.configure(range);
     }
 
     @Override public OptionalInt generate(
@@ -69,7 +69,7 @@ public class OptionalIntGenerator extends Generator<OptionalInt> {
         double trial = random.nextDouble();
         return trial < 0.25
             ? OptionalInt.empty()
-            : OptionalInt.of(integerGenerator.generate(random, status));
+            : OptionalInt.of(integers.generate(random, status));
     }
 
     @Override public List<OptionalInt> doShrink(
@@ -82,7 +82,7 @@ public class OptionalIntGenerator extends Generator<OptionalInt> {
         List<OptionalInt> shrinks = new ArrayList<>();
         shrinks.add(OptionalInt.empty());
         shrinks.addAll(
-            integerGenerator.shrink(random, larger.getAsInt())
+            integers.shrink(random, larger.getAsInt())
                 .stream()
                 .map(OptionalInt::of)
                 .collect(toList()));

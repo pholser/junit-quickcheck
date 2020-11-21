@@ -43,8 +43,14 @@ public class SupplierGenerator<T> extends ComponentizedGenerator<Supplier> {
     }
 
     @SuppressWarnings("unchecked")
-    @Override public Supplier<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(Supplier.class, componentGenerators().get(0), status);
+    @Override public Supplier<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            Supplier.class,
+            componentGenerators().get(0),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {

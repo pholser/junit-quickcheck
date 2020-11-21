@@ -37,14 +37,22 @@ import java.util.function.BinaryOperator;
  *
  * @param <T> parameters type and return type of produced operator
  */
-public class BinaryOperatorGenerator<T> extends ComponentizedGenerator<BinaryOperator> {
+public class BinaryOperatorGenerator<T>
+    extends ComponentizedGenerator<BinaryOperator> {
+
     public BinaryOperatorGenerator() {
         super(BinaryOperator.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public BinaryOperator<T> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(BinaryOperator.class, componentGenerators().get(0), status);
+    @Override public BinaryOperator<T> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            BinaryOperator.class,
+            componentGenerators().get(0),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {

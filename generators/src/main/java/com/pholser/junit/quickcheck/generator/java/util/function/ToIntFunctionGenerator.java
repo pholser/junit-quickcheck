@@ -48,8 +48,7 @@ public class ToIntFunctionGenerator<T>
         super(ToIntFunction.class);
     }
 
-    @Override
-    public void provide(Generators provided) {
+    @Override public void provide(Generators provided) {
         super.provide(provided);
 
         generator = gen().type(int.class);

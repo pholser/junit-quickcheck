@@ -37,14 +37,22 @@ import java.util.function.LongFunction;
  *
  * @param <R> return type of produced function
  */
-public class LongFunctionGenerator<R> extends ComponentizedGenerator<LongFunction> {
+public class LongFunctionGenerator<R>
+    extends ComponentizedGenerator<LongFunction> {
+
     public LongFunctionGenerator() {
         super(LongFunction.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Override public LongFunction<R> generate(SourceOfRandomness random, GenerationStatus status) {
-        return makeLambda(LongFunction.class, componentGenerators().get(0), status);
+    @Override public LongFunction<R> generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+        return makeLambda(
+            LongFunction.class,
+            componentGenerators().get(0),
+            status);
     }
 
     @Override public int numberOfNeededComponents() {
