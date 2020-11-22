@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ComponentizedGenerator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">ComponentizedGenerator.java</span></div><h1>ComponentizedGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+package com.pholser.junit.quickcheck.generator;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.annotatedComponentTypes;
+import static java.util.Collections.unmodifiableList;
+
+import java.lang.reflect.AnnotatedType;
+import java.util.ArrayList;
+import java.util.List;
+import org.javaruntype.type.TypeParameter;
+
+/**
+ * Produces values for property parameters of types that have parameterizations
+ * that would also need generation, such as collections, maps, and predicates.
+ *
+ * @param &lt;T&gt; type of property parameter to apply this generator's values to
+ */
+public abstract class ComponentizedGenerator&lt;T&gt; extends Generator&lt;T&gt; {
+<span class="fc" id="L43">    private final List&lt;Generator&lt;?&gt;&gt; components = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * @param type class token for type of property parameter this generator
+     * is applicable to
+     */
+    protected ComponentizedGenerator(Class&lt;T&gt; type) {
+<span class="fc" id="L50">        super(type);</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * {@inheritDoc}
+     *
+     * &lt;p&gt;Generators of this type do not get called upon to generate values
+     * for parameters of type {@link Object}.&lt;/p&gt;
+     */
+    @Override public boolean canRegisterAsType(Class&lt;?&gt; type) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        return !Object.class.equals(type);</span>
+    }
+
+    @Override public final boolean hasComponents() {
+<span class="fc" id="L64">        return true;</span>
+    }
+
+    @Override public void addComponentGenerators(
+        List&lt;Generator&lt;?&gt;&gt; newComponents) {
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (newComponents.size() != numberOfNeededComponents()) {</span>
+<span class="fc" id="L71">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L72">                String.format(</span>
+                    &quot;Needed %d components for %s, but got %d&quot;,
+<span class="fc" id="L74">                    numberOfNeededComponents(),</span>
+<span class="fc" id="L75">                    getClass(),</span>
+<span class="fc" id="L76">                    newComponents.size()));</span>
+        }
+
+<span class="fc" id="L79">        components.clear();</span>
+<span class="fc" id="L80">        components.addAll(newComponents);</span>
+<span class="fc" id="L81">    }</span>
+
+    @Override public boolean canGenerateForParametersOfTypes(
+        List&lt;TypeParameter&lt;?&gt;&gt; typeParameters) {
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        return numberOfNeededComponents() == typeParameters.size();</span>
+    }
+
+    @Override public void provide(Generators provided) {
+<span class="fc" id="L90">        super.provide(provided);</span>
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for (Generator&lt;?&gt; each : components) {</span>
+<span class="fc" id="L93">            each.provide(provided);</span>
+<span class="fc" id="L94">        }</span>
+<span class="fc" id="L95">    }</span>
+
+    @Override public void configure(AnnotatedType annotatedType) {
+<span class="fc" id="L98">        super.configure(annotatedType);</span>
+
+<span class="fc" id="L100">        List&lt;AnnotatedType&gt; annotatedComponentTypes =</span>
+<span class="fc" id="L101">            annotatedComponentTypes(annotatedType);</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (annotatedComponentTypes.size() == components.size()) {</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            for (int i = 0; i &lt; components.size(); ++i) {</span>
+<span class="fc" id="L105">                components.get(i).configure(annotatedComponentTypes.get(i));</span>
+            }
+        }
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * @return this generator's component generators
+     */
+    protected List&lt;Generator&lt;?&gt;&gt; componentGenerators() {
+<span class="fc" id="L114">        return unmodifiableList(components);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

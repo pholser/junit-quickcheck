@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>StringConversions.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal.conversion</a> &gt; <span class="el_source">StringConversions.java</span></div><h1>StringConversions.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal.conversion;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static com.pholser.junit.quickcheck.internal.Reflection.findConstructor;
+import static com.pholser.junit.quickcheck.internal.Reflection.findMethod;
+import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
+import static com.pholser.junit.quickcheck.internal.Reflection.maybeWrap;
+
+import com.pholser.junit.quickcheck.conversion.StringConversion;
+import com.pholser.junit.quickcheck.generator.Also;
+import com.pholser.junit.quickcheck.generator.Only;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.ReflectionException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+public final class StringConversions {
+<span class="nc" id="L44">    private StringConversions() {</span>
+<span class="nc" id="L45">        throw new UnsupportedOperationException();</span>
+    }
+
+    public static StringConversion to(Class&lt;?&gt; clazz) {
+<span class="fc" id="L49">        Class&lt;?&gt; wrapped = maybeWrap(clazz);</span>
+
+        try {
+<span class="fc" id="L52">            Method method =</span>
+<span class="fc" id="L53">                findMethod(clazz, &quot;valueOf&quot;, String.class);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">            if (Modifier.isStatic(method.getModifiers())</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">                &amp;&amp; wrapped.equals(method.getReturnType())) {</span>
+
+<span class="fc" id="L57">                return new MethodInvokingStringConversion(method);</span>
+            }
+<span class="fc" id="L59">        } catch (ReflectionException reserveJudgment) {</span>
+            // fall back to other means of conversion
+<span class="nc" id="L61">        }</span>
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (Character.class.equals(wrapped))</span>
+<span class="fc" id="L64">            return characterConversion(clazz);</span>
+
+<span class="fc" id="L66">        return new ConstructorInvokingStringConversion(</span>
+<span class="fc" id="L67">            findConstructor(wrapped, String.class));</span>
+    }
+
+    public static StringConversion decide(ParameterTypeContext p, Only only) {
+<span class="fc" id="L71">        return decide(p, only.by(), Only.class);</span>
+    }
+
+    public static StringConversion decide(ParameterTypeContext p, Also also) {
+<span class="fc" id="L75">        return decide(p, also.by(), Also.class);</span>
+    }
+
+    private static &lt;T extends Annotation&gt; StringConversion decide(
+        ParameterTypeContext p,
+        Class&lt;? extends StringConversion&gt; custom,
+        Class&lt;T&gt; markerClass) {
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        return custom.equals(defaultValueOf(markerClass, &quot;by&quot;))</span>
+<span class="fc" id="L84">            ? to(p.getRawClass())</span>
+<span class="fc" id="L85">            : instantiate(custom);</span>
+    }
+
+    private static StringConversion characterConversion(Class&lt;?&gt; clazz) {
+<span class="fc" id="L89">        return raw -&gt; {</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">            if (raw.length() &gt; 1) {</span>
+<span class="nc" id="L91">                throw new IllegalArgumentException(</span>
+                    &quot;Cannot convert &quot; + raw + &quot; into an instance of &quot; + clazz);
+            }
+
+<span class="fc" id="L95">            return raw.charAt(0);</span>
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

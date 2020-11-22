@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PropertyFalsified.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">PropertyFalsified.java</span></div><h1>PropertyFalsified.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.runner;
+
+import static java.lang.String.format;
+
+import java.util.Arrays;
+
+final class PropertyFalsified {
+<span class="fc" id="L33">    private PropertyFalsified() {</span>
+<span class="fc" id="L34">        throw new UnsupportedOperationException();</span>
+    }
+
+    static AssertionError counterexampleFound(
+        String propertyName,
+        Object[] args,
+        long[] seeds,
+        AssertionError e) {
+
+<span class="fc" id="L43">        String template = &quot;Property named '%s' failed%s%n&quot;</span>
+            + &quot;With arguments: %s%n&quot;
+            + &quot;Seeds for reproduction: %s&quot;;
+<span class="fc" id="L46">        String assertionErrorMessage =</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            e.getMessage() == null</span>
+                ? &quot;:&quot;
+<span class="fc" id="L49">                : format(&quot; (%s)&quot;, e.getMessage());</span>
+
+<span class="fc" id="L51">        return new AssertionError(</span>
+<span class="fc" id="L52">            format(</span>
+                template,
+                propertyName,
+                assertionErrorMessage,
+<span class="fc" id="L56">                Arrays.deepToString(args),</span>
+<span class="fc" id="L57">                Arrays.toString(seeds)),</span>
+            e);
+    }
+
+    static AssertionError smallerCounterexampleFound(
+        String propertyName,
+        Object[] originalArgs,
+        Object[] args,
+        long[] seeds,
+        AssertionError smallerFailure,
+        AssertionError originalFailure) {
+
+<span class="fc" id="L69">        String originalFailureMessageSegment =</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            originalFailure.getMessage() == null</span>
+                ? &quot;&quot;
+<span class="fc" id="L72">                : format(</span>
+                    &quot;Original failure message: %s%n&quot;,
+<span class="fc" id="L74">                    originalFailure.getMessage());</span>
+<span class="fc" id="L75">        String smallerFailureMessageSegment =</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            smallerFailure.getMessage() == null</span>
+                ? &quot;:&quot;
+<span class="fc" id="L78">                : format(&quot; (%s):&quot;, smallerFailure.getMessage());</span>
+
+<span class="fc" id="L80">        String template =</span>
+            &quot;Property named '%s' failed%s%n&quot;
+                + &quot;With arguments: %s%n&quot;
+                + &quot;%s&quot;
+                + &quot;First arguments found to also provoke a failure: %s%n&quot;
+                + &quot;Seeds for reproduction: %s&quot;;
+
+<span class="fc" id="L87">        AssertionError e =</span>
+            new AssertionError(
+<span class="fc" id="L89">                format(</span>
+                    template,
+                    propertyName,
+                    smallerFailureMessageSegment,
+<span class="fc" id="L93">                    Arrays.deepToString(args),</span>
+                    originalFailureMessageSegment,
+<span class="fc" id="L95">                    Arrays.deepToString(originalArgs),</span>
+<span class="fc" id="L96">                    Arrays.toString(seeds)),</span>
+                originalFailure);
+<span class="fc" id="L98">        e.setStackTrace(smallerFailure.getStackTrace());</span>
+<span class="fc" id="L99">        return e;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

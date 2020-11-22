@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PropertyStatement.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-generators</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.runner</a> &gt; <span class="el_source">PropertyStatement.java</span></div><h1>PropertyStatement.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.runner;
+
+import static com.pholser.junit.quickcheck.runner.PropertyFalsified.counterexampleFound;
+import static java.util.stream.Collectors.toList;
+
+import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.ParameterSampler;
+import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
+import com.pholser.junit.quickcheck.internal.SeededValue;
+import com.pholser.junit.quickcheck.internal.ShrinkControl;
+import com.pholser.junit.quickcheck.internal.generator.GeneratorRepository;
+import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler;
+import com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
+import org.junit.internal.AssumptionViolatedException;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
+import org.junit.runners.model.TestClass;
+import org.slf4j.Logger;
+import ru.vyarus.java.generics.resolver.GenericsResolver;
+import ru.vyarus.java.generics.resolver.context.MethodGenericsContext;
+
+class PropertyStatement extends Statement {
+    private final FrameworkMethod method;
+    private final TestClass testClass;
+    private final GeneratorRepository repo;
+    private final GeometricDistribution distro;
+    private final List&lt;AssumptionViolatedException&gt; assumptionViolations;
+    private final Logger logger;
+
+    private int successes;
+
+    PropertyStatement(
+        FrameworkMethod method,
+        TestClass testClass,
+        GeneratorRepository repo,
+        GeometricDistribution distro,
+<span class="fc" id="L73">        Logger logger) {</span>
+
+<span class="fc" id="L75">        this.method = method;</span>
+<span class="fc" id="L76">        this.testClass = testClass;</span>
+<span class="fc" id="L77">        this.repo = repo;</span>
+<span class="fc" id="L78">        this.distro = distro;</span>
+<span class="fc" id="L79">        assumptionViolations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L80">        this.logger = logger;</span>
+<span class="fc" id="L81">    }</span>
+
+    @Override public void evaluate() throws Throwable {
+<span class="fc" id="L84">        Property marker = method.getAnnotation(Property.class);</span>
+<span class="fc" id="L85">        ParameterSampler sampler = sampler(marker);</span>
+<span class="fc" id="L86">        ShrinkControl shrinkControl = new ShrinkControl(marker);</span>
+
+<span class="fc" id="L88">        MethodGenericsContext generics =</span>
+<span class="fc" id="L89">            GenericsResolver.resolve(testClass.getJavaClass())</span>
+<span class="fc" id="L90">                .method(method.getMethod());</span>
+<span class="fc" id="L91">        List&lt;PropertyParameterGenerationContext&gt; paramContexts =</span>
+<span class="fc" id="L92">            Arrays.stream(method.getMethod().getParameters())</span>
+<span class="fc" id="L93">                .map(p -&gt; parameterContextFor(p, generics))</span>
+<span class="fc" id="L94">                .map(p -&gt; new PropertyParameterGenerationContext(</span>
+                    p,
+                    repo,
+                    distro,
+                    new SourceOfRandomness(new Random()),
+                    sampler
+                ))
+<span class="fc" id="L101">                .collect(toList());</span>
+
+<span class="fc" id="L103">        Stream&lt;List&lt;SeededValue&gt;&gt; sample = sampler.sample(paramContexts);</span>
+        for (List&lt;SeededValue&gt; args :
+<span class="fc bfc" id="L105" title="All 2 branches covered.">                (Iterable&lt;List&lt;SeededValue&gt;&gt;) sample::iterator) {</span>
+
+<span class="fc" id="L107">            property(args, shrinkControl).verify();</span>
+<span class="fc" id="L108">        }</span>
+
+<span class="pc bpc" id="L110" title="1 of 4 branches missed.">        if (successes == 0 &amp;&amp; !assumptionViolations.isEmpty()) {</span>
+<span class="fc" id="L111">            throw new NoValuesSatisfiedPropertyAssumptions(</span>
+                assumptionViolations);
+        }
+<span class="fc" id="L114">    }</span>
+
+    private PropertyVerifier property(
+        List&lt;SeededValue&gt; arguments,
+        ShrinkControl shrinkControl)
+        throws InitializationError {
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L122">            logger.debug(</span>
+                &quot;Verifying property {} from {} with these values:&quot;,
+<span class="nc" id="L124">                method.getName(),</span>
+<span class="nc" id="L125">                testClass.getName());</span>
+<span class="nc" id="L126">            logger.debug(&quot;{}&quot;, Arrays.deepToString(arguments.toArray()));</span>
+        }
+
+<span class="fc" id="L129">        List&lt;PropertyParameterGenerationContext&gt; params =</span>
+<span class="fc" id="L130">            arguments.stream().map(SeededValue::parameter).collect(toList());</span>
+<span class="fc" id="L131">        Object[] args = arguments.stream().map(SeededValue::value).toArray();</span>
+<span class="fc" id="L132">        long[] seeds =</span>
+<span class="fc" id="L133">            arguments.stream().mapToLong(SeededValue::seed).toArray();</span>
+
+<span class="fc" id="L135">        return new PropertyVerifier(</span>
+            testClass,
+            method,
+            args,
+            seeds,
+<span class="fc" id="L140">            s -&gt; ++successes,</span>
+            assumptionViolations::add,
+            (e, action) -&gt; {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                if (!shrinkControl.shouldShrink()) {</span>
+<span class="fc" id="L144">                    shrinkControl.onMinimalCounterexample()</span>
+<span class="fc" id="L145">                        .handle(args, action);</span>
+<span class="fc" id="L146">                    throw counterexampleFound(</span>
+<span class="fc" id="L147">                        method.getName(),</span>
+                        args,
+                        seeds,
+                        e);
+                }
+
+                try {
+<span class="nc" id="L154">                    shrink(params, args, seeds, shrinkControl, e);</span>
+<span class="fc" id="L155">                } catch (AssertionError ex) {</span>
+<span class="fc" id="L156">                    throw ex;</span>
+<span class="nc" id="L157">                } catch (Throwable ex) {</span>
+<span class="nc" id="L158">                    throw new AssertionError(ex);</span>
+<span class="nc" id="L159">                }</span>
+<span class="nc" id="L160">            }</span>
+        );
+    }
+
+    private void shrink(
+        List&lt;PropertyParameterGenerationContext&gt; params,
+        Object[] args,
+        long[] seeds,
+        ShrinkControl shrinkControl,
+        AssertionError failure)
+        throws Throwable {
+
+<span class="fc" id="L172">        new Shrinker(</span>
+            method,
+            testClass,
+            failure,
+            shrinkControl)
+<span class="nc" id="L177">            .shrink(params, args, seeds);</span>
+<span class="nc" id="L178">    }</span>
+
+    private PropertyParameterContext parameterContextFor(
+        Parameter parameter,
+        MethodGenericsContext generics) {
+
+<span class="fc" id="L184">        return new PropertyParameterContext(</span>
+<span class="fc" id="L185">            ParameterTypeContext.forParameter(parameter, generics)</span>
+<span class="fc" id="L186">                .allowMixedTypes(true)</span>
+<span class="fc" id="L187">        ).annotate(parameter);</span>
+    }
+
+    private ParameterSampler sampler(Property marker) {
+<span class="pc bpc" id="L191" title="1 of 3 branches missed.">        switch (marker.mode()) {</span>
+            case SAMPLING:
+<span class="fc" id="L193">                return new TupleParameterSampler(marker.trials());</span>
+            case EXHAUSTIVE:
+<span class="fc" id="L195">                return new ExhaustiveParameterSampler(marker.trials());</span>
+            default:
+<span class="nc" id="L197">                throw new AssertionError(</span>
+<span class="nc" id="L198">                    &quot;Don't recognize mode &quot; + marker.mode());</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
