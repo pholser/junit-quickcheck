@@ -238,7 +238,7 @@ public interface Gen<T> {
 
     /**
      * @deprecated For use by junit-quickcheck only -- when we migrate to Java
-     * >= 9, this method will likely become {@code private}.
+     * 9 or better, this method will likely become {@code private}.
      *
      * @param random source of randomness to be used when generating the value
      * @param status an object that can be used to influence the generated
