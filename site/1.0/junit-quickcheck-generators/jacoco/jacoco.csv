@@ -5,8 +5,8 @@ junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util.con
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.nio.charset,CharsetGenerator,0,11,0,0,0,4,0,2,0,2
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,VectorGenerator,0,4,0,0,0,2,0,1,0,1
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,SetGenerator,0,11,0,0,0,5,0,2,0,2
-junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,OptionalDoubleGenerator,33,48,2,4,8,14,2,6,0,5
-junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,OptionalLongGenerator,30,48,2,4,8,14,2,6,0,5
+junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,OptionalDoubleGenerator,0,81,0,6,0,22,0,8,0,5
+junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,OptionalLongGenerator,0,78,0,6,0,22,0,8,0,5
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,RFC4122.AbstractUUIDGenerator,0,49,0,0,0,10,0,4,0,4
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,OptionalIntGenerator,0,79,0,6,0,22,0,8,0,5
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.util,LinkedListGenerator,0,4,0,0,0,2,0,1,0,1
@@ -51,13 +51,13 @@ junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.time,Off
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator,VoidGenerator,0,24,0,2,0,4,0,4,0,3
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator,IntegralGenerator,0,73,0,4,0,23,0,7,0,5
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator,DecimalGenerator,0,100,0,4,0,30,0,8,0,6
-junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,AbstractStringGenerator,0,133,1,5,0,28,1,11,0,9
+junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,AbstractStringGenerator,0,133,0,6,0,28,0,12,0,9
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,Encoded,0,34,0,0,0,9,0,5,0,5
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,ByteGenerator,0,103,0,6,0,20,0,12,0,9
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,LongGenerator,0,103,0,6,0,20,0,12,0,9
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,ShortGenerator,0,103,0,6,0,20,0,12,0,9
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,IntegerGenerator,0,102,0,6,0,20,0,12,0,9
-junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,StringGenerator,1,16,2,2,0,3,2,3,0,3
+junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,StringGenerator,0,17,1,3,0,3,1,4,0,3
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,CharacterGenerator,0,120,1,7,0,16,1,11,0,8
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,DoubleGenerator,0,105,0,6,0,21,0,13,0,10
 junit-quickcheck-generators,com.pholser.junit.quickcheck.generator.java.lang,FloatGenerator,0,106,0,6,0,21,0,13,0,10
