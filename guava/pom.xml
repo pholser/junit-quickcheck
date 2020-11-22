@@ -4,11 +4,11 @@
     <parent>
         <groupId>com.pholser</groupId>
         <artifactId>junit-quickcheck</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>junit-quickcheck-guava</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>junit-quickcheck-guava</name>
     <description>Property-based testing, JUnit-style: generators for Guava types</description>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-generators</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-core</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
