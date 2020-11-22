@@ -1,0 +1,41 @@
+-classpath
+'/Users/pholser/java/junit-quickcheck/target/checkout/guava/target/classes:/Users/pholser/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/Users/pholser/.m2/repository/org/javaruntype/javaruntype/1.3/javaruntype-1.3.jar:/Users/pholser/.m2/repository/ru/vyarus/generics-resolver/3.0.1/generics-resolver-3.0.1.jar:/Users/pholser/.m2/repository/ognl/ognl/3.1.12/ognl-3.1.12.jar:/Users/pholser/java/junit-quickcheck/target/checkout/generators/target/junit-quickcheck-generators-1.0.jar:/Users/pholser/.m2/repository/org/checkerframework/checker-qual/2.11.1/checker-qual-2.11.1.jar:/Users/pholser/.m2/repository/com/google/errorprone/error_prone_annotations/2.3.4/error_prone_annotations-2.3.4.jar:/Users/pholser/.m2/repository/org/antlr/antlr-runtime/3.1.2/antlr-runtime-3.1.2.jar:/Users/pholser/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar:/Users/pholser/java/junit-quickcheck/target/checkout/core/target/junit-quickcheck-core-1.0.jar:/Users/pholser/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/pholser/.m2/repository/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar:/Users/pholser/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/pholser/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/pholser/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/Users/pholser/.m2/repository/com/google/guava/guava/29.0-jre/guava-29.0-jre.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'8'
+-sourcepath
+'/Users/pholser/java/junit-quickcheck/target/checkout/guava/src/main/java:/Users/pholser/java/junit-quickcheck/target/checkout/guava/target/generated-sources/annotations'
+-author
+-bottom
+'<i>&copy; Copyright 2010-2020 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>'
+-charset
+'UTF-8'
+-d
+'/Users/pholser/java/junit-quickcheck/target/checkout/guava/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'junit-quickcheck 1.0'
+-footer
+'junit-quickcheck 1.0'
+-header
+'junit-quickcheck 1.0'
+-link
+'https://docs.oracle.com/javase/8/docs/api'
+-link
+'http://junit.org/junit4/javadoc/latest'
+-link
+'https://guava.dev/releases/29.0-jre/api/docs'
+-link
+'http://java.sun.com/javase/6/docs/api'
+-linkoffline
+'http://github.com/pholser/junit-quickcheck/apidocs' '/Users/pholser/java/junit-quickcheck/target/checkout/core/target/site/apidocs'
+-linkoffline
+'http://github.com/pholser/junit-quickcheck/apidocs' '/Users/pholser/java/junit-quickcheck/target/checkout/generators/target/site/apidocs'
+-nohelp
+-use
+-version
+-windowtitle
+'junit-quickcheck-guava 1.0 API'
