@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FloatGenerator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">junit-quickcheck-examples</a> &gt; <a href="../index.html" class="el_bundle">junit-quickcheck-generators</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator.java.lang</a> &gt; <span class="el_source">FloatGenerator.java</span></div><h1>FloatGenerator.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator.java.lang;
+
+import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
+import static java.util.Arrays.asList;
+
+import com.pholser.junit.quickcheck.generator.DecimalGenerator;
+import com.pholser.junit.quickcheck.generator.GenerationStatus;
+import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.internal.Comparables;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.math.BigDecimal;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * Produces values of type {@code float} or {@link Float}.
+ */
+public class FloatGenerator extends DecimalGenerator&lt;Float&gt; {
+<span class="fc" id="L44">    private float min = (Float) defaultValueOf(InRange.class, &quot;minFloat&quot;);</span>
+<span class="fc" id="L45">    private float max = (Float) defaultValueOf(InRange.class, &quot;maxFloat&quot;);</span>
+
+    public FloatGenerator() {
+<span class="fc" id="L48">        super(asList(Float.class, float.class));</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Tells this generator to produce values within a specified minimum
+     * (inclusive) and/or maximum (exclusive) with uniform distribution.
+     *
+     * {@link InRange#min} and {@link InRange#max} take precedence over
+     * {@link InRange#minFloat()} and {@link InRange#maxFloat()}, if non-empty.
+     *
+     * @param range annotation that gives the range's constraints
+     */
+    public void configure(InRange range) {
+<span class="fc" id="L61">        min =</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            range.min().isEmpty()</span>
+<span class="fc" id="L63">                ? range.minFloat()</span>
+<span class="fc" id="L64">                : Float.parseFloat(range.min());</span>
+<span class="fc" id="L65">        max =</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            range.max().isEmpty()</span>
+<span class="fc" id="L67">                ? range.maxFloat()</span>
+<span class="fc" id="L68">                : Float.parseFloat(range.max());</span>
+<span class="fc" id="L69">    }</span>
+
+    @Override public Float generate(
+        SourceOfRandomness random,
+        GenerationStatus status) {
+
+<span class="fc" id="L75">        return random.nextFloat(min, max);</span>
+    }
+
+    @Override protected Function&lt;Float, BigDecimal&gt; widen() {
+<span class="fc" id="L79">        return BigDecimal::valueOf;</span>
+    }
+
+    @Override protected Function&lt;BigDecimal, Float&gt; narrow() {
+<span class="fc" id="L83">        return BigDecimal::floatValue;</span>
+    }
+
+    @Override protected Predicate&lt;Float&gt; inRange() {
+<span class="fc" id="L87">        return Comparables.inRange(min, max);</span>
+    }
+
+    @Override protected Float leastMagnitude() {
+<span class="fc" id="L91">        return Comparables.leastMagnitude(min, max, 0F);</span>
+    }
+
+    @Override protected boolean negative(Float target) {
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        return target &lt; 0;</span>
+    }
+
+    @Override protected Float negate(Float target) {
+<span class="fc" id="L99">        return -target;</span>
+    }
+
+    @Override public BigDecimal magnitude(Object value) {
+<span class="fc" id="L103">        return BigDecimal.valueOf(narrow(value));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
