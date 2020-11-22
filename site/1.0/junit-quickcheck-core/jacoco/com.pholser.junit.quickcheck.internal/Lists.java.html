@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lists.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">Lists.java</span></div><h1>Lists.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
+import com.pholser.junit.quickcheck.generator.Shrink;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+public final class Lists {
+<span class="fc" id="L39">    private Lists() {</span>
+<span class="fc" id="L40">        throw new UnsupportedOperationException();</span>
+    }
+
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; removeFrom(List&lt;T&gt; target, int howMany) {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (howMany &lt; 0) {</span>
+<span class="fc" id="L45">            throw new IllegalArgumentException(</span>
+                &quot;Can't remove &quot; + howMany + &quot; elements from a list&quot;);
+        }
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (howMany == 0)</span>
+<span class="fc" id="L49">            return singletonList(target);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (howMany &gt; target.size())</span>
+<span class="fc" id="L51">            return emptyList();</span>
+
+<span class="fc" id="L53">        List&lt;T&gt; left = target.subList(0, howMany);</span>
+<span class="fc" id="L54">        List&lt;T&gt; right = target.subList(howMany, target.size());</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (right.isEmpty())</span>
+<span class="fc" id="L56">            return singletonList(emptyList());</span>
+
+<span class="fc" id="L58">        List&lt;List&lt;T&gt;&gt; removals = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L59">        removals.add(right);</span>
+<span class="fc" id="L60">        removals.addAll(removeFrom(right, howMany)</span>
+<span class="fc" id="L61">            .stream()</span>
+<span class="fc" id="L62">            .map(r -&gt; {</span>
+<span class="fc" id="L63">                List&lt;T&gt; items = new ArrayList&lt;&gt;(left);</span>
+<span class="fc" id="L64">                items.addAll(r);</span>
+<span class="fc" id="L65">                return items;</span>
+            })
+<span class="fc" id="L67">            .collect(toList()));</span>
+<span class="fc" id="L68">        return removals;</span>
+    }
+
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; shrinksOfOneItem(
+        SourceOfRandomness random,
+        List&lt;T&gt; target,
+        Shrink&lt;T&gt; shrink) {
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (target.isEmpty())</span>
+<span class="fc" id="L77">            return new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L79">        T head = target.get(0);</span>
+<span class="fc" id="L80">        List&lt;T&gt; tail = target.subList(1, target.size());</span>
+
+<span class="fc" id="L82">        List&lt;List&lt;T&gt;&gt; shrinks = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L83">        shrinks.addAll(</span>
+<span class="fc" id="L84">            shrink.shrink(random, head)</span>
+<span class="fc" id="L85">                .stream()</span>
+<span class="fc" id="L86">                .map(i -&gt; {</span>
+<span class="fc" id="L87">                    List&lt;T&gt; items = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L88">                    items.add(i);</span>
+<span class="fc" id="L89">                    items.addAll(tail);</span>
+<span class="fc" id="L90">                    return items;</span>
+                })
+<span class="fc" id="L92">                .collect(toList()));</span>
+<span class="fc" id="L93">        shrinks.addAll(</span>
+<span class="fc" id="L94">            shrinksOfOneItem(random, tail, shrink)</span>
+<span class="fc" id="L95">                .stream()</span>
+<span class="fc" id="L96">                .map(s -&gt; {</span>
+<span class="fc" id="L97">                    List&lt;T&gt; items = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L98">                    items.add(head);</span>
+<span class="fc" id="L99">                    items.addAll(s);</span>
+<span class="fc" id="L100">                    return items;</span>
+                })
+<span class="fc" id="L102">                .collect(toList()));</span>
+
+<span class="fc" id="L104">        return shrinks;</span>
+    }
+
+    public static &lt;T&gt; boolean isDistinct(List&lt;T&gt; target) {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        return new HashSet&lt;&gt;(target).size() == target.size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

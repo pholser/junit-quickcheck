@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerationStatus.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.generator</a> &gt; <span class="el_source">GenerationStatus.java</span></div><h1>GenerationStatus.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.generator;
+
+import java.util.Objects;
+import java.util.Optional;
+
+/**
+ * {@link Generator}s are fed instances of this interface on each generation
+ * so that, if they choose, they can use these instances to influence the
+ * results of a generation for a particular property parameter.
+ */
+public interface GenerationStatus {
+    /**
+     * @return an arbitrary &quot;size&quot; parameter; this value (probabilistically)
+     * increases for every successful generation
+     */
+    int size();
+
+    /**
+     * @return how many attempts have been made to generate a value for a
+     * property parameter
+     */
+    int attempts();
+
+    /**
+     * &lt;p&gt;Signals part of an attempt to generate a value.&lt;/p&gt;
+     *
+     * &lt;p&gt;Mostly for use by junit-quickcheck itself; generators can call this
+     * to convince the framework that it's doing work to generate a complex
+     * value, but doing so is not strictly necessary.&lt;/p&gt;
+     */
+    default void semiAttempt() {
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * Associates the given value with the given key for the duration of the
+     * generation of a value for a property parameter, or until overwritten.
+     *
+     * @param &lt;T&gt; type of the value
+     * @param key a key to associate with a value
+     * @param value the associated value
+     * @return self, so that calls to this method can be chained
+     */
+    &lt;T&gt; GenerationStatus setValue(Key&lt;T&gt; key, T value);
+
+    /**
+     * Retrieves the value associated with the given key.
+     *
+     * @param &lt;T&gt; type of the value associated with the key
+     * @param key key to look up
+     * @return the (optional) associated value
+     */
+    &lt;T&gt; Optional&lt;T&gt; valueOf(Key&lt;T&gt; key);
+
+    /**
+     * Type-safe keys for {@link GenerationStatus#setValue(Key, Object)
+     * setValue} and {@link GenerationStatus#valueOf(Key) valueOf}.
+     *
+     * @param &lt;T&gt; type of value that can be associated with the key
+     */
+    final class Key&lt;T&gt; {
+        private final String name;
+        private final Class&lt;T&gt; type;
+
+<span class="fc" id="L89">        public Key(String name, Class&lt;T&gt; type) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            if (name == null)</span>
+<span class="fc" id="L91">                throw new NullPointerException(&quot;name must not be null&quot;);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (type == null)</span>
+<span class="fc" id="L93">                throw new NullPointerException(&quot;type must not be null&quot;);</span>
+
+<span class="fc" id="L95">            this.name = name;</span>
+<span class="fc" id="L96">            this.type = type;</span>
+<span class="fc" id="L97">        }</span>
+
+        public T cast(Object o) {
+<span class="fc" id="L100">            return type.cast(o);</span>
+        }
+
+        @Override public boolean equals(Object o) {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            if (o == this)</span>
+<span class="fc" id="L105">                return true;</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (!(o instanceof Key&lt;?&gt;))</span>
+<span class="fc" id="L107">                return false;</span>
+
+<span class="fc" id="L109">            Key&lt;?&gt; other = (Key&lt;?&gt;) o;</span>
+<span class="fc bfc" id="L110" title="All 4 branches covered.">            return name.equals(other.name) &amp;&amp; type.equals(other.type);</span>
+        }
+
+        @Override public int hashCode() {
+<span class="fc" id="L114">            return Objects.hash(name, type);</span>
+        }
+
+        @Override public String toString() {
+<span class="fc" id="L118">            return name + &quot;: &quot; + type;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

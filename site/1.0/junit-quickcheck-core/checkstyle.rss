@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>junit-quickcheck-core - Checkstyle report</title>
+    <link>http://github.com/pholser/junit-quickcheck</link>
+    <description>junit-quickcheck-core - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2020</copyright>
+    <item>
+      <title>File: 73,
+             Errors: 0,
+             Warnings: 163,
+             Infos: 0
+      </title>
+            <link>http://github.com/pholser/junit-quickcheck/checkstyle.html</link>
+      <description>
+        <p>Click <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.SimpleGenerationStatus.java">com/pholser/junit/quickcheck/internal/generator/SimpleGenerationStatus.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.PropertyParameterContext.java">com/pholser/junit/quickcheck/internal/PropertyParameterContext.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.GeneratorConfigurationException.java">com/pholser/junit/quickcheck/generator/GeneratorConfigurationException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Distinct.java">com/pholser/junit/quickcheck/generator/Distinct.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.PropertyFalsified.java">com/pholser/junit/quickcheck/runner/PropertyFalsified.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.ExhaustiveDomainGenerator.java">com/pholser/junit/quickcheck/internal/generator/ExhaustiveDomainGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.ParameterTypeContext.java">com/pholser/junit/quickcheck/internal/ParameterTypeContext.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  13
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Size.java">com/pholser/junit/quickcheck/generator/Size.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.NullAllowed.java">com/pholser/junit/quickcheck/generator/NullAllowed.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.DefaultMethodHandleMaker.java">com/pholser/junit/quickcheck/internal/DefaultMethodHandleMaker.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.conversion.StringConversions.java">com/pholser/junit/quickcheck/internal/conversion/StringConversions.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.PropertyVerifier.java">com/pholser/junit/quickcheck/runner/PropertyVerifier.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.CartesianIterator.java">com/pholser/junit/quickcheck/internal/CartesianIterator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.SeededValue.java">com/pholser/junit/quickcheck/internal/SeededValue.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Lists.java">com/pholser/junit/quickcheck/internal/Lists.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Ranges.java">com/pholser/junit/quickcheck/internal/Ranges.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.GeneratorRepository.java">com/pholser/junit/quickcheck/internal/generator/GeneratorRepository.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Zilch.java">com/pholser/junit/quickcheck/internal/Zilch.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Weighted.java">com/pholser/junit/quickcheck/internal/Weighted.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Comparables.java">com/pholser/junit/quickcheck/internal/Comparables.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.ReflectionException.java">com/pholser/junit/quickcheck/internal/ReflectionException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Ctor.java">com/pholser/junit/quickcheck/generator/Ctor.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.CompositeGenerator.java">com/pholser/junit/quickcheck/internal/generator/CompositeGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.MinimalCounterexampleHook.java">com/pholser/junit/quickcheck/MinimalCounterexampleHook.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Reflection.java">com/pholser/junit/quickcheck/internal/Reflection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.sampling.ExhaustiveParameterSampler.java">com/pholser/junit/quickcheck/internal/sampling/ExhaustiveParameterSampler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Generator.java">com/pholser/junit/quickcheck/generator/Generator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.GeneratorConfiguration.java">com/pholser/junit/quickcheck/generator/GeneratorConfiguration.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.SamplingDomainGenerator.java">com/pholser/junit/quickcheck/internal/generator/SamplingDomainGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.conversion.StringConversion.java">com/pholser/junit/quickcheck/conversion/StringConversion.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Fields.java">com/pholser/junit/quickcheck/generator/Fields.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.AbstractGenerationStatus.java">com/pholser/junit/quickcheck/internal/generator/AbstractGenerationStatus.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.NoValuesSatisfiedPropertyAssumptions.java">com/pholser/junit/quickcheck/runner/NoValuesSatisfiedPropertyAssumptions.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.ShrinkNode.java">com/pholser/junit/quickcheck/runner/ShrinkNode.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.sampling.TupleParameterSampler.java">com/pholser/junit/quickcheck/internal/sampling/TupleParameterSampler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.hook.NilMinimalCounterexampleHook.java">com/pholser/junit/quickcheck/hook/NilMinimalCounterexampleHook.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.Pair.java">com/pholser/junit/quickcheck/Pair.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.ComponentizedGenerator.java">com/pholser/junit/quickcheck/generator/ComponentizedGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.Shrinker.java">com/pholser/junit/quickcheck/runner/Shrinker.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.MarkerInterfaceGenerator.java">com/pholser/junit/quickcheck/internal/generator/MarkerInterfaceGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.From.java">com/pholser/junit/quickcheck/From.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.Property.java">com/pholser/junit/quickcheck/Property.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.GuaranteeValuesGenerator.java">com/pholser/junit/quickcheck/internal/generator/GuaranteeValuesGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.ArrayGenerator.java">com/pholser/junit/quickcheck/internal/generator/ArrayGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Sequences.java">com/pholser/junit/quickcheck/internal/Sequences.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.When.java">com/pholser/junit/quickcheck/When.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Lambdas.java">com/pholser/junit/quickcheck/generator/Lambdas.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.JUnitQuickcheck.java">com/pholser/junit/quickcheck/runner/JUnitQuickcheck.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.conversion.MethodInvokingStringConversion.java">com/pholser/junit/quickcheck/internal/conversion/MethodInvokingStringConversion.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.PropertyStatement.java">com/pholser/junit/quickcheck/runner/PropertyStatement.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  11
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.ZilchGenerator.java">com/pholser/junit/quickcheck/internal/generator/ZilchGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.Items.java">com/pholser/junit/quickcheck/internal/Items.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Generators.java">com/pholser/junit/quickcheck/generator/Generators.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.ServiceLoaderGeneratorSource.java">com/pholser/junit/quickcheck/internal/generator/ServiceLoaderGeneratorSource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.GeometricDistribution.java">com/pholser/junit/quickcheck/internal/GeometricDistribution.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.ShrinkControl.java">com/pholser/junit/quickcheck/internal/ShrinkControl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.Mode.java">com/pholser/junit/quickcheck/Mode.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.EnumGenerator.java">com/pholser/junit/quickcheck/internal/generator/EnumGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.conversion.ConstructorInvokingStringConversion.java">com/pholser/junit/quickcheck/internal/conversion/ConstructorInvokingStringConversion.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Also.java">com/pholser/junit/quickcheck/generator/Also.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.Produced.java">com/pholser/junit/quickcheck/Produced.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.NullableGenerator.java">com/pholser/junit/quickcheck/internal/generator/NullableGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator.java">com/pholser/junit/quickcheck/internal/constraint/ConstraintEvaluator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.GenerationStatus.java">com/pholser/junit/quickcheck/generator/GenerationStatus.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext.java">com/pholser/junit/quickcheck/internal/generator/PropertyParameterGenerationContext.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.ParameterSampler.java">com/pholser/junit/quickcheck/internal/ParameterSampler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.generator.LambdaGenerator.java">com/pholser/junit/quickcheck/internal/generator/LambdaGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.random.SourceOfRandomness.java">com/pholser/junit/quickcheck/random/SourceOfRandomness.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Gen.java">com/pholser/junit/quickcheck/generator/Gen.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Shrink.java">com/pholser/junit/quickcheck/generator/Shrink.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.generator.Only.java">com/pholser/junit/quickcheck/generator/Only.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.runner.JUnitQuickcheckTestClass.java">com/pholser/junit/quickcheck/runner/JUnitQuickcheckTestClass.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://github.com/pholser/junit-quickcheck/checkstyle.html#com.pholser.junit.quickcheck.internal.FakeAnnotatedTypeFactory.java">com/pholser/junit/quickcheck/internal/FakeAnnotatedTypeFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

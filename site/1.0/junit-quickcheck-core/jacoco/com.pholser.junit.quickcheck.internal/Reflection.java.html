@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Reflection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal</a> &gt; <span class="el_source">Reflection.java</span></div><h1>Reflection.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal;
+
+import static java.lang.reflect.Modifier.isAbstract;
+import static java.security.AccessController.doPrivileged;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedArrayType;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.AnnotatedWildcardType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.PrivilegedAction;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.javaruntype.type.Type;
+
+public final class Reflection {
+<span class="fc" id="L58">    private static final Map&lt;Class&lt;?&gt;, Class&lt;?&gt;&gt; PRIMITIVES =</span>
+        new HashMap&lt;&gt;(16);
+
+    static {
+<span class="fc" id="L62">        PRIMITIVES.put(Boolean.TYPE, Boolean.class);</span>
+<span class="fc" id="L63">        PRIMITIVES.put(Byte.TYPE, Byte.class);</span>
+<span class="fc" id="L64">        PRIMITIVES.put(Character.TYPE, Character.class);</span>
+<span class="fc" id="L65">        PRIMITIVES.put(Double.TYPE, Double.class);</span>
+<span class="fc" id="L66">        PRIMITIVES.put(Float.TYPE, Float.class);</span>
+<span class="fc" id="L67">        PRIMITIVES.put(Integer.TYPE, Integer.class);</span>
+<span class="fc" id="L68">        PRIMITIVES.put(Long.TYPE, Long.class);</span>
+<span class="fc" id="L69">        PRIMITIVES.put(Short.TYPE, Short.class);</span>
+<span class="fc" id="L70">    }</span>
+
+<span class="fc" id="L72">    private Reflection() {</span>
+<span class="fc" id="L73">        throw new UnsupportedOperationException();</span>
+    }
+
+    public static Class&lt;?&gt; maybeWrap(Class&lt;?&gt; clazz) {
+<span class="fc" id="L77">        Class&lt;?&gt; wrapped = PRIMITIVES.get(clazz);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        return wrapped == null ? clazz : wrapped;</span>
+    }
+
+    public static &lt;T&gt; Constructor&lt;T&gt; findConstructor(
+        Class&lt;T&gt; type,
+        Class&lt;?&gt;... parameterTypes) {
+
+        try {
+<span class="fc" id="L86">            return type.getConstructor(parameterTypes);</span>
+<span class="fc" id="L87">        } catch (Exception ex) {</span>
+<span class="fc" id="L88">            throw reflectionException(ex);</span>
+        }
+    }
+
+    static &lt;T&gt; Constructor&lt;T&gt; findDeclaredConstructor(
+        Class&lt;T&gt; type,
+        Class&lt;?&gt;... parameterTypes) {
+
+        try {
+<span class="fc" id="L97">            Constructor&lt;T&gt; ctor = type.getDeclaredConstructor(parameterTypes);</span>
+<span class="fc" id="L98">            ctor.setAccessible(true);</span>
+<span class="fc" id="L99">            return ctor;</span>
+<span class="fc" id="L100">        } catch (Exception ex) {</span>
+<span class="fc" id="L101">            throw reflectionException(ex);</span>
+        }
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static &lt;T&gt; Constructor&lt;T&gt; singleAccessibleConstructor(
+        Class&lt;T&gt; type) {
+
+<span class="fc" id="L109">        Constructor&lt;?&gt;[] constructors = type.getConstructors();</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (constructors.length != 1) {</span>
+<span class="fc" id="L111">            throw new ReflectionException(</span>
+                type + &quot; needs a single accessible constructor&quot;);
+        }
+
+<span class="fc" id="L115">        return (Constructor&lt;T&gt;) constructors[0];</span>
+    }
+
+    public static &lt;T&gt; T instantiate(Class&lt;T&gt; clazz) {
+        try {
+<span class="fc" id="L120">            return clazz.newInstance();</span>
+<span class="fc" id="L121">        } catch (Exception ex) {</span>
+<span class="fc" id="L122">            throw reflectionException(ex);</span>
+        }
+    }
+
+    public static &lt;T&gt; T instantiate(Constructor&lt;T&gt; ctor, Object... args) {
+        try {
+<span class="fc" id="L128">            return ctor.newInstance(args);</span>
+<span class="fc" id="L129">        } catch (Exception ex) {</span>
+<span class="fc" id="L130">            throw reflectionException(ex);</span>
+        }
+    }
+
+    public static Set&lt;Type&lt;?&gt;&gt; supertypes(Type&lt;?&gt; bottom) {
+<span class="fc" id="L135">        Set&lt;Type&lt;?&gt;&gt; supertypes = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L136">        supertypes.add(bottom);</span>
+<span class="fc" id="L137">        supertypes.addAll(bottom.getAllTypesAssignableFromThis());</span>
+<span class="fc" id="L138">        return supertypes;</span>
+    }
+
+    public static Object defaultValueOf(
+        Class&lt;? extends Annotation&gt; annotationType,
+        String attribute) {
+
+        try {
+<span class="fc" id="L146">            return annotationType.getMethod(attribute).getDefaultValue();</span>
+<span class="fc" id="L147">        } catch (Exception ex) {</span>
+<span class="fc" id="L148">            throw reflectionException(ex);</span>
+        }
+    }
+
+    public static List&lt;Annotation&gt; allAnnotations(AnnotatedElement e) {
+<span class="fc" id="L153">        List&lt;Annotation&gt; thisAnnotations = nonSystemAnnotations(e);</span>
+
+<span class="fc" id="L155">        List&lt;Annotation&gt; annotations = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        for (Annotation each : thisAnnotations) {</span>
+<span class="fc" id="L157">            annotations.add(each);</span>
+<span class="fc" id="L158">            annotations.addAll(allAnnotations(each.annotationType()));</span>
+<span class="fc" id="L159">        }</span>
+
+<span class="fc" id="L161">        return annotations;</span>
+    }
+
+    static &lt;T extends Annotation&gt; List&lt;T&gt; allAnnotationsByType(
+        AnnotatedElement e,
+        Class&lt;T&gt; type) {
+
+<span class="fc" id="L168">        List&lt;T&gt; annotations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L169">        Collections.addAll(annotations, e.getAnnotationsByType(type));</span>
+
+<span class="fc" id="L171">        List&lt;Annotation&gt; thisAnnotations = nonSystemAnnotations(e);</span>
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        for (Annotation each : thisAnnotations) {</span>
+<span class="fc" id="L174">            annotations.addAll(</span>
+<span class="fc" id="L175">                allAnnotationsByType(each.annotationType(), type));</span>
+<span class="fc" id="L176">        }</span>
+
+<span class="fc" id="L178">        return annotations;</span>
+    }
+
+    public static Method findMethod(
+        Class&lt;?&gt; target,
+        String methodName,
+        Class&lt;?&gt;... argTypes) {
+
+        try {
+<span class="fc" id="L187">            return target.getMethod(methodName, argTypes);</span>
+<span class="fc" id="L188">        } catch (Exception ex) {</span>
+<span class="fc" id="L189">            throw reflectionException(ex);</span>
+        }
+    }
+
+    public static Object invoke(Method method, Object target, Object... args) {
+        try {
+<span class="fc" id="L195">            return method.invoke(target, args);</span>
+<span class="fc" id="L196">        } catch (Exception ex) {</span>
+<span class="fc" id="L197">            throw reflectionException(ex);</span>
+        }
+    }
+
+    public static Field findField(Class&lt;?&gt; type, String fieldName) {
+        try {
+<span class="fc" id="L203">            return type.getDeclaredField(fieldName);</span>
+<span class="fc" id="L204">        } catch (NoSuchFieldException ex) {</span>
+<span class="fc" id="L205">            throw reflectionException(ex);</span>
+        }
+    }
+
+    public static List&lt;Field&gt; allDeclaredFieldsOf(Class&lt;?&gt; type) {
+<span class="fc" id="L210">        List&lt;Field&gt; allFields = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        for (Class&lt;?&gt; c = type; c != null; c = c.getSuperclass()) {</span>
+<span class="fc" id="L213">            Collections.addAll(allFields, c.getDeclaredFields());</span>
+        }
+
+<span class="fc" id="L216">        List&lt;Field&gt; results =</span>
+<span class="fc" id="L217">            allFields.stream()</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">                .filter(f -&gt; !f.isSynthetic())</span>
+<span class="fc" id="L219">                .collect(toList());</span>
+<span class="fc" id="L220">        results.forEach(f -&gt; f.setAccessible(true));</span>
+
+<span class="fc" id="L222">        return results;</span>
+    }
+
+    public static void setField(
+        Field field,
+        Object target,
+        Object value,
+        boolean suppressProtection) {
+
+<span class="fc" id="L231">        doPrivileged((PrivilegedAction&lt;Void&gt;) () -&gt; {</span>
+<span class="fc" id="L232">            field.setAccessible(suppressProtection);</span>
+<span class="fc" id="L233">            return null;</span>
+        });
+
+        try {
+<span class="fc" id="L237">            field.set(target, value);</span>
+<span class="fc" id="L238">        } catch (Exception ex) {</span>
+<span class="fc" id="L239">            throw reflectionException(ex);</span>
+<span class="fc" id="L240">        }</span>
+<span class="fc" id="L241">    }</span>
+
+    static boolean jdk9OrBetter() {
+        try {
+<span class="nc" id="L245">            Runtime.class.getMethod(&quot;version&quot;);</span>
+<span class="nc" id="L246">            return true;</span>
+<span class="fc" id="L247">        } catch (NoSuchMethodException e) {</span>
+<span class="fc" id="L248">            return false;</span>
+        }
+    }
+
+    public static Method singleAbstractMethodOf(Class&lt;?&gt; rawClass) {
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        if (!rawClass.isInterface())</span>
+<span class="fc" id="L254">            return null;</span>
+
+<span class="fc" id="L256">        int abstractCount = 0;</span>
+<span class="fc" id="L257">        Method singleAbstractMethod = null;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        for (Method each : rawClass.getMethods()) {</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">            if (isAbstract(each.getModifiers())</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">                &amp;&amp; !overridesJavaLangObjectMethod(each)) {</span>
+
+<span class="fc" id="L262">                singleAbstractMethod = each;</span>
+<span class="fc" id="L263">                ++abstractCount;</span>
+            }
+        }
+
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        return abstractCount == 1 ? singleAbstractMethod : null;</span>
+    }
+
+    public static boolean isMarkerInterface(Class&lt;?&gt; clazz) {
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        if (!clazz.isInterface())</span>
+<span class="fc" id="L272">            return false;</span>
+
+<span class="fc" id="L274">        return Arrays.stream(clazz.getMethods())</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">            .filter(m -&gt; !m.isDefault())</span>
+<span class="fc" id="L276">            .allMatch(Reflection::overridesJavaLangObjectMethod);</span>
+    }
+
+    private static boolean overridesJavaLangObjectMethod(Method method) {
+<span class="fc bfc" id="L280" title="All 6 branches covered.">        return isEquals(method) || isHashCode(method) || isToString(method);</span>
+    }
+
+    private static boolean isEquals(Method method) {
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        return &quot;equals&quot;.equals(method.getName())</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">            &amp;&amp; method.getParameterTypes().length == 1</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">            &amp;&amp; Object.class.equals(method.getParameterTypes()[0]);</span>
+    }
+
+    private static boolean isHashCode(Method method) {
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        return &quot;hashCode&quot;.equals(method.getName())</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">            &amp;&amp; method.getParameterTypes().length == 0;</span>
+    }
+
+    private static boolean isToString(Method method) {
+<span class="fc bfc" id="L295" title="All 2 branches covered.">        return &quot;toString&quot;.equals(method.getName())</span>
+<span class="fc bfc" id="L296" title="All 2 branches covered.">            &amp;&amp; method.getParameterTypes().length == 0;</span>
+    }
+
+    public static RuntimeException reflectionException(Exception ex) {
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        if (ex instanceof InvocationTargetException) {</span>
+<span class="fc" id="L301">            return new ReflectionException(</span>
+<span class="fc" id="L302">                ((InvocationTargetException) ex).getTargetException());</span>
+        }
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (ex instanceof RuntimeException)</span>
+<span class="fc" id="L305">            return (RuntimeException) ex;</span>
+
+<span class="fc" id="L307">        return new ReflectionException(ex);</span>
+    }
+
+    private static List&lt;Annotation&gt; nonSystemAnnotations(AnnotatedElement e) {
+<span class="fc" id="L311">        return stream(e.getAnnotations())</span>
+<span class="fc" id="L312">            .filter(a -&gt;</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">                !a.annotationType().getName().startsWith(</span>
+                    &quot;java.lang.annotation.&quot;))
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">            .filter(a -&gt; !a.annotationType().getName().startsWith(&quot;kotlin.&quot;))</span>
+<span class="fc" id="L316">            .collect(toList());</span>
+    }
+
+    public static List&lt;AnnotatedType&gt; annotatedComponentTypes(
+        AnnotatedType annotatedType) {
+
+<span class="fc bfc" id="L322" title="All 2 branches covered.">        if (annotatedType instanceof AnnotatedParameterizedType) {</span>
+<span class="fc" id="L323">            return asList(</span>
+                ((AnnotatedParameterizedType) annotatedType)
+<span class="fc" id="L325">                    .getAnnotatedActualTypeArguments());</span>
+        }
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        if (annotatedType instanceof AnnotatedArrayType) {</span>
+<span class="fc" id="L328">            return singletonList(</span>
+                ((AnnotatedArrayType) annotatedType)
+<span class="fc" id="L330">                    .getAnnotatedGenericComponentType());</span>
+        }
+<span class="fc bfc" id="L332" title="All 2 branches covered.">        if (annotatedType instanceof AnnotatedWildcardType) {</span>
+<span class="fc" id="L333">            AnnotatedWildcardType wildcard =</span>
+                (AnnotatedWildcardType) annotatedType;
+<span class="fc bfc" id="L335" title="All 2 branches covered.">            if (wildcard.getAnnotatedLowerBounds().length &gt; 0)</span>
+<span class="fc" id="L336">                return singletonList(wildcard.getAnnotatedLowerBounds()[0]);</span>
+
+<span class="fc" id="L338">            return asList(wildcard.getAnnotatedUpperBounds());</span>
+        }
+
+<span class="fc" id="L341">        return emptyList();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertyParameterGenerationContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junit-quickcheck-core</a> &gt; <a href="index.source.html" class="el_package">com.pholser.junit.quickcheck.internal.generator</a> &gt; <span class="el_source">PropertyParameterGenerationContext.java</span></div><h1>PropertyParameterGenerationContext.java</h1><pre class="source lang-java linenums">/*
+ The MIT License
+
+ Copyright (c) 2010-2020 Paul R. Holser, Jr.
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package com.pholser.junit.quickcheck.internal.generator;
+
+import static java.lang.Math.min;
+import static java.lang.String.format;
+import static java.math.BigDecimal.ZERO;
+import static java.util.Collections.emptyList;
+
+import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+import com.pholser.junit.quickcheck.internal.ParameterSampler;
+import com.pholser.junit.quickcheck.internal.PropertyParameterContext;
+import com.pholser.junit.quickcheck.internal.constraint.ConstraintEvaluator;
+import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PropertyParameterGenerationContext
+    extends AbstractGenerationStatus {
+
+    private final PropertyParameterContext parameter;
+    private final ConstraintEvaluator evaluator;
+    private final Generator&lt;?&gt; generator;
+    private final int sampleSize;
+
+    private int successfulEvaluations;
+    private int discards;
+    private int semiAttempts;
+
+    public PropertyParameterGenerationContext(
+        PropertyParameterContext parameter,
+        GeneratorRepository repository,
+        GeometricDistribution distro,
+        SourceOfRandomness random,
+        ParameterSampler sampler) {
+
+<span class="fc" id="L62">        super(distro, initializeRandomness(parameter, random));</span>
+
+<span class="fc" id="L64">        this.parameter = parameter;</span>
+<span class="fc" id="L65">        this.evaluator = new ConstraintEvaluator(parameter.constraint());</span>
+<span class="fc" id="L66">        this.generator =</span>
+<span class="fc" id="L67">            sampler.decideGenerator(repository, parameter.typeContext());</span>
+<span class="fc" id="L68">        this.sampleSize = sampler.sizeFactor(parameter.typeContext());</span>
+<span class="fc" id="L69">    }</span>
+
+    private static SourceOfRandomness initializeRandomness(
+        PropertyParameterContext p,
+        SourceOfRandomness r) {
+
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (p.fixedSeed())</span>
+<span class="fc" id="L76">            r.setSeed(p.seed());</span>
+
+<span class="fc" id="L78">        return r;</span>
+    }
+
+    public Object generate() {
+        Object nextValue;
+
+<span class="fc" id="L84">        for (nextValue = generator.generate(random(), this);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            !evaluate(nextValue);) {</span>
+
+<span class="fc" id="L87">            nextValue = generator.generate(random(), this);</span>
+        }
+
+<span class="fc" id="L90">        return nextValue;</span>
+    }
+
+    public List&lt;Object&gt; shrink(Object larger) {
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        return generator.canShrink(larger)</span>
+<span class="fc" id="L95">            ? new ArrayList&lt;&gt;(generator.shrink(random(), larger))</span>
+<span class="fc" id="L96">            : emptyList();</span>
+    }
+
+    private boolean evaluate(Object value) {
+<span class="fc" id="L100">        evaluator.bind(value);</span>
+<span class="fc" id="L101">        boolean result = evaluator.evaluate();</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (result) {</span>
+<span class="fc" id="L104">            ++successfulEvaluations;</span>
+        } else {
+<span class="fc" id="L106">            ++discards;</span>
+        }
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (tooManyDiscards()) {</span>
+<span class="fc" id="L110">            throw new DiscardRatioExceededException(</span>
+                parameter,
+                discards,
+                successfulEvaluations);
+        }
+
+<span class="fc" id="L116">        return result;</span>
+    }
+
+    private boolean tooManyDiscards() {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (parameter.discardRatio() == 0)</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">            return discards &gt; sampleSize();</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        return successfulEvaluations == 0</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            ? discards &gt; parameter.discardRatio()</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            : (discards / successfulEvaluations) &gt;= parameter.discardRatio();</span>
+    }
+
+    @Override public int size() {
+<span class="fc" id="L129">        return min(super.size(), sampleSize());</span>
+    }
+
+    @Override public int attempts() {
+<span class="fc" id="L133">        return successfulEvaluations + discards + (semiAttempts / 10);</span>
+    }
+
+    @Override public void semiAttempt() {
+<span class="nc" id="L137">        ++semiAttempts;</span>
+<span class="nc" id="L138">    }</span>
+
+    public long effectiveSeed() {
+<span class="fc" id="L141">        return random().seed();</span>
+    }
+
+    public int sampleSize() {
+<span class="fc" id="L145">        return sampleSize;</span>
+    }
+
+    public String name() {
+<span class="nc" id="L149">        return parameter.typeContext().name();</span>
+    }
+
+    public BigDecimal magnitude(Object value) {
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        return generator.canShrink(value)</span>
+<span class="pc" id="L154">            ? generator.magnitude(value).abs()</span>
+            : ZERO;
+    }
+
+    public static class DiscardRatioExceededException
+        extends RuntimeException {
+
+        static final String MESSAGE_TEMPLATE =
+            &quot;For parameter [%s] with discard ratio [%d],&quot;
+                + &quot; %d unsuccessful values and %d successes. Stopping.&quot;;
+
+        private static final long serialVersionUID = Long.MIN_VALUE;
+
+        DiscardRatioExceededException(
+            PropertyParameterContext parameter,
+            int discards,
+            int successfulEvaluations) {
+
+<span class="fc" id="L172">            super(format(</span>
+                MESSAGE_TEMPLATE,
+<span class="fc" id="L174">                parameter.typeContext().name(),</span>
+<span class="fc" id="L175">                parameter.discardRatio(),</span>
+<span class="fc" id="L176">                discards,</span>
+<span class="fc" id="L177">                successfulEvaluations));</span>
+<span class="fc" id="L178">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
