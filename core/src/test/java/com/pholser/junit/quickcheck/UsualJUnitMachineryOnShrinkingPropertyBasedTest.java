@@ -69,6 +69,7 @@ public class UsualJUnitMachineryOnShrinkingPropertyBasedTest {
     @Test public void orderingOfStatements() {
         assertThat(testResult(PropertyBasedTests.class), failureCountIs(1));
         assertEquals(expectedStatements, PropertyBasedTests.LOGS);
+        PropertyBasedTests.clearLogs();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -135,6 +136,10 @@ public class UsualJUnitMachineryOnShrinkingPropertyBasedTest {
             LOGS.add("property");
 
             fail();
+        }
+
+        public static void clearLogs() {
+            LOGS.clear();
         }
     }
 }
