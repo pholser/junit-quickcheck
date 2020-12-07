@@ -73,6 +73,7 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
     @Test public void orderingOfStatements() {
         assertThat(testResult(PropertyBasedTests.class), isSuccessful());
         assertEquals(expectedStatements, PropertyBasedTests.LOGS);
+        PropertyBasedTests.clearLogs();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -162,6 +163,10 @@ public class UsualJUnitMachineryOnPropertyBasedTest {
 
         @Test public void aTest() {
             LOGS.add("test");
+        }
+
+        public static void clearLogs() {
+            LOGS.clear();
         }
     }
 }
