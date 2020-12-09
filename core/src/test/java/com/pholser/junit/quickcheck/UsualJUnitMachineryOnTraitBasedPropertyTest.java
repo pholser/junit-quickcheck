@@ -50,7 +50,7 @@ import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 
 public class UsualJUnitMachineryOnTraitBasedPropertyTest {
-    private static final OutputStream bytesOut = new ByteArrayOutputStream();
+    private static final ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
     private static final PrintStream fakeOut =
         new PrintStream(bytesOut, true);
 
@@ -65,11 +65,15 @@ public class UsualJUnitMachineryOnTraitBasedPropertyTest {
             }
         };
 
+    @After public void clearBytesOut() throws Exception {
+        bytesOut.reset();
+    }
+
     @Test public void expectedOrderingOfMethods() throws Exception {
         assertThat(testResult(Leaf.class), isSuccessful());
         assertEquals(
             resourceAsString("trait-property-test-expected.txt"),
-            bytesOut.toString());
+            bytesOut.toString().replaceAll(System.lineSeparator(), "\r\n"));
     }
 
     public interface TraitA {
