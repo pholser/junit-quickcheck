@@ -187,6 +187,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList('@', '#')),
             new HashSet<>(WrapperChars.values.subList(0, 2)));
+        WrapperChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
