@@ -120,6 +120,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList((byte) 12, (byte) -13)),
             new HashSet<>(PrimitiveBytes.values.subList(0, 2)));
+        PrimitiveBytes.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -186,6 +187,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList('@', '#')),
             new HashSet<>(WrapperChars.values.subList(0, 2)));
+        WrapperChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
