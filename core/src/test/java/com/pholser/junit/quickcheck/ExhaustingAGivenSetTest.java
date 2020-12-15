@@ -182,6 +182,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList('@', '#')),
             WrapperChars.testCases);
+        WrapperChars.iterations = 0;
+        WrapperChars.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -203,6 +205,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(3.2, -4D)),
             PrimitiveDoubles.testCases);
+        PrimitiveDoubles.iterations = 0;
+        PrimitiveDoubles.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -245,6 +249,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(3.3F, -5F)),
             PrimitiveFloats.testCases);
+        PrimitiveFloats.iterations = 0;
+        PrimitiveFloats.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -266,6 +272,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(1.7F, -4.14F)),
             WrapperFloats.testCases);
+        WrapperFloats.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -287,6 +294,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(1, 2, 3)),
             PrimitiveIntegers.testCases);
+        PrimitiveIntegers.iterations = 0;
+        PrimitiveIntegers.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -308,6 +317,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(4, 5)),
             WrapperIntegers.testCases);
+        WrapperIntegers.iterations = 0;
+        WrapperIntegers.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -371,6 +382,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(Short.valueOf("9"), Short.valueOf("8"))),
             PrimitiveShorts.testCases);
+        PrimitiveShorts.iterations = 0;
+        PrimitiveShorts.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -392,6 +405,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(Short.valueOf("-13"), Short.valueOf("-14"))),
             WrapperShorts.testCases);
+        WrapperShorts.iterations = 0;
+        WrapperShorts.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -413,6 +428,8 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList("some", "values")),
             Strings.testCases);
+        Strings.iterations = 0;
+        Strings.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -432,6 +449,7 @@ public class ExhaustingAGivenSetTest {
         assertThat(testResult(Enums.class), isSuccessful());
         assertEquals(2, Enums.iterations);
         assertEquals(EnumSet.of(HALF_UP, HALF_EVEN), Enums.testCases);
+        Enums.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -479,6 +497,8 @@ public class ExhaustingAGivenSetTest {
             new HashSet<>(
                 asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))),
             CtorOnly.testCases);
+        CtorOnly.iterations = 0;
+        CtorOnly.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -521,6 +541,8 @@ public class ExhaustingAGivenSetTest {
             ),
             FavorValueOf.testCases
         );
+        FavorValueOf.iterations = 0;
+        FavorValueOf.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -591,6 +613,8 @@ public class ExhaustingAGivenSetTest {
                 LocalDate.of(2001, 12, 25))),
             ExplicitConversion.testCases
         );
+        ExplicitConversion.iterations = 0;
+        ExplicitConversion.testCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -670,6 +694,11 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             EnumSet.allOf(RoundingMode.class),
             new HashSet<>(ManyParametersWithBooleanAndEnum.fourthTestCases));
+        ManyParametersWithBooleanAndEnum.iterations = 0;
+        ManyParametersWithBooleanAndEnum.firstTestCases.clear();
+        ManyParametersWithBooleanAndEnum.secondTestCases.clear();
+        ManyParametersWithBooleanAndEnum.thirdTestCases.clear();
+        ManyParametersWithBooleanAndEnum.fourthTestCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
