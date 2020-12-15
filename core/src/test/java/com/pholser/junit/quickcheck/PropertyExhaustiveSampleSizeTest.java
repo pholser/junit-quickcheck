@@ -49,6 +49,7 @@ public class PropertyExhaustiveSampleSizeTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ForDefaultNumberOfValues.iterations);
+        ForDefaultNumberOfValues.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
