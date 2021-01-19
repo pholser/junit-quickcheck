@@ -31,7 +31,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -81,9 +80,9 @@ public class CompositeGeneratorTest {
     }
 
     @Test public void shrinkingChoosesAComponentCapableOfShrinkingTheValue() {
-        stub(first.canShrink(7)).toReturn(true);
-        stub(second.canShrink(7)).toReturn(false);
-        stub(third.canShrink(7)).toReturn(true);
+        when(first.canShrink(7)).thenReturn(true);
+        when(second.canShrink(7)).thenReturn(false);
+        when(third.canShrink(7)).thenReturn(true);
         when(first.types()).thenReturn(singletonList(Integer.class));
         when(first.doShrink(random, 7)).thenReturn(asList(3, 6));
         when(random.nextInt(9)).thenReturn(1);
