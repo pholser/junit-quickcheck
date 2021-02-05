@@ -27,6 +27,7 @@ package com.pholser.junit.quickcheck;
 
 import static com.pholser.junit.quickcheck.Classes.currentMethodName;
 import static com.pholser.junit.quickcheck.Classes.resourceAsString;
+import static com.pholser.junit.quickcheck.Strings.normalizeLineEndings;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.experimental.results.PrintableResult.testResult;
@@ -65,15 +66,16 @@ public class UsualJUnitMachineryOnSubclassPropertyTest {
             }
         };
 
-    @After public void clearBytesOut() throws Exception {
+    @After public void clearBytesOut() {
         bytesOut.reset();
     }
 
     @Test public void expectedOrderingOfMethods() throws Exception {
         assertThat(testResult(Leaf.class), isSuccessful());
         assertEquals(
-            resourceAsString("subclass-property-test-expected.txt"),
-            bytesOut.toString().replaceAll(System.lineSeparator(), "\r\n"));
+            normalizeLineEndings(
+                resourceAsString("subclass-property-test-expected.txt")),
+            normalizeLineEndings(bytesOut.toString()));
     }
 
     public static abstract class Root {
