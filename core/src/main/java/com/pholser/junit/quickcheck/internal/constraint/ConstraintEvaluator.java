@@ -26,18 +26,20 @@
 package com.pholser.junit.quickcheck.internal.constraint;
 
 import ognl.Ognl;
-import ognl.OgnlContext;
 import ognl.OgnlException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConstraintEvaluator {
     private final Object constraint;
-    private final OgnlContext bindings;
+    private final Map<Object, Object> bindings;
 
     public ConstraintEvaluator(String expression) {
         try {
             constraint =
                 expression == null ? null : Ognl.parseExpression(expression);
-            bindings = new ConstraintOgnlContext();
+            bindings = new EvalMap();
         } catch (OgnlException ex) {
             throw new EvaluationException(ex);
         }
@@ -68,11 +70,13 @@ public class ConstraintEvaluator {
         }
     }
 
-    private static class ConstraintOgnlContext extends OgnlContext {
+    private static class EvalMap extends HashMap<Object, Object> {
+        private static final long serialVersionUID = Long.MIN_VALUE;
+
         @Override public Object get(Object key) {
             if (!containsKey(key)) {
                 throw new EvaluationException(
-                    "Referring to undefined variable '" + key + "']");
+                  "Referring to undefined variable '" + key + "']");
             }
             return super.get(key);
         }
