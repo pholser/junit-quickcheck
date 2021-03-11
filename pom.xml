@@ -343,7 +343,7 @@
                             <link>http://junit.org/junit4/javadoc/latest/</link>
                             <link>https://guava.dev/releases/30.1-jre/api/docs/</link>
                         </links>
-                        <bottom><![CDATA[<i>&copy; Copyright 2010-2020 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
+                        <bottom><![CDATA[<i>&copy; Copyright 2010-2021 Paul R. Holser, Jr.  All rights reserved. Licensed under The MIT License. pholser@alumni.rice.edu</i>]]></bottom>
                     </configuration>
                     <executions>
                         <execution>
