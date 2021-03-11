@@ -322,26 +322,6 @@
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>3.1.1</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.pitest</groupId>
-                    <artifactId>pitest-maven</artifactId>
-                    <version>1.6.4</version>
-                    <configuration>
-                        <targetClasses>
-                            <param>com.pholser.junit.quickcheck*</param>
-                        </targetClasses>
-                        <targetTests>
-                            <param>*Test</param>
-                        </targetTests>
-                        <excludedMethods>
-                            <param>equals</param>
-                            <param>hashCode</param>
-                        </excludedMethods>
-                        <excludedClasses>
-                            <param>joptsimple.examples*</param>
-                        </excludedClasses>
-                    </configuration>
-                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
