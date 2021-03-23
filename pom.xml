@@ -148,7 +148,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava-testlib</artifactId>
-                <version>30.1-jre</version>
+                <version>30.1.1-jre</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
