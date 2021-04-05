@@ -62,6 +62,11 @@ A `Generator` can have many such `configure` methods.
 
 Configuration annotations that can target type uses will be honored.
 
+*Note for Kotlin users: You may need to tell the Kotlin compiler to
+emit annotations on type uses correctly, via the compiler flag
+`-Xemit-jvm-type-annotations`.
+See [this issue](https://youtrack.jetbrains.com/issue/KT-35843)*.
+
 ```java
     @RunWith(JUnitQuickcheck.class)
     public class PropertiesOfListsOfSingleDigits {
