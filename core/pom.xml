@@ -31,7 +31,7 @@
         <dependency>
             <groupId>ognl</groupId>
             <artifactId>ognl</artifactId>
-            <version>3.2.19</version>
+            <version>3.2.20</version>
         </dependency>
         <dependency>
             <groupId>ru.vyarus</groupId>
