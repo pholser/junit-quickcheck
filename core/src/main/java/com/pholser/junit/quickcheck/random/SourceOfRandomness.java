@@ -30,6 +30,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.pholser.junit.quickcheck.internal.Items;
 import com.pholser.junit.quickcheck.internal.Ranges;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -46,6 +48,7 @@ import java.util.Random;
  * {@linkplain com.pholser.junit.quickcheck.generator.Generator generators}
  * so they can produce random values for property parameters.
  */
+@SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
 public class SourceOfRandomness {
     private static final BigInteger NANOS_PER_SECOND =
         BigInteger.valueOf(SECONDS.toNanos(1));

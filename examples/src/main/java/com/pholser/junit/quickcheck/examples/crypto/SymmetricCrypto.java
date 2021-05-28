@@ -25,6 +25,8 @@
 
 package com.pholser.junit.quickcheck.examples.crypto;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import static javax.crypto.Cipher.DECRYPT_MODE;
 import static javax.crypto.Cipher.ENCRYPT_MODE;
 
@@ -69,6 +71,7 @@ final class SymmetricCrypto {
         return aes.doFinal(enciphered.ciphertext);
     }
 
+    @SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
     private byte[] initializationVector() {
         byte[] iv = new byte[KEY_LENGTH / 8];
         random.nextBytes(iv);
