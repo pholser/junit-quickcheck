@@ -1,3 +1,4 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pholser/property-binder/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pholser/junit-quickcheck)
 [![Build Status](https://travis-ci.org/pholser/junit-quickcheck.svg?branch=master)](https://travis-ci.org/pholser/junit-quickcheck)
 [![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/pholser/junit-quickcheck.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/pholser/junit-quickcheck/context:java)
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/pholser/junit-quickcheck.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/pholser/junit-quickcheck/alerts)
