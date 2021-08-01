@@ -74,6 +74,7 @@ public class PrimitivePropertyParameterTypesTest {
         assertEquals(
             asList(false, true),
             PrimitiveBooleanWithAllValues.values);
+        PrimitiveBooleanWithAllValues.values.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -90,6 +91,7 @@ public class PrimitivePropertyParameterTypesTest {
             testResult(WrapperBooleanWithAllValues.class),
             isSuccessful());
         assertEquals(asList(false, true), WrapperBooleanWithAllValues.values);
+        WrapperBooleanWithAllValues.values.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
