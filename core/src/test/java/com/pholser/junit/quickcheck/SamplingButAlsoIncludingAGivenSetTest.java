@@ -75,6 +75,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(true, false)),
             new HashSet<>(PrimitiveBooleans.values));
+        PrimitiveBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -165,6 +166,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList('Z', 'z')),
             new HashSet<>(PrimitiveChars.values.subList(0, 2)));
+        PrimitiveChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -210,6 +212,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(3.2, -4D)),
             new HashSet<>(PrimitiveDoubles.values.subList(0, 2)));
+        PrimitiveDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -232,6 +235,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(2.7, -3.14)),
             new HashSet<>(WrapperDoubles.values.subList(0, 2)));
+        WrapperDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -454,6 +458,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             EnumSet.of(HALF_UP, HALF_EVEN),
             new HashSet<>(Enums.values.subList(0, 2)));
+        Enums.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -477,6 +482,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
             new HashSet<>(
                 asList(new CtorOnly.Target("a"), new CtorOnly.Target("b"))),
             new HashSet<>(CtorOnly.values.subList(0, 2)));
+        CtorOnly.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -534,6 +540,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
                     FavorValueOf.Target.valueOf("a"),
                     FavorValueOf.Target.valueOf("b"))),
             new HashSet<>(FavorValueOf.values.subList(0, 2)));
+        FavorValueOf.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -622,6 +629,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
                     LocalDate.of(2017, 1, 1),
                     LocalDate.of(2001, 12, 25))),
             new HashSet<>(ExplicitConversion.values.subList(0, 2)));
+        ExplicitConversion.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -673,6 +681,7 @@ public class SamplingButAlsoIncludingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList('r', 'y')),
             new HashSet<>(ManyParameters.secondValues.subList(0, 2)));
+        ManyParameters.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -708,6 +717,8 @@ public class SamplingButAlsoIncludingAGivenSetTest {
                 AlsoHonorsGenerators.values.subList(
                     3,
                     AlsoHonorsGenerators.values.size())));
+        AlsoHonorsGenerators.iterations = 0;
+        AlsoHonorsGenerators.values.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)

@@ -45,6 +45,7 @@ public class PropertyParameterConfigurationIsolationTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameType.iterations);
+        ParametersOfSameType.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -68,6 +69,7 @@ public class PropertyParameterConfigurationIsolationTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameTypeWithOneConstant.iterations);
+        ParametersOfSameTypeWithOneConstant.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -91,6 +93,7 @@ public class PropertyParameterConfigurationIsolationTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameParameterizedType.iterations);
+        ParametersOfSameParameterizedType.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -116,6 +119,7 @@ public class PropertyParameterConfigurationIsolationTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameParameterizedTypeWithOneConstant.iterations);
+        ParametersOfSameParameterizedTypeWithOneConstant.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -161,6 +165,7 @@ public class PropertyParameterConfigurationIsolationTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfSameArrayType.iterations);
+        ParametersOfSameArrayType.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -216,6 +221,7 @@ public class PropertyParameterConfigurationIsolationTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ParametersOfArrayTypeAndTypeWithOneConstant.iterations);
+        ParametersOfArrayTypeAndTypeWithOneConstant.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)

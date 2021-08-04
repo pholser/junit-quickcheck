@@ -46,6 +46,7 @@ public class PropertyTupleSampleSizeTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ForDefaultNumberOfValues.iterations);
+        ForDefaultNumberOfValues.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -62,6 +63,7 @@ public class PropertyTupleSampleSizeTest {
             testResult(ForSpecifiedNumberOfValues.class),
             isSuccessful());
         assertEquals(5, ForSpecifiedNumberOfValues.iterations);
+        ForSpecifiedNumberOfValues.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -79,6 +81,7 @@ public class PropertyTupleSampleSizeTest {
             testResult(ForValuesOfMultipleParameters.class),
             isSuccessful());
         assertEquals(21, ForValuesOfMultipleParameters.iterations);
+        ForValuesOfMultipleParameters.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
