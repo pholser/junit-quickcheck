@@ -60,6 +60,7 @@ public class SamplingOnlyFromAGivenSetTest {
         assertEquals(
             defaultPropertyTrialCount(),
             PrimitiveBooleans.iterations);
+        PrimitiveBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -77,6 +78,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperBooleans() throws Exception {
         assertThat(testResult(WrapperBooleans.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperBooleans.iterations);
+        WrapperBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -94,6 +96,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveBytes() throws Exception {
         assertThat(testResult(PrimitiveBytes.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), PrimitiveBytes.iterations);
+        PrimitiveBytes.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -112,6 +115,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperBytes() throws Exception {
         assertThat(testResult(WrapperBytes.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperBytes.iterations);
+        WrapperBytes.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -130,6 +134,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveChars() throws Exception {
         assertThat(testResult(PrimitiveChars.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), PrimitiveChars.iterations);
+        PrimitiveChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -148,6 +153,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperChars() throws Exception {
         assertThat(testResult(WrapperChars.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperChars.iterations);
+        WrapperChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -166,6 +172,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveDoubles() throws Exception {
         assertThat(testResult(PrimitiveDoubles.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), PrimitiveDoubles.iterations);
+        PrimitiveDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -184,6 +191,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperDoubles() throws Exception {
         assertThat(testResult(WrapperDoubles.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperDoubles.iterations);
+        WrapperDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -202,6 +210,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveFloats() throws Exception {
         assertThat(testResult(PrimitiveFloats.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), PrimitiveFloats.iterations);
+        PrimitiveFloats.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -220,6 +229,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperFloats() throws Exception {
         assertThat(testResult(WrapperFloats.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperFloats.iterations);
+        WrapperFloats.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -240,6 +250,7 @@ public class SamplingOnlyFromAGivenSetTest {
         assertEquals(
             defaultPropertyTrialCount(),
             PrimitiveIntegers.iterations);
+        PrimitiveIntegers.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -258,6 +269,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperIntegers() throws Exception {
         assertThat(testResult(WrapperIntegers.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperIntegers.iterations);
+        WrapperIntegers.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -276,6 +288,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveLongs() throws Exception {
         assertThat(testResult(PrimitiveLongs.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), PrimitiveLongs.iterations);
+        PrimitiveLongs.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -294,6 +307,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperLongs() throws Exception {
         assertThat(testResult(WrapperLongs.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperLongs.iterations);
+        WrapperLongs.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -312,6 +326,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void primitiveShorts() throws Exception {
         assertThat(testResult(PrimitiveShorts.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), PrimitiveShorts.iterations);
+        PrimitiveShorts.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -330,6 +345,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void wrapperShorts() throws Exception {
         assertThat(testResult(WrapperShorts.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), WrapperShorts.iterations);
+        WrapperShorts.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -348,6 +364,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void strings() throws Exception {
         assertThat(testResult(Strings.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), Strings.iterations);
+        Strings.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -366,6 +383,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void enums() throws Exception {
         assertThat(testResult(Enums.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), Enums.iterations);
+        Enums.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -386,6 +404,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void ctorOnly() throws Exception {
         assertThat(testResult(CtorOnly.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), CtorOnly.iterations);
+        CtorOnly.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -421,6 +440,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void favorValueOf() throws Exception {
         assertThat(testResult(FavorValueOf.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), FavorValueOf.iterations);
+        FavorValueOf.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -468,6 +488,7 @@ public class SamplingOnlyFromAGivenSetTest {
             testResult(NoImplicitConversion.class),
             hasSingleFailureContaining(ReflectionException.class.getName()));
         assertEquals(0, NoImplicitConversion.iterations);
+        NoImplicitConversion.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -487,6 +508,7 @@ public class SamplingOnlyFromAGivenSetTest {
         assertEquals(
             defaultPropertyTrialCount(),
             ExplicitConversion.iterations);
+        ExplicitConversion.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -519,6 +541,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void manyParameters() throws Exception {
         assertThat(testResult(ManyParameters.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), ManyParameters.iterations);
+        ManyParameters.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -543,6 +566,7 @@ public class SamplingOnlyFromAGivenSetTest {
     @Test public void onlyTrumpsAlso() throws Exception {
         assertThat(testResult(OnlyTrumpsAlso.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), OnlyTrumpsAlso.iterations);
+        OnlyTrumpsAlso.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -565,6 +589,7 @@ public class SamplingOnlyFromAGivenSetTest {
         assertEquals(
             defaultPropertyTrialCount(),
             OnlyTrumpsGenerators.iterations);
+        OnlyTrumpsGenerators.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)

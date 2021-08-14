@@ -101,6 +101,7 @@ public class ShrinkingTest {
         assertThat(
             testResult(FailedAssumptionDuringShrinking.class),
             hasSingleFailureContaining("With arguments: ["));
+        FailedAssumptionDuringShrinking.shrinking = false;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -120,6 +121,7 @@ public class ShrinkingTest {
     @Test public void disablingShrinking() {
         assertThat(testResult(DisablingShrinking.class), failureCountIs(1));
         assertEquals(1, DisablingShrinking.attempts.size());
+        DisablingShrinking.attempts.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)

@@ -66,6 +66,7 @@ public class PropertyExhaustiveSampleSizeTest {
             testResult(ForSpecifiedNumberOfValues.class),
             isSuccessful());
         assertEquals(5, ForSpecifiedNumberOfValues.iterations);
+        ForSpecifiedNumberOfValues.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -91,6 +92,8 @@ public class PropertyExhaustiveSampleSizeTest {
         assertEquals(foos.get(1), foos.get(3));
         assertEquals(foos.get(2), foos.get(6));
         assertEquals(foos.get(5), foos.get(7));
+        ForValuesOfMultipleParameters.iterations = 0;
+        ForValuesOfMultipleParameters.foos.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
