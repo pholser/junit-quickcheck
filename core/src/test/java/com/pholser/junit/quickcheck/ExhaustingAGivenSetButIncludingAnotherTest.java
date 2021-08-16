@@ -98,6 +98,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             singletonList(false),
             WrapperBooleans.values.subList(0, 1));
+        WrapperBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -143,6 +144,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(Byte.valueOf("14"), Byte.valueOf("-15"))),
             new HashSet<>(WrapperBytes.values.subList(0, 2)));
+        WrapperBytes.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -166,6 +168,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList('Z', 'z')),
             new HashSet<>(PrimitiveChars.values.subList(0, 2)));
+        PrimitiveChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -187,6 +190,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList('@', '#')),
             new HashSet<>(WrapperChars.values.subList(0, 2)));
+        WrapperChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -210,6 +214,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(3.2, -4D)),
             new HashSet<>(PrimitiveDoubles.values.subList(0, 2)));
+        PrimitiveDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -233,6 +238,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(2.7, -3.14)),
             new HashSet<>(WrapperDoubles.values.subList(0, 2)));
+        WrapperDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -256,6 +262,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(3.3F, -5F)),
             new HashSet<>(PrimitiveFloats.values.subList(0, 2)));
+        PrimitiveFloats.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -279,6 +286,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(1.7F, -4.14F)),
             new HashSet<>(WrapperFloats.values.subList(0, 2)));
+        WrapperFloats.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -302,6 +310,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(1, 2, 3)),
             new HashSet<>(PrimitiveIntegers.values.subList(0, 3)));
+        PrimitiveIntegers.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -325,6 +334,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(4, 5)),
             new HashSet<>(WrapperIntegers.values.subList(0, 2)));
+        WrapperIntegers.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -348,6 +358,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(-6L, -7L, -8L)),
             new HashSet<>(PrimitiveLongs.values.subList(0, 3)));
+        PrimitiveLongs.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -371,6 +382,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(10L, 11L, 12L)),
             new HashSet<>(WrapperLongs.values.subList(0, 3)));
+        WrapperLongs.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -394,6 +406,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(Short.valueOf("9"), Short.valueOf("8"))),
             new HashSet<>(PrimitiveShorts.values.subList(0, 2)));
+        PrimitiveShorts.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -417,6 +430,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList(Short.valueOf("-13"), Short.valueOf("-14"))),
             new HashSet<>(WrapperShorts.values.subList(0, 2)));
+        WrapperShorts.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -440,6 +454,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
         assertEquals(
             new HashSet<>(asList("some", "values")),
             new HashSet<>(Strings.values.subList(0, 2)));
+        Strings.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -546,6 +561,7 @@ public class ExhaustingAGivenSetButIncludingAnotherTest {
                     FavorValueOf.Target.valueOf("a"),
                     FavorValueOf.Target.valueOf("b"))),
             new HashSet<>(FavorValueOf.values.subList(0, 2)));
+        FavorValueOf.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)

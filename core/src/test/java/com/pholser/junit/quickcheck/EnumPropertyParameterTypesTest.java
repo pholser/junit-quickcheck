@@ -48,6 +48,7 @@ public class EnumPropertyParameterTypesTest {
     @Test public void usesRegularTrialCount() throws Exception {
         assertThat(testResult(EnumTester.class), isSuccessful());
         assertEquals(defaultPropertyTrialCount(), EnumTester.iterations);
+        EnumTester.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -65,6 +66,7 @@ public class EnumPropertyParameterTypesTest {
             defaultPropertyTrialCount(),
             EnumWithConstraint.values.size());
         assertThat(EnumWithConstraint.values, not(hasItem(E3)));
+        EnumWithConstraint.values.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)

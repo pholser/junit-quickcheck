@@ -58,6 +58,7 @@ public class ExhaustingAGivenSetTest {
         assertThat(testResult(PrimitiveBooleans.class), isSuccessful());
         assertEquals(1, PrimitiveBooleans.iterations);
         assertEquals(singleton(true), PrimitiveBooleans.testCases);
+        PrimitiveBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -77,6 +78,7 @@ public class ExhaustingAGivenSetTest {
         assertThat(testResult(WrapperBooleans.class), isSuccessful());
         assertEquals(1, WrapperBooleans.iterations);
         assertEquals(singleton(false), WrapperBooleans.testCases);
+        WrapperBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -98,6 +100,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(true, false)),
             UnmarkedBooleans.testCases);
+        UnmarkedBooleans.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -119,6 +122,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(Byte.valueOf("12"), Byte.valueOf("-13"))),
             PrimitiveBytes.testCases);
+        PrimitiveBytes.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -140,6 +144,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(Byte.valueOf("14"), Byte.valueOf("-15"))),
             WrapperBytes.testCases);
+        WrapperBytes.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -161,6 +166,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList('Z', 'z')),
             PrimitiveChars.testCases);
+        PrimitiveChars.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -228,6 +234,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(2.7, -3.14)),
             WrapperDoubles.testCases);
+        WrapperDoubles.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -340,6 +347,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(-6L, -7L, -8L)),
             PrimitiveLongs.testCases);
+        PrimitiveLongs.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -361,6 +369,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             new HashSet<>(asList(10L, 11L, 12L)),
             WrapperLongs.testCases);
+        WrapperLongs.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -475,6 +484,7 @@ public class ExhaustingAGivenSetTest {
         assertEquals(
             EnumSet.allOf(RoundingMode.class),
             EnumsUnmarked.testCases);
+        EnumsUnmarked.iterations = 0;
     }
 
     @RunWith(JUnitQuickcheck.class)
@@ -653,6 +663,9 @@ public class ExhaustingAGivenSetTest {
             asList('r', 'r', 'r', 'y', 'y', 'y'),
             ManyParameters.secondTestCases
         );
+        ManyParameters.iterations = 0;
+        ManyParameters.firstTestCases.clear();
+        ManyParameters.secondTestCases.clear();
     }
 
     @RunWith(JUnitQuickcheck.class)
