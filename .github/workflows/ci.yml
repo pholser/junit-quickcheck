@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ '8', '11', '15' ]
+        java: [ '8.0.192', '8', '11.0.3', '11', '15', '17' ]
         os: [ 'ubuntu-latest' ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -21,7 +21,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
-        distribution: 'adopt'
+        distribution: 'zulu'
     - name: print Java version
       run: java -version
     - uses: actions/cache@v2.1.6
