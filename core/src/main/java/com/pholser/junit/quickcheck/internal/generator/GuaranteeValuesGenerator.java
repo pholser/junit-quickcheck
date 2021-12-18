@@ -28,11 +28,13 @@ package com.pholser.junit.quickcheck.internal.generator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class GuaranteeValuesGenerator extends Generator<Object> {
     private final ExhaustiveDomainGenerator guaranteed;
     private final Generator<?> rest;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public GuaranteeValuesGenerator(
         ExhaustiveDomainGenerator guaranteed,
         Generator<?> rest) {

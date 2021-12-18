@@ -28,6 +28,8 @@ package com.pholser.junit.quickcheck.internal;
 import static com.pholser.junit.quickcheck.internal.Reflection.defaultValueOf;
 
 import com.pholser.junit.quickcheck.When;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.lang.reflect.AnnotatedElement;
 
 public class PropertyParameterContext {
@@ -40,6 +42,7 @@ public class PropertyParameterContext {
     private String constraint;
     private long seed = DEFAULT_SEED;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public PropertyParameterContext(ParameterTypeContext typeContext) {
         this.typeContext = typeContext;
     }
@@ -73,6 +76,7 @@ public class PropertyParameterContext {
         return this;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public ParameterTypeContext typeContext() {
         return typeContext;
     }

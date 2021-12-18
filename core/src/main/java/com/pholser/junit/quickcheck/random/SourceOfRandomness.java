@@ -63,6 +63,7 @@ public class SourceOfRandomness {
      * @param delegate a JDK source of randomness, to which the new instance
      * will delegate
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public SourceOfRandomness(Random delegate) {
         seed = delegate.nextLong();
         this.delegate = delegate;

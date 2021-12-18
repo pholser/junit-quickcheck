@@ -26,18 +26,21 @@
 package com.pholser.junit.quickcheck.internal;
 
 import com.pholser.junit.quickcheck.internal.generator.PropertyParameterGenerationContext;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public final class SeededValue {
     private final PropertyParameterGenerationContext p;
     private final Object value;
     private final long seed;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public SeededValue(PropertyParameterGenerationContext p) {
         this.p = p;
         this.value = p.generate();
         this.seed = p.effectiveSeed();
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public PropertyParameterGenerationContext parameter() {
         return p;
     }

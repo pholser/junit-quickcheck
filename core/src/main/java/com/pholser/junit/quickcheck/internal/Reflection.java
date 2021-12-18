@@ -52,6 +52,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.javaruntype.type.Type;
 
 public final class Reflection {
@@ -115,6 +117,7 @@ public final class Reflection {
         return (Constructor<T>) constructors[0];
     }
 
+    @SuppressFBWarnings("REFLC_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_CLASS")
     public static <T> T instantiate(Class<T> clazz) {
         try {
             return clazz.newInstance();

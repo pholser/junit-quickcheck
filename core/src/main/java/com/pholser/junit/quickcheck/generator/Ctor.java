@@ -29,6 +29,8 @@ import static com.pholser.junit.quickcheck.internal.Reflection.instantiate;
 import static com.pholser.junit.quickcheck.internal.Reflection.singleAccessibleConstructor;
 
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -70,6 +72,7 @@ public class Ctor<T> extends Generator<T> {
      * @param ctor the constructor to reflect on to generate constructor
      * parameter values
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public Ctor(Constructor<T> ctor) {
         super(ctor.getDeclaringClass());
 
