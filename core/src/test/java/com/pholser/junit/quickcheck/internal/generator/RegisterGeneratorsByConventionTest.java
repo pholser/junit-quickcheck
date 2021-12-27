@@ -1,13 +1,7 @@
 package com.pholser.junit.quickcheck.internal.generator;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-
-import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.internal.GeometricDistribution;
 import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
 import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.Convention;
 import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.GeneratesOtherTypes;
@@ -15,18 +9,22 @@ import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.Not
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.util.Random;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+
 public class RegisterGeneratorsByConventionTest {
     private GeneratorRepository repo;
-    @Mock private SourceOfRandomness random;
-    @Mock private GenerationStatus generationStatus;
+    private SourceOfRandomness random;
 
     @Before
     public void setupRepository() {
+        random = new SourceOfRandomness(new Random());
         repo = new GeneratorRepository(random);
     }
 
@@ -37,7 +35,9 @@ public class RegisterGeneratorsByConventionTest {
 
         assertNotNull(generator);
         assertThat(
-            generator.generate(random, generationStatus),
+            generator.generate(
+                random,
+                new SimpleGenerationStatus(new GeometricDistribution(), random, 1)),
             instanceOf(Convention.class));
     }
 
