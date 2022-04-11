@@ -1,3 +1,3 @@
 # Discuss
 
-There is [a Google group for junit-quickcheck](https://groups.google.com/u/1/g/junit-quickcheck).
+There is [a Google group for junit-quickcheck](https://groups.google.com/g/junit-quickcheck).
