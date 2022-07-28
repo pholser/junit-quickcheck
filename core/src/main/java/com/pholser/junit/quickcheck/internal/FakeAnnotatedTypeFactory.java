@@ -47,6 +47,25 @@ final class FakeAnnotatedTypeFactory {
         return new FakeAnnotatedType(type);
     }
 
+    private static void testUpdate(int v) {
+        if(v > 0) {
+            System.out.println("v > 0");
+        }
+        else if(v < 0) {
+            System.out.println("v < 0");
+        }
+        else {
+            System.out.println("v == 0");
+        }
+    }
+
+    private static int testDemo(int x, int y) {
+        int sum = x+y;
+        int div = y != 0 ? x/y : 1;
+
+        return sum * sum + div * div;
+    }
+
     private static final class FakeAnnotatedArrayType
         implements AnnotatedArrayType {
 
