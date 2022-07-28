@@ -37,3 +37,5 @@ jobs:
         api_key: ${{ secrets.FORESIGHT_API_KEY }}
         test_framework: junit
         test_path: "**/target/surefire-reports/**"
+        coverage_format: jacoco/xml
+        coverage_path: "**/target/site/jacoco/*.xml"
