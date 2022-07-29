@@ -15,6 +15,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Collect Workflow Telemetry
+      if: always()
+      uses: runforesight/foresight-workflow-kit-action@v1
+      with:
+        api_key: ${{ secrets.FORESIGHT_API_KEY }}
+        
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
@@ -24,12 +30,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
       
-    - name: Collect Workflow Telemetry
-      if: always()
-      uses: runforesight/foresight-workflow-kit-action@v1
-      with:
-        api_key: ${{ secrets.FORESIGHT_API_KEY }}
-        
+    
     - name: Analyze Test and/or Coverage Results
       if: always()
       uses: thundra-io/foresight-test-kit-action@v1
