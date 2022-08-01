@@ -371,6 +371,35 @@
         </pluginManagement>
 
         <plugins>
+        <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                 <check>
+                    <branchRate>0</branchRate>
+                    <lineRate>0</lineRate>
+                    <haltOnFailure>true</haltOnFailure>
+                    <totalBranchRate>0</totalBranchRate>
+                    <totalLineRate>0</totalLineRate>
+                    <packageLineRate>0</packageLineRate>
+                    <packageBranchRate>0</packageBranchRate>
+                </check>
+                    <formats>
+                        <format>xml</format>
+                    </formats>
+                    <aggregate>true</aggregate>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cobertura</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -409,28 +438,17 @@
     <reporting>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
                 <reportSets>
                     <reportSet>
-                        <id>default</id>
                         <reports>
-                            <report>javadoc</report>
+                            <report>cobertura</report>
                         </reports>
                     </reportSet>
                 </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
+
             </plugin>
         </plugins>
     </reporting>
@@ -448,6 +466,7 @@
             </properties>
         </profile>
     </profiles>
+
 
     <distributionManagement>
         <site>
