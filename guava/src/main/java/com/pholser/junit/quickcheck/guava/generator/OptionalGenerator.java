@@ -36,6 +36,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Arrays;
+
 /**
  * Produces values of type {@link Optional}.
  */
@@ -84,5 +86,12 @@ public class OptionalGenerator extends ComponentizedGenerator<Optional> {
         return narrowed.toJavaUtil()
             .map(componentGenerators().get(0)::magnitude)
             .orElse(ZERO);
+    }
+    private void sum() {
+        int a[] = {2, 6, 1, 4};
+        int b[] = {2, 1, 4, 4};
+
+        int result[] = new int[a.length];
+        Arrays.setAll(result, i -> a[i] + b[i]);
     }
 }
