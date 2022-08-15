@@ -36,6 +36,6 @@ jobs:
       run: mvn test-compile -pl generators -am
     - name: Run the test
       run: mvn -pl generators test -Dtest=com.pholser.junit.quickcheck.generator.java.util.SetOfSuperFloatPropertyParameterTest#verifyInteractionWithRandomness
-    - name: Run with NonDex tool
+    - name: Run with NonDex Shuffling tool
       run: mvn -pl generators edu.illinois:nondex-maven-plugin:1.1.2:nondex -Dtest=com.pholser.junit.quickcheck.generator.java.util.SetOfSuperFloatPropertyParameterTest#verifyInteractionWithRandomness
 
