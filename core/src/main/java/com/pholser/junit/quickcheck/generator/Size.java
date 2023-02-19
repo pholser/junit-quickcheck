@@ -39,9 +39,13 @@ import java.lang.annotation.Target;
  * method with this annotation to constrain the size of values generated for
  * the parameter.</p>
  *
- * <p>This annotation is recognized on array parameters and parameters of type
- * {@link java.util.Collection#size() Collection} and {@link
- * java.util.Map#size() Map}.</p>
+ * <p>This annotation is recognized on:
+ * <ul>
+ *   <li>array parameters</li>
+ *   <li>parameters of type {@link java.util.Collection#size() Collection}</li>
+ *   <li>parameters of type {@link java.util.Map#size() Map}</li>
+ *   <li>parameters of type {@link String#length()} String}</li>
+ * </ul>
  */
 @Target({ PARAMETER, FIELD, ANNOTATION_TYPE, TYPE_USE })
 @Retention(RUNTIME)
