@@ -62,6 +62,7 @@ public final class Lambdas {
      * @param lambdaType a functional interface type token
      * @param returnValueGenerator a generator for the return type of the
      * functional interface's single method
+     * @param random a source of randomness
      * @param status an object to be passed along to the generator that will
      * produce the functional interface's method return value
      * @param <T> the functional interface type token
@@ -75,6 +76,7 @@ public final class Lambdas {
     public static <T, U> T makeLambda(
         Class<T> lambdaType,
         Generator<U> returnValueGenerator,
+        SourceOfRandomness random,
         GenerationStatus status) {
 
         if (singleAbstractMethodOf(lambdaType) == null) {
@@ -89,6 +91,7 @@ public final class Lambdas {
                 new LambdaInvocationHandler<>(
                     lambdaType,
                     returnValueGenerator,
+                    random.nextLong(),
                     status.attempts())));
     }
 
@@ -97,6 +100,7 @@ public final class Lambdas {
 
         private final Class<T> lambdaType;
         private final Generator<U> returnValueGenerator;
+        private final long seed;
         private final int attempts;
         private final DefaultMethodHandleMaker methodHandleMaker =
             new DefaultMethodHandleMaker();
@@ -104,10 +108,12 @@ public final class Lambdas {
         LambdaInvocationHandler(
             Class<T> lambdaType,
             Generator<U> returnValueGenerator,
+            long seed,
             Integer attempts) {
 
             this.lambdaType = lambdaType;
             this.returnValueGenerator = returnValueGenerator;
+            this.seed = seed;
             this.attempts = attempts;
         }
 
@@ -123,7 +129,7 @@ public final class Lambdas {
                 return handleDefaultMethod(proxy, method, args);
 
             SourceOfRandomness source = new SourceOfRandomness(new Random());
-            source.setSeed(Arrays.hashCode(args));
+            source.setSeed(Arrays.hashCode(args) ^ seed);
             GenerationStatus status =
                 new SimpleGenerationStatus(
                     new GeometricDistribution(),

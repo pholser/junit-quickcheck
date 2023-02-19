@@ -59,7 +59,7 @@ public class ToIntFunctionGenerator<T>
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        return makeLambda(ToIntFunction.class, generator, status);
+        return makeLambda(ToIntFunction.class, generator, random, status);
     }
 
     @Override public int numberOfNeededComponents() {

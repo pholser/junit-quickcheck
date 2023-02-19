@@ -52,6 +52,7 @@ public class BinaryOperatorGenerator<T>
         return makeLambda(
             BinaryOperator.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 

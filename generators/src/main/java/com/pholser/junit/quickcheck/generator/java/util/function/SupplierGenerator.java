@@ -50,6 +50,7 @@ public class SupplierGenerator<T> extends ComponentizedGenerator<Supplier> {
         return makeLambda(
             Supplier.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 

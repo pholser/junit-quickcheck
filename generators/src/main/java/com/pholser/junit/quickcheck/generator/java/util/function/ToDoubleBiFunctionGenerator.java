@@ -60,7 +60,7 @@ public class ToDoubleBiFunctionGenerator<T, U>
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        return makeLambda(ToDoubleBiFunction.class, generator, status);
+        return makeLambda(ToDoubleBiFunction.class, generator, random, status);
     }
 
     @Override public int numberOfNeededComponents() {

@@ -51,6 +51,7 @@ public class FunctionGenerator<T, R> extends ComponentizedGenerator<Function> {
         return makeLambda(
             Function.class,
             componentGenerators().get(1),
+            random,
             status);
     }
 

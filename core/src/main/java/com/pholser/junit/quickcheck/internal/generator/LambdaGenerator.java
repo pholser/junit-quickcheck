@@ -46,6 +46,6 @@ public class LambdaGenerator<T, U> extends Generator<T> {
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        return makeLambda(lambdaType, returnValueGenerator, status);
+        return makeLambda(lambdaType, returnValueGenerator, random, status);
     }
 }

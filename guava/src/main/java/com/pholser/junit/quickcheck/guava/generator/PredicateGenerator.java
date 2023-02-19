@@ -57,7 +57,7 @@ public class PredicateGenerator<T> extends ComponentizedGenerator<Predicate> {
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        return makeLambda(Predicate.class, generator, status);
+        return makeLambda(Predicate.class, generator, random, status);
     }
 
     @Override public int numberOfNeededComponents() {

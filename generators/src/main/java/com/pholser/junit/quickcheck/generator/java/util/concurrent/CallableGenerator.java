@@ -50,6 +50,7 @@ public class CallableGenerator<V> extends ComponentizedGenerator<Callable> {
         return makeLambda(
             Callable.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 
