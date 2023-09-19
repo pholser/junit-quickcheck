@@ -54,6 +54,7 @@ public class BiFunctionGenerator<T, U, R>
         return makeLambda(
             BiFunction.class,
             componentGenerators().get(2),
+            random,
             status);
     }
 

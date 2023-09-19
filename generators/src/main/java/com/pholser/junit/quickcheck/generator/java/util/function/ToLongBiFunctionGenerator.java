@@ -60,7 +60,7 @@ public class ToLongBiFunctionGenerator<T, U>
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        return makeLambda(ToLongBiFunction.class, generator, status);
+        return makeLambda(ToLongBiFunction.class, generator, random, status);
     }
 
     @Override public int numberOfNeededComponents() {

@@ -27,13 +27,11 @@ package com.pholser.junit.quickcheck;
 
 import java.util.concurrent.Callable;
 
-import com.pholser.junit.quickcheck.generator.java.lang.IntegerGenerator;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.pholser.junit.quickcheck.Annotations.*;
-import static com.pholser.junit.quickcheck.Functions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.experimental.results.PrintableResult.*;
@@ -50,14 +48,20 @@ public class CallablePropertyParameterTest {
     public static class CallableOfInt {
         static int iterations;
 
-        @Property public void shouldHold(Callable<Integer> c)
+        @Property public void shouldHold(
+            Callable<Integer> c1,
+            Callable<Integer> c2)
             throws Exception {
 
             ++iterations;
 
-            Integer value = functionValue(new IntegerGenerator(), null);
-            for (int i = 0; i < 10000; ++i)
-                assertEquals(value, c.call());
+            Integer v1 = c1.call();
+            Integer v2 = c2.call();
+            for (int i = 0; i < 10000; ++i) {
+                assertEquals(v1, c1.call());
+                assertEquals(v2, c2.call());
+                assertNotEquals(v1, v2);
+            }
         }
     }
 }

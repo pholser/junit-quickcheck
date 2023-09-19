@@ -52,6 +52,7 @@ public class UnaryOperatorGenerator<T>
         return makeLambda(
             UnaryOperator.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 

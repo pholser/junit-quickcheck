@@ -59,7 +59,7 @@ public class ToDoubleFunctionGenerator<T>
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        return makeLambda(ToDoubleFunction.class, generator, status);
+        return makeLambda(ToDoubleFunction.class, generator, random, status);
     }
 
     @Override public int numberOfNeededComponents() {

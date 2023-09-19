@@ -52,6 +52,7 @@ public class IntFunctionGenerator<R>
         return makeLambda(
             IntFunction.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 

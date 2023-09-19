@@ -42,13 +42,14 @@ import org.junit.Test;
 
 public class LambdasTest {
     private ABool returnValueGenerator;
+    private SourceOfRandomness random;
     private SimpleGenerationStatus status;
     private Predicate<Integer> predicate;
 
     @SuppressWarnings("unchecked")
     @Before public void setUp() {
         returnValueGenerator = new ABool();
-        SourceOfRandomness random = new SourceOfRandomness(new Random());
+        random = new SourceOfRandomness(new Random());
         random.setSeed(-1L);
         status =
             new SimpleGenerationStatus(
@@ -56,12 +57,13 @@ public class LambdasTest {
                 random,
                 0);
 
-        predicate = makeLambda(Predicate.class, returnValueGenerator, status);
+        predicate =
+            makeLambda(Predicate.class, returnValueGenerator, random, status);
     }
 
     @Test public void equalsBasedOnIdentity() {
         Predicate<?> duplicate =
-            makeLambda(Predicate.class, returnValueGenerator, status);
+            makeLambda(Predicate.class, returnValueGenerator, random, status);
 
         assertEquals(predicate, predicate);
         assertEquals(duplicate, duplicate);
@@ -83,7 +85,7 @@ public class LambdasTest {
         IllegalArgumentException ex =
             assertThrows(
                 IllegalArgumentException.class,
-                () -> makeLambda(Cloneable.class, new AnInt(), status));
+                () -> makeLambda(Cloneable.class, new AnInt(), random, status));
         assertEquals(
             Cloneable.class + " is not a functional interface type",
             ex.getMessage());
@@ -92,7 +94,7 @@ public class LambdasTest {
     @Test public void invokingDefaultMethodOnFunctionalInterface() {
         @SuppressWarnings("unchecked")
         Predicate<Integer> another =
-            makeLambda(Predicate.class, returnValueGenerator, status);
+            makeLambda(Predicate.class, returnValueGenerator, random, status);
 
         boolean firstResult = predicate.test(4);
         boolean secondResult = another.test(4);

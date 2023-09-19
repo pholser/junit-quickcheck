@@ -52,6 +52,7 @@ public class DoubleFunctionGenerator<R>
         return makeLambda(
             DoubleFunction.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 

@@ -52,6 +52,7 @@ public class LongFunctionGenerator<R>
         return makeLambda(
             LongFunction.class,
             componentGenerators().get(0),
+            random,
             status);
     }
 

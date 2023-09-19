@@ -26,14 +26,13 @@
 package com.pholser.junit.quickcheck;
 
 import static com.pholser.junit.quickcheck.Annotations.defaultPropertyTrialCount;
-import static com.pholser.junit.quickcheck.Functions.functionValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import com.pholser.junit.quickcheck.test.generator.AFoo;
 import com.pholser.junit.quickcheck.test.generator.Box;
 import com.pholser.junit.quickcheck.test.generator.Foo;
 import com.pholser.junit.quickcheck.test.generator.FooBoxOpener;
@@ -51,15 +50,16 @@ public class LambdaPropertyParameterTypesTest {
     public static class UnboxingAFoo {
         static int iterations;
 
-        @Property public void shouldHold(FooBoxOpener b) {
+        @Property public void shouldHold(FooBoxOpener b1, FooBoxOpener b2) {
             ++iterations;
 
-            Foo value =
-                functionValue(
-                    new AFoo(),
-                    new Object[] { new Box<>(new Foo(2)) });
-            for (int i = 0; i < 10000; ++i)
-                assertEquals(value, b.open(new Box<>(new Foo(2))));
+            Foo f1 = b1.open(new Box<>(new Foo(2)));
+            Foo f2 = b2.open(new Box<>(new Foo(4)));
+            for (int i = 0; i < 10000; ++i) {
+                assertEquals(f1, b1.open(new Box<>(new Foo(2))));
+                assertEquals(f2, b2.open(new Box<>(new Foo(4))));
+                assertNotEquals(f1, f2);
+            }
         }
     }
 }
