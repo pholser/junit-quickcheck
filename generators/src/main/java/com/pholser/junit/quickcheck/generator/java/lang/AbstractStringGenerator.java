@@ -26,12 +26,15 @@
 package com.pholser.junit.quickcheck.generator.java.lang;
 
 import static com.pholser.junit.quickcheck.internal.Lists.shrinksOfOneItem;
+import static com.pholser.junit.quickcheck.internal.Ranges.Type.INTEGRAL;
+import static com.pholser.junit.quickcheck.internal.Ranges.checkRange;
 import static com.pholser.junit.quickcheck.internal.Sequences.halving;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
+import com.pholser.junit.quickcheck.generator.Size;
 import com.pholser.junit.quickcheck.internal.Lists;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import java.math.BigDecimal;
@@ -46,15 +49,22 @@ import java.util.List;
  * {@link GenerationStatus#size()}.</p>
  */
 public abstract class AbstractStringGenerator extends Generator<String> {
+    private Size sizeRange;
+
     protected AbstractStringGenerator() {
         super(String.class);
+    }
+
+    public void configure(Size size) {
+        this.sizeRange = size;
+        checkRange(INTEGRAL, size.min(), size.max());
     }
 
     @Override public String generate(
         SourceOfRandomness random,
         GenerationStatus status) {
 
-        int[] codePoints = new int[status.size()];
+        int[] codePoints = new int[size(random, status)];
 
         for (int i = 0; i < codePoints.length; ++i)
             codePoints[i] = nextCodePoint(random);
@@ -82,10 +92,11 @@ public abstract class AbstractStringGenerator extends Generator<String> {
         shrinks.addAll(
             oneItemShrinks.stream()
                 .map(this::convert)
+                .filter(this::inSizeRange)
                 .filter(this::codePointsInRange)
                 .collect(toList()));
 
-        return shrinks;
+        return shrinks.stream().filter(this::inSizeRange).collect(toList());
     }
 
     @Override public BigDecimal magnitude(Object value) {
@@ -112,5 +123,20 @@ public abstract class AbstractStringGenerator extends Generator<String> {
         StringBuilder s = new StringBuilder();
         codePoints.forEach(s::appendCodePoint);
         return s.toString();
+    }
+
+    private int size(SourceOfRandomness random, GenerationStatus status) {
+        return sizeRange != null
+            ? random.nextInt(sizeRange.min(), sizeRange.max())
+            : status.size();
+    }
+
+    private boolean inSizeRange(String s) {
+        System.out.println(sizeRange);
+        System.out.println(s.length());
+
+        return sizeRange == null
+            || (s.length() >= sizeRange.min()
+                && s.length() <= sizeRange.max());
     }
 }
