@@ -77,7 +77,11 @@ class PropertyStatement extends Statement {
 
     @Override public void evaluate() throws Throwable {
         Property marker = method.getAnnotation(Property.class);
-        int trials = marker.trials();
+
+        // Add ability to override using system property
+        String overrideTrials = System.getProperty("OverrideNumOfTrials", null);
+        int trials = (overrideTrials == null) ? marker.trials() : Integer.parseInt(overrideTrials);
+
         MinimalCounterexampleHook hook = marker.onMinimalCounterexample().newInstance();
         ShrinkControl shrinkControl = new ShrinkControl(
             marker.shrink(),
